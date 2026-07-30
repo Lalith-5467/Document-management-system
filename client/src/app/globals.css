@@ -1,0 +1,520 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Root Theme Variables - Landing Page Color Theme */
+:root {
+  --bg-app: #F8FAFC;
+  --bg-card: #FFFFFF;
+  --bg-sidebar: #0F172A;
+  --bg-input: #F1F5F9;
+  --border-color: #E2E8F0;
+  --text-primary: #0F172A;
+  --text-secondary: #64748B;
+  --select-bg: #FFFFFF;
+  --select-text: #0F172A;
+  --accent-primary: #FF6B00;
+  --accent-hover: #E05E00;
+  color-scheme: light;
+}
+
+html.dark {
+  --bg-app: #0F172A;
+  --bg-card: #1E293B;
+  --bg-sidebar: #0F172A;
+  --bg-input: #1E293B;
+  --border-color: #334155;
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
+  --select-bg: #1E293B;
+  --select-text: #F8FAFC;
+  --accent-primary: #FF6B00;
+  --accent-hover: #F97316;
+  color-scheme: dark;
+}
+
+html.light {
+  --bg-app: #F8FAFC;
+  --bg-card: #FFFFFF;
+  --bg-sidebar: #0F172A;
+  --bg-input: #F1F5F9;
+  --border-color: #E2E8F0;
+  --text-primary: #0F172A;
+  --text-secondary: #64748B;
+  --select-bg: #FFFFFF;
+  --select-text: #0F172A;
+  --accent-primary: #FF6B00;
+  --accent-hover: #E05E00;
+  color-scheme: light;
+}
+
+body {
+  color: var(--text-primary);
+  background-color: var(--bg-app);
+  font-family: var(--font-poppins), 'Poppins', var(--font-inter), 'Inter', sans-serif;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background-color 0.25s ease, color 0.25s ease;
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+/* Poppins Form & Authentication Typography System */
+.font-auth-heading {
+  font-family: var(--font-poppins), 'Poppins', sans-serif !important;
+  letter-spacing: -0.015em;
+}
+
+.font-auth-body {
+  font-family: var(--font-poppins), 'Poppins', sans-serif !important;
+  letter-spacing: -0.005em;
+}
+
+.font-auth-label {
+  font-family: var(--font-poppins), 'Poppins', sans-serif !important;
+  letter-spacing: 0.03em;
+}
+
+/* Hide right-side scrollbar globally while preserving full scrolling */
+html, body, * {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+::-webkit-scrollbar {
+  display: none !important;
+  width: 0px !important;
+  height: 0px !important;
+  background: transparent !important;
+}
+
+/* Global Dark Mode Overrides for Hardcoded Light Classes */
+html.dark body {
+  background-color: #0F172A !important;
+  color: #F8FAFC !important;
+}
+
+html.dark .bg-white {
+  background-color: #1E293B !important;
+  color: #F8FAFC !important;
+}
+
+html.dark .bg-\[\#F3F0FA\],
+html.dark .bg-slate-50,
+html.dark .bg-slate-100 {
+  background-color: #0F172A !important;
+  color: #F8FAFC !important;
+}
+
+html.dark .border-\[\#EAE4F8\],
+html.dark .border-slate-200,
+html.dark .border-slate-300 {
+  border-color: #334155 !important;
+}
+
+html.dark .text-\[\#1E1235\],
+html.dark .text-slate-900,
+html.dark .text-slate-800 {
+  color: #F8FAFC !important;
+}
+
+html.dark .text-\[\#7B7393\],
+html.dark .text-slate-600,
+html.dark .text-slate-500,
+html.dark .text-slate-400 {
+  color: #94A3B8 !important;
+}
+
+html.dark table tbody tr:hover {
+  background-color: #1E293B !important;
+}
+
+html.dark table tbody tr {
+  border-color: #334155 !important;
+}
+
+/* Micro-Animations Engine */
+
+/* 1. Page Transition Fade Up */
+@keyframes pageFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-page-fade {
+  animation: pageFadeUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* 2. Card Hover Lift & Glow */
+.card-hover-subtle {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+}
+.card-hover-subtle:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(255, 107, 0, 0.12);
+}
+
+/* 3. Skeleton Loading Shimmer */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+.skeleton-box {
+  background: linear-gradient(
+    90deg,
+    rgba(234, 228, 248, 0.4) 25%,
+    rgba(243, 240, 250, 0.8) 37%,
+    rgba(234, 228, 248, 0.4) 63%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+}
+
+html.dark .skeleton-box {
+  background: linear-gradient(
+    90deg,
+    rgba(45, 31, 71, 0.6) 25%,
+    rgba(60, 42, 95, 0.9) 37%,
+    rgba(45, 31, 71, 0.6) 63%
+  );
+  background-size: 200% 100%;
+}
+
+/* 4. Smooth Progress Bar Transition */
+.progress-bar-smooth {
+  transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1), stroke-dashoffset 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 5. Button & Card Press Micro Interactions */
+.btn-hover-subtle {
+  transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+.btn-hover-subtle:hover {
+  transform: translateY(-1px);
+}
+.btn-hover-subtle:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.active-press {
+  transition: transform 0.15s ease;
+}
+.active-press:active {
+  transform: scale(0.97);
+}
+
+/* 6. Smooth Modal Pop-In Animation */
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.animate-pop-in {
+  animation: popIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* 7. Smooth Continuous Marquee Animation for Premium Trial Banner */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 25s linear infinite;
+}
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* 8. White Header & Animations Engine */
+.header-white {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+}
+
+html.dark .header-white {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+}
+
+@keyframes headerSlideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes headerBorderGlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes bellWiggle {
+  0%, 100% { transform: rotate(0deg); }
+  20% { transform: rotate(15deg); }
+  40% { transform: rotate(-15deg); }
+  60% { transform: rotate(10deg); }
+  80% { transform: rotate(-5deg); }
+}
+
+@keyframes badgePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+.animate-header-slide-down {
+  animation: headerSlideDown 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animated-border-bottom {
+  position: relative;
+}
+
+.animated-border-bottom::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #6366f1, #8b5cf6, #ec4899, #f97316, #3b82f6, #6366f1);
+  background-size: 300% 100%;
+  animation: headerBorderGlow 5s ease infinite;
+  z-index: 40;
+}
+
+.animate-bell-wiggle:hover {
+  animation: bellWiggle 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animate-badge-pulse {
+  animation: badgePulse 2s ease-in-out infinite;
+}
+
+/* 9. Landing Page Premium White Theme & Micro-Animations */
+.landing-card {
+  border-radius: 18px;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+}
+
+.landing-card:hover {
+  transform: translateY(-6px) scale(1.015);
+  box-shadow: 0 20px 35px -5px rgba(37, 99, 235, 0.12), 0 8px 16px -6px rgba(15, 23, 42, 0.06);
+  border-color: rgba(255, 107, 0, 0.4);
+}
+
+.icon-hover-rotate {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease, background-color 0.3s ease;
+}
+
+.group:hover .icon-hover-rotate {
+  transform: translateY(-2px) rotate(8deg) scale(1.1);
+}
+
+.nav-link-animated {
+  position: relative;
+  transition: color 0.25s ease;
+}
+
+.nav-link-animated::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: linear-gradient(90deg, #FF6B00, #F97316);
+  border-radius: 99px;
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-link-animated:hover::after {
+  width: 100%;
+}
+
+@keyframes floatSubtle {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.animate-float-subtle {
+  animation: floatSubtle 4s ease-in-out infinite;
+}
+
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes zoomIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-zoom-in {
+  animation: zoomIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* 9. Landing Page Premium Glass Gradient & Animated Cards */
+.landing-card,
+.glass-card,
+.container-box-shadow {
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+  background: #ffffff;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.07), 0 4px 12px -2px rgba(15, 23, 42, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.9) !important;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Glass Shimmer Reflection Overlay on Hover */
+.landing-card::before,
+.glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 75%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    transparent 100%
+  );
+  transform: skewX(-20deg);
+  transition: left 0.75s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.landing-card:hover::before,
+.glass-card:hover::before {
+  left: 140%;
+}
+
+.landing-card:hover,
+.glass-card:hover,
+.container-box-shadow:hover {
+  transform: translateY(-8px) scale(1.02);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.99) 0%, rgba(255, 247, 237, 0.95) 50%, rgba(240, 249, 255, 0.95) 100%);
+  border-color: rgba(255, 107, 0, 0.45);
+  box-shadow: 0 25px 55px -10px rgba(255, 107, 0, 0.22), 0 12px 24px -6px rgba(15, 23, 42, 0.08), inset 0 1px 1px #ffffff !important;
+}
+
+/* Floating Animations for Auth Pages */
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(3deg); }
+}
+
+@keyframes floatReverse {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(12px) rotate(-3deg); }
+}
+
+.animate-float-slow {
+  animation: floatSlow 6s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: floatReverse 7s ease-in-out infinite;
+}
+
+/* Keyframe Animations for User Dashboard Sections & Cards */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleUp {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-scale-up {
+  animation: scaleUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Stagger Delays */
+.delay-75 { animation-delay: 75ms; }
+.delay-100 { animation-delay: 100ms; }
+.delay-150 { animation-delay: 150ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-250 { animation-delay: 250ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-350 { animation-delay: 350ms; }
+.delay-400 { animation-delay: 400ms; }
