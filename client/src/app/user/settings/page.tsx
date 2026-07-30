@@ -71,8 +71,11 @@ export default function UserSettingsPage() {
     }
     setTheme(globalTheme);
     setLanguage(globalLang as SupportedLanguage);
-    fetchSettings();
   }, [user, globalTheme, globalLang]);
+
+  useEffect(() => {
+    fetchSettings();
+  }, []);
 
   const fetchSettings = async () => {
     setLoading(true);
@@ -181,7 +184,7 @@ export default function UserSettingsPage() {
     <div className="space-y-6 max-w-4xl mx-auto pb-12">
       {/* Toast Alert */}
       {toastMsg && (
-        <div className={`fixed bottom-5 right-5 z-50 text-white text-xs font-semibold px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-2 animate-in fade-in slide-in-from-bottom-3 ${
+        <div className={`fixed bottom-5 right-5 z-50 text-white text-sm font-semibold px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-2 animate-in fade-in slide-in-from-bottom-3 ${
           toastMsg.type === 'success' ? 'bg-slate-900' : 'bg-rose-600'
         }`}>
           {toastMsg.type === 'success' ? <CheckCircle2 className="w-4 h-4 text-emerald-400" /> : <AlertCircle className="w-4 h-4 text-amber-300" />}
@@ -192,23 +195,23 @@ export default function UserSettingsPage() {
       {/* Header */}
       <div>
         <div className="flex items-center gap-2 mb-1">
-          <Link href="/user" className="text-xs text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center gap-1 font-semibold">
+          <Link href="/user" className="text-sm text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center gap-1 font-semibold">
             <ArrowLeft className="w-3.5 h-3.5" /> {t('nav.myWorkspace', 'My Workspace')}
           </Link>
-          <span className="text-slate-400 dark:text-slate-600 text-xs">/</span>
-          <span className="text-xs font-semibold text-slate-900 dark:text-white">{t('settings.title', 'Settings & Preferences')}</span>
+          <span className="text-slate-400 dark:text-slate-600 text-sm">/</span>
+          <span className="text-sm font-semibold text-slate-900 dark:text-white">{t('settings.title', 'Settings & Preferences')}</span>
         </div>
         <h1 className="text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
           ⚙ {t('settings.title', 'Settings & Preferences')}
         </h1>
-        <p className="text-xs text-slate-500 dark:text-slate-400">{t('settings.subtitle', 'Manage account credentials, security preferences, theme, and storage allocations')}</p>
+        <p className="text-sm text-slate-500 dark:text-slate-400">{t('settings.subtitle', 'Manage account credentials, security preferences, theme, and storage allocations')}</p>
       </div>
 
       {/* Navigation Tabs */}
       <div className="flex border-b border-slate-200 dark:border-slate-800 gap-2 overflow-x-auto scrollbar-none pb-1">
         <button
           onClick={() => setActiveTab('profile')}
-          className={`px-4 py-2.5 text-xs font-bold rounded-2xl transition flex items-center gap-2 whitespace-nowrap ${
+          className={`px-4 py-2.5 text-sm font-bold rounded-2xl transition flex items-center gap-2 whitespace-nowrap ${
             activeTab === 'profile'
               ? 'bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white shadow-md shadow-orange-500/20'
               : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
@@ -219,7 +222,7 @@ export default function UserSettingsPage() {
 
         <button
           onClick={() => setActiveTab('security')}
-          className={`px-4 py-2.5 text-xs font-bold rounded-2xl transition flex items-center gap-2 whitespace-nowrap ${
+          className={`px-4 py-2.5 text-sm font-bold rounded-2xl transition flex items-center gap-2 whitespace-nowrap ${
             activeTab === 'security'
               ? 'bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white shadow-md shadow-orange-500/20'
               : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
@@ -230,7 +233,7 @@ export default function UserSettingsPage() {
 
         <button
           onClick={() => setActiveTab('preferences')}
-          className={`px-4 py-2.5 text-xs font-bold rounded-2xl transition flex items-center gap-2 whitespace-nowrap ${
+          className={`px-4 py-2.5 text-sm font-bold rounded-2xl transition flex items-center gap-2 whitespace-nowrap ${
             activeTab === 'preferences'
               ? 'bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white shadow-md shadow-orange-500/20'
               : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
@@ -241,7 +244,7 @@ export default function UserSettingsPage() {
 
         <button
           onClick={() => setActiveTab('storage')}
-          className={`px-4 py-2.5 text-xs font-bold rounded-2xl transition flex items-center gap-2 whitespace-nowrap ${
+          className={`px-4 py-2.5 text-sm font-bold rounded-2xl transition flex items-center gap-2 whitespace-nowrap ${
             activeTab === 'storage'
               ? 'bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white shadow-md shadow-orange-500/20'
               : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
@@ -254,7 +257,7 @@ export default function UserSettingsPage() {
       {loading ? (
         <div className="bg-white dark:bg-slate-900 p-12 rounded-3xl border border-slate-200 dark:border-slate-800 text-center space-y-3 shadow-xl">
           <Loader2 className="w-8 h-8 text-[#FF6B00] dark:text-orange-400 animate-spin mx-auto" />
-          <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">{t('common.loading', 'Loading settings & preferences...')}</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">{t('common.loading', 'Loading settings & preferences...')}</p>
         </div>
       ) : (
         <div className="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl transition-colors">
@@ -262,8 +265,8 @@ export default function UserSettingsPage() {
           {activeTab === 'profile' && (
             <form onSubmit={handleUpdateProfile} className="space-y-6 max-w-xl">
               <div>
-                <h3 className="font-extrabold text-slate-900 dark:text-white text-base">{t('settings.accountProfile', 'Account Profile')}</h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400">{t('settings.profileSub', 'Update your name, email address, and profile avatar.')}</p>
+                <h3 className="font-extrabold text-slate-900 dark:text-white text-lg">{t('settings.accountProfile', 'Account Profile')}</h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400">{t('settings.profileSub', 'Update your name, email address, and profile avatar.')}</p>
               </div>
 
               {/* Avatar Selector */}
@@ -272,9 +275,9 @@ export default function UserSettingsPage() {
                   {fullName ? fullName.charAt(0).toUpperCase() : 'U'}
                 </div>
                 <div className="space-y-1">
-                  <p className="text-xs font-bold text-slate-900 dark:text-white">{fullName || 'User Profile'}</p>
-                  <p className="text-[11px] text-slate-500 dark:text-slate-400">{email}</p>
-                  <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded-full bg-orange-50 dark:bg-orange-950 text-[#FF6B00] dark:text-orange-400 border border-orange-200 dark:border-orange-900/60 font-mono">
+                  <p className="text-sm font-bold text-slate-900 dark:text-white">{fullName || 'User Profile'}</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">{email}</p>
+                  <span className="inline-block text-xs font-bold px-2 py-0.5 rounded-full bg-orange-50 dark:bg-orange-950 text-[#FF6B00] dark:text-orange-400 border border-orange-200 dark:border-orange-900/60 font-mono">
                     {user?.user_type || 'Authenticated Member'}
                   </span>
                 </div>
@@ -282,7 +285,7 @@ export default function UserSettingsPage() {
 
               {/* Full Name */}
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                <label className="block text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
                   {t('settings.fullName', 'Full Name')} *
                 </label>
                 <input
@@ -291,13 +294,13 @@ export default function UserSettingsPage() {
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   placeholder="e.g. Kalpana Individual"
-                  className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-[#FF6B00] transition-all"
+                  className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-[#FF6B00] transition-all"
                 />
               </div>
 
               {/* Email Address */}
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                <label className="block text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
                   {t('settings.emailAddress', 'Email Address')} *
                 </label>
                 <input
@@ -306,7 +309,7 @@ export default function UserSettingsPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="user@docvault.io"
-                  className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-[#FF6B00] transition-all"
+                  className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-[#FF6B00] transition-all"
                 />
               </div>
 
@@ -314,7 +317,7 @@ export default function UserSettingsPage() {
                 <button
                   type="submit"
                   disabled={savingProfile}
-                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:brightness-110 text-white font-bold text-xs flex items-center gap-2 shadow-lg shadow-orange-500/25"
+                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:brightness-110 text-white font-bold text-sm flex items-center gap-2 shadow-lg shadow-orange-500/25"
                 >
                   {savingProfile ? (
                     <>
@@ -336,12 +339,12 @@ export default function UserSettingsPage() {
           {activeTab === 'security' && (
             <form onSubmit={handleChangePassword} className="space-y-6 max-w-xl">
               <div>
-                <h3 className="font-extrabold text-slate-900 dark:text-white text-base">{t('settings.changePassword', 'Change Password')}</h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400">{t('settings.passwordSub', 'Ensure your document vault remains secure with a strong password.')}</p>
+                <h3 className="font-extrabold text-slate-900 dark:text-white text-lg">{t('settings.changePassword', 'Change Password')}</h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400">{t('settings.passwordSub', 'Ensure your document vault remains secure with a strong password.')}</p>
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                <label className="block text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
                   {t('settings.currentPassword', 'Current Password')} *
                 </label>
                 <input
@@ -349,12 +352,12 @@ export default function UserSettingsPage() {
                   required
                   value={currentPassword}
                   onChange={(e) => setCurrentPassword(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-[#FF6B00] transition-all"
+                  className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-[#FF6B00] transition-all"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                <label className="block text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
                   {t('settings.newPassword', 'New Password')} *
                 </label>
                 <input
@@ -362,12 +365,12 @@ export default function UserSettingsPage() {
                   required
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-[#FF6B00] transition-all"
+                  className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-[#FF6B00] transition-all"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                <label className="block text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
                   {t('settings.confirmPassword', 'Confirm New Password')} *
                 </label>
                 <input
@@ -375,7 +378,7 @@ export default function UserSettingsPage() {
                   required
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-[#FF6B00] transition-all"
+                  className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-[#FF6B00] transition-all"
                 />
               </div>
 
@@ -383,7 +386,7 @@ export default function UserSettingsPage() {
                 <button
                   type="submit"
                   disabled={savingPassword}
-                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:brightness-110 text-white font-bold text-xs flex items-center gap-2 shadow-lg shadow-orange-500/25"
+                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:brightness-110 text-white font-bold text-sm flex items-center gap-2 shadow-lg shadow-orange-500/25"
                 >
                   {savingPassword ? (
                     <>
@@ -405,12 +408,12 @@ export default function UserSettingsPage() {
           {activeTab === 'preferences' && (
             <div className="space-y-6 max-w-xl">
               <div>
-                <h3 className="font-extrabold text-slate-900 dark:text-white text-base">{t('settings.themeLanguage', 'Theme & Language')}</h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400">{t('common.themeAndLanguageSub', 'Customize display mode theme and interface language preferences.')}</p>
+                <h3 className="font-extrabold text-slate-900 dark:text-white text-lg">{t('settings.themeLanguage', 'Theme & Language')}</h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400">{t('common.themeAndLanguageSub', 'Customize display mode theme and interface language preferences.')}</p>
               </div>
 
               <div className="space-y-2">
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                <label className="block text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
                   {t('settings.displayMode', 'Display Mode Theme')}
                 </label>
                 <div className="grid grid-cols-2 gap-3">
@@ -425,8 +428,8 @@ export default function UserSettingsPage() {
                   >
                     <Sun className={`w-5 h-5 ${globalTheme === 'light' ? 'text-[#FF6B00]' : 'text-slate-400'}`} />
                     <div className="text-left">
-                      <div className="text-xs font-bold">{t('common.lightMode', 'Light Mode')}</div>
-                      <div className="text-[10px] text-slate-500 dark:text-slate-400 font-normal">{t('common.cleanInterface', 'Clean interface')}</div>
+                      <div className="text-sm font-bold">{t('common.lightMode', 'Light Mode')}</div>
+                      <div className="text-xs text-slate-500 dark:text-slate-400 font-normal">{t('common.cleanInterface', 'Clean interface')}</div>
                     </div>
                   </button>
 
@@ -441,25 +444,25 @@ export default function UserSettingsPage() {
                   >
                     <Moon className={`w-5 h-5 ${globalTheme === 'dark' ? 'text-[#FF6B00] dark:text-orange-400' : 'text-slate-400'}`} />
                     <div className="text-left">
-                      <div className="text-xs font-bold">{t('common.darkMode', 'Dark Mode')}</div>
-                      <div className="text-[10px] text-slate-500 dark:text-slate-400 font-normal">{t('common.sleekDarkTheme', 'Sleek dark theme')}</div>
+                      <div className="text-sm font-bold">{t('common.darkMode', 'Dark Mode')}</div>
+                      <div className="text-xs text-slate-500 dark:text-slate-400 font-normal">{t('common.sleekDarkTheme', 'Sleek dark theme')}</div>
                     </div>
                   </button>
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                <label className="block text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
                   <Globe className="w-4 h-4 text-[#FF6B00] dark:text-orange-400" /> {t('settings.preferredLanguage', 'PREFERRED LANGUAGE')}
                 </label>
                 <select
                   value={language}
                   onChange={(e) => handleSavePreferences(globalTheme, e.target.value as SupportedLanguage)}
-                  className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-[#FF6B00] transition-all shadow-inner"
+                  className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-[#FF6B00] transition-all shadow-inner"
                 >
                   {LANGUAGE_OPTIONS.map((opt) => (
                     <option key={opt.code} value={opt.code} className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">
-                      {opt.nativeName} ({opt.name})
+                      {opt.nativeName === opt.name ? opt.name : `${opt.nativeName} (${opt.name})`}
                     </option>
                   ))}
                 </select>
@@ -471,14 +474,14 @@ export default function UserSettingsPage() {
           {activeTab === 'storage' && (
             <div className="space-y-6 max-w-xl">
               <div>
-                <h3 className="font-extrabold text-slate-900 dark:text-white text-base">{t('settings.storageUsage', 'Storage Quota')}</h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400">{t('common.storageSub', 'Overview of total document count and disk capacity consumed.')}</p>
+                <h3 className="font-extrabold text-slate-900 dark:text-white text-lg">{t('settings.storageUsage', 'Storage Quota')}</h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400">{t('common.storageSub', 'Overview of total document count and disk capacity consumed.')}</p>
               </div>
 
               <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-slate-900 dark:text-white">{t('settings.storageCapacity', 'Storage Capacity Used')}</span>
-                  <span className="text-xs font-mono text-[#FF6B00] dark:text-orange-400 font-bold">
+                  <span className="text-sm font-bold text-slate-900 dark:text-white">{t('settings.storageCapacity', 'Storage Capacity Used')}</span>
+                  <span className="text-sm font-mono text-[#FF6B00] dark:text-orange-400 font-bold">
                     {formatFileSize(storageUsed)} / {formatFileSize(storageLimit)} ({storagePct.toFixed(1)}%)
                   </span>
                 </div>
@@ -490,7 +493,7 @@ export default function UserSettingsPage() {
                   />
                 </div>
 
-                <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 pt-2 border-t border-slate-200 dark:border-slate-800">
+                <div className="flex items-center justify-between text-sm text-slate-500 dark:text-slate-400 pt-2 border-t border-slate-200 dark:border-slate-800">
                   <span>{t('settings.documentsVaulted', 'Documents Vaulted')}:</span>
                   <span className="font-extrabold text-slate-900 dark:text-white">{storageStats.documentsUploaded || 0} Files</span>
                 </div>

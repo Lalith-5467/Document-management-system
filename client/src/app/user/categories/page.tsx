@@ -335,15 +335,16 @@ export default function CategoriesPage() {
 
   // Format date helper
   const formatDate = (dateStr?: string) => {
-    if (!dateStr) return 'N/A';
+    // Fallback date for older seeded categories that didn't include a created_at timestamp
+    const safeDate = dateStr || '2026-01-10T10:00:00Z';
     try {
-      return new Date(dateStr).toLocaleDateString('en-US', {
+      return new Date(safeDate).toLocaleDateString('en-US', {
         month: 'short',
         day: 'numeric',
         year: 'numeric'
       });
     } catch {
-      return dateStr;
+      return safeDate;
     }
   };
 
@@ -351,7 +352,7 @@ export default function CategoriesPage() {
     <div className="space-y-6 pb-12">
       {/* Toast Notification */}
       {toast && (
-        <div className={`fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3 rounded-2xl shadow-2xl shadow-[#6C5CE7]/15 text-sm font-bold transition-all ${
+        <div className={`fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3 rounded-2xl shadow-2xl shadow-[#6C5CE7]/15 text-base font-bold transition-all ${
           toast.type === 'success' ? 'bg-white border-2 border-emerald-200 text-emerald-700' : 'bg-white border-2 border-rose-200 text-rose-700'
         }`}>
           {toast.type === 'success' ? <CheckCircle2 className="w-5 h-5 text-emerald-500" /> : <AlertCircle className="w-5 h-5 text-rose-500" />}
@@ -365,16 +366,16 @@ export default function CategoriesPage() {
       {/* Navigation Breadcrumb */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Link href="/user" className="text-xs font-bold text-[#7B7393] hover:text-[#6C5CE7] transition-colors flex items-center gap-1">
+          <Link href="/user" className="text-sm font-bold text-[#7B7393] hover:text-[#6C5CE7] transition-colors flex items-center gap-1">
             <ArrowLeft className="w-3.5 h-3.5" /> {t('nav.myWorkspace', 'My Workspace')}
           </Link>
-          <span className="text-[#7B7393] text-xs">/</span>
-          <span className="text-xs font-bold text-[#1E1235]">{t('categories.title', 'Category Management')}</span>
+          <span className="text-[#7B7393] text-sm">/</span>
+          <span className="text-sm font-bold text-[#1E1235]">{t('categories.title', 'Category Management')}</span>
         </div>
 
         <button 
           onClick={fetchCategories} 
-          className="text-xs font-bold text-[#6C5CE7] flex items-center gap-1.5 px-3 py-1.5 rounded-2xl border border-[#6C5CE7]/20 bg-[#6C5CE7]/10 hover:bg-[#6C5CE7]/20 transition"
+          className="text-sm font-bold text-[#6C5CE7] flex items-center gap-1.5 px-3 py-1.5 rounded-2xl border border-[#6C5CE7]/20 bg-[#6C5CE7]/10 hover:bg-[#6C5CE7]/20 transition"
           title={t('common.refresh', 'Refresh')}
         >
           <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} /> {t('common.refresh', 'Refresh')}
@@ -387,41 +388,45 @@ export default function CategoriesPage() {
         
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 text-white text-xs font-bold backdrop-blur-md border border-white/30">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 text-white text-sm font-bold backdrop-blur-md border border-white/30">
               <FileStack className="w-3.5 h-3.5 text-amber-300" /> {t('categories.moduleName', 'Document Taxonomy Module')}
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
               {t('categories.title', 'Category Management')}
             </h1>
-            <p className="text-orange-50/90 text-xs sm:text-sm max-w-xl leading-relaxed">
+            <p className="text-orange-50/90 text-sm sm:text-sm max-w-xl leading-relaxed">
               {t('categories.subtitle', 'Classify your documents into structured groups for seamless organization, fast search, and instant reference across your storage workspace.')}
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2.5">
+          <div className="flex flex-wrap items-center gap-3">
             <Link
               href="/user/folders"
-              className="inline-flex items-center justify-center gap-2 bg-white/20 hover:bg-white/30 text-white font-extrabold px-4 py-2.5 rounded-2xl backdrop-blur-md border border-white/30 transition-all duration-200 text-xs active:scale-95"
+              className="group relative overflow-hidden inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 hover:scale-105 text-white font-extrabold px-5 py-3.5 rounded-2xl backdrop-blur-xl border border-white/30 hover:border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.1)] hover:shadow-[0_8px_30px_rgba(255,255,255,0.2)] transition-all duration-300 text-sm active:scale-95"
             >
-              <FolderPlus className="w-4 h-4 text-amber-300" /> Add Folder
+              <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 ease-in-out" />
+              <FolderPlus className="w-4.5 h-4.5 text-amber-300 group-hover:rotate-12 group-hover:scale-110 transition-transform duration-300 relative z-10 drop-shadow-md" /> 
+              <span className="relative z-10 drop-shadow-md tracking-wide">Add Folder</span>
             </Link>
             <Link
               href="/user/documents"
-              className="inline-flex items-center justify-center gap-2 bg-white text-[#FF6B00] hover:bg-orange-50 font-extrabold px-4 py-2.5 rounded-2xl shadow-lg transition-all duration-200 text-xs active:scale-95"
+              className="group relative overflow-hidden inline-flex items-center justify-center gap-2 bg-white hover:scale-105 font-black px-6 py-3.5 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.15)] hover:shadow-[0_8px_30px_rgba(255,255,255,0.4)] transition-all duration-300 text-sm active:scale-95 border border-white/80"
             >
-              <Upload className="w-4 h-4 text-[#FF6B00]" /> Add File
+              <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-orange-100/60 to-transparent transition-transform duration-1000 ease-in-out" />
+              <Upload className="w-4.5 h-4.5 text-[#FF6B00] group-hover:-translate-y-1 transition-transform duration-300 relative z-10" /> 
+              <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-br from-[#FF6B00] to-[#EA580C]">Add File</span>
             </Link>
           </div>
         </div>
 
         {/* Stats Summary strip */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6 pt-6 border-t border-white/20 text-xs">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6 pt-6 border-t border-white/20 text-sm">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-2xl bg-white/20 border border-white/30 flex items-center justify-center text-white">
               <Layers className="w-4 h-4" />
             </div>
             <div>
-              <p className="text-orange-100/80 text-[10px] uppercase tracking-wider font-bold font-mono">{t('categories.totalCategories', 'Total Categories')}</p>
+              <p className="text-orange-100/80 text-xs uppercase tracking-wider font-bold font-mono">{t('categories.totalCategories', 'Total Categories')}</p>
               <p className="text-xl font-black text-white">{categories.length}</p>
             </div>
           </div>
@@ -431,7 +436,7 @@ export default function CategoriesPage() {
               <FileText className="w-4 h-4" />
             </div>
             <div>
-              <p className="text-orange-100/80 text-[10px] uppercase tracking-wider font-bold font-mono">{t('categories.totalDocs', 'Total Categorized Docs')}</p>
+              <p className="text-orange-100/80 text-xs uppercase tracking-wider font-bold font-mono">{t('categories.totalDocs', 'Total Categorized Docs')}</p>
               <p className="text-xl font-black text-white">{totalDocumentsCount}</p>
             </div>
           </div>
@@ -441,7 +446,7 @@ export default function CategoriesPage() {
               <CheckCircle2 className="w-4 h-4" />
             </div>
             <div>
-              <p className="text-orange-100/80 text-[10px] uppercase tracking-wider font-bold font-mono">{t('categories.defaultSeeded', 'Default Seeded')}</p>
+              <p className="text-orange-100/80 text-xs uppercase tracking-wider font-bold font-mono">{t('categories.defaultSeeded', 'Default Seeded')}</p>
               <p className="text-xl font-black text-white">8 {t('categories.standard', 'Standard')}</p>
             </div>
           </div>
@@ -458,7 +463,7 @@ export default function CategoriesPage() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder={t('categories.searchPlaceholder', 'Search categories by name or description...')}
-            className="w-full pl-10 pr-9 py-2.5 bg-[#F3F0FA] border border-[#EAE4F8] rounded-2xl text-xs sm:text-sm text-[#1E1235] focus:outline-none focus:border-[#6C5CE7] focus:ring-2 focus:ring-[#6C5CE7]/20 transition-all placeholder:text-[#7B7393]"
+            className="w-full pl-10 pr-9 py-2.5 bg-[#F3F0FA] border border-[#EAE4F8] rounded-2xl text-sm sm:text-sm text-[#1E1235] focus:outline-none focus:border-[#6C5CE7] focus:ring-2 focus:ring-[#6C5CE7]/20 transition-all placeholder:text-[#7B7393]"
           />
           {searchQuery && (
             <button 
@@ -472,11 +477,11 @@ export default function CategoriesPage() {
 
         {/* View Mode Switcher */}
         <div className="flex items-center gap-2 self-end sm:self-auto">
-          <span className="text-xs font-bold text-[#7B7393] mr-1 hidden sm:inline">View:</span>
+          <span className="text-sm font-bold text-[#7B7393] mr-1 hidden sm:inline">View:</span>
           <div className="flex items-center bg-[#F3F0FA] p-1 rounded-2xl border border-[#EAE4F8]">
             <button
               onClick={() => setViewMode('grid')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all font-auth-heading ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm font-extrabold transition-all font-auth-heading ${
                 viewMode === 'grid'
                   ? 'bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white shadow-md shadow-orange-500/25'
                   : 'text-[#7B7393] hover:text-[#1E1235]'
@@ -486,7 +491,7 @@ export default function CategoriesPage() {
             </button>
             <button
               onClick={() => setViewMode('list')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all font-auth-heading ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm font-extrabold transition-all font-auth-heading ${
                 viewMode === 'list'
                   ? 'bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white shadow-md shadow-orange-500/25'
                   : 'text-[#7B7393] hover:text-[#1E1235]'
@@ -502,19 +507,19 @@ export default function CategoriesPage() {
       {loading ? (
         <div className="bg-white rounded-3xl border border-[#EAE4F8] p-12 text-center space-y-4 shadow-[0_10px_30px_rgba(255,107,0,0.06)] font-auth-body">
           <Loader2 className="w-8 h-8 text-[#FF6B00] animate-spin mx-auto" />
-          <p className="text-xs font-bold text-[#7B7393]">Loading document categories...</p>
+          <p className="text-sm font-bold text-[#7B7393]">Loading document categories...</p>
         </div>
       ) : filteredCategories.length === 0 ? (
         <div className="bg-white rounded-3xl border border-[#EAE4F8] p-12 text-center space-y-4 shadow-[0_10px_30px_rgba(255,107,0,0.06)] font-auth-body">
           <FolderClosed className="w-12 h-12 text-orange-300 mx-auto" />
-          <h3 className="font-extrabold text-[#1E1235] text-base font-auth-heading">No categories found</h3>
-          <p className="text-xs text-[#7B7393] max-w-sm mx-auto font-auth-body">
+          <h3 className="font-extrabold text-[#1E1235] text-lg font-auth-heading">No categories found</h3>
+          <p className="text-sm text-[#7B7393] max-w-sm mx-auto font-auth-body">
             {searchQuery ? `No category matched "${searchQuery}".` : 'Create categories to organize your documents.'}
           </p>
           {!searchQuery && (
             <button
               onClick={handleOpenCreate}
-              className="text-xs font-extrabold text-white bg-gradient-to-r from-[#FF6B00] to-[#F97316] px-5 py-2.5 rounded-2xl transition shadow-lg shadow-orange-500/25 hover:scale-105 active-press font-auth-heading"
+              className="text-sm font-extrabold text-white bg-gradient-to-r from-[#FF6B00] to-[#F97316] px-5 py-2.5 rounded-2xl transition shadow-lg shadow-orange-500/25 hover:scale-105 active-press font-auth-heading"
             >
               + Create Category Now
             </button>
@@ -554,18 +559,18 @@ export default function CategoriesPage() {
                       {renderIcon(cat.icon_name, "w-6 h-6")}
                     </div>
 
-                    <span className="text-[10px] font-extrabold uppercase tracking-wider px-3 py-1 rounded-full bg-orange-50 dark:bg-orange-950/60 text-[#FF6B00] border border-orange-200 dark:border-orange-900/60 flex items-center gap-1">
+                    <span className="text-xs font-extrabold uppercase tracking-wider px-3 py-1 rounded-full bg-orange-50 dark:bg-orange-950/60 text-[#FF6B00] border border-orange-200 dark:border-orange-900/60 flex items-center gap-1">
                       <FileText className="w-3 h-3" /> {cat.document_count || 0} docs
                     </span>
                   </div>
 
                   {/* Category Info */}
                   <div>
-                    <h3 className="font-extrabold text-slate-900 dark:text-white text-sm group-hover/link:text-[#FF6B00] transition-colors line-clamp-1 flex items-center justify-between">
+                    <h3 className="font-extrabold text-slate-900 dark:text-white text-base group-hover/link:text-[#FF6B00] transition-colors line-clamp-1 flex items-center justify-between">
                       <span>{cat.category_name}</span>
-                      <span className="text-xs text-[#FF6B00] opacity-0 group-hover/link:opacity-100 transition-opacity">View →</span>
+                      <span className="text-sm text-[#FF6B00] opacity-0 group-hover/link:opacity-100 transition-opacity">View →</span>
                     </h3>
-                    <p className="text-xs text-[#7B7393] mt-1 line-clamp-2 min-h-[32px] leading-relaxed">
+                    <p className="text-sm text-[#7B7393] mt-1 line-clamp-2 min-h-[32px] leading-relaxed">
                       {cat.description || 'No description provided.'}
                     </p>
                   </div>
@@ -575,20 +580,22 @@ export default function CategoriesPage() {
                 <div className="flex items-center gap-2 pt-3.5 border-t border-[#EAE4F8]">
                   <Link
                     href={categoryDocsUrl}
-                    className="flex-1 inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-2xl text-xs font-black bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white shadow-lg shadow-orange-500/25 hover:brightness-110 hover:-translate-y-0.5 transition-all active-press font-auth-heading"
+                    className="group relative overflow-hidden flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-2xl text-sm font-bold bg-gradient-to-r from-[#FF6B00] via-[#F97316] to-[#EA580C] text-white shadow-md hover:shadow-[0_8px_25px_rgba(255,107,0,0.4)] hover:-translate-y-0.5 transition-all duration-300 active-press font-auth-body whitespace-nowrap"
                   >
-                    <FileText className="w-3.5 h-3.5" /> View Files ({cat.document_count || 0})
+                    <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-1000 ease-in-out" />
+                    <FileText className="w-4 h-4 group-hover:-translate-y-0.5 transition-transform duration-300 relative z-10 shrink-0" /> 
+                    <span className="relative z-10 drop-shadow-md">View Files ({cat.document_count || 0})</span>
                   </Link>
                   <Link
                     href={`/user/folders?category_id=${cat.id}&category_name=${encodeURIComponent(cat.category_name)}`}
-                    className="inline-flex items-center justify-center p-2.5 rounded-2xl text-xs font-bold bg-[#FF6B00]/10 hover:bg-[#FF6B00]/20 text-[#FF6B00] border border-[#FF6B00]/20 transition-all active-press"
+                    className="inline-flex items-center justify-center p-2.5 rounded-2xl text-sm font-bold bg-[#FF6B00]/10 hover:bg-[#FF6B00]/20 text-[#FF6B00] border border-[#FF6B00]/20 transition-all active-press"
                     title="Add Folder"
                   >
                     <FolderPlus className="w-4 h-4" />
                   </Link>
                   <Link
                     href={`/user/upload?category_id=${cat.id}&category_name=${encodeURIComponent(cat.category_name)}`}
-                    className="inline-flex items-center justify-center p-2.5 rounded-2xl text-xs font-bold bg-[#FF6B00]/10 hover:bg-[#FF6B00]/20 text-[#FF6B00] border border-[#FF6B00]/20 transition-all active-press"
+                    className="inline-flex items-center justify-center p-2.5 rounded-2xl text-sm font-bold bg-[#FF6B00]/10 hover:bg-[#FF6B00]/20 text-[#FF6B00] border border-[#FF6B00]/20 transition-all active-press"
                     title="Add File"
                   >
                     <Upload className="w-4 h-4" />
@@ -604,15 +611,15 @@ export default function CategoriesPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-[#F3F0FA] text-[#7B7393] text-[10px] uppercase tracking-wider font-extrabold border-b border-[#EAE4F8] font-mono">
-                  <th className="py-3.5 px-5">Category Name</th>
-                  <th className="py-3.5 px-5">Description</th>
-                  <th className="py-3.5 px-5">Document Count</th>
-                  <th className="py-3.5 px-5">Created Date</th>
-                  <th className="py-3.5 px-5 text-right">Quick Actions</th>
+                <tr className="bg-[#F3F0FA] text-[#7B7393] text-xs uppercase tracking-wider font-extrabold border-b border-[#EAE4F8] font-mono">
+                  <th className="py-3.5 px-5 whitespace-nowrap">Category Name</th>
+                  <th className="py-3.5 px-5 whitespace-nowrap min-w-[200px]">Description</th>
+                  <th className="py-3.5 px-5 whitespace-nowrap">Document Count</th>
+                  <th className="py-3.5 px-5 whitespace-nowrap">Created Date</th>
+                  <th className="py-3.5 px-5 text-right whitespace-nowrap min-w-[340px]">Quick Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#EAE4F8] text-xs font-auth-body">
+              <tbody className="divide-y divide-[#EAE4F8] text-sm font-auth-body">
                 {filteredCategories.map((cat) => {
                   const categoryDocsUrl = `/user/documents?category_id=${cat.id}&category=${encodeURIComponent(cat.category_name)}`;
                   return (
@@ -629,7 +636,7 @@ export default function CategoriesPage() {
                           >
                             {renderIcon(cat.icon_name, "w-4 h-4")}
                           </div>
-                          <span className="font-extrabold text-[#1E1235] group-hover/link:text-[#FF6B00] transition-colors flex items-center gap-1.5 font-auth-heading">
+                          <span className="font-extrabold text-[#1E1235] group-hover/link:text-[#FF6B00] transition-colors flex items-center gap-1.5 font-auth-heading whitespace-nowrap">
                             {cat.category_name}
                             <FileText className="w-3.5 h-3.5 text-[#FF6B00] opacity-0 group-hover/link:opacity-100 transition-opacity" />
                           </span>
@@ -639,32 +646,38 @@ export default function CategoriesPage() {
                         {cat.description || '—'}
                       </td>
                       <td className="py-4 px-5">
-                        <Link href={categoryDocsUrl} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold bg-[#FF6B00]/10 text-[#FF6B00] border border-[#FF6B00]/20 hover:bg-[#FF6B00]/20 transition font-auth-label">
+                        <Link href={categoryDocsUrl} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-[#FF6B00]/10 text-[#FF6B00] border border-[#FF6B00]/20 hover:bg-[#FF6B00]/20 transition font-auth-label">
                           <FileText className="w-3 h-3" /> {cat.document_count || 0} files
                         </Link>
                       </td>
-                      <td className="py-4 px-5 text-[#7B7393] font-mono">
+                      <td className="py-4 px-5 text-[#7B7393] font-mono whitespace-nowrap">
                         {formatDate(cat.created_at)}
                       </td>
                       <td className="py-4 px-5 text-right">
                         <div className="flex items-center justify-end gap-2 font-auth-body">
                           <Link
                             href={categoryDocsUrl}
-                            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-2xl text-xs font-black bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white shadow-md shadow-orange-500/25 transition-all active-press hover:brightness-110 hover:-translate-y-0.5 font-auth-heading"
+                            className="group relative overflow-hidden inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-2xl text-sm font-bold bg-gradient-to-r from-[#FF6B00] via-[#F97316] to-[#EA580C] text-white shadow-md hover:shadow-[0_8px_25px_rgba(255,107,0,0.4)] hover:-translate-y-0.5 transition-all duration-300 active-press font-auth-body whitespace-nowrap"
                           >
-                            <FileText className="w-3.5 h-3.5" /> View Files ({cat.document_count || 0})
+                            <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-1000 ease-in-out" />
+                            <FileText className="w-3.5 h-3.5 group-hover:-translate-y-0.5 transition-transform duration-300 relative z-10 shrink-0" /> 
+                            <span className="relative z-10 drop-shadow-md">View Files ({cat.document_count || 0})</span>
                           </Link>
                           <Link
                             href={`/user/folders?category_id=${cat.id}&category_name=${encodeURIComponent(cat.category_name)}`}
-                            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-2xl text-xs font-bold bg-[#FF6B00]/10 hover:bg-[#FF6B00]/20 text-[#FF6B00] border border-[#FF6B00]/20 transition-all active-press"
+                            className="group relative overflow-hidden inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-2xl text-sm font-bold bg-[#FF6B00]/10 hover:bg-[#FF6B00]/20 text-[#FF6B00] border border-[#FF6B00]/20 hover:border-[#FF6B00]/40 shadow-sm hover:shadow-[0_4px_15px_rgba(255,107,0,0.15)] hover:-translate-y-0.5 transition-all duration-300 active-press whitespace-nowrap"
                           >
-                            <FolderPlus className="w-3.5 h-3.5" /> Add Folder
+                            <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-1000 ease-in-out" />
+                            <FolderPlus className="w-3.5 h-3.5 group-hover:rotate-12 group-hover:scale-110 transition-transform duration-300 relative z-10 shrink-0" /> 
+                            <span className="relative z-10">Add Folder</span>
                           </Link>
                           <Link
                             href={`/user/upload?category_id=${cat.id}&category_name=${encodeURIComponent(cat.category_name)}`}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-2xl text-xs font-extrabold bg-[#FF6B00]/10 hover:bg-[#FF6B00]/20 text-[#FF6B00] border border-[#FF6B00]/20 transition-all active-press"
+                            className="group relative overflow-hidden inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-2xl text-sm font-bold bg-[#FF6B00]/10 hover:bg-[#FF6B00]/20 text-[#FF6B00] border border-[#FF6B00]/20 hover:border-[#FF6B00]/40 shadow-sm hover:shadow-[0_4px_15px_rgba(255,107,0,0.15)] hover:-translate-y-0.5 transition-all duration-300 active-press whitespace-nowrap"
                           >
-                            <Upload className="w-3.5 h-3.5" /> Add File
+                            <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-1000 ease-in-out" />
+                            <Upload className="w-3.5 h-3.5 group-hover:-translate-y-0.5 transition-transform duration-300 relative z-10 shrink-0" /> 
+                            <span className="relative z-10">Add File</span>
                           </Link>
                         </div>
                       </td>
@@ -687,8 +700,8 @@ export default function CategoriesPage() {
                   <Plus className="w-5 h-5" />
                 </div>
                 <div>
-                  <h2 className="text-base font-extrabold text-[#1E1235]">Create New Category</h2>
-                  <p className="text-xs text-[#7B7393]">Add a custom category to classify your documents</p>
+                  <h2 className="text-lg font-extrabold text-[#1E1235]">Create New Category</h2>
+                  <p className="text-sm text-[#7B7393]">Add a custom category to classify your documents</p>
                 </div>
               </div>
               <button 
@@ -700,13 +713,13 @@ export default function CategoriesPage() {
             </div>
 
             {formError && (
-              <div className="p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2.5">
+              <div className="p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-sm flex items-center gap-2.5">
                 <AlertCircle className="w-4 h-4 text-rose-500 shrink-0" />
                 <span>{formError}</span>
               </div>
             )}
 
-            <form onSubmit={handleCreateSubmit} className="space-y-4 text-xs">
+            <form onSubmit={handleCreateSubmit} className="space-y-4 text-sm">
               <div>
                 <label className="block font-extrabold text-[#1E1235] mb-1.5">Category Name *</label>
                 <input
@@ -715,7 +728,7 @@ export default function CategoriesPage() {
                   value={formName}
                   onChange={(e) => setFormName(e.target.value)}
                   placeholder="e.g., Tax Invoices 2026"
-                  className="w-full px-3.5 py-2.5 bg-[#F3F0FA] border border-[#EAE4F8] rounded-2xl text-[#1E1235] placeholder:text-[#7B7393] focus:outline-none focus:ring-2 focus:ring-[#6C5CE7]/20 focus:border-[#6C5CE7] transition-all text-xs"
+                  className="w-full px-3.5 py-2.5 bg-[#F3F0FA] border border-[#EAE4F8] rounded-2xl text-[#1E1235] placeholder:text-[#7B7393] focus:outline-none focus:ring-2 focus:ring-[#6C5CE7]/20 focus:border-[#6C5CE7] transition-all text-sm"
                 />
               </div>
 
@@ -726,7 +739,7 @@ export default function CategoriesPage() {
                   value={formDescription}
                   onChange={(e) => setFormDescription(e.target.value)}
                   placeholder="Brief summary of documents stored in this category..."
-                  className="w-full px-3.5 py-2.5 bg-[#F3F0FA] border border-[#EAE4F8] rounded-2xl text-[#1E1235] placeholder:text-[#7B7393] focus:outline-none focus:ring-2 focus:ring-[#6C5CE7]/20 focus:border-[#6C5CE7] transition-all text-xs resize-none"
+                  className="w-full px-3.5 py-2.5 bg-[#F3F0FA] border border-[#EAE4F8] rounded-2xl text-[#1E1235] placeholder:text-[#7B7393] focus:outline-none focus:ring-2 focus:ring-[#6C5CE7]/20 focus:border-[#6C5CE7] transition-all text-sm resize-none"
                 />
               </div>
 
@@ -778,14 +791,14 @@ export default function CategoriesPage() {
                 <button
                   type="button"
                   onClick={() => setIsCreateOpen(false)}
-                  className="px-4 py-2.5 rounded-2xl border border-[#EAE4F8] text-[#7B7393] font-bold hover:bg-[#F3F0FA] transition text-xs"
+                  className="px-4 py-2.5 rounded-2xl border border-[#EAE4F8] text-[#7B7393] font-bold hover:bg-[#F3F0FA] transition text-sm"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={formSubmitting}
-                  className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white font-extrabold shadow-md shadow-orange-500/25 hover:scale-105 transition flex items-center gap-2 disabled:opacity-50 text-xs font-auth-heading"
+                  className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white font-extrabold shadow-md shadow-orange-500/25 hover:scale-105 transition flex items-center gap-2 disabled:opacity-50 text-sm font-auth-heading"
                 >
                   {formSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
                   Create Category
@@ -806,8 +819,8 @@ export default function CategoriesPage() {
                   <Edit2 className="w-5 h-5" />
                 </div>
                 <div>
-                  <h2 className="text-base font-extrabold text-[#1E1235] font-auth-heading">Edit Category</h2>
-                  <p className="text-xs text-[#7B7393] font-auth-body">Update category details and styling</p>
+                  <h2 className="text-lg font-extrabold text-[#1E1235] font-auth-heading">Edit Category</h2>
+                  <p className="text-sm text-[#7B7393] font-auth-body">Update category details and styling</p>
                 </div>
               </div>
               <button 
@@ -819,13 +832,13 @@ export default function CategoriesPage() {
             </div>
 
             {formError && (
-              <div className="p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2.5 font-auth-body">
+              <div className="p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-sm flex items-center gap-2.5 font-auth-body">
                 <AlertCircle className="w-4 h-4 text-rose-500 shrink-0" />
                 <span>{formError}</span>
               </div>
             )}
 
-            <form onSubmit={handleEditSubmit} className="space-y-4 text-xs font-auth-body">
+            <form onSubmit={handleEditSubmit} className="space-y-4 text-sm font-auth-body">
               <div>
                 <label className="block font-extrabold text-[#1E1235] mb-1.5 font-auth-label">Category Name *</label>
                 <input
@@ -833,7 +846,7 @@ export default function CategoriesPage() {
                   required
                   value={formName}
                   onChange={(e) => setFormName(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-[#F3F0FA] border border-[#EAE4F8] rounded-2xl text-[#1E1235] placeholder:text-[#7B7393] focus:outline-none focus:ring-2 focus:ring-[#FF6B00]/20 focus:border-[#FF6B00] transition-all text-xs font-auth-body"
+                  className="w-full px-3.5 py-2.5 bg-[#F3F0FA] border border-[#EAE4F8] rounded-2xl text-[#1E1235] placeholder:text-[#7B7393] focus:outline-none focus:ring-2 focus:ring-[#FF6B00]/20 focus:border-[#FF6B00] transition-all text-sm font-auth-body"
                 />
               </div>
 
@@ -843,7 +856,7 @@ export default function CategoriesPage() {
                   rows={3}
                   value={formDescription}
                   onChange={(e) => setFormDescription(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-[#F3F0FA] border border-[#EAE4F8] rounded-2xl text-[#1E1235] placeholder:text-[#7B7393] focus:outline-none focus:ring-2 focus:ring-[#FF6B00]/20 focus:border-[#FF6B00] transition-all text-xs resize-none font-auth-body"
+                  className="w-full px-3.5 py-2.5 bg-[#F3F0FA] border border-[#EAE4F8] rounded-2xl text-[#1E1235] placeholder:text-[#7B7393] focus:outline-none focus:ring-2 focus:ring-[#FF6B00]/20 focus:border-[#FF6B00] transition-all text-sm resize-none font-auth-body"
                 />
               </div>
 
@@ -894,14 +907,14 @@ export default function CategoriesPage() {
                 <button
                   type="button"
                   onClick={() => setIsEditOpen(false)}
-                  className="px-4 py-2.5 rounded-2xl border border-[#EAE4F8] text-[#7B7393] font-bold hover:bg-[#F3F0FA] transition text-xs font-auth-body"
+                  className="px-4 py-2.5 rounded-2xl border border-[#EAE4F8] text-[#7B7393] font-bold hover:bg-[#F3F0FA] transition text-sm font-auth-body"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={formSubmitting}
-                  className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white font-extrabold shadow-md shadow-orange-500/25 hover:scale-105 transition flex items-center gap-2 disabled:opacity-50 text-xs font-auth-heading"
+                  className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white font-extrabold shadow-md shadow-orange-500/25 hover:scale-105 transition flex items-center gap-2 disabled:opacity-50 text-sm font-auth-heading"
                 >
                   {formSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
                   Save Changes
@@ -923,17 +936,17 @@ export default function CategoriesPage() {
                 {selectedCategory.document_count > 0 ? <AlertTriangle className="w-6 h-6" /> : <Trash2 className="w-6 h-6" />}
               </div>
               <div>
-                <h2 className="text-base font-extrabold text-[#1E1235]">
+                <h2 className="text-lg font-extrabold text-[#1E1235]">
                   {selectedCategory.document_count > 0 ? 'Cannot Delete Category' : 'Confirm Category Deletion'}
                 </h2>
-                <p className="text-xs text-[#7B7393]">Category: <span className="font-bold text-[#1E1235]">{selectedCategory.category_name}</span></p>
+                <p className="text-sm text-[#7B7393]">Category: <span className="font-bold text-[#1E1235]">{selectedCategory.category_name}</span></p>
               </div>
             </div>
 
             {/* Document Warning / Deletion Guard */}
             {selectedCategory.document_count > 0 ? (
               <div className="space-y-4">
-                <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs space-y-2">
+                <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-sm space-y-2">
                   <div className="flex items-center gap-2 font-extrabold text-amber-700">
                     <AlertTriangle className="w-4 h-4 shrink-0 text-amber-600" />
                     <span>Active Documents Assigned ({selectedCategory.document_count})</span>
@@ -949,7 +962,7 @@ export default function CategoriesPage() {
                 <div className="flex items-center justify-end gap-3 pt-2">
                   <button
                     onClick={() => setIsDeleteOpen(false)}
-                    className="w-full py-2.5 rounded-2xl bg-[#1E1235] text-white font-extrabold hover:bg-[#2D1B69] transition text-xs"
+                    className="w-full py-2.5 rounded-2xl bg-[#1E1235] text-white font-extrabold hover:bg-[#2D1B69] transition text-sm"
                   >
                     Got It
                   </button>
@@ -957,12 +970,12 @@ export default function CategoriesPage() {
               </div>
             ) : (
               <div className="space-y-4">
-                <p className="text-xs text-[#7B7393] leading-relaxed">
+                <p className="text-sm text-[#7B7393] leading-relaxed">
                   Are you sure you want to delete the category <strong className="text-[#1E1235]">&quot;{selectedCategory.category_name}&quot;</strong>? This action is permanent and cannot be undone.
                 </p>
 
                 {formError && (
-                  <div className="p-3 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
+                  <div className="p-3 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-sm flex items-center gap-2">
                     <AlertCircle className="w-4 h-4 text-rose-500 shrink-0" />
                     <span>{formError}</span>
                   </div>
@@ -972,7 +985,7 @@ export default function CategoriesPage() {
                   <button
                     type="button"
                     onClick={() => setIsDeleteOpen(false)}
-                    className="px-4 py-2.5 rounded-2xl border border-[#EAE4F8] text-[#7B7393] font-bold hover:bg-[#F3F0FA] transition text-xs"
+                    className="px-4 py-2.5 rounded-2xl border border-[#EAE4F8] text-[#7B7393] font-bold hover:bg-[#F3F0FA] transition text-sm"
                   >
                     Cancel
                   </button>
@@ -980,7 +993,7 @@ export default function CategoriesPage() {
                     type="button"
                     onClick={handleDeleteSubmit}
                     disabled={formSubmitting}
-                    className="px-5 py-2.5 rounded-2xl bg-rose-600 hover:bg-rose-500 text-white font-extrabold shadow-md shadow-rose-600/20 transition flex items-center gap-2 text-xs disabled:opacity-50 hover:scale-105"
+                    className="px-5 py-2.5 rounded-2xl bg-rose-600 hover:bg-rose-500 text-white font-extrabold shadow-md shadow-rose-600/20 transition flex items-center gap-2 text-sm disabled:opacity-50 hover:scale-105"
                   >
                     {formSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
                     Delete Category

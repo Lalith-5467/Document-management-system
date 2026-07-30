@@ -46,7 +46,30 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${poppins.variable} ${plusJakartaSans.variable} ${inter.variable} ${jetbrainsMono.variable} dark scroll-smooth`}>
+    <html lang="en" className={`${poppins.variable} ${plusJakartaSans.variable} ${inter.variable} ${jetbrainsMono.variable} scroll-smooth`} suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                const isUserRoute = window.location.pathname.startsWith('/user');
+                if (isUserRoute) {
+                  const savedTheme = localStorage.getItem('dms_theme');
+                  if (savedTheme === 'dark' || savedTheme === 'light') {
+                    if (savedTheme === 'dark') document.documentElement.classList.add('dark');
+                    else document.documentElement.classList.remove('dark');
+                  } else {
+                    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    if (systemDark) document.documentElement.classList.add('dark');
+                  }
+                } else {
+                  document.documentElement.classList.remove('dark');
+                }
+              } catch (e) {}
+            `,
+          }}
+        />
+      </head>
       <body className={`${poppins.className} bg-slate-50 text-slate-900 dark:bg-[#0b1120] dark:text-slate-100 transition-colors duration-200 antialiased selection:bg-[#FF6B00] selection:text-white`}>
         <AuthProvider>
           <ThemeProvider>

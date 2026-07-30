@@ -29,7 +29,7 @@ export default function RegisterPage() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [phone, setPhone] = useState('');
-  const [userType, setUserType] = useState<string>('individual');
+  const [userType, setUserType] = useState<string>('');
 
   // UI Control State
   const [showPassword, setShowPassword] = useState(false);
@@ -143,6 +143,7 @@ export default function RegisterPage() {
   const phoneVal = validatePhone(phone);
 
   const isFormValid =
+    userType !== '' &&
     nameVal.isValid &&
     emailVal.isValid &&
     passVal.isValid &&
@@ -179,6 +180,10 @@ export default function RegisterPage() {
     setPhoneError(phoneCheck.error);
 
     // Auto-focus on the first invalid field
+    if (!userType) {
+      setErrorMsg('Please select how you are registering (Student, Professional, or Individual).');
+      return;
+    }
     if (!nameCheck.isValid) {
       nameRef.current?.focus();
       return;
@@ -231,10 +236,10 @@ export default function RegisterPage() {
               <UserPlus className="w-7 h-7 stroke-[2.5]" />
             </div>
           </Link>
-          <h2 className="text-2xl sm:text-3xl font-black text-[#1A1A1A] tracking-tight font-auth-heading">
+          <h2 className="text-2xl sm:text-3xl font-black text-[#1A1A1A] tracking-tight font-auth-heading leading-tight">
             Create Your <span className="text-[#FF6B00]">DocVault</span> Account
           </h2>
-          <p className="text-xs text-[#6B7280] text-center font-medium leading-relaxed max-w-xs mx-auto font-auth-body">
+          <p className="text-sm text-[#6B7280] text-center font-medium leading-relaxed max-w-xs mx-auto font-auth-body">
             Create your secure workspace to manage, store and access documents anytime.
           </p>
         </div>
@@ -251,54 +256,54 @@ export default function RegisterPage() {
         <form onSubmit={handleSubmit} noValidate className="space-y-4 font-auth-body">
           {/* Registration Type Selection Cards */}
           <div>
-            <label className="block text-[11px] font-bold uppercase tracking-wider text-[#1A1A1A] mb-2 font-auth-label">
+            <label className="block text-xs font-bold uppercase tracking-wider text-[#1A1A1A] mb-2 font-auth-label">
               I am registering as:
             </label>
             <div className="grid grid-cols-3 gap-2.5">
               <button
                 type="button"
                 onClick={() => setUserType('student')}
-                className={`p-3 rounded-2xl border text-center transition-all duration-300 flex flex-col items-center gap-1.5 cursor-pointer hover:-translate-y-0.5 font-auth-body ${
+                className={`p-3 rounded-2xl border text-center transition-all duration-300 flex flex-col items-center gap-1.5 cursor-pointer hover:-translate-y-0.5 font-auth-body group ${
                   userType === 'student'
                     ? 'border-[#FF6B00] bg-orange-50/60 text-[#FF6B00] font-black shadow-xs scale-[1.02]'
-                    : 'border-[#E8E8E8] bg-white text-[#6B7280] hover:border-slate-300 font-semibold'
+                    : 'border-[#E8E8E8] bg-white text-[#6B7280] hover:border-slate-300 font-semibold hover:text-slate-800'
                 }`}
               >
-                <GraduationCap className="w-5 h-5 text-[#FF6B00]" />
-                <span className="text-xs">Student</span>
+                <GraduationCap className={`w-5 h-5 transition-colors duration-300 ${userType === 'student' ? 'text-[#FF6B00]' : 'text-slate-400 group-hover:text-slate-500'}`} />
+                <span className="text-sm">Student</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setUserType('professional')}
-                className={`p-3 rounded-2xl border text-center transition-all duration-300 flex flex-col items-center gap-1.5 cursor-pointer hover:-translate-y-0.5 font-auth-body ${
+                className={`p-3 rounded-2xl border text-center transition-all duration-300 flex flex-col items-center gap-1.5 cursor-pointer hover:-translate-y-0.5 font-auth-body group ${
                   userType === 'professional'
                     ? 'border-[#FF6B00] bg-orange-50/60 text-[#FF6B00] font-black shadow-xs scale-[1.02]'
-                    : 'border-[#E8E8E8] bg-white text-[#6B7280] hover:border-slate-300 font-semibold'
+                    : 'border-[#E8E8E8] bg-white text-[#6B7280] hover:border-slate-300 font-semibold hover:text-slate-800'
                 }`}
               >
-                <Briefcase className="w-5 h-5 text-[#FF6B00]" />
-                <span className="text-xs">Professional</span>
+                <Briefcase className={`w-5 h-5 transition-colors duration-300 ${userType === 'professional' ? 'text-[#FF6B00]' : 'text-slate-400 group-hover:text-slate-500'}`} />
+                <span className="text-sm">Professional</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setUserType('individual')}
-                className={`p-3 rounded-2xl border text-center transition-all duration-300 flex flex-col items-center gap-1.5 cursor-pointer hover:-translate-y-0.5 font-auth-body ${
+                className={`p-3 rounded-2xl border text-center transition-all duration-300 flex flex-col items-center gap-1.5 cursor-pointer hover:-translate-y-0.5 font-auth-body group ${
                   userType === 'individual'
                     ? 'border-[#FF6B00] bg-orange-50/60 text-[#FF6B00] font-black shadow-xs scale-[1.02]'
-                    : 'border-[#E8E8E8] bg-white text-[#6B7280] hover:border-slate-300 font-semibold'
+                    : 'border-[#E8E8E8] bg-white text-[#6B7280] hover:border-slate-300 font-semibold hover:text-slate-800'
                 }`}
               >
-                <UserCheck className="w-5 h-5 text-[#FF6B00]" />
-                <span className="text-xs">Individual</span>
+                <UserCheck className={`w-5 h-5 transition-colors duration-300 ${userType === 'individual' ? 'text-[#FF6B00]' : 'text-slate-400 group-hover:text-slate-500'}`} />
+                <span className="text-sm">Individual</span>
               </button>
             </div>
           </div>
 
           {/* 1. Full Name Field */}
           <div>
-            <label className="block text-[11px] font-bold uppercase tracking-wider text-[#1A1A1A] mb-1.5 font-auth-label">
+            <label className="block text-xs font-bold uppercase tracking-wider text-[#1A1A1A] mb-1.5 font-auth-label">
               Full Name <span className="text-red-500">*</span>
             </label>
             <div className="relative font-auth-body">
@@ -311,7 +316,7 @@ export default function RegisterPage() {
                 onBlur={handleNameBlur}
                 onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleSubmit(e as any); } }}
                 placeholder="John Doe"
-                className={`w-full pl-10 pr-10 py-3 bg-white border rounded-[14px] text-xs text-[#1A1A1A] placeholder-[#6B7280]/60 focus:outline-none transition-all duration-300 font-medium font-auth-body ${getFieldStatusClasses(nameTouched, nameVal.isValid, nameError)}`}
+                className={`w-full pl-10 pr-10 py-3 bg-white border rounded-[14px] text-sm text-[#1A1A1A] placeholder-[#6B7280]/60 focus:outline-none transition-all duration-300 font-medium font-auth-body ${getFieldStatusClasses(nameTouched, nameVal.isValid, nameError)}`}
               />
               {nameTouched && nameVal.isValid && !nameError && (
                 <CheckCircle2 className="w-4 h-4 absolute right-3.5 top-1/2 -translate-y-1/2 text-emerald-500" />
@@ -328,7 +333,7 @@ export default function RegisterPage() {
 
           {/* 2. Email Address Field */}
           <div>
-            <label className="block text-[11px] font-bold uppercase tracking-wider text-[#1A1A1A] mb-1.5 font-auth-label">
+            <label className="block text-xs font-bold uppercase tracking-wider text-[#1A1A1A] mb-1.5 font-auth-label">
               Email Address <span className="text-red-500">*</span>
             </label>
             <div className="relative font-auth-body">
@@ -341,7 +346,7 @@ export default function RegisterPage() {
                 onBlur={handleEmailBlur}
                 onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleSubmit(e as any); } }}
                 placeholder="john@example.com"
-                className={`w-full pl-10 pr-10 py-3 bg-white border rounded-[14px] text-xs text-[#1A1A1A] placeholder-[#6B7280]/60 focus:outline-none transition-all duration-300 font-medium font-auth-body ${getFieldStatusClasses(emailTouched, emailVal.isValid, emailError)}`}
+                className={`w-full pl-10 pr-10 py-3 bg-white border rounded-[14px] text-sm text-[#1A1A1A] placeholder-[#6B7280]/60 focus:outline-none transition-all duration-300 font-medium font-auth-body ${getFieldStatusClasses(emailTouched, emailVal.isValid, emailError)}`}
               />
               {emailTouched && emailVal.isValid && !emailError && (
                 <CheckCircle2 className="w-4 h-4 absolute right-3.5 top-1/2 -translate-y-1/2 text-emerald-500" />
@@ -359,10 +364,10 @@ export default function RegisterPage() {
           {/* 3. Phone Number Field (Optional) */}
           <div>
             <div className="flex items-center justify-between mb-1.5 font-auth-body">
-              <label className="block text-[11px] font-bold uppercase tracking-wider text-[#1A1A1A] font-auth-label">
+              <label className="block text-xs font-bold uppercase tracking-wider text-[#1A1A1A] font-auth-label">
                 Phone Number
               </label>
-              <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider font-auth-label">Optional</span>
+              <span className="text-[11px] text-slate-400 font-semibold uppercase tracking-wider font-auth-label">Optional</span>
             </div>
             <div className="relative font-auth-body">
               <Phone className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#6B7280]" />
@@ -374,7 +379,7 @@ export default function RegisterPage() {
                 onBlur={handlePhoneBlur}
                 onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleSubmit(e as any); } }}
                 placeholder="10-digit mobile number"
-                className={`w-full pl-10 pr-10 py-3 bg-white border rounded-[14px] text-xs text-[#1A1A1A] placeholder-[#6B7280]/60 focus:outline-none transition-all duration-300 font-medium font-auth-body ${getFieldStatusClasses(phoneTouched, phoneVal.isValid, phoneError)}`}
+                className={`w-full pl-10 pr-10 py-3 bg-white border rounded-[14px] text-sm text-[#1A1A1A] placeholder-[#6B7280]/60 focus:outline-none transition-all duration-300 font-medium font-auth-body ${getFieldStatusClasses(phoneTouched, phoneVal.isValid, phoneError)}`}
               />
               {phoneTouched && phone.trim().length > 0 && phoneVal.isValid && !phoneError && (
                 <CheckCircle2 className="w-4 h-4 absolute right-3.5 top-1/2 -translate-y-1/2 text-emerald-500" />
@@ -391,7 +396,7 @@ export default function RegisterPage() {
 
           {/* 4. Password Field */}
           <div>
-            <label className="block text-[11px] font-bold uppercase tracking-wider text-[#1A1A1A] mb-1.5 font-auth-label">
+            <label className="block text-xs font-bold uppercase tracking-wider text-[#1A1A1A] mb-1.5 font-auth-label">
               Password <span className="text-red-500">*</span>
             </label>
             <div className="relative font-auth-body">
@@ -404,7 +409,7 @@ export default function RegisterPage() {
                 onBlur={handlePasswordBlur}
                 onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleSubmit(e as any); } }}
                 placeholder="••••••••"
-                className={`w-full pl-10 pr-10 py-3 bg-white border rounded-[14px] text-xs text-[#1A1A1A] placeholder-[#6B7280]/60 focus:outline-none transition-all duration-300 font-medium font-auth-body ${getFieldStatusClasses(passwordTouched, passVal.isValid, passwordError)}`}
+                className={`w-full pl-10 pr-10 py-3 bg-white border rounded-[14px] text-sm text-[#1A1A1A] placeholder-[#6B7280]/60 focus:outline-none transition-all duration-300 font-medium font-auth-body ${getFieldStatusClasses(passwordTouched, passVal.isValid, passwordError)}`}
               />
               <button
                 type="button"
@@ -472,7 +477,7 @@ export default function RegisterPage() {
 
           {/* 5. Confirm Password Field */}
           <div>
-            <label className="block text-[11px] font-bold uppercase tracking-wider text-[#1A1A1A] mb-1.5 font-auth-label">
+            <label className="block text-xs font-bold uppercase tracking-wider text-[#1A1A1A] mb-1.5 font-auth-label">
               Confirm Password <span className="text-red-500">*</span>
             </label>
             <div className="relative font-auth-body">
@@ -485,7 +490,7 @@ export default function RegisterPage() {
                 onBlur={handleConfirmBlur}
                 onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleSubmit(e as any); } }}
                 placeholder="••••••••"
-                className={`w-full pl-10 pr-10 py-3 bg-white border rounded-[14px] text-xs text-[#1A1A1A] placeholder-[#6B7280]/60 focus:outline-none transition-all duration-300 font-medium font-auth-body ${getFieldStatusClasses(confirmTouched, confirmVal.isValid, confirmError)}`}
+                className={`w-full pl-10 pr-10 py-3 bg-white border rounded-[14px] text-sm text-[#1A1A1A] placeholder-[#6B7280]/60 focus:outline-none transition-all duration-300 font-medium font-auth-body ${getFieldStatusClasses(confirmTouched, confirmVal.isValid, confirmError)}`}
               />
               <button
                 type="button"

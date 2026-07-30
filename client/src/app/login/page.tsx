@@ -129,10 +129,10 @@ export default function LoginPage() {
               <ShieldCheck className="w-8 h-8 stroke-[2.5]" />
             </div>
           </Link>
-          <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight font-auth-heading">
+          <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight font-auth-heading leading-tight">
             Sign In to <span className="text-[#FF6B00]">DocVault</span>
           </h2>
-          <p className="text-xs text-slate-500 font-medium leading-relaxed max-w-xs mx-auto font-auth-body">
+          <p className="text-sm text-slate-500 font-medium leading-relaxed max-w-xs mx-auto font-auth-body">
             Access your secure encrypted document vault and record storage
           </p>
         </div>
@@ -149,7 +149,7 @@ export default function LoginPage() {
         <form onSubmit={handleSubmit} noValidate className="space-y-5">
           {/* 1. Email Address Field */}
           <div>
-            <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-900 mb-1.5 font-auth-label">
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-900 mb-1.5 font-auth-label">
               Email Address
             </label>
             <div className="relative font-auth-body">
@@ -162,7 +162,7 @@ export default function LoginPage() {
                 onBlur={handleEmailBlur}
                 onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleSubmit(e as any); } }}
                 placeholder="name@example.com"
-                className={`w-full pl-10 pr-10 py-3 bg-white border rounded-[14px] text-xs text-slate-900 placeholder-slate-400 focus:outline-none transition-all duration-300 font-medium font-auth-body ${getFieldStatusClasses(emailTouched, emailRes.isValid, emailError)}`}
+                className={`w-full pl-10 pr-10 py-3 bg-white border rounded-[14px] text-sm text-slate-900 placeholder-slate-400 focus:outline-none transition-all duration-300 font-medium font-auth-body ${getFieldStatusClasses(emailTouched, emailRes.isValid, emailError)}`}
               />
               {emailTouched && emailRes.isValid && !emailError && (
                 <CheckCircle2 className="w-4 h-4 absolute right-3.5 top-1/2 -translate-y-1/2 text-emerald-500" />
@@ -180,7 +180,7 @@ export default function LoginPage() {
           {/* 2. Password Field */}
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-900 font-auth-label">
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-900 font-auth-label">
                 Password
               </label>
             </div>
@@ -194,7 +194,7 @@ export default function LoginPage() {
                 onBlur={handlePasswordBlur}
                 onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleSubmit(e as any); } }}
                 placeholder="••••••••"
-                className={`w-full pl-10 pr-10 py-3 bg-white border rounded-[14px] text-xs text-slate-900 placeholder-slate-400 focus:outline-none transition-all duration-300 font-medium font-auth-body ${getFieldStatusClasses(passwordTouched, passRes.isValid, passwordError)}`}
+                className={`w-full pl-10 pr-10 py-3 bg-white border rounded-[14px] text-sm text-slate-900 placeholder-slate-400 focus:outline-none transition-all duration-300 font-medium font-auth-body ${getFieldStatusClasses(passwordTouched, passRes.isValid, passwordError)}`}
               />
               <button
                 type="button"

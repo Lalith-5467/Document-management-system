@@ -35,7 +35,7 @@ class UserController {
     static async updateProfile(req, res) {
         try {
             const userId = req.user.id;
-            const { fullName, full_name, userType, user_type } = req.body;
+            const { fullName, full_name, userType, user_type, job_title, organization, phone, location } = req.body;
 
             const nameToUpdate = fullName || full_name;
             const typeToUpdate = userType || user_type;
@@ -51,7 +51,11 @@ class UserController {
             const updatedUser = {
                 ...user,
                 full_name: nameToUpdate || user.full_name,
-                user_type: typeToUpdate || user.user_type
+                user_type: typeToUpdate || user.user_type,
+                job_title: job_title !== undefined ? job_title : user.job_title,
+                organization: organization !== undefined ? organization : user.organization,
+                phone: phone !== undefined ? phone : user.phone,
+                location: location !== undefined ? location : user.location
             };
 
             return res.status(200).json({

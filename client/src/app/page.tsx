@@ -149,17 +149,17 @@ export default function HomePage() {
                       >
                         {renderIcon(cat.icon, UserCheck)}
                       </div>
-                      <span className="text-[10px] font-black px-3 py-1 rounded-full bg-orange-50 text-[#FF6B00] border border-orange-200 font-mono">
+                      <span className="text-xs font-black px-3 py-1 rounded-full bg-orange-50 text-[#FF6B00] border border-orange-200 font-mono">
                         {cat.documentCount} docs
                       </span>
                     </div>
 
                     <div>
-                      <h3 className="text-base font-black text-slate-900 group-hover:text-[#FF6B00] transition-colors flex items-center justify-between">
+                      <h3 className="text-lg font-black text-slate-900 group-hover:text-[#FF6B00] transition-colors flex items-center justify-between">
                         {cat.name}
                         <ArrowRight className="w-4 h-4 text-[#FF6B00] opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
                       </h3>
-                      <p className="text-xs text-slate-600 leading-relaxed mt-1 font-medium">{cat.description}</p>
+                      <p className="text-sm text-slate-600 leading-relaxed mt-1 font-medium">{cat.description}</p>
                     </div>
                   </div>
                 </Link>
@@ -203,29 +203,29 @@ export default function HomePage() {
                         <div className="w-14 h-14 rounded-2xl flex items-center justify-center group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-orange-500/20 transition-all duration-300 bg-orange-50 text-[#FF6B00] border border-orange-200/80">
                           {renderIcon(userGroup.icon, GraduationCap)}
                         </div>
-                        <span className="text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full text-slate-500 bg-slate-100 border border-slate-200/80 shadow-xs">
+                        <span className="text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full text-slate-500 bg-slate-100 border border-slate-200/80 shadow-xs">
                           {userGroup.badge}
                         </span>
                       </div>
 
                       <div>
-                        <h3 className="text-xl font-black text-slate-900 group-hover:text-[#FF6B00] transition-colors mb-2 tracking-tight">
+                        <h3 className="text-2xl font-black text-slate-900 group-hover:text-[#FF6B00] transition-colors mb-2 tracking-tight">
                           {userGroup.title}
                         </h3>
-                        <p className="text-[13px] leading-relaxed font-medium text-slate-600">
+                        <p className="text-sm leading-relaxed font-medium text-slate-600">
                           {userGroup.description}
                         </p>
                       </div>
 
                       <div className="space-y-3 pt-5 border-t border-slate-100">
-                        <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                        <p className="text-xs font-bold uppercase tracking-widest text-slate-400">
                           Key Capabilities
                         </p>
                         <div className="flex flex-wrap gap-2">
                           {(userGroup.features || []).map((feat, fIdx) => (
                             <div
                               key={fIdx}
-                              className="flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1.5 rounded-lg bg-slate-50 border border-slate-100 text-slate-600 group-hover:border-orange-100 group-hover:bg-orange-50/80 transition-colors"
+                              className="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1.5 rounded-lg bg-slate-50 border border-slate-100 text-slate-600 group-hover:border-orange-100 group-hover:bg-orange-50/80 transition-colors"
                             >
                               <CheckCircle2 className="w-3.5 h-3.5 shrink-0 text-[#FF6B00]" />
                               <span>{feat}</span>
@@ -257,13 +257,13 @@ export default function HomePage() {
         <section id="faq" className="py-12 md:py-16 bg-white border-b border-slate-200/80 relative z-10">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
             <div className="text-center space-y-4">
-              <span className="text-xs font-black uppercase tracking-widest text-[#FF6B00] font-mono px-4 py-1.5 rounded-full bg-orange-50 border border-orange-200 inline-block shadow-2xs">
+              <span className="text-sm font-black uppercase tracking-widest text-[#FF6B00] font-mono px-4 py-1.5 rounded-full bg-orange-50 border border-orange-200 inline-block shadow-2xs">
                 FREQUENTLY ASKED QUESTIONS
               </span>
               <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
                 Got Questions? We Have Answers.
               </h2>
-              <p className="text-slate-600 text-xs sm:text-sm font-medium">
+              <p className="text-slate-600 text-sm sm:text-base font-medium">
                 Everything you need to know about DocVault document management, encryption, and features.
               </p>
             </div>
@@ -278,7 +278,7 @@ export default function HomePage() {
                   >
                     <button
                       onClick={() => setOpenFaq(isOpen ? null : faq.id)}
-                      className="w-full py-5 px-6 sm:px-8 text-left flex items-center justify-between gap-4 font-extrabold text-sm sm:text-base text-slate-900 hover:text-[#FF6B00] transition-colors"
+                      className="w-full py-5 px-6 sm:px-8 text-left flex items-center justify-between gap-4 font-extrabold text-base sm:text-lg text-slate-900 hover:text-[#FF6B00] transition-colors"
                     >
                       <span className="flex items-center gap-3">
                         <div className="w-8 h-8 rounded-xl bg-orange-50 text-[#FF6B00] flex items-center justify-center shrink-0 border border-orange-200/80 group-hover:scale-110 transition-transform">
@@ -291,7 +291,7 @@ export default function HomePage() {
                       </div>
                     </button>
                     {isOpen && (
-                      <div className="px-6 sm:px-8 pb-6 text-xs sm:text-sm text-slate-600 font-medium leading-relaxed border-t border-slate-100 pt-4 animate-fade-up">
+                      <div className="px-6 sm:px-8 pb-6 text-sm sm:text-base text-slate-600 font-medium leading-relaxed border-t border-slate-100 pt-4 animate-fade-up">
                         {faq.answer}
                       </div>
                     )}

@@ -146,7 +146,7 @@ export default function ExpiryRemindersPage() {
     <div className="space-y-6 pb-16" style={{ fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif" }}>
       {/* Toast */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-[999] flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-white dark:bg-[#19102E] border border-[#EAE4F8] dark:border-[#2D1F47] text-[#1E1235] dark:text-white text-xs font-bold shadow-2xl animate-pop-in">
+        <div className="fixed bottom-6 right-6 z-[999] flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-white dark:bg-[#19102E] border border-[#EAE4F8] dark:border-[#2D1F47] text-[#1E1235] dark:text-white text-sm font-bold shadow-2xl animate-pop-in">
           <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
           <span>{toastMessage}</span>
         </div>
@@ -161,7 +161,7 @@ export default function ExpiryRemindersPage() {
             </span>
             Expiry Reminders
           </h1>
-          <p className="text-xs text-[#7B7393] dark:text-[#A39BB8] mt-1 font-medium">
+          <p className="text-sm text-[#7B7393] dark:text-[#A39BB8] mt-1 font-medium">
             Monitor passports, driving licenses, insurance policies, and contract renewal deadlines.
           </p>
         </div>
@@ -172,11 +172,11 @@ export default function ExpiryRemindersPage() {
         {/* Card 1: Valid */}
         <div className="bg-white dark:bg-[#19102E] border border-[#EAE4F8] dark:border-[#2D1F47] p-5 rounded-3xl shadow-[0_8px_30px_rgb(108,92,231,0.04)] flex items-center justify-between">
           <div className="space-y-1">
-            <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+            <span className="text-xs font-extrabold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
               🟢 Valid Documents
             </span>
             <h3 className="text-3xl font-black text-[#1E1235] dark:text-white">{validCount}</h3>
-            <p className="text-[11px] text-[#7B7393]">More than 30 days remaining</p>
+            <p className="text-xs text-[#7B7393]">More than 30 days remaining</p>
           </div>
           <div className="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-emerald-600 flex items-center justify-center shrink-0">
             <CheckCircle2 className="w-6 h-6" />
@@ -186,11 +186,11 @@ export default function ExpiryRemindersPage() {
         {/* Card 2: Expiring Soon */}
         <div className="bg-white dark:bg-[#19102E] border border-[#EAE4F8] dark:border-[#2D1F47] p-5 rounded-3xl shadow-[0_8px_30px_rgb(108,92,231,0.04)] flex items-center justify-between">
           <div className="space-y-1">
-            <span className="text-[10px] font-extrabold uppercase tracking-wider text-amber-600 dark:text-amber-400">
+            <span className="text-xs font-extrabold uppercase tracking-wider text-amber-600 dark:text-amber-400">
               🟡 Expiring Soon
             </span>
             <h3 className="text-3xl font-black text-[#1E1235] dark:text-white">{expiringCount}</h3>
-            <p className="text-[11px] text-[#7B7393]">Expires within 30 days</p>
+            <p className="text-xs text-[#7B7393]">Expires within 30 days</p>
           </div>
           <div className="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800 text-amber-600 flex items-center justify-center shrink-0">
             <AlertTriangle className="w-6 h-6" />
@@ -200,11 +200,11 @@ export default function ExpiryRemindersPage() {
         {/* Card 3: Expired */}
         <div className="bg-white dark:bg-[#19102E] border border-[#EAE4F8] dark:border-[#2D1F47] p-5 rounded-3xl shadow-[0_8px_30px_rgb(108,92,231,0.04)] flex items-center justify-between">
           <div className="space-y-1">
-            <span className="text-[10px] font-extrabold uppercase tracking-wider text-rose-600 dark:text-rose-400">
+            <span className="text-xs font-extrabold uppercase tracking-wider text-rose-600 dark:text-rose-400">
               🔴 Expired Documents
             </span>
             <h3 className="text-3xl font-black text-[#1E1235] dark:text-white">{expiredCount}</h3>
-            <p className="text-[11px] text-[#7B7393]">Action required for renewal</p>
+            <p className="text-xs text-[#7B7393]">Action required for renewal</p>
           </div>
           <div className="w-12 h-12 rounded-2xl bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800 text-rose-600 flex items-center justify-center shrink-0">
             <Clock className="w-6 h-6" />
@@ -227,7 +227,7 @@ export default function ExpiryRemindersPage() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all ${
+              className={`px-3 py-1.5 rounded-xl text-sm font-black transition-all ${
                 activeTab === tab.id
                   ? 'bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white shadow-md shadow-orange-500/25'
                   : 'text-[#7B7393] hover:text-[#1E1235] dark:hover:text-white'
@@ -246,7 +246,7 @@ export default function ExpiryRemindersPage() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search expiring files..."
-            className="w-full pl-10 pr-4 py-2 bg-[#F3F0FA] dark:bg-[#1F143A] border border-[#EAE4F8] dark:border-[#2D1F47] rounded-2xl text-xs text-[#1E1235] dark:text-white placeholder:text-[#7B7393] focus:outline-none focus:border-[#FF6B00]"
+            className="w-full pl-10 pr-4 py-2 bg-[#F3F0FA] dark:bg-[#1F143A] border border-[#EAE4F8] dark:border-[#2D1F47] rounded-2xl text-sm text-[#1E1235] dark:text-white placeholder:text-[#7B7393] focus:outline-none focus:border-[#FF6B00]"
           />
         </div>
       </div>
@@ -270,7 +270,7 @@ export default function ExpiryRemindersPage() {
             >
               <div className="flex items-start justify-between">
                 <span
-                  className={`px-2.5 py-1 rounded-full text-[10px] font-black uppercase border ${
+                  className={`px-2.5 py-1 rounded-full text-xs font-black uppercase border ${
                     isExpired
                       ? 'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/60 dark:text-rose-300'
                       : isWarning
@@ -285,17 +285,17 @@ export default function ExpiryRemindersPage() {
                     : '🟢 Valid'}
                 </span>
 
-                <span className="text-[10px] text-[#7B7393] font-mono">{doc.fileSize}</span>
+                <span className="text-xs text-[#7B7393] font-mono">{doc.fileSize}</span>
               </div>
 
               <div>
-                <h3 className="text-sm font-black text-[#1E1235] dark:text-white truncate" title={doc.title}>
+                <h3 className="text-base font-black text-[#1E1235] dark:text-white truncate" title={doc.title}>
                   {doc.title}
                 </h3>
-                <p className="text-xs text-[#7B7393] font-medium mt-0.5">{doc.category}</p>
+                <p className="text-sm text-[#7B7393] font-medium mt-0.5">{doc.category}</p>
               </div>
 
-              <div className="p-3 rounded-2xl bg-[#F3F0FA] dark:bg-[#1F143A] border border-[#EAE4F8] dark:border-[#2D1F47] flex items-center justify-between text-xs font-mono">
+              <div className="p-3 rounded-2xl bg-[#F3F0FA] dark:bg-[#1F143A] border border-[#EAE4F8] dark:border-[#2D1F47] flex items-center justify-between text-sm font-mono">
                 <span className="text-[#7B7393]">Expiry Date:</span>
                 <span className="font-bold text-[#1E1235] dark:text-white">{doc.expiryDate}</span>
               </div>
@@ -303,14 +303,14 @@ export default function ExpiryRemindersPage() {
               <div className="pt-2 border-t border-[#F3F0FA] dark:border-[#2D1F47] flex items-center justify-between">
                 <button
                   onClick={() => alert(`Opening ${doc.title}...`)}
-                  className="px-3 py-1.5 rounded-xl border border-[#EAE4F8] dark:border-[#2D1F47] text-[#7B7393] hover:text-[#1E1235] dark:hover:text-white text-xs font-bold transition flex items-center gap-1"
+                  className="px-3 py-1.5 rounded-xl border border-[#EAE4F8] dark:border-[#2D1F47] text-[#7B7393] hover:text-[#1E1235] dark:hover:text-white text-sm font-bold transition flex items-center gap-1"
                 >
                   <Eye className="w-3.5 h-3.5" /> View
                 </button>
 
                 <button
                   onClick={() => { setRenewModalDoc(doc); setNewExpiryDate(doc.expiryDate); }}
-                  className="px-4 py-1.5 rounded-xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white text-xs font-black shadow-md shadow-orange-500/25 hover:scale-105 transition flex items-center gap-1.5"
+                  className="px-4 py-1.5 rounded-xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white text-sm font-black shadow-md shadow-orange-500/25 hover:scale-105 transition flex items-center gap-1.5"
                 >
                   <RefreshCw className="w-3.5 h-3.5" /> Renew Now
                 </button>
@@ -323,7 +323,7 @@ export default function ExpiryRemindersPage() {
       {/* RENEW MODAL */}
       {renewModalDoc && (
         <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-[#1E1235]/70 backdrop-blur-md animate-pop-in">
-          <div className="bg-white dark:bg-[#19102E] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-[#EAE4F8] dark:border-[#2D1F47] relative space-y-4 text-xs">
+          <div className="bg-white dark:bg-[#19102E] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-[#EAE4F8] dark:border-[#2D1F47] relative space-y-4 text-sm">
             <button
               onClick={() => setRenewModalDoc(null)}
               className="absolute top-5 right-5 p-2 rounded-2xl bg-[#F3F0FA] dark:bg-[#1F143A] text-[#7B7393] hover:text-[#1E1235]"
@@ -331,24 +331,24 @@ export default function ExpiryRemindersPage() {
               <X className="w-5 h-5" />
             </button>
 
-            <h3 className="text-base font-black text-[#1E1235] dark:text-white">Renew Expiry Date</h3>
-            <p className="text-xs text-[#7B7393]">Updating document renewal record for <strong className="text-[#1E1235] dark:text-white">&quot;{renewModalDoc.title}&quot;</strong>.</p>
+            <h3 className="text-lg font-black text-[#1E1235] dark:text-white">Renew Expiry Date</h3>
+            <p className="text-sm text-[#7B7393]">Updating document renewal record for <strong className="text-[#1E1235] dark:text-white">&quot;{renewModalDoc.title}&quot;</strong>.</p>
 
             <form onSubmit={handleUpdateExpiry} className="space-y-4 pt-2">
               <div className="space-y-1">
-                <label className="font-extrabold uppercase text-[10px] text-[#7B7393]">New Expiry Date</label>
+                <label className="font-extrabold uppercase text-xs text-[#7B7393]">New Expiry Date</label>
                 <input
                   type="date"
                   required
                   value={newExpiryDate}
                   onChange={(e) => setNewExpiryDate(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-[#F3F0FA] dark:bg-[#1F143A] border border-[#EAE4F8] dark:border-[#2D1F47] rounded-2xl text-xs font-bold text-[#1E1235] dark:text-white"
+                  className="w-full px-4 py-2.5 bg-[#F3F0FA] dark:bg-[#1F143A] border border-[#EAE4F8] dark:border-[#2D1F47] rounded-2xl text-sm font-bold text-[#1E1235] dark:text-white"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full py-3 rounded-2xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white font-black text-xs shadow-md shadow-orange-500/25 hover:scale-105 transition"
+                className="w-full py-3 rounded-2xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white font-black text-sm shadow-md shadow-orange-500/25 hover:scale-105 transition"
               >
                 Save New Expiry Date
               </button>

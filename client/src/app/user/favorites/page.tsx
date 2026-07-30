@@ -93,17 +93,17 @@ function FilePreviewThumbnail({ doc }: { doc: FavoriteDocument }) {
     if (title.includes('aws') || title.includes('amazon')) {
       return (
         <div className="w-full h-32 rounded-2xl bg-amber-50/80 dark:bg-amber-950/30 border border-amber-200/60 dark:border-amber-800/40 flex flex-col items-center justify-center relative overflow-hidden group-hover:scale-[1.02] transition-transform">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-400 text-white flex items-center justify-center shadow-md font-black text-xs">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-400 text-white flex items-center justify-center shadow-md font-black text-sm">
             aws
           </div>
-          <span className="text-[10px] font-bold text-amber-700 dark:text-amber-400 mt-2">CERTIFIED</span>
+          <span className="text-xs font-bold text-amber-700 dark:text-amber-400 mt-2">CERTIFIED</span>
         </div>
       );
     }
     return (
       <div className="w-full h-32 rounded-2xl bg-rose-50/70 dark:bg-rose-950/20 border border-rose-100 dark:border-rose-900/30 flex items-center justify-center relative overflow-hidden group-hover:scale-[1.02] transition-transform">
         <div className="w-12 h-14 bg-white dark:bg-[#19102E] rounded-lg shadow-sm border border-rose-200 dark:border-rose-800/60 flex flex-col items-center justify-center p-2 relative">
-          <div className="w-6 h-6 rounded-full bg-rose-500 text-white flex items-center justify-center font-bold text-[10px]">
+          <div className="w-6 h-6 rounded-full bg-rose-500 text-white flex items-center justify-center font-bold text-xs">
             &
           </div>
           <div className="w-8 h-1 bg-rose-200 dark:bg-rose-800 rounded mt-2"></div>
@@ -117,7 +117,7 @@ function FilePreviewThumbnail({ doc }: { doc: FavoriteDocument }) {
     return (
       <div className="w-full h-32 rounded-2xl bg-blue-50/70 dark:bg-blue-950/20 border border-blue-100 dark:border-blue-900/30 flex items-center justify-center relative overflow-hidden group-hover:scale-[1.02] transition-transform">
         <div className="w-12 h-14 bg-white dark:bg-[#19102E] rounded-lg shadow-sm border border-blue-200 dark:border-blue-800/60 flex flex-col items-center justify-center p-2">
-          <div className="w-7 h-7 rounded-lg bg-blue-600 text-white flex items-center justify-center font-black text-xs">
+          <div className="w-7 h-7 rounded-lg bg-blue-600 text-white flex items-center justify-center font-black text-sm">
             W
           </div>
           <div className="w-8 h-1 bg-blue-200 dark:bg-blue-800 rounded mt-2"></div>
@@ -130,7 +130,7 @@ function FilePreviewThumbnail({ doc }: { doc: FavoriteDocument }) {
     return (
       <div className="w-full h-32 rounded-2xl bg-emerald-50/70 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/30 flex items-center justify-center relative overflow-hidden group-hover:scale-[1.02] transition-transform">
         <div className="w-12 h-14 bg-white dark:bg-[#19102E] rounded-lg shadow-sm border border-emerald-200 dark:border-emerald-800/60 flex flex-col items-center justify-center p-2">
-          <div className="w-7 h-7 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-black text-xs">
+          <div className="w-7 h-7 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-black text-sm">
             X
           </div>
           <div className="w-8 h-1 bg-emerald-200 dark:bg-emerald-800 rounded mt-2"></div>
@@ -143,7 +143,7 @@ function FilePreviewThumbnail({ doc }: { doc: FavoriteDocument }) {
     return (
       <div className="w-full h-32 rounded-2xl bg-orange-50/70 dark:bg-orange-950/20 border border-orange-100 dark:border-orange-900/30 flex items-center justify-center relative overflow-hidden group-hover:scale-[1.02] transition-transform">
         <div className="w-12 h-14 bg-white dark:bg-[#19102E] rounded-lg shadow-sm border border-orange-200 dark:border-orange-800/60 flex flex-col items-center justify-center p-2">
-          <div className="w-7 h-7 rounded-lg bg-orange-600 text-white flex items-center justify-center font-black text-xs">
+          <div className="w-7 h-7 rounded-lg bg-orange-600 text-white flex items-center justify-center font-black text-sm">
             P
           </div>
           <div className="w-8 h-1 bg-orange-200 dark:bg-orange-800 rounded mt-2"></div>
@@ -156,7 +156,7 @@ function FilePreviewThumbnail({ doc }: { doc: FavoriteDocument }) {
     if (title.includes('passport') || title.includes('identity')) {
       return (
         <div className="w-full h-32 rounded-2xl bg-[#1E1235] p-3 flex flex-col justify-between relative overflow-hidden border border-purple-900/50 shadow-inner group-hover:scale-[1.02] transition-transform">
-          <div className="flex items-center justify-between text-[10px] text-purple-200 font-bold">
+          <div className="flex items-center justify-between text-xs text-purple-200 font-bold">
             <span>PASSPORT</span>
             <span>OFFICIAL</span>
           </div>
@@ -537,7 +537,7 @@ export default function FavoritesPage() {
     <div className="space-y-6 pb-12 relative min-h-screen" style={{ fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif" }}>
       {/* Toast Notification */}
       {toast && (
-        <div className={`fixed bottom-6 right-6 z-[999] flex items-center gap-3 px-5 py-3.5 rounded-2xl shadow-2xl border text-xs font-bold transition-all animate-pop-in ${
+        <div className={`fixed bottom-6 right-6 z-[999] flex items-center gap-3 px-5 py-3.5 rounded-2xl shadow-2xl border text-sm font-bold transition-all animate-pop-in ${
           toast.type === 'error'
             ? 'bg-rose-50 border-rose-200 text-rose-700 dark:bg-rose-950 dark:border-rose-800 dark:text-rose-200'
             : 'bg-white border-slate-200 text-slate-900 shadow-xl dark:bg-slate-900 dark:border-slate-800 dark:text-white'
@@ -558,7 +558,7 @@ export default function FavoritesPage() {
             </span>
             {t('favoriteDocuments', 'Favorite Documents')}
           </h1>
-          <p className="text-xs text-[#7B7393] dark:text-[#A39BB8] mt-1 font-medium">
+          <p className="text-sm text-[#7B7393] dark:text-[#A39BB8] mt-1 font-medium">
             {t('favoriteSub', 'Manage and quickly access your most important documents.')}
           </p>
         </div>
@@ -572,15 +572,15 @@ export default function FavoritesPage() {
             <div className="w-11 h-11 rounded-2xl bg-orange-50 dark:bg-orange-950/50 border border-orange-200/60 dark:border-orange-900/40 text-[#FF6B00] dark:text-orange-400 flex items-center justify-center shrink-0">
               <Star className="w-5 h-5 fill-orange-400/40" />
             </div>
-            <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800">
+            <span className="text-xs font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800">
               +12% vs last mo
             </span>
           </div>
           <div>
-            <p className="text-[11px] font-extrabold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{t('favoriteFiles', 'Favorite Files')}</p>
+            <p className="text-xs font-extrabold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{t('favoriteFiles', 'Favorite Files')}</p>
             <div className="flex items-baseline justify-between mt-1">
               <h3 className="text-3xl font-black text-slate-900 dark:text-white">{favorites.length || 38}</h3>
-              <span className="text-xs text-slate-500 dark:text-slate-400 font-semibold">{t('myDocuments', 'Documents')}</span>
+              <span className="text-sm text-slate-500 dark:text-slate-400 font-semibold">{t('myDocuments', 'Documents')}</span>
             </div>
           </div>
           {/* Sparkline Graph */}
@@ -597,15 +597,15 @@ export default function FavoritesPage() {
             <div className="w-11 h-11 rounded-2xl bg-orange-50 dark:bg-orange-950/50 border border-orange-200/60 dark:border-orange-900/40 text-[#FF6B00] dark:text-orange-400 flex items-center justify-center shrink-0">
               <FolderClosed className="w-5 h-5" />
             </div>
-            <span className="text-[10px] font-bold text-[#FF6B00] bg-orange-50 dark:bg-orange-950/40 px-2 py-0.5 rounded-full border border-orange-200 dark:border-orange-900">
+            <span className="text-xs font-bold text-[#FF6B00] bg-orange-50 dark:bg-orange-950/40 px-2 py-0.5 rounded-full border border-orange-200 dark:border-orange-900">
               Active
             </span>
           </div>
           <div>
-            <p className="text-[11px] font-extrabold text-[#7B7393] dark:text-[#A39BB8] uppercase tracking-wider">{t('categoriesCount', 'Categories')}</p>
+            <p className="text-xs font-extrabold text-[#7B7393] dark:text-[#A39BB8] uppercase tracking-wider">{t('categoriesCount', 'Categories')}</p>
             <div className="flex items-baseline justify-between mt-1">
               <h3 className="text-3xl font-black text-[#1E1235] dark:text-white">{categoriesCount}</h3>
-              <span className="text-xs text-[#7B7393] dark:text-[#A39BB8] font-semibold">{t('categories', 'Categories')}</span>
+              <span className="text-sm text-[#7B7393] dark:text-[#A39BB8] font-semibold">{t('categories', 'Categories')}</span>
             </div>
           </div>
           {/* Sparkline Graph */}
@@ -622,15 +622,15 @@ export default function FavoritesPage() {
             <div className="w-11 h-11 rounded-2xl bg-purple-50 dark:bg-purple-950/50 border border-purple-200/60 dark:border-purple-800/40 text-purple-600 dark:text-purple-400 flex items-center justify-center shrink-0">
               <HardDrive className="w-5 h-5" />
             </div>
-            <span className="text-[10px] font-bold text-amber-600 bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded-full border border-amber-200 dark:border-amber-800">
+            <span className="text-xs font-bold text-amber-600 bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded-full border border-amber-200 dark:border-amber-800">
               68% Limit
             </span>
           </div>
           <div>
-            <p className="text-[11px] font-extrabold text-[#7B7393] dark:text-[#A39BB8] uppercase tracking-wider">Storage Used</p>
+            <p className="text-xs font-extrabold text-[#7B7393] dark:text-[#A39BB8] uppercase tracking-wider">Storage Used</p>
             <div className="flex items-baseline justify-between mt-1">
               <h3 className="text-3xl font-black text-[#1E1235] dark:text-white">12.8 GB</h3>
-              <span className="text-xs text-[#7B7393] dark:text-[#A39BB8] font-semibold">of 100 GB</span>
+              <span className="text-sm text-[#7B7393] dark:text-[#A39BB8] font-semibold">of 100 GB</span>
             </div>
           </div>
           {/* Sparkline Graph */}
@@ -647,15 +647,15 @@ export default function FavoritesPage() {
             <div className="w-11 h-11 rounded-2xl bg-rose-50 dark:bg-rose-950/50 border border-rose-200/60 dark:border-rose-800/40 text-rose-500 dark:text-rose-400 flex items-center justify-center shrink-0">
               <Clock className="w-5 h-5" />
             </div>
-            <span className="text-[10px] font-bold text-rose-600 bg-rose-50 dark:bg-rose-950/40 px-2 py-0.5 rounded-full border border-rose-200 dark:border-rose-800">
+            <span className="text-xs font-bold text-rose-600 bg-rose-50 dark:bg-rose-950/40 px-2 py-0.5 rounded-full border border-rose-200 dark:border-rose-800">
               Live Sync
             </span>
           </div>
           <div>
-            <p className="text-[11px] font-extrabold text-[#7B7393] dark:text-[#A39BB8] uppercase tracking-wider">Last Updated</p>
+            <p className="text-xs font-extrabold text-[#7B7393] dark:text-[#A39BB8] uppercase tracking-wider">Last Updated</p>
             <div className="flex items-baseline justify-between mt-1">
               <h3 className="text-3xl font-black text-[#1E1235] dark:text-white">Today</h3>
-              <span className="text-xs text-[#7B7393] dark:text-[#A39BB8] font-semibold">10:45 AM</span>
+              <span className="text-sm text-[#7B7393] dark:text-[#A39BB8] font-semibold">10:45 AM</span>
             </div>
           </div>
           {/* Sparkline Graph */}
@@ -678,7 +678,7 @@ export default function FavoritesPage() {
               value={searchQuery}
               onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
               placeholder="Search favorites..."
-              className="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-xs text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-[#FF6B00] transition-all"
+              className="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-[#FF6B00] transition-all"
             />
             {searchQuery && (
               <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-900 dark:hover:text-white">
@@ -691,7 +691,7 @@ export default function FavoritesPage() {
           <select
             value={selectedCategory}
             onChange={(e) => { setSelectedCategory(e.target.value); setCurrentPage(1); }}
-            className="px-3.5 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-xs text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-[#FF6B00]"
+            className="px-3.5 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-[#FF6B00]"
           >
             <option value="all">All Categories</option>
             <option value="Client Requirements">Client Requirements</option>
@@ -707,7 +707,7 @@ export default function FavoritesPage() {
           <select
             value={selectedFileType}
             onChange={(e) => { setSelectedFileType(e.target.value); setCurrentPage(1); }}
-            className="px-3.5 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-xs text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-[#FF6B00]"
+            className="px-3.5 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-[#FF6B00]"
           >
             <option value="all">All File Types</option>
             <option value="pdf">PDF Documents</option>
@@ -722,7 +722,7 @@ export default function FavoritesPage() {
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="px-3.5 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-xs text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-[#FF6B00]"
+            className="px-3.5 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-[#FF6B00]"
           >
             <option value="newest">Sort By: Newest</option>
             <option value="oldest">Sort By: Oldest</option>
@@ -736,7 +736,7 @@ export default function FavoritesPage() {
           <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-2xl border border-slate-200 dark:border-slate-700">
             <button
               onClick={() => setViewMode('grid')}
-              className={`p-2 rounded-xl text-xs font-bold transition-all ${
+              className={`p-2 rounded-xl text-sm font-bold transition-all ${
                 viewMode === 'grid'
                   ? 'bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white shadow-md shadow-orange-500/25'
                   : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
@@ -747,7 +747,7 @@ export default function FavoritesPage() {
             </button>
             <button
               onClick={() => setViewMode('list')}
-              className={`p-2 rounded-xl text-xs font-bold transition-all ${
+              className={`p-2 rounded-xl text-sm font-bold transition-all ${
                 viewMode === 'list'
                   ? 'bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white shadow-md shadow-orange-500/25'
                   : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
@@ -761,7 +761,7 @@ export default function FavoritesPage() {
           {/* Reset Filters */}
           <button
             onClick={handleResetFilters}
-            className="px-3.5 py-2 rounded-2xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:text-[#FF6B00] hover:bg-orange-50 dark:hover:bg-orange-950/40 transition text-xs font-bold flex items-center gap-1.5"
+            className="px-3.5 py-2 rounded-2xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:text-[#FF6B00] hover:bg-orange-50 dark:hover:bg-orange-950/40 transition text-sm font-bold flex items-center gap-1.5"
             title="Reset Filters"
           >
             <RefreshCw className="w-3.5 h-3.5" /> Reset
@@ -799,16 +799,16 @@ export default function FavoritesPage() {
                 <Star className="w-8 h-8 text-amber-400 fill-amber-400" />
               </div>
               <div>
-                <h3 className="text-base font-extrabold text-[#1E1235] dark:text-white">
+                <h3 className="text-lg font-extrabold text-[#1E1235] dark:text-white">
                   No matching favorite documents found.
                 </h3>
-                <p className="text-xs text-[#7B7393] max-w-sm mx-auto mt-1 leading-relaxed">
+                <p className="text-sm text-[#7B7393] max-w-sm mx-auto mt-1 leading-relaxed">
                   Try adjusting your search query, category, or file type filter.
                 </p>
               </div>
               <button
                 onClick={handleResetFilters}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white text-xs font-extrabold shadow-md shadow-orange-500/25 hover:scale-105 transition"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white text-sm font-extrabold shadow-md shadow-orange-500/25 hover:scale-105 transition"
               >
                 Reset All Filters
               </button>
@@ -827,7 +827,7 @@ export default function FavoritesPage() {
                   >
                     {/* Top Row: File Extension Badge Left + Gold Star Right */}
                     <div className="flex items-center justify-between">
-                      <span className={`px-2.5 py-0.5 rounded-lg text-[10px] font-black uppercase tracking-wider shadow-2xs ${extInfo.bg}`}>
+                      <span className={`px-2.5 py-0.5 rounded-lg text-xs font-black uppercase tracking-wider shadow-2xs ${extInfo.bg}`}>
                         {extInfo.label}
                       </span>
                       <button
@@ -844,26 +844,26 @@ export default function FavoritesPage() {
 
                     {/* Document Info */}
                     <div className="space-y-1.5 pt-1">
-                      <h3 className="text-xs font-black text-slate-900 dark:text-white group-hover:text-[#FF6B00] dark:group-hover:text-orange-400 transition-colors truncate leading-snug" title={doc.title}>
+                      <h3 className="text-sm font-black text-slate-900 dark:text-white group-hover:text-[#FF6B00] dark:group-hover:text-orange-400 transition-colors truncate leading-snug" title={doc.title}>
                         {doc.title}
                       </h3>
 
                       {/* Category Pill */}
                       <div>
-                        <span className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${catBadgeClass}`}>
+                        <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-bold border ${catBadgeClass}`}>
                           {doc.category_name || 'Uncategorized'}
                         </span>
                       </div>
 
                       {/* Date & Author */}
-                      <p className="text-[10px] text-[#7B7393] dark:text-[#A39BB8] font-medium truncate pt-0.5">
+                      <p className="text-xs text-[#7B7393] dark:text-[#A39BB8] font-medium truncate pt-0.5">
                         {new Date(doc.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })} • By {doc.author_name || 'Joe'}
                       </p>
                     </div>
 
                     {/* Footer Row: File Size + Actions */}
-                    <div className="pt-2 border-t border-[#F3F0FA] dark:border-[#2D1F47] flex items-center justify-between text-xs">
-                      <span className="text-[#7B7393] dark:text-[#A39BB8] font-mono text-[10px] font-semibold">
+                    <div className="pt-2 border-t border-[#F3F0FA] dark:border-[#2D1F47] flex items-center justify-between text-sm">
+                      <span className="text-[#7B7393] dark:text-[#A39BB8] font-mono text-xs font-semibold">
                         {formatBytes(doc.file_size)}
                       </span>
 
@@ -893,7 +893,7 @@ export default function FavoritesPage() {
             <div className="bg-white dark:bg-[#19102E] border border-[#EAE4F8] dark:border-[#2D1F47] rounded-3xl shadow-[0_6px_24px_rgba(108,92,231,0.06)] overflow-hidden">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-[#F3F0FA] dark:bg-[#1F143A] text-[#7B7393] dark:text-[#A39BB8] text-[10px] uppercase tracking-wider font-extrabold border-b border-[#EAE4F8] dark:border-[#2D1F47]">
+                  <tr className="bg-[#F3F0FA] dark:bg-[#1F143A] text-[#7B7393] dark:text-[#A39BB8] text-xs uppercase tracking-wider font-extrabold border-b border-[#EAE4F8] dark:border-[#2D1F47]">
                     <th className="py-3.5 px-5">Document</th>
                     <th className="py-3.5 px-5">Category</th>
                     <th className="py-3.5 px-5">Date & Author</th>
@@ -901,7 +901,7 @@ export default function FavoritesPage() {
                     <th className="py-3.5 px-5 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#F3F0FA] dark:divide-[#2D1F47] text-xs">
+                <tbody className="divide-y divide-[#F3F0FA] dark:divide-[#2D1F47] text-sm">
                   {paginatedDocs.map((doc) => {
                     const extInfo = getExtensionBadge(doc.file_extension || doc.file_name.split('.').pop() || '', doc.mime_type);
                     const catBadgeClass = getCategoryBadge(doc.category_name);
@@ -915,19 +915,19 @@ export default function FavoritesPage() {
                             </span>
                             <div>
                               <span className="font-extrabold text-[#1E1235] dark:text-white block truncate max-w-[220px]">{doc.title}</span>
-                              <span className="text-[10px] text-[#7B7393] truncate">{doc.file_name}</span>
+                              <span className="text-xs text-[#7B7393] truncate">{doc.file_name}</span>
                             </div>
                           </div>
                         </td>
                         <td className="py-3.5 px-5">
-                          <span className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${catBadgeClass}`}>
+                          <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-bold border ${catBadgeClass}`}>
                             {doc.category_name || 'Uncategorized'}
                           </span>
                         </td>
-                        <td className="py-3.5 px-5 text-[#7B7393] text-[11px]">
+                        <td className="py-3.5 px-5 text-[#7B7393] text-xs">
                           {new Date(doc.created_at).toLocaleDateString()} • By {doc.author_name || 'Joe'}
                         </td>
-                        <td className="py-3.5 px-5 text-[#7B7393] font-mono text-[11px]">{formatBytes(doc.file_size)}</td>
+                        <td className="py-3.5 px-5 text-[#7B7393] font-mono text-xs">{formatBytes(doc.file_size)}</td>
                         <td className="py-3.5 px-5 text-right">
                           <div className="flex items-center justify-end gap-1">
                             <button
@@ -955,7 +955,7 @@ export default function FavoritesPage() {
           )}
 
           {/* PAGINATION CONTROLS */}
-          <div className="bg-white dark:bg-[#19102E] p-4 rounded-3xl border border-[#EAE4F8] dark:border-[#2D1F47] shadow-[0_6px_24px_rgba(108,92,231,0.06)] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+          <div className="bg-white dark:bg-[#19102E] p-4 rounded-3xl border border-[#EAE4F8] dark:border-[#2D1F47] shadow-[0_6px_24px_rgba(108,92,231,0.06)] flex flex-col sm:flex-row items-center justify-between gap-4 text-sm">
             <span className="text-[#7B7393] dark:text-[#A39BB8] font-medium">
               Showing <strong className="text-[#1E1235] dark:text-white">1 to {paginatedDocs.length}</strong> of <strong className="text-[#1E1235] dark:text-white">{totalCount}</strong> results
             </span>
@@ -975,7 +975,7 @@ export default function FavoritesPage() {
                   key={idx}
                   onClick={() => typeof page === 'number' && setCurrentPage(page)}
                   disabled={page === '...'}
-                  className={`w-8 h-8 rounded-xl text-xs font-black transition-all ${
+                  className={`w-8 h-8 rounded-xl text-sm font-black transition-all ${
                     currentPage === page
                       ? 'bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white shadow-md shadow-orange-500/25 scale-105'
                       : page === '...'
@@ -1002,7 +1002,7 @@ export default function FavoritesPage() {
               <select
                 value={itemsPerPage}
                 onChange={() => {}}
-                className="px-2.5 py-1.5 bg-[#F3F0FA] dark:bg-[#1F143A] border border-[#EAE4F8] dark:border-[#2D1F47] rounded-xl text-xs text-[#1E1235] dark:text-white font-bold"
+                className="px-2.5 py-1.5 bg-[#F3F0FA] dark:bg-[#1F143A] border border-[#EAE4F8] dark:border-[#2D1F47] rounded-xl text-sm text-[#1E1235] dark:text-white font-bold"
               >
                 <option value={8}>8</option>
                 <option value={16}>16</option>
@@ -1017,7 +1017,7 @@ export default function FavoritesPage() {
         <div className="space-y-6">
           {/* 1. Storage Usage Card */}
           <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-3xl shadow-sm space-y-5 text-center">
-            <h3 className="text-sm font-black text-slate-900 dark:text-white text-left">Storage Usage</h3>
+            <h3 className="text-base font-black text-slate-900 dark:text-white text-left">Storage Usage</h3>
 
             {/* Circular Progress Ring */}
             <div className="relative w-36 h-36 mx-auto flex items-center justify-center">
@@ -1041,15 +1041,15 @@ export default function FavoritesPage() {
               </svg>
               <div className="absolute flex flex-col items-center">
                 <span className="text-2xl font-black text-slate-900 dark:text-white leading-none">68%</span>
-                <span className="text-[10px] text-slate-500 dark:text-slate-400 font-bold mt-1">Used</span>
+                <span className="text-xs text-slate-500 dark:text-slate-400 font-bold mt-1">Used</span>
               </div>
             </div>
 
-            <p className="text-xs font-extrabold text-slate-900 dark:text-white">
+            <p className="text-sm font-extrabold text-slate-900 dark:text-white">
               68 GB <span className="text-slate-500 font-medium">of 100 GB Used</span>
             </p>
 
-            <button className="w-full py-2.5 rounded-2xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:brightness-110 text-white text-xs font-black shadow-lg shadow-orange-500/25 hover:scale-[1.02] transition flex items-center justify-center gap-2">
+            <button className="w-full py-2.5 rounded-2xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:brightness-110 text-white text-sm font-black shadow-lg shadow-orange-500/25 hover:scale-[1.02] transition flex items-center justify-center gap-2">
               <Zap className="w-4 h-4 fill-white" /> Upgrade Storage
             </button>
           </div>
@@ -1057,8 +1057,8 @@ export default function FavoritesPage() {
           {/* 2. Recent Activity Card */}
           <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-3xl shadow-sm space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-black text-slate-900 dark:text-white">Recent Activity</h3>
-              <Link href="/user/activity" className="text-[11px] font-extrabold text-[#FF6B00] dark:text-orange-400 hover:underline">
+              <h3 className="text-base font-black text-slate-900 dark:text-white">Recent Activity</h3>
+              <Link href="/user/activity" className="text-xs font-extrabold text-[#FF6B00] dark:text-orange-400 hover:underline">
                 View All
               </Link>
             </div>
@@ -1067,76 +1067,76 @@ export default function FavoritesPage() {
             <div className="space-y-4 pt-1">
               {/* Item 1 */}
               <div>
-                <p className="text-[10px] font-extrabold uppercase text-[#7B7393] dark:text-[#A39BB8] tracking-wider mb-2">Today</p>
+                <p className="text-xs font-extrabold uppercase text-[#7B7393] dark:text-[#A39BB8] tracking-wider mb-2">Today</p>
                 <div className="flex items-start gap-3">
-                  <span className="w-6 h-6 rounded-lg bg-rose-100 text-rose-600 flex items-center justify-center text-[10px] font-black shrink-0 mt-0.5">
+                  <span className="w-6 h-6 rounded-lg bg-rose-100 text-rose-600 flex items-center justify-center text-xs font-black shrink-0 mt-0.5">
                     PDF
                   </span>
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs font-extrabold text-[#1E1235] dark:text-white truncate">Resume.pdf</p>
-                    <p className="text-[10px] text-[#7B7393]">Added to favorites</p>
+                    <p className="text-sm font-extrabold text-[#1E1235] dark:text-white truncate">Resume.pdf</p>
+                    <p className="text-xs text-[#7B7393]">Added to favorites</p>
                   </div>
-                  <span className="text-[10px] text-[#7B7393] font-mono">10:45 AM</span>
+                  <span className="text-xs text-[#7B7393] font-mono">10:45 AM</span>
                 </div>
               </div>
 
               {/* Item 2 */}
               <div>
-                <p className="text-[10px] font-extrabold uppercase text-[#7B7393] dark:text-[#A39BB8] tracking-wider mb-2">Yesterday</p>
+                <p className="text-xs font-extrabold uppercase text-[#7B7393] dark:text-[#A39BB8] tracking-wider mb-2">Yesterday</p>
                 <div className="flex items-start gap-3">
-                  <span className="w-6 h-6 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center text-[10px] font-black shrink-0 mt-0.5">
+                  <span className="w-6 h-6 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center text-xs font-black shrink-0 mt-0.5">
                     PNG
                   </span>
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs font-extrabold text-[#1E1235] dark:text-white truncate">Passport_Scan_Copy.png</p>
-                    <p className="text-[10px] text-[#7B7393]">Added to favorites</p>
+                    <p className="text-sm font-extrabold text-[#1E1235] dark:text-white truncate">Passport_Scan_Copy.png</p>
+                    <p className="text-xs text-[#7B7393]">Added to favorites</p>
                   </div>
-                  <span className="text-[10px] text-[#7B7393] font-mono">07:30 PM</span>
+                  <span className="text-xs text-[#7B7393] font-mono">07:30 PM</span>
                 </div>
               </div>
 
               {/* Item 3 */}
               <div>
-                <p className="text-[10px] font-extrabold uppercase text-[#7B7393] dark:text-[#A39BB8] tracking-wider mb-2">2 Days Ago</p>
+                <p className="text-xs font-extrabold uppercase text-[#7B7393] dark:text-[#A39BB8] tracking-wider mb-2">2 Days Ago</p>
                 <div className="flex items-start gap-3">
-                  <span className="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center text-[10px] font-black shrink-0 mt-0.5">
+                  <span className="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center text-xs font-black shrink-0 mt-0.5">
                     XLS
                   </span>
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs font-extrabold text-[#1E1235] dark:text-white truncate">Monthly_Report_July.xlsx</p>
-                    <p className="text-[10px] text-[#7B7393]">Added to favorites</p>
+                    <p className="text-sm font-extrabold text-[#1E1235] dark:text-white truncate">Monthly_Report_July.xlsx</p>
+                    <p className="text-xs text-[#7B7393]">Added to favorites</p>
                   </div>
-                  <span className="text-[10px] text-[#7B7393] font-mono">09:15 AM</span>
+                  <span className="text-xs text-[#7B7393] font-mono">09:15 AM</span>
                 </div>
               </div>
 
               {/* Item 4 */}
               <div>
-                <p className="text-[10px] font-extrabold uppercase text-[#7B7393] dark:text-[#A39BB8] tracking-wider mb-2">3 Days Ago</p>
+                <p className="text-xs font-extrabold uppercase text-[#7B7393] dark:text-[#A39BB8] tracking-wider mb-2">3 Days Ago</p>
                 <div className="flex items-start gap-3">
-                  <span className="w-6 h-6 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center text-[10px] font-black shrink-0 mt-0.5">
+                  <span className="w-6 h-6 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center text-xs font-black shrink-0 mt-0.5">
                     PPT
                   </span>
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs font-extrabold text-[#1E1235] dark:text-white truncate">Software_Architecture.pptx</p>
-                    <p className="text-[10px] text-[#7B7393]">Added to favorites</p>
+                    <p className="text-sm font-extrabold text-[#1E1235] dark:text-white truncate">Software_Architecture.pptx</p>
+                    <p className="text-xs text-[#7B7393]">Added to favorites</p>
                   </div>
-                  <span className="text-[10px] text-[#7B7393] font-mono">11:20 AM</span>
+                  <span className="text-xs text-[#7B7393] font-mono">11:20 AM</span>
                 </div>
               </div>
 
               {/* Item 5 */}
               <div>
-                <p className="text-[10px] font-extrabold uppercase text-[#7B7393] dark:text-[#A39BB8] tracking-wider mb-2">4 Days Ago</p>
+                <p className="text-xs font-extrabold uppercase text-[#7B7393] dark:text-[#A39BB8] tracking-wider mb-2">4 Days Ago</p>
                 <div className="flex items-start gap-3">
-                  <span className="w-6 h-6 rounded-lg bg-rose-100 text-rose-600 flex items-center justify-center text-[10px] font-black shrink-0 mt-0.5">
+                  <span className="w-6 h-6 rounded-lg bg-rose-100 text-rose-600 flex items-center justify-center text-xs font-black shrink-0 mt-0.5">
                     PDF
                   </span>
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs font-extrabold text-[#1E1235] dark:text-white truncate">AWS_Certificate.pdf</p>
-                    <p className="text-[10px] text-[#7B7393]">Added to favorites</p>
+                    <p className="text-sm font-extrabold text-[#1E1235] dark:text-white truncate">AWS_Certificate.pdf</p>
+                    <p className="text-xs text-[#7B7393]">Added to favorites</p>
                   </div>
-                  <span className="text-[10px] text-[#7B7393] font-mono">05:40 PM</span>
+                  <span className="text-xs text-[#7B7393] font-mono">05:40 PM</span>
                 </div>
               </div>
             </div>
@@ -1145,17 +1145,17 @@ export default function FavoritesPage() {
           {/* 3. Need More Storage Banner Card */}
           <div className="bg-gradient-to-br from-[#FF6B00] via-[#F97316] to-[#EA580C] p-6 rounded-3xl text-white shadow-xl shadow-orange-500/20 relative overflow-hidden flex flex-col justify-between space-y-4">
             <div className="space-y-2 relative z-10">
-              <span className="inline-block px-3 py-1 rounded-full bg-white/20 text-white text-[10px] font-black tracking-wider uppercase backdrop-blur-md">
+              <span className="inline-block px-3 py-1 rounded-full bg-white/20 text-white text-xs font-black tracking-wider uppercase backdrop-blur-md">
                 Pro Plan Feature
               </span>
               <h4 className="text-lg font-black tracking-tight leading-snug">Need More Storage?</h4>
-              <p className="text-xs text-orange-100 leading-relaxed font-medium">
+              <p className="text-sm text-orange-100 leading-relaxed font-medium">
                 Upgrade your plan to store more documents securely with 100ms lightning retrieval.
               </p>
             </div>
 
             <div className="relative z-10 pt-2 flex items-center justify-between gap-3">
-              <button className="px-5 py-2.5 rounded-2xl bg-white text-[#FF6B00] hover:bg-orange-50 text-xs font-black shadow-md hover:scale-105 transition">
+              <button className="px-5 py-2.5 rounded-2xl bg-white text-[#FF6B00] hover:bg-orange-50 text-sm font-black shadow-md hover:scale-105 transition">
                 Upgrade Now
               </button>
               <div className="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white shrink-0">
@@ -1178,11 +1178,11 @@ export default function FavoritesPage() {
                 <Star className="w-5 h-5 fill-rose-400" />
               </div>
               <div>
-                <h3 className="text-base font-black text-[#1E1235] dark:text-white">Remove from Favorites?</h3>
-                <p className="text-xs text-[#7B7393] dark:text-[#A39BB8]">This will unstar the document</p>
+                <h3 className="text-lg font-black text-[#1E1235] dark:text-white">Remove from Favorites?</h3>
+                <p className="text-sm text-[#7B7393] dark:text-[#A39BB8]">This will unstar the document</p>
               </div>
             </div>
-            <p className="text-xs text-[#7B7393] dark:text-[#A39BB8] leading-relaxed">
+            <p className="text-sm text-[#7B7393] dark:text-[#A39BB8] leading-relaxed">
               Are you sure you want to remove{' '}
               <strong className="text-[#1E1235] dark:text-white">&quot;{selectedDoc.title}&quot;</strong>{' '}
               from your favorite documents? You can easily re-add it at any time.
@@ -1190,14 +1190,14 @@ export default function FavoritesPage() {
             <div className="flex items-center justify-end gap-3 pt-2 border-t border-[#EAE4F8] dark:border-[#2D1F47]">
               <button
                 onClick={() => { setShowRemoveModal(false); setSelectedDoc(null); }}
-                className="px-4 py-2.5 rounded-2xl border border-[#EAE4F8] dark:border-[#2D1F47] text-[#7B7393] dark:text-[#A39BB8] font-bold hover:bg-[#F3F0FA] dark:hover:bg-[#1F143A] transition text-xs"
+                className="px-4 py-2.5 rounded-2xl border border-[#EAE4F8] dark:border-[#2D1F47] text-[#7B7393] dark:text-[#A39BB8] font-bold hover:bg-[#F3F0FA] dark:hover:bg-[#1F143A] transition text-sm"
               >
                 Cancel
               </button>
               <button
                 onClick={handleRemoveFavorite}
                 disabled={actionLoading}
-                className="px-5 py-2.5 rounded-2xl bg-rose-600 hover:bg-rose-500 text-white font-extrabold shadow-md shadow-rose-600/20 hover:scale-105 transition flex items-center gap-2 text-xs disabled:opacity-50"
+                className="px-5 py-2.5 rounded-2xl bg-rose-600 hover:bg-rose-500 text-white font-extrabold shadow-md shadow-rose-600/20 hover:scale-105 transition flex items-center gap-2 text-sm disabled:opacity-50"
               >
                 {actionLoading && <Loader2 className="w-4 h-4 animate-spin" />}
                 Remove

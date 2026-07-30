@@ -115,10 +115,10 @@ export default function NotificationsCenterPage() {
   };
 
   return (
-    <div className="space-y-6 pb-16 font-sans max-w-4xl mx-auto">
+    <div className="space-y-6 pb-16 font-sans max-w-6xl mx-auto">
       {/* Toast Feedback */}
       {toast && (
-        <div className={`fixed bottom-6 right-6 z-[1000] flex items-center gap-3 px-5 py-3 rounded-2xl shadow-2xl border text-xs font-bold transition-all animate-bounce-once ${
+        <div className={`fixed bottom-6 right-6 z-[1000] flex items-center gap-3 px-5 py-3 rounded-2xl shadow-2xl border text-sm font-bold transition-all animate-bounce-once ${
           toast.type === 'success' ? 'bg-emerald-950/90 border-emerald-800 text-emerald-100' : 'bg-rose-950/90 border-rose-800 text-rose-100'
         }`}>
           <CheckCircle2 className="w-4 h-4 text-emerald-400" />
@@ -129,7 +129,7 @@ export default function NotificationsCenterPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800/80 pb-5">
         <div>
-          <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 mb-1 font-medium">
+          <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-1 font-medium">
             <Link href="/user" className="hover:text-[#FF6B00] dark:hover:text-orange-400 transition flex items-center gap-1">
               <ArrowLeft className="w-3.5 h-3.5" /> Workspace
             </Link>
@@ -142,7 +142,7 @@ export default function NotificationsCenterPage() {
             </span>
             Notifications Center
           </h1>
-          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 font-medium">
+          <p className="text-sm text-slate-600 dark:text-slate-400 mt-1 font-medium">
             Real-time updates, expiration alerts, document operations, and storage quota warnings.
           </p>
         </div>
@@ -152,7 +152,7 @@ export default function NotificationsCenterPage() {
           <button
             onClick={handleMarkAllRead}
             disabled={unreadCount === 0}
-            className="px-3.5 py-2 text-xs font-bold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 rounded-xl transition flex items-center gap-1.5 disabled:opacity-40 active:scale-95"
+            className="px-3.5 py-2 text-sm font-bold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 rounded-xl transition flex items-center gap-1.5 disabled:opacity-40 active:scale-95"
           >
             <Check className="w-3.5 h-3.5 text-emerald-500" /> Mark All as Read
           </button>
@@ -160,7 +160,7 @@ export default function NotificationsCenterPage() {
           <button
             onClick={handleClearAll}
             disabled={notifications.length === 0}
-            className="px-3.5 py-2 text-xs font-bold text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/60 hover:bg-rose-100 dark:hover:bg-rose-900/60 border border-rose-200 dark:border-rose-800 rounded-xl transition flex items-center gap-1.5 disabled:opacity-40 active:scale-95"
+            className="px-3.5 py-2 text-sm font-bold text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/60 hover:bg-rose-100 dark:hover:bg-rose-900/60 border border-rose-200 dark:border-rose-800 rounded-xl transition flex items-center gap-1.5 disabled:opacity-40 active:scale-95"
           >
             <Trash2 className="w-3.5 h-3.5" /> Clear All
           </button>
@@ -180,14 +180,14 @@ export default function NotificationsCenterPage() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 whitespace-nowrap ${
+              className={`px-3 py-1.5 rounded-xl text-sm font-bold transition-all flex items-center gap-1.5 whitespace-nowrap ${
                 activeTab === tab.id
                   ? 'bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white shadow-md'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               <span>{tab.label}</span>
-              <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono font-black ${
+              <span className={`text-xs px-1.5 py-0.2 rounded-full font-mono font-black ${
                 activeTab === tab.id ? 'bg-white/20 text-white' : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300'
               }`}>
                 {tab.count}
@@ -204,7 +204,7 @@ export default function NotificationsCenterPage() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search notifications..."
-            className="w-full pl-9 pr-3.5 py-2 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-2xl text-xs text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-[#FF6B00]"
+            className="w-full pl-9 pr-3.5 py-2 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-[#FF6B00]"
           />
         </div>
       </div>
@@ -216,8 +216,8 @@ export default function NotificationsCenterPage() {
             <Bell className="w-7 h-7" />
           </div>
           <div>
-            <h3 className="font-black text-slate-900 dark:text-white text-base">No Notifications</h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed font-medium">
+            <h3 className="font-black text-slate-900 dark:text-white text-lg">No Notifications</h3>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 leading-relaxed font-medium">
               You are all caught up! Updates about document uploads, renewals, and storage alerts will appear here.
             </p>
           </div>
@@ -243,18 +243,18 @@ export default function NotificationsCenterPage() {
 
                   <div className="space-y-1">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className={`text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full border ${badge.bg}`}>
+                      <span className={`text-xs font-black uppercase tracking-wider px-2 py-0.5 rounded-full border ${badge.bg}`}>
                         {badge.label}
                       </span>
-                      <h4 className="text-xs font-black text-slate-900 dark:text-white">{notif.title}</h4>
+                      <h4 className="text-sm font-black text-slate-900 dark:text-white">{notif.title}</h4>
                       {!notif.is_read && (
                         <span className="w-2 h-2 rounded-full bg-[#FF6B00] animate-pulse" />
                       )}
                     </div>
-                    <p className="text-xs text-slate-600 dark:text-slate-300 font-medium leading-relaxed">
+                    <p className="text-sm text-slate-600 dark:text-slate-300 font-medium leading-relaxed">
                       {notif.message}
                     </p>
-                    <span className="text-[10px] font-mono text-slate-400 dark:text-slate-500 block pt-0.5">
+                    <span className="text-xs font-mono text-slate-400 dark:text-slate-500 block pt-0.5">
                       {formatTime(notif.created_at)}
                     </span>
                   </div>
@@ -265,7 +265,7 @@ export default function NotificationsCenterPage() {
                   {!notif.is_read && (
                     <button
                       onClick={() => handleMarkAsRead(notif.id)}
-                      className="px-3 py-1.5 text-[11px] font-bold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-slate-100 dark:bg-slate-800 rounded-xl transition border border-slate-200 dark:border-slate-700"
+                      className="px-3 py-1.5 text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-slate-100 dark:bg-slate-800 rounded-xl transition border border-slate-200 dark:border-slate-700"
                     >
                       Mark Read
                     </button>
@@ -277,9 +277,9 @@ export default function NotificationsCenterPage() {
                         handleMarkAsRead(notif.id);
                         router.push(notif.link!);
                       }}
-                      className="px-3.5 py-1.5 text-xs font-black text-white bg-gradient-to-r from-[#FF6B00] to-[#F97316] rounded-xl shadow-md hover:scale-105 transition flex items-center gap-1"
+                      className="px-4 py-2 text-sm font-bold text-white bg-gradient-to-r from-[#FF6B00] to-[#F97316] rounded-xl shadow-md shadow-orange-500/20 hover:scale-105 transition flex items-center justify-center gap-1.5"
                     >
-                      <span>View</span> <ExternalLink className="w-3 h-3" />
+                      <span>View</span> <ExternalLink className="w-3.5 h-3.5" />
                     </button>
                   )}
                 </div>

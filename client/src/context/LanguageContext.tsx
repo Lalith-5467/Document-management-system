@@ -12,8 +12,8 @@ export interface LanguageOption {
 
 export const LANGUAGE_OPTIONS: LanguageOption[] = [
   { code: 'en', name: 'English', nativeName: 'English' },
-  { code: 'ta', name: 'Tamil', nativeName: 'தமிழ் (Tamil)' },
-  { code: 'hi', name: 'Hindi', nativeName: 'हिन्दी (Hindi)' },
+  { code: 'ta', name: 'Tamil', nativeName: 'தமிழ்' },
+  { code: 'hi', name: 'Hindi', nativeName: 'हिन्दी' },
 ];
 
 const TRANSLATIONS: Record<SupportedLanguage, Record<string, string>> = {
@@ -37,6 +37,11 @@ const TRANSLATIONS: Record<SupportedLanguage, Record<string, string>> = {
     needHelp: 'Need Help?',
     helpSub: 'Check our documentation or contact support',
     helpCenter: 'Help Center',
+    vaultCollections: 'Vault Collections',
+    userAccount: 'User Account',
+    calendar: 'Calendar',
+    expiry: 'Expiry Reminders',
+    subscription: 'Subscription & Billing',
 
     // Header
     welcome: 'Welcome back',
@@ -106,6 +111,7 @@ const TRANSLATIONS: Record<SupportedLanguage, Record<string, string>> = {
     updatePassword: 'Update Password',
     saveChanges: 'Save Changes',
     savingChanges: 'Saving Changes...',
+    themeAndLanguageSub: 'Customize display mode theme and interface language preferences.',
   },
   ta: {
     // Navigation & Sidebar
@@ -127,6 +133,11 @@ const TRANSLATIONS: Record<SupportedLanguage, Record<string, string>> = {
     needHelp: 'உதவி தேவையா?',
     helpSub: 'எங்கள் ஆவணங்களைப் பார்க்கவும் அல்லது ஆதரவைத் தொடர்பு கொள்ளவும்',
     helpCenter: 'உதவி மையம்',
+    vaultCollections: 'வால்ட் சேகரிப்புகள்',
+    userAccount: 'பயனர் கணக்கு',
+    calendar: 'நாள்காட்டி',
+    expiry: 'காலாவதி நினைவூட்டல்கள்',
+    subscription: 'சந்தா & கட்டணம்',
 
     // Header
     welcome: 'மீண்டும் வருக',
@@ -136,18 +147,34 @@ const TRANSLATIONS: Record<SupportedLanguage, Record<string, string>> = {
     dark: 'இருண்ட',
     light: 'வெளிச்சமான',
 
-    // Favorites Page
+    // Favorites & Documents Page
     favoriteDocuments: 'விருப்பமான ஆவணங்கள்',
     favoriteSub: 'உங்கள் முக்கிய ஆவணங்களை ஒரே இடத்தில் அணுகவும் நிர்வகிக்கவும்.',
     favoriteFiles: 'விருப்பமான கோப்புகள்',
     categoriesCount: 'வகைகள்',
     storageUsed: 'பயன்படுத்தப்பட்ட சேமிப்பகம்',
     lastUpdated: 'கடைசியாக புதுப்பிக்கப்பட்டது',
+    recentDocumentsSub: 'தேதி அடிப்படையில் வரிசைப்படுத்தப்பட்ட சமீபத்திய ஆவணங்கள்.',
+    myDocumentsSub: 'உங்கள் ஆவணங்களைத் தேடவும், வடிகட்டவும் மற்றும் நிர்வகிக்கவும்.',
+    refresh: 'புதுப்பிக்கவும்',
+    grid: 'கிரிட்',
+    list: 'பட்டியல்',
+    category: 'வகை',
+    folder: 'கோப்புறை',
+    allFolders: 'அனைத்து கோப்புறைகளும்',
+    fileType: 'கோப்பு வகை',
+    uploadDate: 'பதிவேற்ற தேதி',
+    allTime: 'எல்லா நேரமும்',
+    today: 'இன்று',
+    past7Days: 'கடந்த 7 நாட்கள்',
+    past30Days: 'கடந்த 30 நாட்கள்',
+    sortBy: 'வரிசைப்படுத்து',
     allCategories: 'எல்லா வகைகளும்',
     allFileTypes: 'எல்லா கோப்பு வகைகளும்',
     sortByNewest: 'வரிசைப்படுத்து: புதியவை',
     sortByOldest: 'வரிசைப்படுத்து: பழையவை',
     sortByName: 'வரிசைப்படுத்து: பெயர் ஏ-இசட்',
+    sortByNameDesc: 'வரிசைப்படுத்து: பெயர் இஸட்-ஏ',
     sortBySize: 'வரிசைப்படுத்து: கோப்பு அளவு',
     resetFilters: 'மீட்டமை',
     noFavoritesFound: 'விருப்பமான ஆவணங்கள் எதுவும் கிடைக்கவில்லை.',
@@ -196,6 +223,7 @@ const TRANSLATIONS: Record<SupportedLanguage, Record<string, string>> = {
     updatePassword: 'கடவுச்சொல்லை புதுப்பித்தல்',
     saveChanges: 'மாற்றங்களைச் சேமி',
     savingChanges: 'மாற்றங்கள் சேமிக்கப்படுகின்றன...',
+    themeAndLanguageSub: 'காட்சி முறை தீம் மற்றும் மொழி விருப்பங்களைத் தனிப்பயனாக்கவும்.',
   },
   hi: {
     // Navigation & Sidebar
@@ -217,6 +245,11 @@ const TRANSLATIONS: Record<SupportedLanguage, Record<string, string>> = {
     needHelp: 'क्या आपको मदद चाहिए?',
     helpSub: 'हमारे दस्तावेज़ देखें या सहायता टीम से संपर्क करें',
     helpCenter: 'सहायता केंद्र',
+    vaultCollections: 'वॉल्ट संग्रह',
+    userAccount: 'उपयोगकर्ता खाता',
+    calendar: 'कैलेंडर',
+    expiry: 'समाप्ति अनुस्मारक',
+    subscription: 'सदस्यता और बिलिंग',
 
     // Header
     welcome: 'वापसी पर स्वागत है',
@@ -285,8 +318,9 @@ const TRANSLATIONS: Record<SupportedLanguage, Record<string, string>> = {
     saveProfileDetails: 'प्रोफ़ाइल विवरण सहेजें',
     updatePassword: 'पासवर्ड अपडेट करें',
     saveChanges: 'परिवर्तन सहेजें',
-    savingChanges: 'सहेजा जा रहा है...',
-  }
+    savingChanges: 'परिवर्तन सहेजे जा रहे हैं...',
+    themeAndLanguageSub: 'डिस्प्ले मोड थीम और भाषा प्राथमिकताओं को कस्टमाइज़ करें।',
+  },
 };
 
 interface LanguageContextType {
@@ -313,8 +347,12 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   };
 
   const t = (key: string, defaultText?: string): string => {
+    const actualKey = key.includes('.') ? key.split('.').pop() || key : key;
     const dict = TRANSLATIONS[language] || TRANSLATIONS.en;
-    if (dict[key]) return dict[key];
+    
+    if (dict[actualKey]) return dict[actualKey];
+    if (TRANSLATIONS.en[actualKey]) return TRANSLATIONS.en[actualKey];
+    
     return defaultText || key;
   };
 

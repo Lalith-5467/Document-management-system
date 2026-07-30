@@ -211,7 +211,7 @@ export default function TrashPage() {
     <div className="space-y-6 pb-12 font-sans">
       {/* Toast Notification */}
       {toast && (
-        <div className={`fixed bottom-6 right-6 z-50 px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 border text-xs font-bold animate-pop-in ${
+        <div className={`fixed bottom-6 right-6 z-50 px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 border text-sm font-bold animate-pop-in ${
           toast.type === 'success' ? 'bg-emerald-950 text-emerald-300 border-emerald-800' : 'bg-rose-950 text-rose-300 border-rose-800'
         }`}>
           {toast.type === 'success' ? <CheckCircle2 className="w-4 h-4 text-emerald-400" /> : <AlertCircle className="w-4 h-4 text-rose-400" />}
@@ -222,7 +222,7 @@ export default function TrashPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800/80 pb-5">
         <div>
-          <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 mb-1 font-medium">
+          <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-1 font-medium">
             <Link href="/user" className="hover:text-rose-600 dark:hover:text-rose-400 transition flex items-center gap-1">
               <ArrowLeft className="w-3.5 h-3.5" /> Workspace
             </Link>
@@ -232,7 +232,7 @@ export default function TrashPage() {
           <h1 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-2.5">
             <Trash2 className="w-6 h-6 text-rose-500 dark:text-rose-400" /> Recycle Bin
           </h1>
-          <p className="text-xs text-slate-600 dark:text-slate-400 font-medium">
+          <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">
             Temporarily holds soft-deleted documents. Restore files to your workspace or permanently purge them.
           </p>
         </div>
@@ -241,7 +241,7 @@ export default function TrashPage() {
           <button
             onClick={() => setIsEmptyModalOpen(true)}
             disabled={documents.length === 0}
-            className="px-4 py-2.5 text-xs font-bold text-rose-600 dark:text-rose-300 bg-rose-50 dark:bg-rose-950/60 hover:bg-rose-100 dark:hover:bg-rose-900/60 border border-rose-200 dark:border-rose-800 rounded-xl transition flex items-center gap-1.5 disabled:opacity-50 active:scale-95"
+            className="px-4 py-2.5 text-sm font-bold text-rose-600 dark:text-rose-300 bg-rose-50 dark:bg-rose-950/60 hover:bg-rose-100 dark:hover:bg-rose-900/60 border border-rose-200 dark:border-rose-800 rounded-xl transition flex items-center gap-1.5 disabled:opacity-50 active:scale-95"
           >
             <Trash className="w-3.5 h-3.5" /> Empty Recycle Bin
           </button>
@@ -266,10 +266,10 @@ export default function TrashPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search deleted files by title, folder, or category..."
-              className="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-rose-500 transition-all"
+              className="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 rounded-xl text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-rose-500 transition-all"
             />
           </div>
-          <span className="text-[11px] font-bold px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 shrink-0 font-mono">
+          <span className="text-xs font-bold px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 shrink-0 font-mono">
             {filteredDocs.length} deleted file(s)
           </span>
         </div>
@@ -279,7 +279,7 @@ export default function TrashPage() {
       {loading ? (
         <div className="bg-white dark:bg-[#111827] p-16 rounded-3xl border border-slate-200 dark:border-slate-800 text-center space-y-3 shadow-md">
           <Loader2 className="w-8 h-8 text-rose-500 dark:text-rose-400 animate-spin mx-auto" />
-          <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Fetching deleted documents...</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">Fetching deleted documents...</p>
         </div>
       ) : documents.length === 0 ? (
         <div className="bg-white dark:bg-[#111827] p-16 rounded-3xl border border-slate-200 dark:border-slate-800 text-center space-y-4 shadow-md max-w-md mx-auto">
@@ -287,14 +287,14 @@ export default function TrashPage() {
             <Trash2 className="w-7 h-7" />
           </div>
           <div>
-            <h3 className="font-extrabold text-slate-900 dark:text-white text-base">Recycle Bin is Empty</h3>
-            <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed font-medium">
+            <h3 className="font-extrabold text-slate-900 dark:text-white text-lg">Recycle Bin is Empty</h3>
+            <p className="text-sm text-slate-600 dark:text-slate-400 mt-1 leading-relaxed font-medium">
               No soft-deleted documents found. Any deleted items will appear here for 1-click recovery before permanent deletion.
             </p>
           </div>
           <Link
             href="/user/documents"
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#FF6B00] dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 bg-orange-50 dark:bg-orange-950/60 px-4 py-2 rounded-xl border border-orange-200 dark:border-orange-900/60 transition"
+            className="inline-flex items-center gap-1.5 text-sm font-bold text-[#FF6B00] dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 bg-orange-50 dark:bg-orange-950/60 px-4 py-2 rounded-xl border border-orange-200 dark:border-orange-900/60 transition"
           >
             Go to My Documents
           </Link>
@@ -302,9 +302,9 @@ export default function TrashPage() {
       ) : (
         <div className="bg-white dark:bg-[#111827] rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs border-collapse">
+            <table className="w-full text-left text-sm border-collapse">
               <thead>
-                <tr className="bg-slate-50 dark:bg-[#0b1120] text-slate-500 dark:text-slate-400 text-[10px] uppercase tracking-wider font-bold border-b border-slate-200 dark:border-slate-800 font-mono">
+                <tr className="bg-slate-50 dark:bg-[#0b1120] text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider font-bold border-b border-slate-200 dark:border-slate-800 font-mono">
                   <th className="py-3.5 px-5">Document Title</th>
                   <th className="py-3.5 px-5">Category / Folder</th>
                   <th className="py-3.5 px-5">Size</th>
@@ -322,18 +322,18 @@ export default function TrashPage() {
                         </div>
                         <div>
                           <span className="font-extrabold text-slate-900 dark:text-white block">{doc.title}</span>
-                          <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400">{doc.file_name}</span>
+                          <span className="text-xs font-mono text-slate-500 dark:text-slate-400">{doc.file_name}</span>
                         </div>
                       </div>
                     </td>
                     <td className="py-4 px-5 font-semibold text-slate-700 dark:text-slate-300">
                       <div>
-                        <span className="block text-xs font-bold text-slate-900 dark:text-white">{doc.category_name || 'Unassigned'}</span>
-                        <span className="text-[10px] text-slate-400 block">{doc.folder_name || 'Unassigned Folder'}</span>
+                        <span className="block text-sm font-bold text-slate-900 dark:text-white">{doc.category_name || 'Unassigned'}</span>
+                        <span className="text-xs text-slate-400 block">{doc.folder_name || 'Unassigned Folder'}</span>
                       </div>
                     </td>
-                    <td className="py-4 px-5 text-slate-500 dark:text-slate-400 font-mono text-[11px]">{formatBytes(doc.file_size)}</td>
-                    <td className="py-4 px-5 text-slate-500 dark:text-slate-400 text-xs font-mono">{formatDate(doc.created_at)}</td>
+                    <td className="py-4 px-5 text-slate-500 dark:text-slate-400 font-mono text-xs">{formatBytes(doc.file_size)}</td>
+                    <td className="py-4 px-5 text-slate-500 dark:text-slate-400 text-sm font-mono">{formatDate(doc.created_at)}</td>
                     <td className="py-4 px-5 text-right">
                       <div className="flex items-center justify-end gap-2">
                         <button
@@ -341,7 +341,7 @@ export default function TrashPage() {
                             setSelectedDoc(doc);
                             setIsRestoreModalOpen(true);
                           }}
-                          className="px-3 py-1.5 text-xs font-extrabold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 border border-emerald-200 dark:border-emerald-800 rounded-xl transition flex items-center gap-1.5 active:scale-95 shadow-2xs"
+                          className="px-3 py-1.5 text-sm font-extrabold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 border border-emerald-200 dark:border-emerald-800 rounded-xl transition flex items-center gap-1.5 active:scale-95 shadow-2xs"
                         >
                           <RotateCcw className="w-3.5 h-3.5" /> Restore
                         </button>
@@ -369,9 +369,9 @@ export default function TrashPage() {
       {/* RESTORE CONFIRMATION MODAL */}
       {isRestoreModalOpen && selectedDoc && (
         <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-pop-in">
-          <div className="bg-white dark:bg-[#111827] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4 text-slate-900 dark:text-white text-xs">
+          <div className="bg-white dark:bg-[#111827] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4 text-slate-900 dark:text-white text-sm">
             <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
-              <h3 className="text-base font-extrabold text-emerald-600 dark:text-emerald-400 flex items-center gap-2">
+              <h3 className="text-lg font-extrabold text-emerald-600 dark:text-emerald-400 flex items-center gap-2">
                 <RotateCcw className="w-5 h-5" /> Restore Document?
               </h3>
               <button onClick={() => setIsRestoreModalOpen(false)} className="text-slate-400 hover:text-slate-900 dark:hover:text-white">
@@ -379,21 +379,21 @@ export default function TrashPage() {
               </button>
             </div>
 
-            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
+            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
               Are you sure you want to restore <strong className="text-slate-900 dark:text-white">&quot;{selectedDoc.title}&quot;</strong> back into your active workspace and My Documents folder?
             </p>
 
             <div className="flex justify-end gap-3 pt-2">
               <button
                 onClick={() => setIsRestoreModalOpen(false)}
-                className="px-4 py-2.5 text-xs font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl"
+                className="px-4 py-2.5 text-sm font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl"
               >
                 Cancel
               </button>
               <button
                 onClick={handleRestore}
                 disabled={submitting}
-                className="px-5 py-2.5 text-xs font-extrabold text-white bg-emerald-600 hover:bg-emerald-500 rounded-xl shadow-md transition active:scale-95 flex items-center gap-1.5"
+                className="px-5 py-2.5 text-sm font-extrabold text-white bg-emerald-600 hover:bg-emerald-500 rounded-xl shadow-md transition active:scale-95 flex items-center gap-1.5"
               >
                 {submitting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <RotateCcw className="w-3.5 h-3.5" />} Restore Document
               </button>
@@ -405,9 +405,9 @@ export default function TrashPage() {
       {/* PERMANENT DELETE MODAL */}
       {isPermanentDeleteModalOpen && selectedDoc && (
         <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-pop-in">
-          <div className="bg-white dark:bg-[#111827] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4 text-slate-900 dark:text-white text-xs">
+          <div className="bg-white dark:bg-[#111827] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4 text-slate-900 dark:text-white text-sm">
             <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
-              <h3 className="text-base font-extrabold text-rose-600 dark:text-rose-400 flex items-center gap-2">
+              <h3 className="text-lg font-extrabold text-rose-600 dark:text-rose-400 flex items-center gap-2">
                 <AlertTriangle className="w-5 h-5" /> Permanently Delete File?
               </h3>
               <button onClick={() => setIsPermanentDeleteModalOpen(false)} className="text-slate-400 hover:text-slate-900 dark:hover:text-white">
@@ -415,21 +415,21 @@ export default function TrashPage() {
               </button>
             </div>
 
-            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
+            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
               Are you sure you want to permanently delete <strong className="text-slate-900 dark:text-white">&quot;{selectedDoc.title}&quot;</strong>? This action cannot be undone.
             </p>
 
             <div className="flex justify-end gap-3 pt-2">
               <button
                 onClick={() => setIsPermanentDeleteModalOpen(false)}
-                className="px-4 py-2.5 text-xs font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl"
+                className="px-4 py-2.5 text-sm font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl"
               >
                 Cancel
               </button>
               <button
                 onClick={handlePermanentDelete}
                 disabled={submitting}
-                className="px-5 py-2.5 text-xs font-extrabold text-white bg-rose-600 hover:bg-rose-500 rounded-xl shadow-md transition active:scale-95 flex items-center gap-1.5"
+                className="px-5 py-2.5 text-sm font-extrabold text-white bg-rose-600 hover:bg-rose-500 rounded-xl shadow-md transition active:scale-95 flex items-center gap-1.5"
               >
                 {submitting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Trash2 className="w-3.5 h-3.5" />} Purge Permanently
               </button>
@@ -441,9 +441,9 @@ export default function TrashPage() {
       {/* EMPTY TRASH CONFIRMATION MODAL */}
       {isEmptyModalOpen && (
         <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-pop-in">
-          <div className="bg-white dark:bg-[#111827] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4 text-slate-900 dark:text-white text-xs">
+          <div className="bg-white dark:bg-[#111827] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4 text-slate-900 dark:text-white text-sm">
             <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
-              <h3 className="text-base font-extrabold text-rose-600 dark:text-rose-400 flex items-center gap-2">
+              <h3 className="text-lg font-extrabold text-rose-600 dark:text-rose-400 flex items-center gap-2">
                 <Trash className="w-5 h-5" /> Empty Entire Recycle Bin?
               </h3>
               <button onClick={() => setIsEmptyModalOpen(false)} className="text-slate-400 hover:text-slate-900 dark:hover:text-white">
@@ -451,21 +451,21 @@ export default function TrashPage() {
               </button>
             </div>
 
-            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
+            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
               Permanently purge all <strong className="text-slate-900 dark:text-white">{documents.length} document(s)</strong> currently in the Recycle Bin? All deleted files will be permanently erased from disk.
             </p>
 
             <div className="flex justify-end gap-3 pt-2">
               <button
                 onClick={() => setIsEmptyModalOpen(false)}
-                className="px-4 py-2.5 text-xs font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl"
+                className="px-4 py-2.5 text-sm font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl"
               >
                 Cancel
               </button>
               <button
                 onClick={handleEmptyTrash}
                 disabled={submitting}
-                className="px-5 py-2.5 text-xs font-extrabold text-white bg-rose-600 hover:bg-rose-500 rounded-xl shadow-md transition active:scale-95 flex items-center gap-1.5"
+                className="px-5 py-2.5 text-sm font-extrabold text-white bg-rose-600 hover:bg-rose-500 rounded-xl shadow-md transition active:scale-95 flex items-center gap-1.5"
               >
                 {submitting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Trash className="w-3.5 h-3.5" />} Empty Bin
               </button>

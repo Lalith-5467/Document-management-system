@@ -13,6 +13,7 @@ import api from '@/lib/api';
 import { logActivity } from '@/lib/activityLogger';
 import DocumentPreviewModal from '@/components/dashboard/DocumentPreviewModal';
 import EditDocumentModal from '@/components/dashboard/EditDocumentModal';
+import { useLanguage } from '@/context/LanguageContext';
 
 export interface DocumentItem {
   id: number;
@@ -42,6 +43,7 @@ export default function MyDocumentsPage() {
   const [categories, setCategories] = useState<any[]>([]);
   const [folders, setFolders] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const { t } = useLanguage();
 
   // View & Filter States
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
@@ -447,7 +449,7 @@ export default function MyDocumentsPage() {
     <div className="space-y-6 pb-12">
       {/* Toast Notification */}
       {toast && (
-        <div className={`fixed bottom-6 right-6 z-50 px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 border text-xs font-bold animate-pop-in ${
+        <div className={`fixed bottom-6 right-6 z-50 px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 border text-sm font-bold animate-pop-in ${
           toast.type === 'success' ? 'bg-emerald-950 text-emerald-300 border-emerald-800' : 'bg-rose-950 text-rose-300 border-rose-800'
         }`}>
           {toast.type === 'success' ? <CheckCircle2 className="w-4 h-4 text-emerald-400" /> : <AlertCircle className="w-4 h-4 text-rose-400" />}
@@ -458,30 +460,30 @@ export default function MyDocumentsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800/80 pb-5">
         <div>
-          <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 mb-1">
+          <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-1">
             <Link href="/user" className="hover:text-[#FF6B00] dark:hover:text-orange-400 transition flex items-center gap-1 font-semibold">
-              <ArrowLeft className="w-3.5 h-3.5" /> Workspace
+              <ArrowLeft className="w-3.5 h-3.5" /> {t('dashboard', 'Workspace')}
             </Link>
             <span>/</span>
             <span className="text-slate-900 dark:text-white font-semibold">
-              {isRecentMode ? 'Recent Documents' : 'My Documents'}
+              {isRecentMode ? t('recentDocuments', 'Recent Documents') : t('myDocuments', 'My Documents')}
             </span>
           </div>
           <h1 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-2.5">
             {isRecentMode ? (
               <>
-                <Clock className="w-6 h-6 text-[#FF6B00] dark:text-orange-400" /> Recent Documents
+                <Clock className="w-6 h-6 text-[#FF6B00] dark:text-orange-400" /> {t('recentDocuments', 'Recent Documents')}
               </>
             ) : (
               <>
-                <FileText className="w-6 h-6 text-[#FF6B00] dark:text-orange-400" /> My Documents
+                <FileText className="w-6 h-6 text-[#FF6B00] dark:text-orange-400" /> {t('myDocuments', 'My Documents')}
               </>
             )}
           </h1>
-          <p className="text-xs text-slate-600 dark:text-slate-400">
+          <p className="text-sm text-slate-600 dark:text-slate-400">
             {isRecentMode 
-              ? 'Showing your latest uploaded files and recent document activities sorted by date.' 
-              : 'Search, filter, preview and manage all your vaulted documents.'}
+              ? t('recentDocumentsSub', 'Showing your latest uploaded files and recent document activities sorted by date.') 
+              : t('myDocumentsSub', 'Search, filter, preview and manage all your vaulted documents.')}
           </p>
         </div>
 
@@ -489,15 +491,15 @@ export default function MyDocumentsPage() {
           <button
             onClick={fetchDocuments}
             className="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition shadow-sm"
-            title="Refresh Documents"
+            title={t('refresh', 'Refresh Documents')}
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
           </button>
           <Link
             href="/user/upload"
-            className="inline-flex items-center gap-2 px-4 py-2.5 text-xs font-bold text-white bg-gradient-to-r from-[#FF6B00] via-[#F97316] to-[#EA580C] hover:brightness-110 rounded-xl shadow-lg shadow-orange-500/25 border border-orange-400/30 transition-all active-press hover:scale-105"
+            className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-bold text-white bg-gradient-to-r from-[#FF6B00] via-[#F97316] to-[#EA580C] hover:brightness-110 rounded-xl shadow-lg shadow-orange-500/25 border border-orange-400/30 transition-all active-press hover:scale-105"
           >
-            <Plus className="w-4 h-4" /> Upload Document
+            <Plus className="w-4 h-4" /> {t('uploadDocument', 'Upload Document')}
           </Link>
         </div>
       </div>
@@ -511,8 +513,8 @@ export default function MyDocumentsPage() {
               type="text"
               value={searchQuery}
               onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
-              placeholder="Search by Title, File Name, Description, or Tags..."
-              className="w-full pl-10 pr-9 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-[#FF6B00] focus:ring-1 focus:ring-[#FF6B00]/20 transition-all"
+              placeholder={t('searchPlaceholder', 'Search by Title, File Name, Description, or Tags...')}
+              className="w-full pl-10 pr-9 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-[#FF6B00] focus:ring-1 focus:ring-[#FF6B00]/20 transition-all"
             />
             {searchQuery && (
               <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-white">
@@ -524,32 +526,32 @@ export default function MyDocumentsPage() {
           <div className="flex items-center justify-center bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700 shrink-0">
             <button
               onClick={() => setViewMode('grid')}
-              className={`p-2 rounded-lg text-xs transition-all flex items-center gap-1.5 font-bold ${
+              className={`p-2 rounded-lg text-sm transition-all flex items-center gap-1.5 font-bold ${
                 viewMode === 'grid' ? 'bg-[#FF6B00] text-white shadow-md' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
-              <LayoutGrid className="w-4 h-4" /> Grid
+              <LayoutGrid className="w-4 h-4" /> {t('grid', 'Grid')}
             </button>
             <button
               onClick={() => setViewMode('list')}
-              className={`p-2 rounded-lg text-xs transition-all flex items-center gap-1.5 font-bold ${
+              className={`p-2 rounded-lg text-sm transition-all flex items-center gap-1.5 font-bold ${
                 viewMode === 'list' ? 'bg-[#FF6B00] text-white shadow-md' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
-              <List className="w-4 h-4" /> List
+              <List className="w-4 h-4" /> {t('list', 'List')}
             </button>
           </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 pt-3 border-t border-slate-200 dark:border-slate-800">
           <div>
-            <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Category</label>
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">{t('category', 'Category')}</label>
             <select
               value={selectedCategory}
               onChange={(e) => { setSelectedCategory(e.target.value); setCurrentPage(1); }}
-              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white font-medium focus:outline-none focus:border-[#FF6B00]"
+              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white font-medium focus:outline-none focus:border-[#FF6B00]"
             >
-              <option value="">All Categories</option>
+              <option value="">{t('allCategories', 'All Categories')}</option>
               {categories.map((c) => (
                 <option key={c.id} value={c.id}>{c.category_name}</option>
               ))}
@@ -557,13 +559,13 @@ export default function MyDocumentsPage() {
           </div>
 
           <div>
-            <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Folder</label>
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">{t('folder', 'Folder')}</label>
             <select
               value={selectedFolder}
               onChange={(e) => { setSelectedFolder(e.target.value); setCurrentPage(1); }}
-              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white font-medium focus:outline-none focus:border-[#FF6B00]"
+              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white font-medium focus:outline-none focus:border-[#FF6B00]"
             >
-              <option value="">All Folders</option>
+              <option value="">{t('allFolders', 'All Folders')}</option>
               {folders.map((f) => (
                 <option key={f.id} value={f.id}>{f.folder_name}</option>
               ))}
@@ -571,13 +573,13 @@ export default function MyDocumentsPage() {
           </div>
 
           <div>
-            <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">File Type</label>
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">{t('fileType', 'File Type')}</label>
             <select
               value={selectedFileType}
               onChange={(e) => { setSelectedFileType(e.target.value); setCurrentPage(1); }}
-              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white font-medium focus:outline-none focus:border-[#FF6B00]"
+              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white font-medium focus:outline-none focus:border-[#FF6B00]"
             >
-              <option value="">All File Types</option>
+              <option value="">{t('allFileTypes', 'All File Types')}</option>
               <option value="pdf">📄 PDF Documents</option>
               <option value="word">📝 Word Documents</option>
               <option value="excel">📊 Excel Spreadsheets</option>
@@ -586,25 +588,40 @@ export default function MyDocumentsPage() {
           </div>
 
           <div>
-            <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Upload Date</label>
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">{t('uploadDate', 'Upload Date')}</label>
             <select
               value={selectedDateRange}
               onChange={(e) => { setSelectedDateRange(e.target.value); setCurrentPage(1); }}
-              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white font-medium focus:outline-none focus:border-[#FF6B00]"
+              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white font-medium focus:outline-none focus:border-[#FF6B00]"
             >
-              <option value="">All Time</option>
-              <option value="today">Today</option>
-              <option value="7days">Past 7 Days</option>
-              <option value="30days">Past 30 Days</option>
+              <option value="">{t('allTime', 'All Time')}</option>
+              <option value="today">{t('today', 'Today')}</option>
+              <option value="7days">{t('past7Days', 'Past 7 Days')}</option>
+              <option value="30days">{t('past30Days', 'Past 30 Days')}</option>
             </select>
           </div>
 
           <div>
-            <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Sort By</label>
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">{t('sortBy', 'Sort By')}</label>
             <select
               value={sortBy}
               onChange={(e) => { setSortBy(e.target.value); setCurrentPage(1); }}
-              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white font-medium focus:outline-none focus:border-[#FF6B00]"
+              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white font-medium focus:outline-none focus:border-[#FF6B00]"
+            >
+              <option value="date_desc">{t('sortByNewest', 'Date (Newest)')}</option>
+              <option value="date_asc">{t('sortByOldest', 'Date (Oldest)')}</option>
+              <option value="name_asc">{t('sortByName', 'Name (A-Z)')}</option>
+              <option value="name_desc">{t('sortByNameDesc', 'Name (Z-A)')}</option>
+              <option value="size_desc">{t('sortBySize', 'Size (Largest)')}</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Sort By</label>
+            <select
+              value={sortBy}
+              onChange={(e) => { setSortBy(e.target.value); setCurrentPage(1); }}
+              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white font-medium focus:outline-none focus:border-[#FF6B00]"
             >
               <option value="date_desc">Date (Newest)</option>
               <option value="date_asc">Date (Oldest)</option>
@@ -615,15 +632,15 @@ export default function MyDocumentsPage() {
         </div>
 
         {hasActiveFilters && (
-          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-200 dark:border-slate-800 text-xs">
-            <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Active Filters:</span>
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-200 dark:border-slate-800 text-sm">
+            <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Active Filters:</span>
             {debouncedSearch && (
-              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-orange-50 dark:bg-orange-950 text-[#FF6B00] dark:text-orange-400 border border-orange-200 dark:border-orange-900/60 text-[11px] font-semibold">
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-orange-50 dark:bg-orange-950 text-[#FF6B00] dark:text-orange-400 border border-orange-200 dark:border-orange-900/60 text-xs font-semibold">
                 Search: &quot;{debouncedSearch}&quot;
                 <button onClick={() => { setSearchQuery(''); setDebouncedSearch(''); }}><X className="w-3 h-3" /></button>
               </span>
             )}
-            <button onClick={handleClearFilters} className="text-[11px] font-bold text-rose-600 dark:text-rose-400 hover:underline ml-auto flex items-center gap-1">
+            <button onClick={handleClearFilters} className="text-xs font-bold text-rose-600 dark:text-rose-400 hover:underline ml-auto flex items-center gap-1">
               <RotateCcw className="w-3 h-3" /> Reset Filters
             </button>
           </div>
@@ -634,18 +651,18 @@ export default function MyDocumentsPage() {
       {loading ? (
         <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-12 sm:p-16 text-center space-y-3 shadow-xl">
           <Loader2 className="w-8 h-8 text-[#FF6B00] dark:text-orange-400 animate-spin mx-auto" />
-          <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Loading documents...</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">Loading documents...</p>
         </div>
       ) : documents.length === 0 ? (
         <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-12 sm:p-16 text-center space-y-4 shadow-xl">
           <Search className="w-12 h-12 text-slate-400 dark:text-slate-600 mx-auto" />
-          <h3 className="text-base font-bold text-slate-900 dark:text-white">No matching documents found.</h3>
-          <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
+          <h3 className="text-lg font-bold text-slate-900 dark:text-white">No matching documents found.</h3>
+          <p className="text-sm text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
             Try adjusting your search criteria or uploading a new file.
           </p>
           <Link
             href="/user/upload"
-            className="inline-flex items-center gap-2 text-xs font-bold text-white bg-[#FF6B00] hover:bg-[#E05E00] px-4 py-2 rounded-xl transition"
+            className="inline-flex items-center gap-2 text-sm font-bold text-white bg-[#FF6B00] hover:bg-[#E05E00] px-4 py-2 rounded-xl transition"
           >
             <Plus className="w-4 h-4" /> Upload New Document
           </Link>
@@ -658,7 +675,7 @@ export default function MyDocumentsPage() {
               className="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-[#FF6B00]/50 p-5 shadow-md hover:shadow-xl transition-all flex flex-col justify-between space-y-4 relative"
             >
               <div className="flex items-start justify-between gap-3">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center text-[#FF6B00] dark:text-orange-400 bg-orange-50 dark:bg-orange-950/60 border border-orange-200 dark:border-orange-900/60 font-bold text-xs">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center text-[#FF6B00] dark:text-orange-400 bg-orange-50 dark:bg-orange-950/60 border border-orange-200 dark:border-orange-900/60 font-bold text-sm">
                   {getFileTypeLabel(doc.file_name, doc.mime_type)}
                 </div>
 
@@ -679,7 +696,7 @@ export default function MyDocumentsPage() {
                     </button>
 
                     {actionMenuOpen === doc.id && (
-                      <div className="absolute right-0 top-8 z-40 w-48 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl py-1 text-xs text-slate-700 dark:text-slate-300 space-y-0.5 backdrop-blur-xl">
+                      <div className="absolute right-0 top-8 z-40 w-48 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl py-1 text-sm text-slate-700 dark:text-slate-300 space-y-0.5 backdrop-blur-xl">
                         <button onClick={() => handleOpenModal(doc, 'preview')} className="w-full px-3.5 py-2 text-left hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
                           <Eye className="w-3.5 h-3.5 text-[#FF6B00] dark:text-orange-400" /> Preview File
                         </button>
@@ -703,23 +720,23 @@ export default function MyDocumentsPage() {
               </div>
 
               <div className="space-y-1.5">
-                <h3 className="font-extrabold text-slate-900 dark:text-white text-sm group-hover:text-[#FF6B00] dark:group-hover:text-orange-400 transition-colors truncate">
+                <h3 className="font-extrabold text-slate-900 dark:text-white text-base group-hover:text-[#FF6B00] dark:group-hover:text-orange-400 transition-colors truncate">
                   {doc.title}
                 </h3>
-                <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-2 min-h-[32px]">
+                <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2 min-h-[32px]">
                   {doc.description || doc.file_name}
                 </p>
                 <div className="flex flex-wrap items-center gap-1.5 pt-1">
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold uppercase bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-bold uppercase bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
                     {getFileTypeLabel(doc.file_name, doc.mime_type)}
                   </span>
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-semibold bg-orange-50 dark:bg-orange-950/60 text-[#FF6B00] dark:text-orange-400 border border-orange-200 dark:border-orange-900/60">
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-semibold bg-orange-50 dark:bg-orange-950/60 text-[#FF6B00] dark:text-orange-400 border border-orange-200 dark:border-orange-900/60">
                     {doc.category_name || 'Category'}
                   </span>
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-slate-200 dark:border-slate-800/80 flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 font-mono">
+              <div className="pt-3 border-t border-slate-200 dark:border-slate-800/80 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 font-mono">
                 <span>{formatFileSize(doc.file_size)}</span>
                 <span>{formatDate(doc.created_at)}</span>
               </div>
@@ -731,7 +748,7 @@ export default function MyDocumentsPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-slate-50 dark:bg-[#0b1120] text-slate-500 dark:text-slate-400 text-[10px] uppercase tracking-wider font-bold border-b border-slate-200 dark:border-slate-800">
+                <tr className="bg-slate-50 dark:bg-[#0b1120] text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider font-bold border-b border-slate-200 dark:border-slate-800">
                   <th className="py-3.5 px-5">Document Title</th>
                   <th className="py-3.5 px-5">Type</th>
                   <th className="py-3.5 px-5">Category / Folder</th>
@@ -740,37 +757,37 @@ export default function MyDocumentsPage() {
                   <th className="py-3.5 px-5 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800/80 text-xs">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800/80 text-sm">
                 {documents.map((doc) => (
                   <tr key={doc.id} className="hover:bg-slate-50 dark:hover:bg-slate-900/60 transition-colors group">
                     <td className="py-4 px-5">
                       <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0 font-bold text-xs">
+                        <div className="w-9 h-9 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0 font-bold text-sm">
                           {getFileTypeLabel(doc.file_name, doc.mime_type)}
                         </div>
                         <div>
                           <span className="font-bold text-slate-900 dark:text-white block group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                             {doc.title}
                           </span>
-                          <span className="text-[11px] text-slate-500 dark:text-slate-400 block truncate">{doc.file_name}</span>
+                          <span className="text-xs text-slate-500 dark:text-slate-400 block truncate">{doc.file_name}</span>
                         </div>
                       </div>
                     </td>
                     <td className="py-4 px-5">
-                      <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">
+                      <span className="text-xs font-bold uppercase px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">
                         {getFileTypeLabel(doc.file_name, doc.mime_type)}
                       </span>
                     </td>
                     <td className="py-4 px-5">
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-sm font-semibold bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">
                         <span className="w-2 h-2 rounded-full" style={{ backgroundColor: doc.color && doc.color !== '#3B82F6' ? doc.color : '#FF6B00' }} />
                         {doc.category_name || 'Category'}
                       </span>
                     </td>
-                    <td className="py-4 px-5 text-slate-500 dark:text-slate-400 font-mono text-[11px]">
+                    <td className="py-4 px-5 text-slate-500 dark:text-slate-400 font-mono text-xs">
                       {formatFileSize(doc.file_size)}
                     </td>
-                    <td className="py-4 px-5 text-slate-400 text-xs">
+                    <td className="py-4 px-5 text-slate-400 text-sm">
                       {formatDate(doc.created_at)}
                     </td>
                     <td className="py-4 px-5 text-right">
@@ -804,18 +821,18 @@ export default function MyDocumentsPage() {
       {activeModal === 'rename' && selectedDoc && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
           <div className="bg-[#111827] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-800 space-y-4">
-            <h3 className="text-base font-bold text-white">Rename Document</h3>
+            <h3 className="text-lg font-bold text-white">Rename Document</h3>
             <form onSubmit={handleRenameSubmit} className="space-y-4">
               <input
                 type="text"
                 required
                 value={editTitle}
                 onChange={(e) => setEditTitle(e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-[#0b1120] border border-slate-800 rounded-xl text-white text-xs focus:outline-none focus:border-[#FF6B00]"
+                className="w-full px-3.5 py-2.5 bg-[#0b1120] border border-slate-800 rounded-xl text-white text-sm focus:outline-none focus:border-[#FF6B00]"
               />
               <div className="flex justify-end gap-3 pt-2">
-                <button type="button" onClick={() => setActiveModal(null)} className="px-4 py-2 text-xs font-semibold text-slate-400">Cancel</button>
-                <button type="submit" disabled={submitting} className="px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:brightness-110 rounded-xl shadow-lg shadow-orange-500/25">
+                <button type="button" onClick={() => setActiveModal(null)} className="px-4 py-2 text-sm font-semibold text-slate-400">Cancel</button>
+                <button type="submit" disabled={submitting} className="px-4 py-2 text-sm font-bold text-white bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:brightness-110 rounded-xl shadow-lg shadow-orange-500/25">
                   Save
                 </button>
               </div>
@@ -828,12 +845,12 @@ export default function MyDocumentsPage() {
       {activeModal === 'move' && selectedDoc && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
           <div className="bg-[#111827] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-800 space-y-4">
-            <h3 className="text-base font-bold text-white">Move Document to Folder</h3>
+            <h3 className="text-lg font-bold text-white">Move Document to Folder</h3>
             <form onSubmit={handleMoveSubmit} className="space-y-4">
               <select
                 value={editFolderId}
                 onChange={(e) => setEditFolderId(e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-[#0b1120] border border-slate-800 rounded-xl text-white text-xs focus:outline-none focus:border-[#FF6B00]"
+                className="w-full px-3.5 py-2.5 bg-[#0b1120] border border-slate-800 rounded-xl text-white text-sm focus:outline-none focus:border-[#FF6B00]"
               >
                 <option value="">(No specific folder)</option>
                 {folders.map(f => (
@@ -841,8 +858,8 @@ export default function MyDocumentsPage() {
                 ))}
               </select>
               <div className="flex justify-end gap-3 pt-2">
-                <button type="button" onClick={() => setActiveModal(null)} className="px-4 py-2 text-xs font-semibold text-slate-400">Cancel</button>
-                <button type="submit" disabled={submitting} className="px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:brightness-110 rounded-xl shadow-lg shadow-orange-500/25">
+                <button type="button" onClick={() => setActiveModal(null)} className="px-4 py-2 text-sm font-semibold text-slate-400">Cancel</button>
+                <button type="submit" disabled={submitting} className="px-4 py-2 text-sm font-bold text-white bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:brightness-110 rounded-xl shadow-lg shadow-orange-500/25">
                   Move Document
                 </button>
               </div>
@@ -855,13 +872,13 @@ export default function MyDocumentsPage() {
       {activeModal === 'delete' && selectedDoc && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
           <div className="bg-[#111827] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-800 space-y-4">
-            <h3 className="text-base font-bold text-white">Move to Recycle Bin?</h3>
-            <p className="text-xs text-slate-400">
+            <h3 className="text-lg font-bold text-white">Move to Recycle Bin?</h3>
+            <p className="text-sm text-slate-400">
               Are you sure you want to move <strong className="text-white">&quot;{selectedDoc.title}&quot;</strong> to the Recycle Bin? You can restore it anytime.
             </p>
             <div className="flex justify-end gap-3 pt-2">
-              <button type="button" onClick={() => setActiveModal(null)} className="px-4 py-2 text-xs font-semibold text-slate-400">Cancel</button>
-              <button onClick={handleDeleteSubmit} disabled={submitting} className="px-4 py-2 text-xs font-bold text-white bg-rose-600 hover:bg-rose-500 rounded-xl shadow-lg shadow-rose-600/30">
+              <button type="button" onClick={() => setActiveModal(null)} className="px-4 py-2 text-sm font-semibold text-slate-400">Cancel</button>
+              <button onClick={handleDeleteSubmit} disabled={submitting} className="px-4 py-2 text-sm font-bold text-white bg-rose-600 hover:bg-rose-500 rounded-xl shadow-lg shadow-rose-600/30">
                 Move to Bin
               </button>
             </div>

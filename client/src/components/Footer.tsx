@@ -45,12 +45,12 @@ export default function Footer() {
               </div>
               <span className="font-black text-lg text-white tracking-tight">{footerInfo.companyName || 'DocVault'}</span>
             </div>
-            <p className="text-xs text-zinc-400 leading-relaxed">
+            <p className="text-sm text-zinc-400 leading-relaxed">
               A secure, central document management system designed to organize personal records, academic credentials, resumes, and client requirements in one organized vault.
             </p>
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#121215] border border-zinc-800 shadow-sm w-fit whitespace-nowrap mt-1">
               <Lock className="w-3.5 h-3.5 text-emerald-500" />
-              <span className="text-[11px] font-medium text-zinc-300 tracking-wide">
+              <span className="text-xs font-medium text-zinc-300 tracking-wide">
                 AES-256 Encrypted <span className="text-zinc-600 mx-1">&bull;</span> Privacy First
               </span>
             </div>
@@ -58,8 +58,8 @@ export default function Footer() {
 
           {/* Contact Details */}
           <div>
-            <h4 className="text-xs font-black text-white uppercase tracking-wider mb-4">Contact Info</h4>
-            <ul className="space-y-3 text-xs">
+            <h4 className="text-sm font-black text-white uppercase tracking-wider mb-4">Contact Info</h4>
+            <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-2.5 text-zinc-300">
                 <MapPin className="w-4 h-4 text-[#FF6B00] shrink-0 mt-0.5" />
                 <span>{footerInfo.address}</span>
@@ -77,8 +77,8 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-xs font-black text-white uppercase tracking-wider mb-4">Quick Links</h4>
-            <ul className="space-y-2.5 text-xs">
+            <h4 className="text-sm font-black text-white uppercase tracking-wider mb-4">Quick Links</h4>
+            <ul className="space-y-2.5 text-sm">
               <li>
                 <Link href="/" className="hover:text-[#FF6B00] transition-colors">Home</Link>
               </li>
@@ -96,8 +96,8 @@ export default function Footer() {
 
           {/* Social Media Links */}
           <div>
-            <h4 className="text-xs font-black text-white uppercase tracking-wider mb-4">Connect With Us</h4>
-            <p className="text-xs text-zinc-400 mb-4">
+            <h4 className="text-sm font-black text-white uppercase tracking-wider mb-4">Connect With Us</h4>
+            <p className="text-sm text-zinc-400 mb-4">
               Follow our official channels for platform updates, security releases, and news.
             </p>
             <div className="flex flex-wrap items-center gap-2">

@@ -66,16 +66,16 @@ export default function AdminCategoriesPage() {
     } catch { /* fallback below */ }
 
     const initialCats = [
-      { id: 1, category_name: 'Personal Identity & Passports', description: 'National IDs, Passports, Visas, Driver Licenses, Birth Certificates', color: '#FF6B00', icon_name: 'UserCheck', document_count: 5 },
-      { id: 2, category_name: 'Academic Records & Diplomas', description: 'Degrees, Transcripts, Semester Marksheets, Diplomas, Board Certificates', color: '#10B981', icon_name: 'GraduationCap', document_count: 6 },
-      { id: 3, category_name: 'Career & Employment Assets', description: 'Resume versions, CVs, Offer & Relieving Letters, Pay Slips, Portfolios', color: '#F59E0B', icon_name: 'FileText', document_count: 4 },
-      { id: 4, category_name: 'Projects & Technical Specs', description: 'BRDs, Architecture Diagrams, Code Specs, Technical Proposals', color: '#8B5CF6', icon_name: 'FolderGit2', document_count: 3 },
-      { id: 5, category_name: 'Certificates & Achievements', description: 'Professional Certifications, Cloud Credentials, Training Badges', color: '#EC4899', icon_name: 'Award', document_count: 2 },
-      { id: 6, category_name: 'Client Requirements & Contracts', description: 'Client BRDs, SOW Agreements, NDAs, Service Contracts', color: '#06B6D4', icon_name: 'Briefcase', document_count: 3 },
-      { id: 7, category_name: 'Bills, Taxes & Invoices', description: 'Tax Return Filings, Utility Invoices, Bank Statements, Subscriptions', color: '#EF4444', icon_name: 'Receipt', document_count: 4 },
-      { id: 8, category_name: 'Legal & Property Documents', description: 'Property Deeds, Lease Agreements, Insurance Policies, Legal Contracts', color: '#6366F1', icon_name: 'ShieldCheck', document_count: 2 },
-      { id: 9, category_name: 'Medical & Health Records', description: 'Vaccination Certificates, Health Insurance Policies, Diagnostic Reports', color: '#14B8A6', icon_name: 'Bookmark', document_count: 2 },
-      { id: 10, category_name: 'General & Uncategorized', description: 'Miscellaneous notes, temporary files & quick uploads', color: '#64748B', icon_name: 'Layers', document_count: 1 }
+      { id: 1, category_name: 'Personal Identity & Passports', description: 'National IDs, Passports, Visas, Driver Licenses, Birth Certificates', color: '#FF6B00', icon_name: 'UserCheck', document_count: 5, created_at: '2026-01-10T10:00:00Z' },
+      { id: 2, category_name: 'Academic Records & Diplomas', description: 'Degrees, Transcripts, Semester Marksheets, Diplomas, Board Certificates', color: '#10B981', icon_name: 'GraduationCap', document_count: 6, created_at: '2026-01-12T10:00:00Z' },
+      { id: 3, category_name: 'Career & Employment Assets', description: 'Resume versions, CVs, Offer & Relieving Letters, Pay Slips, Portfolios', color: '#F59E0B', icon_name: 'FileText', document_count: 4, created_at: '2026-01-15T10:00:00Z' },
+      { id: 4, category_name: 'Projects & Technical Specs', description: 'BRDs, Architecture Diagrams, Code Specs, Technical Proposals', color: '#8B5CF6', icon_name: 'FolderGit2', document_count: 3, created_at: '2026-01-18T10:00:00Z' },
+      { id: 5, category_name: 'Certificates & Achievements', description: 'Professional Certifications, Cloud Credentials, Training Badges', color: '#EC4899', icon_name: 'Award', document_count: 2, created_at: '2026-01-20T10:00:00Z' },
+      { id: 6, category_name: 'Client Requirements & Contracts', description: 'Client BRDs, SOW Agreements, NDAs, Service Contracts', color: '#06B6D4', icon_name: 'Briefcase', document_count: 3, created_at: '2026-01-22T10:00:00Z' },
+      { id: 7, category_name: 'Bills, Taxes & Invoices', description: 'Tax Return Filings, Utility Invoices, Bank Statements, Subscriptions', color: '#EF4444', icon_name: 'Receipt', document_count: 4, created_at: '2026-01-25T10:00:00Z' },
+      { id: 8, category_name: 'Legal & Property Documents', description: 'Property Deeds, Lease Agreements, Insurance Policies, Legal Contracts', color: '#6366F1', icon_name: 'ShieldCheck', document_count: 2, created_at: '2026-01-26T10:00:00Z' },
+      { id: 9, category_name: 'Medical & Health Records', description: 'Vaccination Certificates, Health Insurance Policies, Diagnostic Reports', color: '#14B8A6', icon_name: 'Bookmark', document_count: 2, created_at: '2026-01-27T10:00:00Z' },
+      { id: 10, category_name: 'General & Uncategorized', description: 'Miscellaneous notes, temporary files & quick uploads', color: '#64748B', icon_name: 'Layers', document_count: 1, created_at: '2026-01-28T10:00:00Z' }
     ];
 
     saveCatsState(initialCats);

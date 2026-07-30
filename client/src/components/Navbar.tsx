@@ -84,7 +84,7 @@ export default function Navbar() {
                 key={item.id}
                 href={item.url}
                 onClick={(e) => scrollToSection(e, item.url)}
-                className="nav-link-animated text-xs font-bold text-slate-700 hover:text-[#FF6B00] transition-colors py-1"
+                className="nav-link-animated text-sm font-bold text-slate-700 hover:text-[#FF6B00] transition-colors py-1"
               >
                 {item.name}
               </a>
@@ -95,7 +95,7 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-3">
             <Link
               href="/login"
-              className="inline-flex items-center justify-center gap-2 h-9 sm:h-10 px-5 py-2 text-xs font-bold text-slate-800 bg-slate-100 hover:bg-slate-200 border border-slate-200 hover:border-[#FF6B00]/40 rounded-full transition-all duration-200 hover:scale-105 active:scale-95 shadow-xs"
+              className="inline-flex items-center justify-center gap-2 h-9 sm:h-10 px-5 py-2 text-sm font-bold text-slate-800 bg-slate-100 hover:bg-slate-200 border border-slate-200 hover:border-[#FF6B00]/40 rounded-full transition-all duration-200 hover:scale-105 active:scale-95 shadow-xs"
             >
               <LogIn className="w-3.5 h-3.5 text-[#FF6B00]" />
               <span>Sign In</span>
@@ -103,7 +103,7 @@ export default function Navbar() {
 
             <Link
               href="/register"
-              className="inline-flex items-center justify-center gap-2 h-9 sm:h-10 px-5 py-2 text-xs font-black text-white bg-gradient-to-r from-[#FF6B00] via-[#F97316] to-[#FF8A00] hover:brightness-110 rounded-full shadow-md shadow-orange-500/25 border border-orange-400/40 transition-all duration-200 hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-orange-500/40"
+              className="inline-flex items-center justify-center gap-2 h-9 sm:h-10 px-5 py-2 text-sm font-black text-white bg-gradient-to-r from-[#FF6B00] via-[#F97316] to-[#FF8A00] hover:brightness-110 rounded-full shadow-md shadow-orange-500/25 border border-orange-400/40 transition-all duration-200 hover:scale-105 active:scale-95 hover:shadow-lg hover:shadow-orange-500/40"
             >
               <span>Get Started</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -132,7 +132,7 @@ export default function Navbar() {
                 key={item.id}
                 href={item.url}
                 onClick={(e) => scrollToSection(e, item.url)}
-                className="px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-800 hover:text-[#FF6B00] hover:bg-orange-50/50 transition-colors"
+                className="px-3.5 py-2.5 rounded-xl text-sm font-bold text-slate-800 hover:text-[#FF6B00] hover:bg-orange-50/50 transition-colors"
               >
                 {item.name}
               </a>

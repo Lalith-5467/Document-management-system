@@ -544,11 +544,11 @@ export default function UploadPage() {
   const isFormValid = fileCheck.isValid && titleCheck.isValid && descCheck.isValid && expiryCheck.isValid;
 
   return (
-    <div className="max-w-4xl mx-auto space-y-7 pb-16 font-auth-body">
+    <div className="max-w-6xl mx-auto space-y-7 pb-16 font-auth-body">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800/80 pb-5">
         <div>
-          <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 mb-1 font-medium font-auth-body">
+          <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-1 font-medium font-auth-body">
             <Link href="/user" className="hover:text-[#FF6B00] dark:hover:text-orange-400 transition flex items-center gap-1">
               <ArrowLeft className="w-3.5 h-3.5" /> Workspace
             </Link>
@@ -558,39 +558,43 @@ export default function UploadPage() {
           <h1 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-2.5 font-auth-heading">
             <Upload className="w-6 h-6 text-[#FF6B00] dark:text-orange-400" /> Upload New Document
           </h1>
-          <p className="text-xs text-slate-600 dark:text-slate-400 font-medium font-auth-body">
+          <p className="text-sm text-slate-600 dark:text-slate-400 font-medium font-auth-body">
             Store and organize your important files securely for future reference.
           </p>
         </div>
 
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex flex-wrap items-center gap-3 shrink-0">
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:brightness-110 rounded-xl shadow-lg shadow-orange-500/25 transition-all flex items-center gap-1.5 active-press font-auth-heading"
+            className="group relative overflow-hidden px-5 py-2.5 text-sm font-black text-white bg-gradient-to-r from-[#FF6B00] via-[#F97316] to-[#EA580C] hover:scale-105 rounded-xl shadow-[0_8px_25px_rgba(255,107,0,0.3)] hover:shadow-[0_12px_35px_rgba(255,107,0,0.5)] transition-all duration-300 flex items-center gap-2 active-press font-auth-heading border border-orange-400/50"
           >
-            <Upload className="w-3.5 h-3.5" /> Upload File
+            <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-1000 ease-in-out" />
+            <Upload className="w-4 h-4 group-hover:-translate-y-1 transition-transform duration-300 relative z-10" /> 
+            <span className="relative z-10 drop-shadow-md tracking-wide">Upload File</span>
           </button>
           <button
             type="button"
             onClick={() => setCreateFolderModalOpen(true)}
-            className="px-4 py-2 text-xs font-bold text-slate-700 dark:text-slate-200 bg-white dark:bg-[#111827] hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-800 transition-all flex items-center gap-1.5 active-press shadow-sm font-auth-body"
+            className="group relative overflow-hidden px-5 py-2.5 text-sm font-extrabold text-slate-800 dark:text-white bg-white dark:bg-slate-900 hover:scale-105 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-[#FF6B00]/40 dark:hover:border-orange-500/50 shadow-md hover:shadow-[0_8px_25px_rgba(0,0,0,0.08)] transition-all duration-300 flex items-center gap-2 active-press font-auth-body"
           >
-            <FolderPlus className="w-3.5 h-3.5 text-[#FF6B00] dark:text-orange-400" /> Create Folder
+            <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-orange-50/80 dark:via-slate-800/80 to-transparent transition-transform duration-1000 ease-in-out" />
+            <FolderPlus className="w-4 h-4 text-[#FF6B00] dark:text-orange-400 group-hover:rotate-12 group-hover:scale-110 transition-transform duration-300 relative z-10" /> 
+            <span className="relative z-10">Create Folder</span>
           </button>
         </div>
       </div>
 
       {/* Error & Success Feedback Alerts */}
       {errorMessage && (
-        <div className="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/70 border border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-xs flex items-center gap-3 animate-fade-in font-auth-body">
+        <div className="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/70 border border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-sm flex items-center gap-3 animate-fade-in font-auth-body">
           <AlertCircle className="w-5 h-5 text-rose-500 dark:text-rose-400 shrink-0" />
           <span className="font-semibold">{errorMessage}</span>
         </div>
       )}
 
       {successMessage && (
-        <div className="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/70 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 text-xs flex items-center gap-3 animate-fade-in font-auth-body">
+        <div className="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/70 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 text-sm flex items-center gap-3 animate-fade-in font-auth-body">
           <CheckCircle2 className="w-5 h-5 text-emerald-500 dark:text-emerald-400 shrink-0" />
           <span className="font-semibold">{successMessage} Redirecting to My Documents...</span>
         </div>
@@ -601,7 +605,7 @@ export default function UploadPage() {
         
         {/* DRAG & DROP UPLOAD ZONE */}
         <div ref={dropZoneRef}>
-          <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-2 font-auth-label">
+          <label className="block text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-2 font-auth-label">
             File Attachment <span className="text-red-500">*</span>
           </label>
           
@@ -628,20 +632,20 @@ export default function UploadPage() {
             {selectedFile ? (
               <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-white dark:bg-[#0b1120] border border-emerald-200 dark:border-emerald-500/40 text-left font-auth-body">
                 <div className="flex items-center gap-3.5 overflow-hidden w-full sm:w-auto">
-                  <div className="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-600/20 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/30 flex items-center justify-center font-black text-xs shrink-0 font-auth-heading">
+                  <div className="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-600/20 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/30 flex items-center justify-center font-black text-sm shrink-0 font-auth-heading">
                     {getFileExtension(selectedFile.name)}
                   </div>
                   <div className="truncate">
-                    <p className="text-xs font-bold text-slate-900 dark:text-white truncate font-auth-heading">{selectedFile.name}</p>
-                    <p className="text-[11px] text-slate-500 dark:text-slate-400 font-auth-label mt-0.5">
+                    <p className="text-sm font-bold text-slate-900 dark:text-white truncate font-auth-heading">{selectedFile.name}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 font-auth-label mt-0.5">
                       {formatFileSize(selectedFile.size)} • {selectedFile.type || 'Document'}
                     </p>
-                    <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 mt-1 font-auth-body">
+                    <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-600 dark:text-emerald-400 mt-1 font-auth-body">
                       <Check className="w-3 h-3" /> File Selected & Validated
                     </span>
 
                     {suggestedCategory && (
-                      <div className="mt-1.5 px-2.5 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-[10px] font-extrabold text-emerald-700 dark:text-emerald-300 flex items-center gap-1.5 animate-fade-in font-auth-body">
+                      <div className="mt-1.5 px-2.5 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-xs font-extrabold text-emerald-700 dark:text-emerald-300 flex items-center gap-1.5 animate-fade-in font-auth-body">
                         <Sparkles className="w-3 h-3 text-emerald-500 shrink-0" />
                         <span>Suggested Category: {suggestedCategory}</span>
                       </div>
@@ -657,7 +661,7 @@ export default function UploadPage() {
                         e.stopPropagation();
                         setPreviewModalOpen(true);
                       }}
-                      className="px-3 py-1.5 text-xs font-bold text-[#FF6B00] dark:text-orange-400 hover:text-orange-700 dark:hover:text-white bg-orange-50 dark:bg-orange-500/10 border border-orange-200 dark:border-orange-500/30 rounded-xl transition flex items-center gap-1 font-auth-body"
+                      className="px-3 py-1.5 text-sm font-bold text-[#FF6B00] dark:text-orange-400 hover:text-orange-700 dark:hover:text-white bg-orange-50 dark:bg-orange-500/10 border border-orange-200 dark:border-orange-500/30 rounded-xl transition flex items-center gap-1 font-auth-body"
                     >
                       <Eye className="w-3.5 h-3.5" /> Preview
                     </button>
@@ -682,14 +686,14 @@ export default function UploadPage() {
                   <Upload className="w-7 h-7" />
                 </div>
                 <div>
-                  <p className="text-xs font-extrabold text-slate-900 dark:text-white font-auth-heading">
+                  <p className="text-sm font-extrabold text-slate-900 dark:text-white font-auth-heading">
                     Drag & Drop your document here <span className="text-slate-500 dark:text-slate-400 font-normal">or</span> <span className="text-[#FF6B00] dark:text-orange-400 underline">Browse Files</span>
                   </p>
-                  <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 font-medium font-auth-body">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium font-auth-body">
                     Supported: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, PNG, JPG, JPEG, ZIP
                   </p>
                 </div>
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-[10px] font-bold text-slate-600 dark:text-slate-400 font-auth-label">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-600 dark:text-slate-400 font-auth-label">
                   <HardDrive className="w-3 h-3 text-[#FF6B00] dark:text-orange-400" /> Maximum File Size: 25 MB
                 </div>
               </div>
@@ -698,7 +702,7 @@ export default function UploadPage() {
 
           {/* Inline File Attachment Error */}
           {fileTouched && fileError && (
-            <p className="text-red-500 text-[11px] font-semibold tracking-wide flex items-center gap-1.5 mt-1.5 animate-fade-in font-auth-body">
+            <p className="text-red-500 text-xs font-semibold tracking-wide flex items-center gap-1.5 mt-1.5 animate-fade-in font-auth-body">
               <AlertCircle className="w-3.5 h-3.5 shrink-0" />
               <span>{fileError}</span>
             </p>
@@ -709,7 +713,7 @@ export default function UploadPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 font-auth-body">
           {/* CATEGORY SEARCHABLE DROPDOWN */}
           <div className="relative">
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-2 font-auth-label">
+            <label className="block text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-2 font-auth-label">
               Category Domain <span className="text-red-500">*</span>
             </label>
             
@@ -719,7 +723,7 @@ export default function UploadPage() {
                 setCatOpen(!catOpen);
                 setFolderOpen(false);
               }}
-              className="w-full px-4 py-3 bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 focus:border-[#FF6B00] focus:ring-2 focus:ring-orange-500/20 rounded-2xl text-xs text-slate-900 dark:text-white flex items-center justify-between font-semibold transition-all font-auth-body"
+              className="w-full px-4 py-3 bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 focus:border-[#FF6B00] focus:ring-2 focus:ring-orange-500/20 rounded-2xl text-sm text-slate-900 dark:text-white flex items-center justify-between font-semibold transition-all font-auth-body"
             >
               <span className="flex items-center gap-2 truncate">
                 <span>{categories.find(c => String(c.id) === String(categoryId))?.icon || '🏷️'}</span>
@@ -737,7 +741,7 @@ export default function UploadPage() {
                     placeholder="Search category..."
                     value={catSearch}
                     onChange={(e) => setCatSearch(e.target.value)}
-                    className="w-full pl-8 pr-3 py-1.5 text-xs bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none font-auth-body"
+                    className="w-full pl-8 pr-3 py-1.5 text-sm bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none font-auth-body"
                   />
                 </div>
 
@@ -754,7 +758,7 @@ export default function UploadPage() {
                           setCategoryName(cat.category_name || cat.name);
                           setCatOpen(false);
                         }}
-                        className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition font-auth-body ${
+                        className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm font-semibold transition font-auth-body ${
                           isSelected ? 'bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white font-auth-heading' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
                         }`}
                       >
@@ -774,13 +778,13 @@ export default function UploadPage() {
           {/* FOLDER SEARCHABLE DROPDOWN */}
           <div className="relative">
             <div className="flex items-center justify-between mb-2 font-auth-body">
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 font-auth-label">
+              <label className="block text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 font-auth-label">
                 Target Folder
               </label>
               <button
                 type="button"
                 onClick={() => setCreateFolderModalOpen(true)}
-                className="text-[11px] font-bold text-[#FF6B00] dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 flex items-center gap-1 font-auth-body"
+                className="text-xs font-bold text-[#FF6B00] dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 flex items-center gap-1 font-auth-body"
               >
                 <Plus className="w-3 h-3" /> New Folder
               </button>
@@ -792,7 +796,7 @@ export default function UploadPage() {
                 setFolderOpen(!folderOpen);
                 setCatOpen(false);
               }}
-              className="w-full px-4 py-3 bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 focus:border-[#FF6B00] focus:ring-2 focus:ring-orange-500/20 rounded-2xl text-xs text-slate-900 dark:text-white flex items-center justify-between font-semibold transition-all font-auth-body"
+              className="w-full px-4 py-3 bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 focus:border-[#FF6B00] focus:ring-2 focus:ring-orange-500/20 rounded-2xl text-sm text-slate-900 dark:text-white flex items-center justify-between font-semibold transition-all font-auth-body"
             >
               <span className="flex items-center gap-2 truncate">
                 <FolderClosed className="w-4 h-4 text-[#FF6B00] dark:text-orange-400 shrink-0" />
@@ -810,7 +814,7 @@ export default function UploadPage() {
                     placeholder="Search folder..."
                     value={folderSearch}
                     onChange={(e) => setFolderSearch(e.target.value)}
-                    className="w-full pl-8 pr-3 py-1.5 text-xs bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none font-auth-body"
+                    className="w-full pl-8 pr-3 py-1.5 text-sm bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none font-auth-body"
                   />
                 </div>
 
@@ -821,7 +825,7 @@ export default function UploadPage() {
                     setFolderName('(No specific folder)');
                     setFolderOpen(false);
                   }}
-                  className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition font-auth-body ${
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm font-semibold transition font-auth-body ${
                     !folderId ? 'bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white font-auth-heading' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
                   }`}
                 >
@@ -842,7 +846,7 @@ export default function UploadPage() {
                           setFolderName(f.folder_name);
                           setFolderOpen(false);
                         }}
-                        className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition font-auth-body ${
+                        className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm font-semibold transition font-auth-body ${
                           isSelected ? 'bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white font-auth-heading' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
                         }`}
                       >
@@ -861,7 +865,7 @@ export default function UploadPage() {
                       setFolderOpen(false);
                       setCreateFolderModalOpen(true);
                     }}
-                    className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold text-[#FF6B00] dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-600/10 transition mt-1 font-auth-body"
+                    className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-bold text-[#FF6B00] dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-600/10 transition mt-1 font-auth-body"
                   >
                     <Plus className="w-3.5 h-3.5" /> Create New Folder
                   </button>
@@ -874,10 +878,10 @@ export default function UploadPage() {
         {/* DOCUMENT TITLE */}
         <div>
           <div className="flex items-center justify-between mb-2 font-auth-body">
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 font-auth-label">
+            <label className="block text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 font-auth-label">
               Document Title <span className="text-red-500">*</span>
             </label>
-            <span className="text-[11px] font-auth-label text-slate-500">
+            <span className="text-xs font-auth-label text-slate-500">
               {title.length}/100
             </span>
           </div>
@@ -889,7 +893,7 @@ export default function UploadPage() {
               onChange={(e) => handleTitleChange(e.target.value)}
               onBlur={handleTitleBlur}
               placeholder="e.g., Master_Degree_Transcript_2026"
-              className={`w-full px-4 py-3 bg-slate-50 dark:bg-[#0b1120] border rounded-2xl text-xs text-slate-900 dark:text-white font-semibold transition-all duration-300 placeholder:text-slate-400 dark:placeholder:text-slate-600 font-auth-body ${getFieldStatusClasses(titleTouched, titleCheck.isValid, titleError)}`}
+              className={`w-full px-4 py-3 bg-slate-50 dark:bg-[#0b1120] border rounded-2xl text-sm text-slate-900 dark:text-white font-semibold transition-all duration-300 placeholder:text-slate-400 dark:placeholder:text-slate-600 font-auth-body ${getFieldStatusClasses(titleTouched, titleCheck.isValid, titleError)}`}
             />
             {titleTouched && titleCheck.isValid && !titleError && (
               <CheckCircle2 className="w-4 h-4 absolute right-3.5 top-1/2 -translate-y-1/2 text-emerald-500" />
@@ -897,7 +901,7 @@ export default function UploadPage() {
           </div>
           {/* Inline Title Error */}
           {titleTouched && titleError && (
-            <p className="text-red-500 text-[11px] font-semibold tracking-wide flex items-center gap-1.5 mt-1.5 animate-fade-in font-auth-body">
+            <p className="text-red-500 text-xs font-semibold tracking-wide flex items-center gap-1.5 mt-1.5 animate-fade-in font-auth-body">
               <AlertCircle className="w-3.5 h-3.5 shrink-0" />
               <span>{titleError}</span>
             </p>
@@ -907,10 +911,10 @@ export default function UploadPage() {
         {/* DESCRIPTION */}
         <div>
           <div className="flex items-center justify-between mb-2 font-auth-body">
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 font-auth-label">
+            <label className="block text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 font-auth-label">
               Description / Reference Notes <span className="text-slate-400 font-normal lowercase font-sans">(optional)</span>
             </label>
-            <span className="text-[11px] font-auth-label text-slate-500">
+            <span className="text-xs font-auth-label text-slate-500">
               {description.length}/500
             </span>
           </div>
@@ -921,11 +925,11 @@ export default function UploadPage() {
             onChange={(e) => handleDescChange(e.target.value)}
             onBlur={handleDescBlur}
             placeholder="Additional details, scope, references or context for future retrieval..."
-            className={`w-full px-4 py-3 bg-slate-50 dark:bg-[#0b1120] border rounded-2xl text-xs text-slate-900 dark:text-white font-medium transition-all duration-300 placeholder:text-slate-400 dark:placeholder:text-slate-600 resize-none font-auth-body ${getFieldStatusClasses(descTouched, descCheck.isValid, descError)}`}
+            className={`w-full px-4 py-3 bg-slate-50 dark:bg-[#0b1120] border rounded-2xl text-sm text-slate-900 dark:text-white font-medium transition-all duration-300 placeholder:text-slate-400 dark:placeholder:text-slate-600 resize-none font-auth-body ${getFieldStatusClasses(descTouched, descCheck.isValid, descError)}`}
           />
           {/* Inline Description Error */}
           {descTouched && descError && (
-            <p className="text-red-500 text-[11px] font-semibold tracking-wide flex items-center gap-1.5 mt-1.5 animate-fade-in font-auth-body">
+            <p className="text-red-500 text-xs font-semibold tracking-wide flex items-center gap-1.5 mt-1.5 animate-fade-in font-auth-body">
               <AlertCircle className="w-3.5 h-3.5 shrink-0" />
               <span>{descError}</span>
             </p>
@@ -948,19 +952,19 @@ export default function UploadPage() {
                 }`}
               />
             </button>
-            <span className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5 font-auth-heading">
+            <span className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-1.5 font-auth-heading">
               <Star className={`w-4 h-4 ${isFavorite ? 'fill-amber-400 text-amber-400' : 'text-slate-400'}`} />
               ⭐ Mark as Favorite
             </span>
           </div>
-          <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest font-auth-label">
+          <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest font-auth-label">
             {isFavorite ? 'Starred' : 'Standard'}
           </span>
         </div>
 
         {/* EXPIRY DATE PICKER (MANDATORY) */}
         <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-2 font-auth-body">
-          <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5 font-auth-label">
+          <label className="block text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5 font-auth-label">
             <Clock className="w-4 h-4 text-amber-500" /> Expiry Date <span className="text-red-500">*</span>
           </label>
           <div className="relative font-auth-body">
@@ -970,18 +974,18 @@ export default function UploadPage() {
               value={expiryDate}
               onChange={(e) => handleExpiryChange(e.target.value)}
               onBlur={handleExpiryBlur}
-              className={`w-full px-4 py-2.5 bg-white dark:bg-slate-900 border rounded-xl text-xs text-slate-900 dark:text-white font-semibold focus:outline-none transition-all duration-300 font-auth-body ${getFieldStatusClasses(expiryTouched, expiryCheck.isValid, expiryError)}`}
+              className={`w-full px-4 py-2.5 bg-white dark:bg-slate-900 border rounded-xl text-sm text-slate-900 dark:text-white font-semibold focus:outline-none transition-all duration-300 font-auth-body ${getFieldStatusClasses(expiryTouched, expiryCheck.isValid, expiryError)}`}
             />
             {expiryTouched && expiryDate && expiryCheck.isValid && !expiryError && (
               <CheckCircle2 className="w-4 h-4 absolute right-3.5 top-1/2 -translate-y-1/2 text-emerald-500" />
             )}
           </div>
-          <p className="text-[10px] text-slate-500 dark:text-slate-400 font-auth-body">
+          <p className="text-xs text-slate-500 dark:text-slate-400 font-auth-body">
             Mandatory date field for record tracking. For Passports, Driving Licenses, Policies, Visas, Contracts. Triggers expiration reminders.
           </p>
           {/* Inline Expiry Error */}
           {expiryTouched && expiryError && (
-            <p className="text-red-500 text-[11px] font-semibold tracking-wide flex items-center gap-1.5 mt-1.5 animate-fade-in font-auth-body">
+            <p className="text-red-500 text-xs font-semibold tracking-wide flex items-center gap-1.5 mt-1.5 animate-fade-in font-auth-body">
               <AlertCircle className="w-3.5 h-3.5 shrink-0" />
               <span>{expiryError}</span>
             </p>
@@ -996,8 +1000,8 @@ export default function UploadPage() {
                 🔒
               </span>
               <div>
-                <p className="text-xs font-bold text-slate-900 dark:text-white font-auth-heading">Protect document with a password</p>
-                <p className="text-[10px] text-slate-500 dark:text-slate-400 font-auth-body">Requires entering a password before viewing or downloading</p>
+                <p className="text-sm font-bold text-slate-900 dark:text-white font-auth-heading">Protect document with a password</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 font-auth-body">Requires entering a password before viewing or downloading</p>
               </div>
             </div>
 
@@ -1019,7 +1023,7 @@ export default function UploadPage() {
           {isPasswordProtected && (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-slate-200 dark:border-slate-800 animate-fade-in font-auth-body">
               <div className="space-y-1">
-                <label className="text-[10px] font-bold uppercase text-slate-500 font-auth-label">Master Password *</label>
+                <label className="text-xs font-bold uppercase text-slate-500 font-auth-label">Master Password *</label>
                 <input
                   ref={passwordInputRef}
                   type="password"
@@ -1027,10 +1031,10 @@ export default function UploadPage() {
                   onChange={(e) => handlePasswordChange(e.target.value)}
                   onBlur={() => setPasswordTouched(true)}
                   placeholder="••••••••"
-                  className={`w-full px-3.5 py-2 rounded-xl bg-white dark:bg-slate-900 border text-xs font-semibold text-slate-900 dark:text-white focus:outline-none transition-all duration-300 font-auth-body ${getFieldStatusClasses(passwordTouched, !passwordError && password.length >= 6, passwordError)}`}
+                  className={`w-full px-3.5 py-2 rounded-xl bg-white dark:bg-slate-900 border text-sm font-semibold text-slate-900 dark:text-white focus:outline-none transition-all duration-300 font-auth-body ${getFieldStatusClasses(passwordTouched, !passwordError && password.length >= 6, passwordError)}`}
                 />
                 {passwordTouched && passwordError && (
-                  <p className="text-red-500 text-[10px] font-semibold tracking-wide flex items-center gap-1 mt-1 animate-fade-in font-auth-body">
+                  <p className="text-red-500 text-xs font-semibold tracking-wide flex items-center gap-1 mt-1 animate-fade-in font-auth-body">
                     <AlertCircle className="w-3 h-3 shrink-0" />
                     <span>{passwordError}</span>
                   </p>
@@ -1038,7 +1042,7 @@ export default function UploadPage() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-[10px] font-bold uppercase text-slate-500 font-auth-label">Confirm Password *</label>
+                <label className="text-xs font-bold uppercase text-slate-500 font-auth-label">Confirm Password *</label>
                 <input
                   ref={confirmPasswordInputRef}
                   type="password"
@@ -1046,10 +1050,10 @@ export default function UploadPage() {
                   onChange={(e) => handleConfirmPasswordChange(e.target.value)}
                   onBlur={() => setConfirmPasswordTouched(true)}
                   placeholder="••••••••"
-                  className={`w-full px-3.5 py-2 rounded-xl bg-white dark:bg-slate-900 border text-xs font-semibold text-slate-900 dark:text-white focus:outline-none transition-all duration-300 font-auth-body ${getFieldStatusClasses(confirmPasswordTouched, !confirmPasswordError && confirmPassword === password && confirmPassword.length > 0, confirmPasswordError)}`}
+                  className={`w-full px-3.5 py-2 rounded-xl bg-white dark:bg-slate-900 border text-sm font-semibold text-slate-900 dark:text-white focus:outline-none transition-all duration-300 font-auth-body ${getFieldStatusClasses(confirmPasswordTouched, !confirmPasswordError && confirmPassword === password && confirmPassword.length > 0, confirmPasswordError)}`}
                 />
                 {confirmPasswordTouched && confirmPasswordError && (
-                  <p className="text-red-500 text-[10px] font-semibold tracking-wide flex items-center gap-1 mt-1 animate-fade-in font-auth-body">
+                  <p className="text-red-500 text-xs font-semibold tracking-wide flex items-center gap-1 mt-1 animate-fade-in font-auth-body">
                     <AlertCircle className="w-3 h-3 shrink-0" />
                     <span>{confirmPasswordError}</span>
                   </p>
@@ -1062,7 +1066,7 @@ export default function UploadPage() {
         {/* UPLOAD PROGRESS BAR */}
         {uploading && (
           <div className="space-y-2 pt-2 font-auth-body">
-            <div className="flex justify-between text-xs font-bold text-slate-700 dark:text-slate-300">
+            <div className="flex justify-between text-sm font-bold text-slate-700 dark:text-slate-300">
               <span className="flex items-center gap-2 font-auth-heading">
                 <Loader2 className="w-3.5 h-3.5 animate-spin text-[#FF6B00] dark:text-orange-400" /> Vaulting Document...
               </span>
@@ -1081,7 +1085,7 @@ export default function UploadPage() {
         <div className="pt-4 flex flex-col sm:flex-row items-center justify-end gap-3 border-t border-slate-200 dark:border-slate-800/80 font-auth-body">
           <Link
             href="/user/documents"
-            className="w-full sm:w-auto px-5 py-3 rounded-2xl border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white font-bold text-xs text-center transition font-auth-body"
+            className="w-full sm:w-auto px-5 py-3 rounded-2xl border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white font-bold text-sm text-center transition font-auth-body"
           >
             Cancel
           </Link>
@@ -1089,7 +1093,7 @@ export default function UploadPage() {
           <button
             type="submit"
             disabled={uploading || (fileTouched && titleTouched && !isFormValid)}
-            className="w-full sm:w-auto px-6 py-3 rounded-2xl text-xs font-black uppercase tracking-wider text-white bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:brightness-110 shadow-lg shadow-orange-500/25 border border-orange-400/30 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer font-auth-heading active-press"
+            className="w-full sm:w-auto px-6 py-3 rounded-2xl text-sm font-black uppercase tracking-wider text-white bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:brightness-110 shadow-lg shadow-orange-500/25 border border-orange-400/30 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer font-auth-heading active-press"
           >
             {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <FileCheck className="w-4 h-4" />}
             {uploading ? 'Vaulting File...' : 'Save Document'}
@@ -1102,7 +1106,7 @@ export default function UploadPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
           <div className="bg-white dark:bg-[#111827] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-5 animate-pop-in text-slate-900 dark:text-white font-auth-body">
             <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
-              <h2 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading">
+              <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading">
                 <FolderPlus className="w-4 h-4 text-[#FF6B00] dark:text-orange-400" /> Create Workspace Folder
               </h2>
               <button onClick={() => setCreateFolderModalOpen(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-white">
@@ -1110,7 +1114,7 @@ export default function UploadPage() {
               </button>
             </div>
 
-            <form onSubmit={handleCreateFolderInline} className="space-y-4 text-xs">
+            <form onSubmit={handleCreateFolderInline} className="space-y-4 text-sm">
               <div>
                 <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1 font-auth-label">Folder Name *</label>
                 <input
@@ -1152,7 +1156,7 @@ export default function UploadPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
           <div className="bg-white dark:bg-[#111827] rounded-3xl max-w-2xl w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4 animate-pop-in text-slate-900 dark:text-white font-auth-body">
             <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
-              <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading">
+              <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading">
                 <Eye className="w-4 h-4 text-[#FF6B00] dark:text-orange-400" /> Document Preview: {selectedFile?.name}
               </h3>
               <button onClick={() => setPreviewModalOpen(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-white">
