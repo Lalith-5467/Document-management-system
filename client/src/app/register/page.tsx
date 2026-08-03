@@ -1,555 +1,741 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import {
-  User, Mail, Lock, Eye, EyeOff, ArrowRight, AlertCircle,
-  Loader2, GraduationCap, Briefcase, UserCheck, UserPlus, Phone, CheckCircle2, Check, X
-} from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import {
-  validateName,
-  validateEmail,
-  validatePassword,
-  validateConfirmPassword,
-  validatePhone,
-  updatePasswordRequirements,
-  updatePasswordStrength,
-  getFieldStatusClasses
-} from '@/lib/validation';
+  User, Mail, Lock, Eye, EyeOff, AlertCircle, Loader2,
+  GraduationCap, Briefcase, UserCheck, UserPlus, Phone, CheckCircle2, Check, CheckCircle,
+  Building2, MapPin, Globe, Map, BriefcaseBusiness, ShieldCheck, Folder, Zap, Monitor
+} from 'lucide-react';
+
+const DEPARTMENTS = ['Computer Science', 'Information Technology', 'Artificial Intelligence', 'Electronics', 'Electrical', 'Mechanical', 'Civil', 'Commerce', 'Business Administration', 'Mathematics', 'Physics', 'Chemistry', 'English', 'Other'];
+const YEARS = ['First Year', 'Second Year', 'Third Year', 'Fourth Year', 'Post Graduate', 'Research Scholar'];
+const INDUSTRIES = ['Information Technology', 'Healthcare', 'Finance', 'Banking', 'Government', 'Education', 'Manufacturing', 'Construction', 'Legal', 'Media', 'Marketing', 'Other'];
+const EXPERIENCES = ['Fresher', '1–2 Years', '3–5 Years', '6–10 Years', '10+ Years'];
+
+// We add simple CSS for custom animations that Tailwind might not have natively.
+const customStyles = `
+  @keyframes ripple {
+    to { transform: scale(4); opacity: 0; }
+  }
+  .ripple-effect {
+    position: relative;
+    overflow: hidden;
+  }
+  .ripple-effect::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    transform: scale(0);
+    opacity: 1;
+    pointer-events: none;
+    transition: transform 0.6s, opacity 0.6s;
+  }
+  .ripple-effect:active::after {
+    transform: scale(0);
+    opacity: 1;
+    transition: 0s;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  @keyframes slideUpFade {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  .stagger-1 { animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both; }
+  .stagger-2 { animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both; }
+  .stagger-3 { animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both; }
+  .stagger-4 { animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both; }
+  
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #e2e8f0;
+    border-radius: 10px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #cbd5e1;
+  }
+`;
+
+const InputField = ({ icon: Icon, label, required, error, value, ...props }: any) => {
+  const isFilled = value && value.toString().length > 0;
+  return (
+    <div className="relative mb-5 group">
+      {Icon && (
+        <div className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-slate-50 group-focus-within:bg-orange-50 flex items-center justify-center transition-all duration-300">
+          <Icon className={`w-4 h-4 transition-colors duration-300 ${error ? 'text-red-400' : 'text-slate-400 group-focus-within:text-[#FF6B00]'}`} />
+        </div>
+      )}
+      <div className="relative">
+        <input
+          {...props}
+          value={value}
+          placeholder=" "
+          className={`peer w-full ${Icon ? 'pl-14' : 'pl-4'} pr-4 pt-6 pb-2 bg-slate-50/50 border ${error ? 'border-red-300 bg-red-50/30' : 'border-slate-200 focus:border-[#FF6B00]'} rounded-xl text-[15px] text-[#1A1A1A] focus:outline-none focus:ring-4 focus:ring-orange-500/10 transition-all duration-300 font-medium`}
+        />
+        <label className={`absolute left-${Icon ? '14' : '4'} text-slate-500 pointer-events-none transition-all duration-300 font-medium ${isFilled ? 'top-2 text-[10px] text-slate-400' : 'top-1/2 -translate-y-1/2 text-sm peer-focus:top-2 peer-focus:text-[10px] peer-focus:text-[#FF6B00]'}`}>
+          {label} {required && <span className="text-red-500">*</span>}
+        </label>
+      </div>
+      {error && (
+        <p className="text-red-500 text-[11px] font-bold flex items-center gap-1 mt-1.5 animate-fade-in pl-1">
+          <AlertCircle className="w-3.5 h-3.5" /> <span>{error}</span>
+        </p>
+      )}
+    </div>
+  );
+};
+
+const SelectField = ({ icon: Icon, label, options, required, error, value, onChange }: any) => {
+  const isFilled = value && value.toString().length > 0;
+  return (
+    <div className="relative mb-5 group">
+      {Icon && (
+        <div className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-slate-50 group-focus-within:bg-orange-50 flex items-center justify-center transition-all duration-300">
+          <Icon className={`w-4 h-4 transition-colors duration-300 ${error ? 'text-red-400' : 'text-slate-400 group-focus-within:text-[#FF6B00]'}`} />
+        </div>
+      )}
+      <div className="relative">
+        <select
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className={`peer w-full ${Icon ? 'pl-14' : 'pl-4'} pr-10 pt-6 pb-2 bg-slate-50/50 border ${error ? 'border-red-300 bg-red-50/30' : 'border-slate-200 focus:border-[#FF6B00]'} rounded-xl text-[15px] ${value ? 'text-[#1A1A1A]' : 'text-transparent'} focus:outline-none focus:ring-4 focus:ring-orange-500/10 transition-all duration-300 font-medium appearance-none`}
+        >
+          <option value="" disabled className="text-slate-400">Select {label}</option>
+          {options.map((opt: string) => <option key={opt} value={opt} className="text-slate-900">{opt}</option>)}
+        </select>
+        <label className={`absolute left-${Icon ? '14' : '4'} text-slate-500 pointer-events-none transition-all duration-300 font-medium ${isFilled ? 'top-2 text-[10px] text-slate-400' : 'top-1/2 -translate-y-1/2 text-sm peer-focus:top-2 peer-focus:text-[10px] peer-focus:text-[#FF6B00]'}`}>
+          {label} {required && <span className="text-red-500">*</span>}
+        </label>
+        <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 peer-focus:text-[#FF6B00] peer-focus:bg-orange-50 transition-all duration-300">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+        </div>
+      </div>
+      {error && (
+        <p className="text-red-500 text-[11px] font-bold flex items-center gap-1 mt-1.5 animate-fade-in pl-1">
+          <AlertCircle className="w-3.5 h-3.5" /> <span>{error}</span>
+        </p>
+      )}
+    </div>
+  );
+};
 
 export default function RegisterPage() {
   const router = useRouter();
   const { register } = useAuth();
-
-  // Form Field State
+  
+  const [userType, setUserType] = useState('');
+  
+  // Personal Info
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
+  const [mobileNumber, setMobileNumber] = useState('');
+  
+  // Role Specific (Student)
+  const [collegeName, setCollegeName] = useState('');
+  const [department, setDepartment] = useState('');
+  const [yearOfStudy, setYearOfStudy] = useState('');
+  const [studentId, setStudentId] = useState('');
+  
+  // Role Specific (Professional)
+  const [companyName, setCompanyName] = useState('');
+  const [designation, setDesignation] = useState('');
+  const [industry, setIndustry] = useState('');
+  const [yearsOfExperience, setYearsOfExperience] = useState('');
+  const [employeeId, setEmployeeId] = useState('');
+  
+  // Role Specific (Individual)
+  const [occupation, setOccupation] = useState('');
+  const [country, setCountry] = useState('');
+  const [state, setState] = useState('');
+  const [city, setCity] = useState('');
+  
+  // Security
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [phone, setPhone] = useState('');
-  const [userType, setUserType] = useState<string>('');
-
-  // UI Control State
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
+  const [showConfirm, setShowConfirm] = useState(false);
+  
+  // Status
+  const [errors, setErrors] = useState<any>({});
+  const [globalError, setGlobalError] = useState('');
+  const [successMsg, setSuccessMsg] = useState(false);
   const [loading, setLoading] = useState(false);
+  
+  // OTP
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpTimer, setOtpTimer] = useState(0);
+  const [otpValue, setOtpValue] = useState('');
+  const [otpVerified, setOtpVerified] = useState(false);
 
-  // Field Touched States
-  const [nameTouched, setNameTouched] = useState(false);
-  const [emailTouched, setEmailTouched] = useState(false);
-  const [passwordTouched, setPasswordTouched] = useState(false);
-  const [confirmTouched, setConfirmTouched] = useState(false);
-  const [phoneTouched, setPhoneTouched] = useState(false);
+  useEffect(() => {
+    let int: any;
+    if (otpTimer > 0) int = setInterval(() => setOtpTimer(p => p - 1), 1000);
+    return () => clearInterval(int);
+  }, [otpTimer]);
 
-  // Field Error States
-  const [nameError, setNameError] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [confirmError, setConfirmError] = useState('');
-  const [phoneError, setPhoneError] = useState('');
-
-  // Field Input Refs for Auto-Focus on Invalid Submit
-  const nameRef = useRef<HTMLInputElement>(null);
-  const emailRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
-  const confirmRef = useRef<HTMLInputElement>(null);
-  const phoneRef = useRef<HTMLInputElement>(null);
-
-  // Password Requirements & Strength
-  const reqs = updatePasswordRequirements(password);
-  const strength = updatePasswordStrength(password);
-
-  // ─── Real-Time Input Change & Blur Handlers ─────────────────
-
-  const handleNameChange = (val: string) => {
-    setFullName(val);
-    if (nameTouched) {
-      const res = validateName(val);
-      setNameError(res.error);
+  const validateForm = () => {
+    let errs: any = {};
+    
+    // Personal Validation
+    if (!/^[a-zA-Z\s]{3,50}$/.test(fullName)) errs.fullName = "Name should contain only letters (3-50 chars).";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errs.email = "Please enter a valid email address.";
+    if (!/^[6-9]\d{9}$/.test(mobileNumber)) errs.mobileNumber = "Mobile number must contain exactly 10 digits starting with 6-9.";
+    if (!otpVerified) errs.otp = "Please verify your mobile number with OTP.";
+    
+    // Role Validation
+    if (userType === 'student') {
+      if (!collegeName || collegeName.length < 5 || collegeName.length > 100) errs.collegeName = "College Name must be 5-100 characters.";
+      if (!department) errs.department = "Department is required.";
+      if (!yearOfStudy) errs.yearOfStudy = "Year of study is required.";
+    } else if (userType === 'professional') {
+      if (!companyName || companyName.length < 3 || companyName.length > 100) errs.companyName = "Company Name must be 3-100 characters.";
+      if (!designation) errs.designation = "Designation is required.";
+      if (!industry) errs.industry = "Industry is required.";
+      if (!yearsOfExperience) errs.yearsOfExperience = "Years of experience is required.";
+    } else if (userType === 'individual') {
+      if (!country) errs.country = "Country is required.";
+      if (!state) errs.state = "State is required.";
+      if (!city) errs.city = "City is required.";
     }
-  };
-  const handleNameBlur = () => {
-    setNameTouched(true);
-    const res = validateName(fullName);
-    setNameError(res.error);
-  };
+    
+    // Security Validation
+    if (password.length < 8 || password.length > 32) errs.password = "Password must be 8-32 characters long.";
+    else if (!/[A-Z]/.test(password)) errs.password = "Password must contain one uppercase letter.";
+    else if (!/[a-z]/.test(password)) errs.password = "Password must contain one lowercase letter.";
+    else if (!/[0-9]/.test(password)) errs.password = "Password must contain one number.";
+    else if (!/[^A-Za-z0-9\s]/.test(password)) errs.password = "Password must contain one special character.";
+    else if (/\s/.test(password)) errs.password = "Password cannot contain spaces.";
+    
+    if (password !== confirmPassword) errs.confirmPassword = "Passwords do not match.";
 
-  const handleEmailChange = (val: string) => {
-    setEmail(val);
-    if (emailTouched) {
-      const res = validateEmail(val);
-      setEmailError(res.error);
-    }
+    setErrors(errs);
+    return Object.keys(errs).length === 0;
   };
-  const handleEmailBlur = () => {
-    setEmailTouched(true);
-    const res = validateEmail(email);
-    setEmailError(res.error);
-  };
-
-  const handlePasswordChange = (val: string) => {
-    setPassword(val);
-    if (passwordTouched) {
-      const res = validatePassword(val);
-      setPasswordError(res.error);
-    }
-    // Also re-validate confirm password live if touched
-    if (confirmTouched) {
-      const confRes = validateConfirmPassword(val, confirmPassword);
-      setConfirmError(confRes.error);
-    }
-  };
-  const handlePasswordBlur = () => {
-    setPasswordTouched(true);
-    const res = validatePassword(password);
-    setPasswordError(res.error);
-  };
-
-  const handleConfirmChange = (val: string) => {
-    setConfirmPassword(val);
-    if (confirmTouched) {
-      const res = validateConfirmPassword(password, val);
-      setConfirmError(res.error);
-    }
-  };
-  const handleConfirmBlur = () => {
-    setConfirmTouched(true);
-    const res = validateConfirmPassword(password, confirmPassword);
-    setConfirmError(res.error);
-  };
-
-  const handlePhoneChange = (val: string) => {
-    setPhone(val);
-    if (phoneTouched) {
-      const res = validatePhone(val);
-      setPhoneError(res.error);
-    }
-  };
-  const handlePhoneBlur = () => {
-    setPhoneTouched(true);
-    const res = validatePhone(phone);
-    setPhoneError(res.error);
-  };
-
-  // ─── Live Overall Form Validation Status ─────────────────────
-
-  const nameVal = validateName(fullName);
-  const emailVal = validateEmail(email);
-  const passVal = validatePassword(password);
-  const confirmVal = validateConfirmPassword(password, confirmPassword);
-  const phoneVal = validatePhone(phone);
-
-  const isFormValid =
-    userType !== '' &&
-    nameVal.isValid &&
-    emailVal.isValid &&
-    passVal.isValid &&
-    confirmVal.isValid &&
-    phoneVal.isValid;
-
-  // Toggle Password Visibilities
-  const togglePasswordVisibility = () => setShowPassword(p => !p);
-  const toggleConfirmVisibility = () => setShowConfirmPassword(p => !p);
-
-  // ─── Handle Form Submission ──────────────────────────────────
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrorMsg('');
-
-    // Touch all fields to show errors if any
-    setNameTouched(true);
-    setEmailTouched(true);
-    setPasswordTouched(true);
-    setConfirmTouched(true);
-    setPhoneTouched(true);
-
-    const nameCheck = validateName(fullName);
-    const emailCheck = validateEmail(email);
-    const passCheck = validatePassword(password);
-    const confirmCheck = validateConfirmPassword(password, confirmPassword);
-    const phoneCheck = validatePhone(phone);
-
-    setNameError(nameCheck.error);
-    setEmailError(emailCheck.error);
-    setPasswordError(passCheck.error);
-    setConfirmError(confirmCheck.error);
-    setPhoneError(phoneCheck.error);
-
-    // Auto-focus on the first invalid field
     if (!userType) {
-      setErrorMsg('Please select how you are registering (Student, Professional, or Individual).');
+      setGlobalError("Please select an account type.");
       return;
     }
-    if (!nameCheck.isValid) {
-      nameRef.current?.focus();
-      return;
-    }
-    if (!emailCheck.isValid) {
-      emailRef.current?.focus();
-      return;
-    }
-    if (!passCheck.isValid) {
-      passwordRef.current?.focus();
-      return;
-    }
-    if (!confirmCheck.isValid) {
-      confirmRef.current?.focus();
-      return;
-    }
-    if (!phoneCheck.isValid) {
-      phoneRef.current?.focus();
+    
+    if (!validateForm()) {
+      setGlobalError("Please correct the errors in the form before submitting.");
       return;
     }
 
     setLoading(true);
-    const result = await register(fullName.trim(), email.trim(), password, userType);
+    setGlobalError('');
+
+    const userData = {
+      userType, fullName, email, mobileNumber, password,
+      collegeName, department, yearOfStudy, studentId,
+      companyName, designation, industry, yearsOfExperience, employeeId,
+      occupation, country, state, city
+    };
+
+    const result = await register(userData);
     setLoading(false);
 
     if (result.success) {
-      if (userType === 'admin' || email.toLowerCase().includes('admin')) {
-        router.push('/admin');
-      } else {
-        router.push('/user');
-      }
+      setSuccessMsg(true);
     } else {
-      setErrorMsg(result.message || 'Registration failed. Please try again.');
+      setGlobalError(result.message);
     }
   };
 
-  return (
-    <div className="min-h-screen w-full bg-[#F4F6F9] flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 font-sans relative overflow-hidden animate-fade-up">
-      {/* Soft Ambient Background Glows */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-orange-500/8 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-orange-400/8 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute top-8 right-8 w-24 h-24 bg-[radial-gradient(#FF6B00_1px,transparent_1px)] [background-size:12px_12px] opacity-15 pointer-events-none" />
+  const handleSendOtp = () => {
+    if (!/^[6-9]\d{9}$/.test(mobileNumber)) {
+      setErrors({ ...errors, mobileNumber: "Mobile number must contain exactly 10 digits starting with 6-9." });
+      return;
+    }
+    setErrors({ ...errors, mobileNumber: null });
+    setOtpSent(true);
+    setOtpTimer(60);
+  };
 
-      {/* Centered White Registration Card */}
-      <div className="w-full max-w-[520px] bg-white rounded-[32px] p-8 sm:p-10 border border-slate-200/90 shadow-2xl shadow-slate-900/8 space-y-6 relative z-10 my-auto">
-        {/* Header */}
-        <div className="text-center space-y-3">
-          <Link href="/" className="inline-flex items-center justify-center group">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#FF6B00] to-[#FF8A00] flex items-center justify-center text-white shadow-lg shadow-orange-500/30 group-hover:scale-105 transition-transform border border-white/20">
-              <UserPlus className="w-7 h-7 stroke-[2.5]" />
-            </div>
-          </Link>
-          <h2 className="text-2xl sm:text-3xl font-black text-[#1A1A1A] tracking-tight font-auth-heading leading-tight">
-            Create Your <span className="text-[#FF6B00]">DocVault</span> Account
-          </h2>
-          <p className="text-sm text-[#6B7280] text-center font-medium leading-relaxed max-w-xs mx-auto font-auth-body">
-            Create your secure workspace to manage, store and access documents anytime.
-          </p>
-        </div>
+  const handleVerifyOtp = () => {
+    if (otpValue === '123456') {
+      setOtpVerified(true);
+      setErrors({ ...errors, otp: null });
+    } else {
+      setErrors({ ...errors, otp: "Invalid OTP. Use 123456." });
+    }
+  };
 
-        {/* Global Server Error Message */}
-        {errorMsg && (
-          <div className="p-3.5 rounded-2xl bg-red-50 border border-red-200 flex items-start gap-3 text-red-700 text-xs font-semibold animate-fade-in font-auth-body">
-            <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" />
-            <span>{errorMsg}</span>
+  const getPasswordStrength = () => {
+    let score = 0;
+    if (password.length >= 8) score++;
+    if (/[A-Z]/.test(password)) score++;
+    if (/[a-z]/.test(password)) score++;
+    if (/[0-9]/.test(password)) score++;
+    if (/[^A-Za-z0-9\s]/.test(password)) score++;
+    
+    if (score < 3) return { label: 'Weak', color: 'text-red-500', bg: 'bg-red-500', w: 'w-1/3' };
+    if (score < 5) return { label: 'Medium', color: 'text-orange-500', bg: 'bg-orange-500', w: 'w-2/3' };
+    return { label: 'Strong', color: 'text-emerald-500', bg: 'bg-emerald-500', w: 'w-full' };
+  };
+
+  if (successMsg) {
+    return (
+      <div className="min-h-screen w-full bg-[#FCFDFE] flex items-center justify-center p-4">
+        <style dangerouslySetInnerHTML={{ __html: customStyles }} />
+        <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03] pointer-events-none" />
+        <div className="w-full max-w-md bg-white rounded-[32px] p-12 text-center shadow-[0_30px_60px_-15px_rgba(0,0,0,0.08)] border border-slate-100 space-y-6 relative z-10 stagger-1">
+          <div className="w-24 h-24 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center mx-auto shadow-[inset_0_2px_10px_rgba(16,185,129,0.1)] animate-float">
+            <CheckCircle2 className="w-12 h-12" />
           </div>
-        )}
-
-        {/* Form - Vanilla JS Validation without HTML5 popups */}
-        <form onSubmit={handleSubmit} noValidate className="space-y-4 font-auth-body">
-          {/* Registration Type Selection Cards */}
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-[#1A1A1A] mb-2 font-auth-label">
-              I am registering as:
-            </label>
-            <div className="grid grid-cols-3 gap-2.5">
-              <button
-                type="button"
-                onClick={() => setUserType('student')}
-                className={`p-3 rounded-2xl border text-center transition-all duration-300 flex flex-col items-center gap-1.5 cursor-pointer hover:-translate-y-0.5 font-auth-body group ${
-                  userType === 'student'
-                    ? 'border-[#FF6B00] bg-orange-50/60 text-[#FF6B00] font-black shadow-xs scale-[1.02]'
-                    : 'border-[#E8E8E8] bg-white text-[#6B7280] hover:border-slate-300 font-semibold hover:text-slate-800'
-                }`}
-              >
-                <GraduationCap className={`w-5 h-5 transition-colors duration-300 ${userType === 'student' ? 'text-[#FF6B00]' : 'text-slate-400 group-hover:text-slate-500'}`} />
-                <span className="text-sm">Student</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setUserType('professional')}
-                className={`p-3 rounded-2xl border text-center transition-all duration-300 flex flex-col items-center gap-1.5 cursor-pointer hover:-translate-y-0.5 font-auth-body group ${
-                  userType === 'professional'
-                    ? 'border-[#FF6B00] bg-orange-50/60 text-[#FF6B00] font-black shadow-xs scale-[1.02]'
-                    : 'border-[#E8E8E8] bg-white text-[#6B7280] hover:border-slate-300 font-semibold hover:text-slate-800'
-                }`}
-              >
-                <Briefcase className={`w-5 h-5 transition-colors duration-300 ${userType === 'professional' ? 'text-[#FF6B00]' : 'text-slate-400 group-hover:text-slate-500'}`} />
-                <span className="text-sm">Professional</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setUserType('individual')}
-                className={`p-3 rounded-2xl border text-center transition-all duration-300 flex flex-col items-center gap-1.5 cursor-pointer hover:-translate-y-0.5 font-auth-body group ${
-                  userType === 'individual'
-                    ? 'border-[#FF6B00] bg-orange-50/60 text-[#FF6B00] font-black shadow-xs scale-[1.02]'
-                    : 'border-[#E8E8E8] bg-white text-[#6B7280] hover:border-slate-300 font-semibold hover:text-slate-800'
-                }`}
-              >
-                <UserCheck className={`w-5 h-5 transition-colors duration-300 ${userType === 'individual' ? 'text-[#FF6B00]' : 'text-slate-400 group-hover:text-slate-500'}`} />
-                <span className="text-sm">Individual</span>
-              </button>
-            </div>
+          <div className="space-y-3">
+            <h2 className="text-[32px] font-black text-slate-900 tracking-tight leading-tight">Welcome Aboard!</h2>
+            <p className="text-[15px] text-slate-500 font-medium leading-relaxed">Your DocVault enterprise account has been created and is ready to use.</p>
           </div>
-
-          {/* 1. Full Name Field */}
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-[#1A1A1A] mb-1.5 font-auth-label">
-              Full Name <span className="text-red-500">*</span>
-            </label>
-            <div className="relative font-auth-body">
-              <User className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#6B7280]" />
-              <input
-                ref={nameRef}
-                type="text"
-                value={fullName}
-                onChange={(e) => handleNameChange(e.target.value)}
-                onBlur={handleNameBlur}
-                onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleSubmit(e as any); } }}
-                placeholder="John Doe"
-                className={`w-full pl-10 pr-10 py-3 bg-white border rounded-[14px] text-sm text-[#1A1A1A] placeholder-[#6B7280]/60 focus:outline-none transition-all duration-300 font-medium font-auth-body ${getFieldStatusClasses(nameTouched, nameVal.isValid, nameError)}`}
-              />
-              {nameTouched && nameVal.isValid && !nameError && (
-                <CheckCircle2 className="w-4 h-4 absolute right-3.5 top-1/2 -translate-y-1/2 text-emerald-500" />
-              )}
-            </div>
-            {/* Inline Name Error */}
-            {nameTouched && nameError && (
-              <p className="text-red-500 text-[11px] font-semibold tracking-wide flex items-center gap-1.5 mt-1.5 animate-fade-in font-auth-body">
-                <AlertCircle className="w-3.5 h-3.5 shrink-0" />
-                <span>{nameError}</span>
-              </p>
-            )}
-          </div>
-
-          {/* 2. Email Address Field */}
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-[#1A1A1A] mb-1.5 font-auth-label">
-              Email Address <span className="text-red-500">*</span>
-            </label>
-            <div className="relative font-auth-body">
-              <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#6B7280]" />
-              <input
-                ref={emailRef}
-                type="text"
-                value={email}
-                onChange={(e) => handleEmailChange(e.target.value)}
-                onBlur={handleEmailBlur}
-                onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleSubmit(e as any); } }}
-                placeholder="john@example.com"
-                className={`w-full pl-10 pr-10 py-3 bg-white border rounded-[14px] text-sm text-[#1A1A1A] placeholder-[#6B7280]/60 focus:outline-none transition-all duration-300 font-medium font-auth-body ${getFieldStatusClasses(emailTouched, emailVal.isValid, emailError)}`}
-              />
-              {emailTouched && emailVal.isValid && !emailError && (
-                <CheckCircle2 className="w-4 h-4 absolute right-3.5 top-1/2 -translate-y-1/2 text-emerald-500" />
-              )}
-            </div>
-            {/* Inline Email Error */}
-            {emailTouched && emailError && (
-              <p className="text-red-500 text-[11px] font-semibold tracking-wide flex items-center gap-1.5 mt-1.5 animate-fade-in font-auth-body">
-                <AlertCircle className="w-3.5 h-3.5 shrink-0" />
-                <span>{emailError}</span>
-              </p>
-            )}
-          </div>
-
-          {/* 3. Phone Number Field (Optional) */}
-          <div>
-            <div className="flex items-center justify-between mb-1.5 font-auth-body">
-              <label className="block text-xs font-bold uppercase tracking-wider text-[#1A1A1A] font-auth-label">
-                Phone Number
-              </label>
-              <span className="text-[11px] text-slate-400 font-semibold uppercase tracking-wider font-auth-label">Optional</span>
-            </div>
-            <div className="relative font-auth-body">
-              <Phone className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#6B7280]" />
-              <input
-                ref={phoneRef}
-                type="text"
-                value={phone}
-                onChange={(e) => handlePhoneChange(e.target.value)}
-                onBlur={handlePhoneBlur}
-                onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleSubmit(e as any); } }}
-                placeholder="10-digit mobile number"
-                className={`w-full pl-10 pr-10 py-3 bg-white border rounded-[14px] text-sm text-[#1A1A1A] placeholder-[#6B7280]/60 focus:outline-none transition-all duration-300 font-medium font-auth-body ${getFieldStatusClasses(phoneTouched, phoneVal.isValid, phoneError)}`}
-              />
-              {phoneTouched && phone.trim().length > 0 && phoneVal.isValid && !phoneError && (
-                <CheckCircle2 className="w-4 h-4 absolute right-3.5 top-1/2 -translate-y-1/2 text-emerald-500" />
-              )}
-            </div>
-            {/* Inline Phone Error */}
-            {phoneTouched && phoneError && (
-              <p className="text-red-500 text-[11px] font-semibold tracking-wide flex items-center gap-1.5 mt-1.5 animate-fade-in font-auth-body">
-                <AlertCircle className="w-3.5 h-3.5 shrink-0" />
-                <span>{phoneError}</span>
-              </p>
-            )}
-          </div>
-
-          {/* 4. Password Field */}
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-[#1A1A1A] mb-1.5 font-auth-label">
-              Password <span className="text-red-500">*</span>
-            </label>
-            <div className="relative font-auth-body">
-              <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#6B7280]" />
-              <input
-                ref={passwordRef}
-                type={showPassword ? 'text' : 'password'}
-                value={password}
-                onChange={(e) => handlePasswordChange(e.target.value)}
-                onBlur={handlePasswordBlur}
-                onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleSubmit(e as any); } }}
-                placeholder="••••••••"
-                className={`w-full pl-10 pr-10 py-3 bg-white border rounded-[14px] text-sm text-[#1A1A1A] placeholder-[#6B7280]/60 focus:outline-none transition-all duration-300 font-medium font-auth-body ${getFieldStatusClasses(passwordTouched, passVal.isValid, passwordError)}`}
-              />
-              <button
-                type="button"
-                onClick={togglePasswordVisibility}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#6B7280] hover:text-[#1A1A1A] transition-colors"
-                title={showPassword ? 'Hide password' : 'Show password'}
-              >
-                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-              </button>
-            </div>
-
-            {/* Live Password Strength Meter */}
-            {password.length > 0 && (
-              <div className="mt-2.5 space-y-1 animate-fade-in font-auth-body">
-                <div className="flex items-center justify-between text-[10px] font-bold">
-                  <span className="text-[#6B7280] font-auth-label uppercase">Password Strength</span>
-                  <span className={strength.color}>{strength.label}</span>
-                </div>
-                <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                  <div
-                    className={`h-full ${strength.bgColor} transition-all duration-500 rounded-full`}
-                    style={{ width: strength.width }}
-                  />
-                </div>
-              </div>
-            )}
-
-            {/* Live Password Requirements Checklist */}
-            <div className="mt-3 p-3 bg-slate-50 border border-slate-200/80 rounded-2xl space-y-1.5 text-[11px] font-auth-body">
-              <p className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 font-auth-label mb-1">
-                Password Requirements
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 font-medium font-auth-body">
-                <div className={`flex items-center gap-1.5 transition-colors ${reqs.minLength ? 'text-emerald-600 font-bold' : 'text-slate-500'}`}>
-                  {reqs.minLength ? <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0" /> : <span className="w-1.5 h-1.5 rounded-full bg-slate-300 shrink-0" />}
-                  <span>Minimum 6 characters</span>
-                </div>
-                <div className={`flex items-center gap-1.5 transition-colors ${reqs.hasUpper ? 'text-emerald-600 font-bold' : 'text-slate-500'}`}>
-                  {reqs.hasUpper ? <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0" /> : <span className="w-1.5 h-1.5 rounded-full bg-slate-300 shrink-0" />}
-                  <span>One uppercase letter</span>
-                </div>
-                <div className={`flex items-center gap-1.5 transition-colors ${reqs.hasLower ? 'text-emerald-600 font-bold' : 'text-slate-500'}`}>
-                  {reqs.hasLower ? <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0" /> : <span className="w-1.5 h-1.5 rounded-full bg-slate-300 shrink-0" />}
-                  <span>One lowercase letter</span>
-                </div>
-                <div className={`flex items-center gap-1.5 transition-colors ${reqs.hasNumber ? 'text-emerald-600 font-bold' : 'text-slate-500'}`}>
-                  {reqs.hasNumber ? <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0" /> : <span className="w-1.5 h-1.5 rounded-full bg-slate-300 shrink-0" />}
-                  <span>One number</span>
-                </div>
-                <div className={`flex items-center gap-1.5 transition-colors ${reqs.hasSpecial ? 'text-emerald-600 font-bold' : 'text-slate-500'}`}>
-                  {reqs.hasSpecial ? <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0" /> : <span className="w-1.5 h-1.5 rounded-full bg-slate-300 shrink-0" />}
-                  <span>One special character</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Inline Password Error */}
-            {passwordTouched && passwordError && (
-              <p className="text-red-500 text-[11px] font-semibold tracking-wide flex items-center gap-1.5 mt-1.5 animate-fade-in font-auth-body">
-                <AlertCircle className="w-3.5 h-3.5 shrink-0" />
-                <span>{passwordError}</span>
-              </p>
-            )}
-          </div>
-
-          {/* 5. Confirm Password Field */}
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-[#1A1A1A] mb-1.5 font-auth-label">
-              Confirm Password <span className="text-red-500">*</span>
-            </label>
-            <div className="relative font-auth-body">
-              <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#6B7280]" />
-              <input
-                ref={confirmRef}
-                type={showConfirmPassword ? 'text' : 'password'}
-                value={confirmPassword}
-                onChange={(e) => handleConfirmChange(e.target.value)}
-                onBlur={handleConfirmBlur}
-                onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleSubmit(e as any); } }}
-                placeholder="••••••••"
-                className={`w-full pl-10 pr-10 py-3 bg-white border rounded-[14px] text-sm text-[#1A1A1A] placeholder-[#6B7280]/60 focus:outline-none transition-all duration-300 font-medium font-auth-body ${getFieldStatusClasses(confirmTouched, confirmVal.isValid, confirmError)}`}
-              />
-              <button
-                type="button"
-                onClick={toggleConfirmVisibility}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#6B7280] hover:text-[#1A1A1A] transition-colors"
-                title={showConfirmPassword ? 'Hide password' : 'Show password'}
-              >
-                {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-              </button>
-            </div>
-            {/* Inline Confirm Password Error */}
-            {confirmTouched && confirmError && (
-              <p className="text-red-500 text-[11px] font-semibold tracking-wide flex items-center gap-1.5 mt-1.5 animate-fade-in font-auth-body">
-                <AlertCircle className="w-3.5 h-3.5 shrink-0" />
-                <span>{confirmError}</span>
-              </p>
-            )}
-          </div>
-
-          {/* Primary Action Button (Disabled until form is valid) */}
-          <button
-            type="submit"
-            disabled={loading || (nameTouched && emailTouched && passwordTouched && confirmTouched && !isFormValid)}
-            className="w-full py-4 px-6 rounded-2xl text-xs sm:text-sm font-black tracking-wider uppercase text-white bg-gradient-to-r from-[#FF6B00] to-[#FF8A00] hover:brightness-110 shadow-lg shadow-orange-500/30 hover:-translate-y-1 hover:scale-[1.01] hover:shadow-xl active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:scale-100 mt-4 cursor-pointer font-auth-heading"
-          >
-            {loading ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                <span>Creating Account...</span>
-              </>
-            ) : (
-              <>
-                <span>Create Account</span>
-                <ArrowRight className="w-4 h-4" />
-              </>
-            )}
-          </button>
-        </form>
-
-        {/* Footer */}
-        <div className="text-center pt-2 border-t border-[#E8E8E8]">
-          <p className="text-xs text-[#6B7280] font-medium font-auth-body">
-            Already have an account?{' '}
-            <Link
-              href="/login"
-              className="font-black text-[#FF6B00] hover:underline transition-all inline-block ml-1 font-auth-heading"
-            >
-              Sign In
+          <div className="pt-8 space-y-4">
+            <Link href="/login" className="ripple-effect block w-full py-4 rounded-2xl text-white font-bold bg-gradient-to-r from-[#FF6B00] to-[#FF8A00] shadow-[0_12px_24px_-8px_rgba(255,107,0,0.4)] hover:-translate-y-1 transition-all duration-300">
+              Access Your Vault
             </Link>
-          </p>
+            <Link href="/" className="block w-full py-4 rounded-2xl text-slate-500 font-bold hover:bg-slate-50 hover:text-slate-900 transition-colors">
+              Return to Homepage
+            </Link>
+          </div>
         </div>
       </div>
+    );
+  }
+  return (
+    <div className="min-h-screen w-full bg-[#FFF5ED] flex items-center justify-center p-4 sm:p-6 lg:p-8 font-sans relative overflow-hidden">
+      <style dangerouslySetInnerHTML={{ __html: customStyles }} />
+      
+      {/* Background Depth Elements */}
+      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-[#FFF5ED] to-transparent opacity-60 pointer-events-none animate-fade-in fixed" />
+      <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.02] pointer-events-none fixed" />
+      
+      {/* Glowing Orbs */}
+      <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-orange-400/20 rounded-full blur-[120px] pointer-events-none animate-fade-in fixed" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-blue-300/10 rounded-full blur-[120px] pointer-events-none animate-fade-in fixed" />
+      
+      <div className="w-full max-w-[1200px] bg-white rounded-[32px] shadow-[0_30px_80px_-20px_rgba(0,0,0,0.07)] overflow-hidden relative z-10 flex flex-col lg:flex-row transition-all duration-500 stagger-2 border border-slate-100 lg:h-[85vh] lg:min-h-[750px]">
+        
+        {/* LEFT SIDE: Info Panel */}
+        <div className="hidden lg:flex flex-col w-[350px] xl:w-[450px] bg-white p-10 xl:p-12 text-slate-900 relative overflow-hidden shrink-0 border-r border-slate-100 z-20">
+           <div className="absolute top-[-20%] left-[-20%] w-[400px] h-[400px] bg-[#FF6B00]/10 rounded-full blur-[100px] pointer-events-none animate-float" />
+           <div className="absolute bottom-[-20%] right-[-20%] w-[400px] h-[400px] bg-[#FF6B00]/5 rounded-full blur-[100px] pointer-events-none animate-float" style={{ animationDelay: '2s' }} />
+           
+           <div className="relative z-10 h-full flex flex-col justify-between">
+             <Link href="/" className="inline-flex items-center gap-3 group w-fit">
+               <div className="w-10 h-10 rounded-xl bg-[#FF6B00] flex items-center justify-center text-white shadow-lg shadow-orange-500/30 group-hover:scale-105 transition-transform shrink-0">
+                 <ShieldCheck className="w-6 h-6 stroke-[2.5]" />
+               </div>
+               <span className="text-[26px] font-black text-slate-900 tracking-tight">DocVault</span>
+             </Link>
 
-      {/* Back to Home Page Link */}
-      <div className="text-center py-4 relative z-10">
-        <Link href="/" className="text-xs font-bold text-[#6B7280] hover:text-[#FF6B00] transition-colors inline-flex items-center gap-1">
-          ← Back to Home Page
-        </Link>
+             <div className="my-auto space-y-8 py-8">
+               <div>
+                 <h1 className="text-[36px] xl:text-[40px] font-black leading-tight tracking-tight mb-4">Welcome to <span className="text-[#FF6B00]">DocVault</span></h1>
+                 <p className="text-[15px] xl:text-[16px] text-slate-600 font-medium leading-relaxed">
+                   Your secure document journey starts here. <br/><br/>
+                   Create your account to safely store, organize, and access your important documents anytime, anywhere.
+                 </p>
+               </div>
+               
+               <div className="space-y-4 pt-2">
+                 {[
+                   { title: 'Secure Cloud Storage', icon: ShieldCheck, desc: 'Your documents are encrypted and protected.' },
+                   { title: 'Smart Organization', icon: Folder, desc: 'Organize documents easily with folders.' },
+                   { title: 'Instant Access', icon: Zap, desc: 'Find and access your documents in seconds.' },
+                   { title: 'Access Anywhere', icon: Monitor, desc: 'Access your documents from any device, anytime.' }
+                 ].map((feature, idx) => (
+                   <div key={idx} className="flex items-start gap-4 animate-slide-up" style={{ animationDelay: `${idx * 0.1 + 0.3}s` }}>
+                     <div className="w-10 h-10 rounded-full bg-[#FF6B00]/10 flex items-center justify-center text-[#FF6B00] shrink-0 mt-0.5">
+                       <feature.icon className="w-5 h-5 stroke-[2.5]" />
+                     </div>
+                     <div>
+                       <h4 className="text-[15px] text-slate-900 font-bold leading-tight mb-1">{feature.title}</h4>
+                       <p className="text-[13px] text-slate-500 font-medium leading-snug">{feature.desc}</p>
+                     </div>
+                   </div>
+                 ))}
+               </div>
+             </div>
+             
+             {/* Light Theme Abstract Illustration */}
+             <div className="relative h-[200px] w-full shrink-0 flex items-center justify-center overflow-visible">
+               {/* Document 1 */}
+               <div className="absolute top-[20%] left-[10%] w-24 h-32 bg-white rounded-xl -rotate-12 shadow-[0_10px_40px_-10px_rgba(255,107,0,0.2)] animate-float border border-orange-100 z-10" style={{ animationDelay: '0s' }}>
+                 <div className="w-10 h-12 bg-orange-50 rounded absolute top-3 left-3 flex items-center justify-center text-[#FF6B00] font-black text-xs border border-orange-100">PDF</div>
+                 <div className="w-14 h-1.5 bg-orange-100 rounded-full absolute top-18 left-3 mt-4" />
+                 <div className="w-10 h-1.5 bg-orange-100 rounded-full absolute top-22 left-3 mt-6" />
+               </div>
+               
+               {/* Center Orange Folder */}
+               <div className="relative w-36 h-24 bg-gradient-to-tr from-[#FF6B00] to-[#FF8A00] rounded-xl shadow-[0_20px_40px_-10px_rgba(255,107,0,0.4)] animate-float flex items-center justify-center z-20 mt-16 border border-white/20" style={{ animationDelay: '1s' }}>
+                 <div className="absolute -top-4 left-4 w-12 h-6 bg-[#FF6B00] rounded-t-lg -z-10" />
+                 <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-16 h-12 bg-white/20 backdrop-blur-md rounded-lg shadow-inner z-10 flex items-center justify-center border border-white/30">
+                    <Lock className="w-6 h-6 text-white drop-shadow-md" />
+                 </div>
+                 <ShieldCheck className="w-10 h-10 text-white drop-shadow-md" />
+               </div>
+               
+               {/* Document 2 */}
+               <div className="absolute top-[10%] right-[10%] w-20 h-28 bg-white rounded-xl rotate-12 shadow-[0_10px_40px_-10px_rgba(255,107,0,0.15)] animate-float border border-orange-100 z-10" style={{ animationDelay: '2s' }}>
+                 <div className="w-full h-10 bg-slate-50 rounded-t-xl border-b border-slate-100 absolute top-0 left-0 flex items-center justify-center">
+                    <div className="w-8 h-6 bg-slate-200 rounded shadow-sm" />
+                 </div>
+                 <div className="w-14 h-1.5 bg-slate-100 rounded-full absolute top-14 left-3" />
+                 <div className="w-10 h-1.5 bg-slate-100 rounded-full absolute top-18 left-3" />
+                 <div className="w-12 h-1.5 bg-slate-100 rounded-full absolute top-22 left-3" />
+               </div>
+               
+               {/* Cloud background */}
+               <div className="absolute top-[5%] left-1/2 -translate-x-1/2 w-48 h-20 bg-[#FF6B00]/5 rounded-full blur-[20px] -z-10 pointer-events-none animate-float" style={{ animationDelay: '1.5s' }} />
+             </div>
+           </div>
+        </div>
+
+        {/* RIGHT SIDE: Form Panel (Orange Background with White Card) */}
+        <div className="flex-1 bg-gradient-to-br from-[#FF6B00] to-[#FF8A00] relative flex items-center justify-center p-4 sm:p-8 overflow-hidden z-10">
+           
+           {/* White Card holding the Form */}
+           <div className="bg-white rounded-[24px] shadow-2xl w-full max-w-[700px] max-h-full flex flex-col relative overflow-hidden">
+              <div className="flex-1 overflow-y-auto custom-scrollbar p-6 sm:p-10">
+        
+          {/* Header */}
+          <div className="text-center space-y-3 mb-10 stagger-3">
+            <Link href="/" className="inline-flex items-center justify-center group mb-4">
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#FF6B00] to-[#FF8A00] flex items-center justify-center text-white shadow-[0_8px_16px_-6px_rgba(255,107,0,0.5)] group-hover:scale-105 transition-transform border border-white/20">
+                <ShieldCheck className="w-8 h-8 stroke-[2.5]" />
+              </div>
+            </Link>
+            <h2 className="text-[32px] sm:text-4xl font-black text-slate-900 tracking-tight leading-tight">
+              Create your account
+            </h2>
+            <p className="text-[16px] text-slate-500 font-medium max-w-[480px] mx-auto leading-relaxed">
+              Select a role and fill out the details below to join DocVault.
+            </p>
+          </div>
+
+          {globalError && (
+            <div className="mb-8 p-4 rounded-2xl bg-red-50 border border-red-100 flex items-start gap-3 text-red-700 text-sm font-semibold animate-fade-in shadow-sm">
+              <AlertCircle className="w-5 h-5 mt-0.5 shrink-0" />
+              <span>{globalError}</span>
+            </div>
+          )}
+
+          <div className="space-y-12 stagger-4">
+            
+            {/* ROLE SELECTION */}
+            <div>
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-8 h-8 rounded-full bg-orange-100 text-[#FF6B00] flex items-center justify-center font-black text-sm">1</div>
+                <h3 className="text-xl font-bold text-slate-900">Choose Account Type</h3>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div 
+                  onClick={() => setUserType('student')}
+                  className={`relative p-8 rounded-[28px] border-[2px] text-left cursor-pointer transition-all duration-300 group ${
+                    userType === 'student' 
+                      ? 'border-[#FF6B00] bg-gradient-to-b from-orange-50/80 to-white shadow-[0_20px_40px_-15px_rgba(255,107,0,0.15)] scale-[1.03] z-10' 
+                      : 'border-slate-100 bg-white hover:border-orange-200 hover:shadow-[0_15px_30px_-15px_rgba(0,0,0,0.08)] hover:-translate-y-1'
+                  }`}
+                >
+                  {userType === 'student' && <div className="absolute -inset-[2px] bg-gradient-to-b from-orange-500/20 to-transparent rounded-[30px] -z-10 blur-sm" />}
+                  <div className={`absolute top-5 right-5 w-7 h-7 rounded-full flex items-center justify-center transition-all duration-300 ${userType === 'student' ? 'bg-[#FF6B00] text-white scale-100' : 'bg-slate-100 text-slate-300 scale-0 opacity-0'}`}>
+                    <Check className="w-4 h-4 stroke-[3]" />
+                  </div>
+                  <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 transition-all duration-300 ${
+                    userType === 'student' ? 'bg-gradient-to-br from-[#FF6B00] to-[#FF8A00] text-white shadow-[0_10px_20px_-8px_rgba(255,107,0,0.5)] scale-110' : 'bg-slate-50 text-slate-400 group-hover:bg-orange-50 group-hover:text-[#FF6B00] group-hover:scale-105'
+                  }`}>
+                    <GraduationCap className="w-8 h-8" />
+                  </div>
+                  <h3 className={`text-[22px] font-black mb-3 transition-colors ${userType === 'student' ? 'text-slate-900' : 'text-slate-700'}`}>Student</h3>
+                  <p className="text-[14px] text-slate-500 font-medium leading-[1.6]">
+                    Store <span className={userType === 'student' ? 'text-[#FF6B00] font-bold' : ''}>academic documents</span>, assignments, and certificates securely.
+                  </p>
+                </div>
+
+                <div 
+                  onClick={() => setUserType('professional')}
+                  className={`relative p-8 rounded-[28px] border-[2px] text-left cursor-pointer transition-all duration-300 group ${
+                    userType === 'professional' 
+                      ? 'border-[#FF6B00] bg-gradient-to-b from-orange-50/80 to-white shadow-[0_20px_40px_-15px_rgba(255,107,0,0.15)] scale-[1.03] z-10' 
+                      : 'border-slate-100 bg-white hover:border-orange-200 hover:shadow-[0_15px_30px_-15px_rgba(0,0,0,0.08)] hover:-translate-y-1'
+                  }`}
+                >
+                  {userType === 'professional' && <div className="absolute -inset-[2px] bg-gradient-to-b from-orange-500/20 to-transparent rounded-[30px] -z-10 blur-sm" />}
+                  <div className={`absolute top-5 right-5 w-7 h-7 rounded-full flex items-center justify-center transition-all duration-300 ${userType === 'professional' ? 'bg-[#FF6B00] text-white scale-100' : 'bg-slate-100 text-slate-300 scale-0 opacity-0'}`}>
+                    <Check className="w-4 h-4 stroke-[3]" />
+                  </div>
+                  <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 transition-all duration-300 ${
+                    userType === 'professional' ? 'bg-gradient-to-br from-[#FF6B00] to-[#FF8A00] text-white shadow-[0_10px_20px_-8px_rgba(255,107,0,0.5)] scale-110' : 'bg-slate-50 text-slate-400 group-hover:bg-orange-50 group-hover:text-[#FF6B00] group-hover:scale-105'
+                  }`}>
+                    <Briefcase className="w-8 h-8" />
+                  </div>
+                  <h3 className={`text-[22px] font-black mb-3 transition-colors ${userType === 'professional' ? 'text-slate-900' : 'text-slate-700'}`}>Professional</h3>
+                  <p className="text-[14px] text-slate-500 font-medium leading-[1.6]">
+                    Manage <span className={userType === 'professional' ? 'text-[#FF6B00] font-bold' : ''}>company records</span>, contracts, and confidential files safely.
+                  </p>
+                </div>
+
+                <div 
+                  onClick={() => setUserType('individual')}
+                  className={`relative p-8 rounded-[28px] border-[2px] text-left cursor-pointer transition-all duration-300 group ${
+                    userType === 'individual' 
+                      ? 'border-[#FF6B00] bg-gradient-to-b from-orange-50/80 to-white shadow-[0_20px_40px_-15px_rgba(255,107,0,0.15)] scale-[1.03] z-10' 
+                      : 'border-slate-100 bg-white hover:border-orange-200 hover:shadow-[0_15px_30px_-15px_rgba(0,0,0,0.08)] hover:-translate-y-1'
+                  }`}
+                >
+                  {userType === 'individual' && <div className="absolute -inset-[2px] bg-gradient-to-b from-orange-500/20 to-transparent rounded-[30px] -z-10 blur-sm" />}
+                  <div className={`absolute top-5 right-5 w-7 h-7 rounded-full flex items-center justify-center transition-all duration-300 ${userType === 'individual' ? 'bg-[#FF6B00] text-white scale-100' : 'bg-slate-100 text-slate-300 scale-0 opacity-0'}`}>
+                    <Check className="w-4 h-4 stroke-[3]" />
+                  </div>
+                  <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 transition-all duration-300 ${
+                    userType === 'individual' ? 'bg-gradient-to-br from-[#FF6B00] to-[#FF8A00] text-white shadow-[0_10px_20px_-8px_rgba(255,107,0,0.5)] scale-110' : 'bg-slate-50 text-slate-400 group-hover:bg-orange-50 group-hover:text-[#FF6B00] group-hover:scale-105'
+                  }`}>
+                    <UserCheck className="w-8 h-8" />
+                  </div>
+                  <h3 className={`text-[22px] font-black mb-3 transition-colors ${userType === 'individual' ? 'text-slate-900' : 'text-slate-700'}`}>Individual</h3>
+                  <p className="text-[14px] text-slate-500 font-medium leading-[1.6]">
+                    Organize <span className={userType === 'individual' ? 'text-[#FF6B00] font-bold' : ''}>personal IDs</span>, insurance, and important documents in one secure place.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* REST OF FORM (Only shown when userType is selected) */}
+            {userType && (
+              <div className="animate-slide-up space-y-12">
+                
+                <hr className="border-slate-100" />
+                
+                {/* PERSONAL INFORMATION */}
+                <div>
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-8 h-8 rounded-full bg-orange-100 text-[#FF6B00] flex items-center justify-center font-black text-sm">2</div>
+                    <h3 className="text-xl font-bold text-slate-900">Personal Information</h3>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
+                    <InputField icon={User} label="Full Name" required value={fullName} onChange={(e: any) => setFullName(e.target.value)} error={errors.fullName} />
+                    <InputField icon={Mail} label="Email Address" required value={email} onChange={(e: any) => setEmail(e.target.value)} error={errors.email} />
+                  </div>
+                  
+                  <div className="mt-2 mb-4 relative group w-full">
+                    <div className="flex flex-col md:flex-row gap-4">
+                      <div className="relative flex-1">
+                        <div className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-slate-50 group-focus-within:bg-orange-50 flex items-center justify-center transition-all duration-300">
+                          <Phone className={`w-4 h-4 transition-colors duration-300 ${errors.mobileNumber ? 'text-red-400' : 'text-slate-400 group-focus-within:text-[#FF6B00]'}`} />
+                        </div>
+                        <div className="relative">
+                          <input 
+                            type="text" 
+                            disabled={otpVerified} 
+                            value={mobileNumber} 
+                            onChange={e => setMobileNumber(e.target.value)} 
+                            placeholder=" "
+                            className={`peer w-full pl-14 pr-4 pt-6 pb-2 bg-slate-50/50 border ${errors.mobileNumber ? 'border-red-300 bg-red-50/30' : 'border-slate-200 focus:border-[#FF6B00]'} rounded-xl text-[15px] font-medium focus:outline-none focus:ring-4 focus:ring-orange-500/10 transition-all duration-300 disabled:bg-slate-100 disabled:text-slate-400 disabled:border-slate-200`} 
+                          />
+                          <label className={`absolute left-14 text-slate-500 pointer-events-none transition-all duration-300 font-medium ${mobileNumber.length > 0 ? 'top-2 text-[10px] text-slate-400' : 'top-1/2 -translate-y-1/2 text-sm peer-focus:top-2 peer-focus:text-[10px] peer-focus:text-[#FF6B00]'}`}>
+                            Mobile Number <span className="text-red-500">*</span>
+                          </label>
+                        </div>
+                      </div>
+                      {!otpVerified && (
+                        <button type="button" onClick={handleSendOtp} disabled={otpTimer > 0} className="ripple-effect md:w-[160px] px-6 py-4 bg-slate-900 hover:bg-slate-800 text-white text-[15px] font-bold rounded-xl transition-all duration-300 shadow-[0_8px_16px_-6px_rgba(0,0,0,0.3)] hover:-translate-y-0.5 hover:shadow-[0_12px_20px_-8px_rgba(0,0,0,0.4)] disabled:opacity-50 disabled:shadow-none disabled:hover:-translate-y-0 whitespace-nowrap h-[56px] mt-0">
+                          {otpTimer > 0 ? `Wait (${otpTimer}s)` : 'Send OTP'}
+                        </button>
+                      )}
+                    </div>
+                    {errors.mobileNumber && <p className="text-red-500 text-[11px] font-bold mt-1.5 pl-1 animate-fade-in">{errors.mobileNumber}</p>}
+                    
+                    {otpSent && !otpVerified && (
+                      <div className="mt-5 flex flex-col sm:flex-row gap-4 animate-slide-up bg-orange-50/30 p-5 rounded-[20px] border border-orange-100/50 backdrop-blur-sm">
+                        <div className="relative flex-1">
+                          <input type="text" maxLength={6} value={otpValue} onChange={e => setOtpValue(e.target.value)} placeholder="Enter 6-digit OTP" className="w-full px-5 py-4 bg-white border border-slate-200 rounded-xl text-[16px] font-bold tracking-[0.2em] text-center focus:border-[#FF6B00] focus:ring-4 focus:ring-orange-500/10 focus:outline-none transition-all duration-300 shadow-sm" />
+                        </div>
+                        <button type="button" onClick={handleVerifyOtp} className="ripple-effect px-10 py-4 bg-gradient-to-r from-[#FF6B00] to-[#FF8A00] hover:brightness-110 shadow-[0_8px_20px_-6px_rgba(255,107,0,0.4)] hover:shadow-[0_12px_24px_-8px_rgba(255,107,0,0.5)] hover:-translate-y-0.5 text-white text-[15px] font-bold rounded-xl transition-all duration-300">
+                          Verify Code
+                        </button>
+                      </div>
+                    )}
+                    {errors.otp && <p className="text-red-500 text-[11px] font-bold mt-2 pl-1">{errors.otp}</p>}
+                    
+                    {otpVerified && (
+                      <div className="mt-4 p-4 bg-emerald-50/50 border border-emerald-100 rounded-xl flex items-center gap-3 text-emerald-600 text-[14px] font-bold animate-slide-up shadow-sm">
+                        <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center">
+                          <CheckCircle2 className="w-5 h-5" />
+                        </div>
+                        Mobile Number Verified Successfully
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <hr className="border-slate-100" />
+
+                {/* ROLE SPECIFIC INFORMATION */}
+                <div>
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-8 h-8 rounded-full bg-orange-100 text-[#FF6B00] flex items-center justify-center font-black text-sm">3</div>
+                    <h3 className="text-xl font-bold text-slate-900">
+                      {userType === 'student' ? 'Academic Details' : userType === 'professional' ? 'Professional Details' : 'Address Details'}
+                    </h3>
+                  </div>
+
+                  {userType === 'student' && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 animate-fade-in">
+                      <div className="md:col-span-2">
+                        <InputField icon={Building2} label="College / University Name" required value={collegeName} onChange={(e: any) => setCollegeName(e.target.value)} error={errors.collegeName} />
+                      </div>
+                      <SelectField icon={GraduationCap} label="Department" options={DEPARTMENTS} required value={department} onChange={setDepartment} error={errors.department} />
+                      <SelectField icon={MapPin} label="Year of Study" options={YEARS} required value={yearOfStudy} onChange={setYearOfStudy} error={errors.yearOfStudy} />
+                      <div className="md:col-span-2">
+                        <InputField icon={User} label="Student ID (Optional)" value={studentId} onChange={(e: any) => setStudentId(e.target.value)} />
+                      </div>
+                    </div>
+                  )}
+
+                  {userType === 'professional' && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 animate-fade-in">
+                      <div className="md:col-span-2">
+                        <InputField icon={Building2} label="Company Name" required value={companyName} onChange={(e: any) => setCompanyName(e.target.value)} error={errors.companyName} />
+                      </div>
+                      <InputField icon={User} label="Designation" required value={designation} onChange={(e: any) => setDesignation(e.target.value)} error={errors.designation} />
+                      <SelectField icon={Globe} label="Industry" options={INDUSTRIES} required value={industry} onChange={setIndustry} error={errors.industry} />
+                      <SelectField icon={BriefcaseBusiness} label="Years of Experience" options={EXPERIENCES} required value={yearsOfExperience} onChange={setYearsOfExperience} error={errors.yearsOfExperience} />
+                      <InputField icon={UserCheck} label="Employee ID (Optional)" value={employeeId} onChange={(e: any) => setEmployeeId(e.target.value)} />
+                    </div>
+                  )}
+
+                  {userType === 'individual' && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 animate-fade-in">
+                      <div className="md:col-span-2">
+                        <InputField icon={BriefcaseBusiness} label="Occupation (Optional)" value={occupation} onChange={(e: any) => setOccupation(e.target.value)} />
+                      </div>
+                      <InputField icon={Globe} label="Country" required value={country} onChange={(e: any) => setCountry(e.target.value)} error={errors.country} />
+                      <InputField icon={Map} label="State" required value={state} onChange={(e: any) => setState(e.target.value)} error={errors.state} />
+                      <div className="md:col-span-2">
+                        <InputField icon={MapPin} label="City" required value={city} onChange={(e: any) => setCity(e.target.value)} error={errors.city} />
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <hr className="border-slate-100" />
+
+                {/* ACCOUNT SECURITY */}
+                <div>
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-8 h-8 rounded-full bg-orange-100 text-[#FF6B00] flex items-center justify-center font-black text-sm">4</div>
+                    <h3 className="text-xl font-bold text-slate-900">Account Security</h3>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 animate-fade-in">
+                    <div className="relative group">
+                      <div className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-slate-50 group-focus-within:bg-orange-50 flex items-center justify-center transition-all duration-300">
+                        <Lock className={`w-4 h-4 transition-colors duration-300 ${errors.password ? 'text-red-400' : 'text-slate-400 group-focus-within:text-[#FF6B00]'}`} />
+                      </div>
+                      <div className="relative">
+                        <input 
+                          type={showPassword ? 'text' : 'password'} 
+                          value={password} 
+                          onChange={e => setPassword(e.target.value)} 
+                          placeholder=" "
+                          className={`peer w-full pl-14 pr-14 pt-6 pb-2 bg-slate-50/50 border ${errors.password ? 'border-red-300 bg-red-50/30' : 'border-slate-200 focus:border-[#FF6B00]'} rounded-xl text-[15px] font-medium focus:outline-none focus:ring-4 focus:ring-orange-500/10 transition-all duration-300`} 
+                        />
+                        <label className={`absolute left-14 text-slate-500 pointer-events-none transition-all duration-300 font-medium ${password.length > 0 ? 'top-2 text-[10px] text-slate-400' : 'top-1/2 -translate-y-1/2 text-sm peer-focus:top-2 peer-focus:text-[10px] peer-focus:text-[#FF6B00]'}`}>
+                          Password <span className="text-red-500">*</span>
+                        </label>
+                      </div>
+                      <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-400 hover:text-slate-700 transition-colors">
+                        {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
+                      {errors.password && <p className="text-red-500 text-[11px] font-bold mt-1.5 pl-1">{errors.password}</p>}
+                    </div>
+
+                    <div className="relative group">
+                      <div className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-slate-50 group-focus-within:bg-orange-50 flex items-center justify-center transition-all duration-300">
+                        <Lock className={`w-4 h-4 transition-colors duration-300 ${errors.confirmPassword ? 'text-red-400' : 'text-slate-400 group-focus-within:text-[#FF6B00]'}`} />
+                      </div>
+                      <div className="relative">
+                        <input 
+                          type={showConfirm ? 'text' : 'password'} 
+                          value={confirmPassword} 
+                          onChange={e => setConfirmPassword(e.target.value)} 
+                          placeholder=" "
+                          className={`peer w-full pl-14 pr-14 pt-6 pb-2 bg-slate-50/50 border ${errors.confirmPassword ? 'border-red-300 bg-red-50/30' : 'border-slate-200 focus:border-[#FF6B00]'} rounded-xl text-[15px] font-medium focus:outline-none focus:ring-4 focus:ring-orange-500/10 transition-all duration-300`} 
+                        />
+                        <label className={`absolute left-14 text-slate-500 pointer-events-none transition-all duration-300 font-medium ${confirmPassword.length > 0 ? 'top-2 text-[10px] text-slate-400' : 'top-1/2 -translate-y-1/2 text-sm peer-focus:top-2 peer-focus:text-[10px] peer-focus:text-[#FF6B00]'}`}>
+                          Confirm Password <span className="text-red-500">*</span>
+                        </label>
+                      </div>
+                      <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-400 hover:text-slate-700 transition-colors">
+                        {showConfirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
+                      {confirmPassword.length > 0 && password === confirmPassword && (
+                        <p className="text-emerald-500 text-[11px] font-bold mt-2 flex items-center gap-1.5 pl-1 animate-fade-in"><CheckCircle2 className="w-4 h-4" /> Passwords Match</p>
+                      )}
+                      {errors.confirmPassword && <p className="text-red-500 text-[11px] font-bold mt-1.5 pl-1">{errors.confirmPassword}</p>}
+                    </div>
+                  </div>
+
+                  {password.length > 0 && (
+                    <div className="mb-6 mt-2 bg-slate-50/80 p-6 rounded-[20px] border border-slate-100 shadow-[inset_0_2px_10px_rgba(0,0,0,0.02)] animate-slide-up backdrop-blur-sm">
+                      <div className="mb-4 text-[11px] font-black flex justify-between tracking-wide">
+                        <span className="text-slate-500 uppercase">Password Strength</span>
+                        <span className={getPasswordStrength().color}>{getPasswordStrength().label}</span>
+                      </div>
+                      <div className="h-1.5 bg-slate-200/60 rounded-full overflow-hidden mb-5">
+                        <div className={`h-full ${getPasswordStrength().bg} transition-all duration-700 ease-out`} style={{ width: getPasswordStrength().w }} />
+                      </div>
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-y-3 gap-x-2 text-[11px] font-bold text-slate-400">
+                        <div className={`flex items-center gap-2 transition-colors duration-300 ${password.length >= 8 ? 'text-emerald-500' : ''}`}><CheckCircle className="w-3.5 h-3.5" /> Min 8 Chars</div>
+                        <div className={`flex items-center gap-2 transition-colors duration-300 ${/[A-Z]/.test(password) ? 'text-emerald-500' : ''}`}><CheckCircle className="w-3.5 h-3.5" /> 1 Uppercase</div>
+                        <div className={`flex items-center gap-2 transition-colors duration-300 ${/[a-z]/.test(password) ? 'text-emerald-500' : ''}`}><CheckCircle className="w-3.5 h-3.5" /> 1 Lowercase</div>
+                        <div className={`flex items-center gap-2 transition-colors duration-300 ${/[0-9]/.test(password) ? 'text-emerald-500' : ''}`}><CheckCircle className="w-3.5 h-3.5" /> 1 Number</div>
+                        <div className={`flex items-center gap-2 transition-colors duration-300 ${/[^A-Za-z0-9\s]/.test(password) ? 'text-emerald-500' : ''}`}><CheckCircle className="w-3.5 h-3.5" /> 1 Special Char</div>
+                        <div className={`flex items-center gap-2 transition-colors duration-300 ${!/\s/.test(password) && password.length > 0 ? 'text-emerald-500' : ''}`}><CheckCircle className="w-3.5 h-3.5" /> No Spaces</div>
+                      </div>
+                    </div>
+                  )}
+
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Footer Actions Area */}
+        <div className="bg-slate-50/80 p-6 sm:px-10 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-6 backdrop-blur-sm relative z-10 shrink-0">
+          <div className="text-[14px] text-slate-500 font-medium text-center sm:text-left w-full sm:w-auto">
+            Already have an account? <Link href="/login" className="font-black text-[#FF6B00] hover:text-orange-600 transition-all hover:underline underline-offset-4 ml-1">Sign In</Link>
+          </div>
+          
+          <div className="w-full sm:w-auto flex-1 max-w-[280px]">
+            <button type="button" onClick={handleSubmit} disabled={loading || !userType} className="ripple-effect group w-full py-4 rounded-xl font-bold text-[15px] text-white bg-gradient-to-r from-[#FF6B00] to-[#FF8A00] hover:brightness-110 shadow-[0_8px_20px_-6px_rgba(255,107,0,0.4)] hover:shadow-[0_12px_24px_-8px_rgba(255,107,0,0.5)] transition-all duration-300 flex justify-center items-center gap-2 disabled:opacity-50 disabled:hover:-translate-y-0 hover:-translate-y-0.5">
+              {loading ? <><Loader2 className="w-5 h-5 animate-spin" /> Creating...</> : <><UserPlus className="w-5 h-5" /> Create Account</>}
+            </button>
+          </div>
+        </div>
       </div>
+    </div>
+    </div>
     </div>
   );
 }

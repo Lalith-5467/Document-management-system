@@ -246,32 +246,30 @@ export default function AdminDocumentsPage() {
 
   const handleDownload = async (doc: any) => {
     if (!doc) return;
+    
+    if (doc.id) {
+      try {
+        const token = typeof window !== 'undefined' ? localStorage.getItem('dms_token') : '';
+        const envApiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+        const baseUrl = envApiUrl.endsWith('/') ? envApiUrl.slice(0, -1) : envApiUrl;
+        const rootUrl = baseUrl.endsWith('/api') ? baseUrl.slice(0, -4) : baseUrl;
+        
+        const downloadUrl = `${rootUrl}/api/documents/${doc.id}/download${token ? `?token=${token}` : ''}`;
+        
+        window.location.assign(downloadUrl);
+        showToast(`Downloading document...`);
+        return;
+      } catch (e) {
+        console.error('Download error:', e);
+      }
+    }
+
     const titleName = (doc.title || doc.file_name || 'Document').trim();
     const rawExt = (doc.file_name || doc.title || '').includes('.')
       ? (doc.file_name || doc.title).split('.').pop() || 'pdf'
       : 'pdf';
     const ext = rawExt.toLowerCase();
     const fileName = titleName.toLowerCase().endsWith(`.${ext}`) ? titleName : `${titleName}.${ext}`;
-
-    // Try fetching from direct file_path if available
-    if (doc.file_path && (doc.file_path.startsWith('http') || doc.file_path.startsWith('data:') || doc.file_path.startsWith('blob:'))) {
-      try {
-        const resp = await fetch(doc.file_path);
-        if (resp.ok) {
-          const blob = await resp.blob();
-          const blobUrl = URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = blobUrl;
-          link.setAttribute('download', fileName);
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
-          showToast(`Downloaded "${fileName}" successfully!`);
-          return;
-        }
-      } catch (e) {}
-    }
 
     // Spec-Compliant Fallback Blob Generator
     const category = doc.category_name || 'Personal Documents';

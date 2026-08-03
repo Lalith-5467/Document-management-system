@@ -9,22 +9,40 @@ class AuthController {
     // POST /api/auth/register
     static async register(req, res) {
         try {
-            const { fullName, email, password, userType } = req.body;
+            const { 
+                fullName, email, password, userType, mobileNumber,
+                collegeName, department, yearOfStudy, studentId,
+                companyName, designation, industry, yearsOfExperience, employeeId,
+                occupation, country, state, city
+            } = req.body;
 
-            if (!fullName || !email || !password) {
+            if (!fullName || !email || !password || !mobileNumber) {
                 return res.status(400).json({
                     success: false,
-                    message: 'Please provide full name, email, and password.'
+                    message: 'Please provide full name, email, password, and mobile number.'
                 });
             }
 
-            // Check if user already exists
+            if (userType === 'student' && (!collegeName || !department || !yearOfStudy)) {
+                return res.status(400).json({ success: false, message: 'Missing required student fields.' });
+            }
+            if (userType === 'professional' && (!companyName || !designation || !industry || !yearsOfExperience)) {
+                return res.status(400).json({ success: false, message: 'Missing required professional fields.' });
+            }
+            if (userType === 'individual' && (!country || !state || !city)) {
+                return res.status(400).json({ success: false, message: 'Missing required individual fields.' });
+            }
+
+            // Check if user already exists (email or mobile)
             const existingUser = await UserModel.findByEmail(email);
             if (existingUser) {
-                return res.status(409).json({
-                    success: false,
-                    message: 'User with this email already exists.'
-                });
+                return res.status(409).json({ success: false, message: 'User with this email already exists.' });
+            }
+            if (UserModel.findByMobile) {
+                const existingMobile = await UserModel.findByMobile(mobileNumber);
+                if (existingMobile) {
+                    return res.status(409).json({ success: false, message: 'User with this mobile number already exists.' });
+                }
             }
 
             // Hash password
@@ -33,10 +51,10 @@ class AuthController {
 
             // Save user
             const newUser = await UserModel.create({
-                fullName,
-                email,
-                password: hashedPassword,
-                userType: userType || 'individual'
+                fullName, email, password: hashedPassword, userType: userType || 'individual', mobileNumber,
+                collegeName, department, yearOfStudy, studentId,
+                companyName, designation, industry, yearsOfExperience, employeeId,
+                occupation, country, state, city
             });
 
             // Generate JWT
@@ -73,32 +91,25 @@ class AuthController {
                 });
             }
 
-            // Find user or auto-register for local testing
             let user = await UserModel.findByEmail(email);
             if (!user) {
-                // Auto-create user for smooth testing
-                const salt = await bcrypt.genSalt(10);
-                const hashedPassword = await bcrypt.hash(password, salt);
-                const namePart = email.split('@')[0];
-                const formattedName = namePart.charAt(0).toUpperCase() + namePart.slice(1);
-                const isAdmin = email.toLowerCase().includes('admin');
-                user = await UserModel.create({
-                    fullName: isAdmin ? 'System Admin' : formattedName,
-                    email: email.toLowerCase(),
-                    password: hashedPassword,
-                    userType: isAdmin ? 'admin' : 'individual'
+                return res.status(401).json({
+                    success: false,
+                    message: 'Invalid email or password.'
                 });
-            } else {
-                if (email.toLowerCase().includes('admin')) {
-                    user.user_type = 'admin';
-                }
-                // Compare password
-                const isMatch = await bcrypt.compare(password, user.password);
-                if (!isMatch) {
-                    // Update password for testing user convenience
-                    const salt = await bcrypt.genSalt(10);
-                    user.password = await bcrypt.hash(password, salt);
-                }
+            }
+
+            // Compare password
+            const isMatch = await bcrypt.compare(password, user.password);
+            if (!isMatch) {
+                return res.status(401).json({
+                    success: false,
+                    message: 'Invalid email or password.'
+                });
+            }
+
+            if (email.toLowerCase().includes('admin')) {
+                user.user_type = 'admin';
             }
 
             // Generate JWT
@@ -108,12 +119,7 @@ class AuthController {
                 { expiresIn: JWT_EXPIRES_IN }
             );
 
-            const userWithoutPassword = {
-                id: user.id,
-                full_name: user.full_name,
-                email: user.email,
-                user_type: user.user_type
-            };
+            const { password: userPassword, ...userWithoutPassword } = user;
 
             return res.status(200).json({
                 success: true,

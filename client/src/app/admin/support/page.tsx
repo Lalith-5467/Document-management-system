@@ -93,6 +93,7 @@ export default function AdminSupportCenterPage() {
   // Bot Rules State
   const [botRules, setBotRules] = useState<BotRule[]>(DEFAULT_BOT_RULES);
   const [showCreateBotModal, setShowCreateBotModal] = useState(false);
+  const [editingBotRule, setEditingBotRule] = useState<BotRule | null>(null);
   const [newBotForm, setNewBotForm] = useState({ keyword: '', response: '' });
 
   // Tickets State
@@ -208,6 +209,16 @@ export default function AdminSupportCenterPage() {
     setShowCreateBotModal(false);
     showToast(`Bot reply rule for keyword "${newRule.keyword}" created!`);
     setNewBotForm({ keyword: '', response: '' });
+  };
+
+  const handleUpdateBotRule = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingBotRule) return;
+
+    const updated = botRules.map(r => r.id === editingBotRule.id ? editingBotRule : r);
+    saveBotToStorage(updated);
+    setEditingBotRule(null);
+    showToast(`Bot reply rule updated successfully!`);
   };
 
   const handleDeleteBotRule = (id: string) => {
@@ -449,13 +460,22 @@ export default function AdminSupportCenterPage() {
                       {rule.response}
                     </td>
                     <td className="py-3.5 px-4 text-right">
-                      <button
-                        onClick={() => handleDeleteBotRule(rule.id)}
-                        className="p-1.5 rounded-xl bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-200 transition cursor-pointer"
-                        title="Delete Rule"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
+                      <div className="flex items-center justify-end gap-1.5">
+                        <button
+                          onClick={() => setEditingBotRule(rule)}
+                          className="p-1.5 rounded-xl bg-blue-50 text-blue-600 hover:bg-blue-100 border border-blue-200 transition cursor-pointer"
+                          title="Edit Rule"
+                        >
+                          <Edit3 className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteBotRule(rule.id)}
+                          className="p-1.5 rounded-xl bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-200 transition cursor-pointer"
+                          title="Delete Rule"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -668,6 +688,49 @@ export default function AdminSupportCenterPage() {
                 <button type="button" onClick={() => setShowCreateBotModal(false)} className="px-4 py-2.5 rounded-xl bg-slate-100 text-slate-700 font-bold hover:bg-slate-200">Cancel</button>
                 <button type="submit" className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-black text-white bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:opacity-90 shadow-md shadow-orange-500/20 transition cursor-pointer">
                   Save Bot Rule
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* EDIT BOT RULE MODAL */}
+      {editingBotRule && (
+        <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-pop-in">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 relative space-y-4 text-xs text-slate-900">
+            <button onClick={() => setEditingBotRule(null)} className="absolute top-5 right-5 text-slate-400 hover:text-slate-900 p-1 rounded-lg">
+              <X className="w-5 h-5" />
+            </button>
+            <h3 className="text-base font-black text-slate-900 font-auth-heading">Edit AI Bot Response Rule</h3>
+
+            <form onSubmit={handleUpdateBotRule} className="space-y-3">
+              <div>
+                <label className="font-extrabold text-[10px] uppercase text-slate-600 block mb-1">Trigger Keyword</label>
+                <input
+                  type="text"
+                  required
+                  value={editingBotRule.keyword}
+                  onChange={e => setEditingBotRule({ ...editingBotRule, keyword: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-mono font-bold text-[#FF6B00] focus:outline-none focus:border-[#FF6B00]"
+                />
+              </div>
+
+              <div>
+                <label className="font-extrabold text-[10px] uppercase text-slate-600 block mb-1">Automated Bot Response</label>
+                <textarea
+                  rows={4}
+                  required
+                  value={editingBotRule.response}
+                  onChange={e => setEditingBotRule({ ...editingBotRule, response: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-medium text-slate-900 focus:outline-none focus:border-[#FF6B00] resize-none"
+                />
+              </div>
+
+              <div className="pt-2 flex justify-end gap-2">
+                <button type="button" onClick={() => setEditingBotRule(null)} className="px-4 py-2.5 rounded-xl bg-slate-100 text-slate-700 font-bold hover:bg-slate-200">Cancel</button>
+                <button type="submit" className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-black text-white bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:opacity-90 shadow-md shadow-orange-500/20 transition cursor-pointer">
+                  Save Changes
                 </button>
               </div>
             </form>

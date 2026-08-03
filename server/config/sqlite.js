@@ -31,9 +31,26 @@ async function initSqlite() {
             email TEXT NOT NULL UNIQUE,
             password TEXT NOT NULL,
             user_type TEXT DEFAULT 'individual',
+            mobile_number TEXT NULL,
+            college_name TEXT NULL,
+            department TEXT NULL,
+            year_of_study TEXT NULL,
+            student_id TEXT NULL,
+            company_name TEXT NULL,
+            designation TEXT NULL,
+            industry TEXT NULL,
+            years_of_experience TEXT NULL,
+            employee_id TEXT NULL,
+            occupation TEXT NULL,
+            country TEXT NULL,
+            state TEXT NULL,
+            city TEXT NULL,
             theme TEXT DEFAULT 'light',
             language TEXT DEFAULT 'en',
             avatar TEXT NULL,
+            is_active INTEGER DEFAULT 1,
+            is_blocked INTEGER DEFAULT 0,
+            last_login_at TEXT NULL,
             created_at TEXT DEFAULT CURRENT_TIMESTAMP,
             updated_at TEXT DEFAULT CURRENT_TIMESTAMP
         );
@@ -45,6 +62,7 @@ async function initSqlite() {
             description TEXT,
             color TEXT DEFAULT '#3B82F6',
             icon_name TEXT DEFAULT 'Folder',
+            is_active INTEGER DEFAULT 1,
             created_at TEXT DEFAULT CURRENT_TIMESTAMP,
             updated_at TEXT DEFAULT CURRENT_TIMESTAMP
         );
@@ -73,6 +91,7 @@ async function initSqlite() {
             mime_type TEXT NOT NULL,
             is_favorite INTEGER DEFAULT 0,
             is_archived INTEGER DEFAULT 0,
+            deleted_at TEXT NULL,
             created_at TEXT DEFAULT CURRENT_TIMESTAMP,
             updated_at TEXT DEFAULT CURRENT_TIMESTAMP
         );
@@ -106,7 +125,53 @@ async function initSqlite() {
             setting_value TEXT NOT NULL,
             updated_at TEXT DEFAULT CURRENT_TIMESTAMP
         );
+
+        CREATE TABLE IF NOT EXISTS landing_cms (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            website_title TEXT,
+            hero_title TEXT,
+            hero_subtitle TEXT,
+            hero_banner_image TEXT,
+            about_title TEXT,
+            about_content TEXT,
+            contact_email TEXT,
+            contact_phone TEXT,
+            footer_text TEXT,
+            section_hero_enabled INTEGER DEFAULT 1,
+            section_features_enabled INTEGER DEFAULT 1,
+            section_categories_enabled INTEGER DEFAULT 1,
+            section_audience_enabled INTEGER DEFAULT 1,
+            updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+        );
     `);
+
+    // Safely add missing columns to existing databases
+    const migrations = [
+        "ALTER TABLE users ADD COLUMN is_active INTEGER DEFAULT 1",
+        "ALTER TABLE users ADD COLUMN is_blocked INTEGER DEFAULT 0",
+        "ALTER TABLE users ADD COLUMN last_login_at TEXT NULL",
+        "ALTER TABLE users ADD COLUMN avatar TEXT NULL",
+        "ALTER TABLE users ADD COLUMN mobile_number TEXT NULL",
+        "ALTER TABLE users ADD COLUMN college_name TEXT NULL",
+        "ALTER TABLE users ADD COLUMN department TEXT NULL",
+        "ALTER TABLE users ADD COLUMN year_of_study TEXT NULL",
+        "ALTER TABLE users ADD COLUMN student_id TEXT NULL",
+        "ALTER TABLE users ADD COLUMN company_name TEXT NULL",
+        "ALTER TABLE users ADD COLUMN designation TEXT NULL",
+        "ALTER TABLE users ADD COLUMN industry TEXT NULL",
+        "ALTER TABLE users ADD COLUMN years_of_experience TEXT NULL",
+        "ALTER TABLE users ADD COLUMN employee_id TEXT NULL",
+        "ALTER TABLE users ADD COLUMN occupation TEXT NULL",
+        "ALTER TABLE users ADD COLUMN country TEXT NULL",
+        "ALTER TABLE users ADD COLUMN state TEXT NULL",
+        "ALTER TABLE users ADD COLUMN city TEXT NULL",
+        "ALTER TABLE documents ADD COLUMN deleted_at TEXT NULL",
+        "ALTER TABLE categories ADD COLUMN is_active INTEGER DEFAULT 1"
+    ];
+
+    for (const sql of migrations) {
+        try { await dbInstance.exec(sql); } catch (e) { /* Column likely exists */ }
+    }
 
     // Seed default categories if empty
     const catCount = await dbInstance.get('SELECT COUNT(*) as count FROM categories');

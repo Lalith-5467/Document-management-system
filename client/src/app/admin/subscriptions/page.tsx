@@ -332,7 +332,7 @@ export default function AdminSubscriptionsPage() {
           { id: 'plans', label: '💳 Subscription Plans', count: plans ? plans.length : 0 },
           { id: 'promos', label: '🎁 Promo Codes & Discounts', count: promos ? promos.length : 0 },
           { id: 'users', label: '👥 User Subscriptions', count: users ? users.length : 0 },
-          { id: 'banner', label: '📢 Free Trial Banner CMS', count: 1 },
+          { id: 'trial', label: '📢 Free Trial Banner CMS', count: 1 },
         ].map((t) => (
           <button
             key={t.id}

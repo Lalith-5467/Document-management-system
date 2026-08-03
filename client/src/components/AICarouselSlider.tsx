@@ -63,7 +63,7 @@ export default function FloatingArrowHeroCarousel() {
         style={{ backgroundColor: '#FF6B00' }}
       />
 
-      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center min-h-[500px]">
+      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center min-h-[500px] px-8 sm:px-12 lg:px-16">
         {/* Left Column: Hero Text Content */}
         <div className="lg:col-span-6 space-y-6 sm:space-y-8 text-left">
           {/* Badge */}
@@ -121,7 +121,7 @@ export default function FloatingArrowHeroCarousel() {
       {/* Floating Left and Right Navigation Arrow Buttons */}
       <button
         onClick={prevSlide}
-        className="absolute left-1 sm:left-3 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-2xl bg-white/90 backdrop-blur-md text-[#FF6B00] border border-slate-200/90 shadow-xl flex items-center justify-center hover:bg-[#FF6B00] hover:text-white hover:border-[#FF6B00] hover:scale-110 active:scale-95 transition-all duration-200"
+        className="absolute left-0 sm:left-2 lg:left-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-2xl bg-white/90 backdrop-blur-md text-[#FF6B00] border border-slate-200/90 shadow-xl flex items-center justify-center hover:bg-[#FF6B00] hover:text-white hover:border-[#FF6B00] hover:scale-110 active:scale-95 transition-all duration-200"
         aria-label="Previous Slide"
       >
         <ChevronLeft className="w-6 h-6 stroke-[2.5]" />
@@ -129,7 +129,7 @@ export default function FloatingArrowHeroCarousel() {
 
       <button
         onClick={nextSlide}
-        className="absolute right-1 sm:right-3 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-2xl bg-white/90 backdrop-blur-md text-[#FF6B00] border border-slate-200/90 shadow-xl flex items-center justify-center hover:bg-[#FF6B00] hover:text-white hover:border-[#FF6B00] hover:scale-110 active:scale-95 transition-all duration-200"
+        className="absolute right-0 sm:right-2 lg:right-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-2xl bg-white/90 backdrop-blur-md text-[#FF6B00] border border-slate-200/90 shadow-xl flex items-center justify-center hover:bg-[#FF6B00] hover:text-white hover:border-[#FF6B00] hover:scale-110 active:scale-95 transition-all duration-200"
         aria-label="Next Slide"
       >
         <ChevronRight className="w-6 h-6 stroke-[2.5]" />

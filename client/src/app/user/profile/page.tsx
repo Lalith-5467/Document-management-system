@@ -1,29 +1,57 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { User, ShieldCheck, Mail, ArrowLeft, CheckCircle2, Edit2, Loader2, AlertCircle, Save, Phone, MapPin, Briefcase, Building, Key, ChevronRight } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import api from '@/lib/api';
 
 export default function ProfilePage() {
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
 
+  const [isLoading, setIsLoading] = useState(true);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [fullName, setFullName] = useState<string>(user?.full_name || '');
   const [userType, setUserType] = useState<string>(user?.user_type || 'individual');
   
-  // Extra fields
-  const [jobTitle, setJobTitle] = useState<string>(user?.job_title || '');
-  const [organization, setOrganization] = useState<string>(user?.organization || '');
-  const [phone, setPhone] = useState<string>(user?.phone || '');
-  const [location, setLocation] = useState<string>(user?.location || '');
+  const [jobTitle, setJobTitle] = useState<string>(user?.job_title || user?.designation || user?.department || user?.occupation || '');
+  const [organization, setOrganization] = useState<string>(user?.organization || user?.company_name || user?.college_name || '');
+  const [phone, setPhone] = useState<string>(user?.phone || user?.mobile_number || '');
+  const [location, setLocation] = useState<string>(user?.location || user?.city ? (user?.city + (user?.state ? `, ${user.state}` : '') + (user?.country ? `, ${user.country}` : '')) : '');
 
   const [saving, setSaving] = useState<boolean>(false);
   const [message, setMessage] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
   
   // Validation errors state
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await api.get('/users/profile');
+        if (res.data && res.data.user) {
+          const u = res.data.user;
+          setFullName(u.full_name || '');
+          setUserType(u.user_type || 'individual');
+          setJobTitle(u.job_title || u.designation || u.department || u.occupation || '');
+          setOrganization(u.organization || u.company_name || u.college_name || '');
+          setPhone(u.phone || u.mobile_number || '');
+          let loc = u.location || '';
+          if (!loc && u.city) loc = u.city + (u.state ? `, ${u.state}` : '') + (u.country ? `, ${u.country}` : '');
+          setLocation(loc);
+          if (setUser) {
+            setUser(u);
+            localStorage.setItem('dms_user', JSON.stringify(u));
+          }
+        }
+      } catch (e) {
+        console.error('Failed to fetch profile', e);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchProfile();
+  }, [setUser]);
 
   const hasChanges = 
     fullName.trim() !== (user?.full_name || '') ||
@@ -131,10 +159,16 @@ export default function ProfilePage() {
   const displayFullName = fullName || user?.full_name || 'Authenticated User';
   const displayEmail = user?.email || 'user@docvault.io';
   const displayUserType = userType || user?.user_type || 'individual';
-  const displayJobTitle = jobTitle || user?.job_title || 'Not specified';
-  const displayOrg = organization || user?.organization || 'Not specified';
-  const displayPhone = phone || user?.phone || 'Not specified';
-  const displayLocation = location || user?.location || 'Not specified';
+  const displayJobTitle = jobTitle || user?.job_title || user?.designation || user?.department || user?.occupation || 'Not specified';
+  const displayOrg = organization || user?.organization || user?.company_name || user?.college_name || 'Not specified';
+  const displayPhone = phone || user?.phone || user?.mobile_number || 'Not specified';
+  let displayLocRaw = location || user?.location || '';
+  if (!displayLocRaw && user?.city) displayLocRaw = user.city + (user.state ? `, ${user.state}` : '') + (user.country ? `, ${user.country}` : '');
+  const displayLocation = displayLocRaw || 'Not specified';
+
+  if (isLoading) {
+    return <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 text-[#FF6B00] animate-spin" /></div>;
+  }
 
   return (
     <div className="max-w-5xl mx-auto space-y-8 pb-16">

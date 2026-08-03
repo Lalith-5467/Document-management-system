@@ -181,7 +181,7 @@ export default function UserSettingsPage() {
   const storagePct = Math.min(100, Math.max(1, (storageUsed / storageLimit) * 100));
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto pb-12">
+    <div className="space-y-6 max-w-5xl mx-auto pb-12">
       {/* Toast Alert */}
       {toastMsg && (
         <div className={`fixed bottom-5 right-5 z-50 text-white text-sm font-semibold px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-2 animate-in fade-in slide-in-from-bottom-3 ${
@@ -263,7 +263,7 @@ export default function UserSettingsPage() {
         <div className="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl transition-colors">
           {/* TAB 1: EDIT PROFILE */}
           {activeTab === 'profile' && (
-            <form onSubmit={handleUpdateProfile} className="space-y-6 max-w-xl">
+            <form onSubmit={handleUpdateProfile} className="space-y-6 max-w-3xl">
               <div>
                 <h3 className="font-extrabold text-slate-900 dark:text-white text-lg">{t('settings.accountProfile', 'Account Profile')}</h3>
                 <p className="text-sm text-slate-500 dark:text-slate-400">{t('settings.profileSub', 'Update your name, email address, and profile avatar.')}</p>
@@ -337,7 +337,7 @@ export default function UserSettingsPage() {
 
           {/* TAB 2: CHANGE PASSWORD */}
           {activeTab === 'security' && (
-            <form onSubmit={handleChangePassword} className="space-y-6 max-w-xl">
+            <form onSubmit={handleChangePassword} className="space-y-6 max-w-3xl">
               <div>
                 <h3 className="font-extrabold text-slate-900 dark:text-white text-lg">{t('settings.changePassword', 'Change Password')}</h3>
                 <p className="text-sm text-slate-500 dark:text-slate-400">{t('settings.passwordSub', 'Ensure your document vault remains secure with a strong password.')}</p>
@@ -406,7 +406,7 @@ export default function UserSettingsPage() {
 
           {/* TAB 3: THEME & PREFERENCES */}
           {activeTab === 'preferences' && (
-            <div className="space-y-6 max-w-xl">
+            <div className="space-y-6 max-w-3xl">
               <div>
                 <h3 className="font-extrabold text-slate-900 dark:text-white text-lg">{t('settings.themeLanguage', 'Theme & Language')}</h3>
                 <p className="text-sm text-slate-500 dark:text-slate-400">{t('common.themeAndLanguageSub', 'Customize display mode theme and interface language preferences.')}</p>
@@ -472,7 +472,7 @@ export default function UserSettingsPage() {
 
           {/* TAB 4: STORAGE USAGE */}
           {activeTab === 'storage' && (
-            <div className="space-y-6 max-w-xl">
+            <div className="space-y-6 max-w-3xl">
               <div>
                 <h3 className="font-extrabold text-slate-900 dark:text-white text-lg">{t('settings.storageUsage', 'Storage Quota')}</h3>
                 <p className="text-sm text-slate-500 dark:text-slate-400">{t('common.storageSub', 'Overview of total document count and disk capacity consumed.')}</p>

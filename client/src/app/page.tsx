@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import {
   cmsStore, CMSData, CMSFeature, CMSCategoryItem, CMSAudienceItem,
-  CMSTestimonial, CMSTrustedCompany, CMSFAQ
+  CMSTestimonial, CMSTrustedCompany, CMSFAQ, DEFAULT_CMS_DATA
 } from '@/lib/cmsStore';
 
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -24,10 +24,12 @@ const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
 
 export default function HomePage() {
   const { user } = useAuth();
-  const [cms, setCms] = useState<CMSData>(cmsStore.getData());
+  const [cms, setCms] = useState<CMSData>(() => cmsStore.getData());
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const unsub = cmsStore.subscribe((data) => {
       setCms(data);
     });
@@ -59,14 +61,87 @@ export default function HomePage() {
     return <Component className="w-5 h-5 icon-hover-rotate" />;
   };
 
+  if (!mounted) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-white">
+        <div className="w-16 h-16 rounded-3xl bg-gradient-to-tr from-[#FF6B00] to-[#FF8A00] flex items-center justify-center text-white shadow-xl shadow-orange-500/30 animate-pulse border border-orange-400/20">
+          <ShieldCheck className="w-8 h-8 stroke-[2.5]" />
+        </div>
+        <h2 className="mt-6 text-sm font-black text-slate-900 tracking-[0.2em] uppercase font-auth-heading">
+          DocVault
+        </h2>
+        <div className="flex items-center gap-1.5 mt-3">
+          <div className="w-1.5 h-1.5 rounded-full bg-[#FF6B00] animate-bounce" style={{ animationDelay: '0ms' }} />
+          <div className="w-1.5 h-1.5 rounded-full bg-[#FF6B00] animate-bounce" style={{ animationDelay: '150ms' }} />
+          <div className="w-1.5 h-1.5 rounded-full bg-[#FF6B00] animate-bounce" style={{ animationDelay: '300ms' }} />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-white text-slate-900 font-sans">
       {/* 1. Fixed Glassmorphism Header */}
       <Navbar />
 
-      {/* 2. Hero Carousel Section (100% UNTOUCHED & PRESERVED) */}
+      {/* 2. Dynamic Hero CMS Section */}
       {cms.hero?.enabled !== false && (
-        <section className="relative pt-16 z-10 w-full overflow-hidden bg-white border-b border-slate-200/80">
+        <section className="relative pt-24 pb-16 lg:pt-32 lg:pb-24 z-10 w-full overflow-hidden bg-white">
+          {/* Background Image / Glow */}
+          <div className="absolute inset-0 z-0">
+            {cms.hero.bgImage ? (
+              <>
+                <img src={cms.hero.bgImage} alt="Background" className="w-full h-full object-cover opacity-10" />
+                <div className="absolute inset-0 bg-gradient-to-b from-white/60 via-white/90 to-white" />
+              </>
+            ) : (
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-gradient-to-b from-orange-50/50 to-transparent" />
+            )}
+          </div>
+
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center space-y-8">
+            <div className="space-y-4 max-w-4xl mx-auto">
+              <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-slate-900 tracking-tight leading-[1.1]">
+                {cms.hero.title}{' '}
+                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#FF6B00] to-[#F97316]">
+                  {cms.hero.highlight}
+                </span>
+              </h1>
+              <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto font-medium leading-relaxed">
+                {cms.hero.subtitle}
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+              <Link
+                href={cms.hero.primaryBtnUrl || '/register'}
+                className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white font-black shadow-xl shadow-orange-500/20 hover:scale-105 transition-transform flex items-center justify-center gap-2"
+              >
+                {cms.hero.primaryBtnText || 'Get Started'} <ArrowRight className="w-5 h-5" />
+              </Link>
+              <Link
+                href={cms.hero.secondaryBtnUrl || '/login'}
+                className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white border-2 border-slate-200 text-slate-700 font-black hover:border-slate-300 hover:bg-slate-50 transition-colors flex items-center justify-center gap-2"
+              >
+                {cms.hero.secondaryBtnText || 'Sign In'}
+              </Link>
+            </div>
+
+            {cms.hero.dashboardImage && (
+              <div className="pt-12 md:pt-16 max-w-5xl mx-auto">
+                <div className="relative rounded-3xl overflow-hidden border border-slate-200 shadow-2xl shadow-slate-900/10 bg-white">
+                  <div className="absolute inset-0 bg-gradient-to-t from-white/20 to-transparent pointer-events-none" />
+                  <img src={cms.hero.dashboardImage} alt="Dashboard Preview" className="w-full h-auto object-cover" />
+                </div>
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
+      {/* 3. Hero Carousel Section */}
+      {cms.carousel && cms.carousel.filter(c => c.status === 'active').length > 0 && (
+        <section className={`relative z-10 w-full overflow-hidden bg-slate-50/50 border-b border-slate-200/80 ${cms.hero?.enabled === false ? 'pt-16 lg:pt-12 pb-0' : 'pt-8 pb-0'}`}>
           <AICarouselSlider />
         </section>
       )}
@@ -75,7 +150,7 @@ export default function HomePage() {
 
       {/* 5. Enterprise Capabilities / Features Section */}
       {activeFeatures.length > 0 && (
-        <section id="features" className="py-24 bg-[#F8FAFC] border-b border-slate-200/80 relative z-10">
+        <section id="features" className="scroll-mt-24 pt-12 pb-16 bg-[#F8FAFC] border-b border-slate-200/80 relative z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
             <div className="text-center max-w-2xl mx-auto space-y-3.5">
               <span className="text-xs font-black uppercase tracking-wider text-[#FF6B00] font-mono px-4 py-1.5 rounded-full bg-orange-50 border border-orange-200 inline-block shadow-2xs">
@@ -121,7 +196,7 @@ export default function HomePage() {
 
       {/* 6. Document Categories Section */}
       {activeCategories.length > 0 && (
-        <section id="categories" className="py-20 bg-white border-b border-slate-200/80 relative z-10">
+        <section id="categories" className="scroll-mt-24 py-16 bg-white border-b border-slate-200/80 relative z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-14 space-y-3.5">
               <span className="text-xs font-black uppercase tracking-wider text-[#FF6B00] font-mono px-4 py-1.5 rounded-full bg-orange-50 border border-orange-200 inline-block shadow-2xs">
@@ -171,7 +246,7 @@ export default function HomePage() {
 
       {/* 7. Audience & Solutions Section */}
       {activeAudience.length > 0 && (
-        <section id="solutions" className="py-24 bg-white border-b border-slate-200/80 relative z-10">
+        <section id="solutions" className="scroll-mt-24 py-16 bg-white border-b border-slate-200/80 relative z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
             <div className="text-center max-w-3xl mx-auto space-y-4">
               <span className="text-xs font-black uppercase tracking-widest text-[#FF6B00] font-mono px-4 py-1.5 rounded-full bg-orange-50 border border-orange-200 inline-block shadow-2xs">
@@ -254,7 +329,7 @@ export default function HomePage() {
 
       {/* 8. FAQ Accordion Section */}
       {activeFaqs.length > 0 && (
-        <section id="faq" className="py-12 md:py-16 bg-white border-b border-slate-200/80 relative z-10">
+        <section id="faq" className="scroll-mt-24 py-16 bg-white border-b border-slate-200/80 relative z-10">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
             <div className="text-center space-y-4">
               <span className="text-sm font-black uppercase tracking-widest text-[#FF6B00] font-mono px-4 py-1.5 rounded-full bg-orange-50 border border-orange-200 inline-block shadow-2xs">

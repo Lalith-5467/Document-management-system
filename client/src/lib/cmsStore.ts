@@ -171,7 +171,7 @@ export interface CMSData {
   carousel: CMSCarouselSlide[];
 }
 
-const DEFAULT_CMS_DATA: CMSData = {
+export const DEFAULT_CMS_DATA: CMSData = {
   hero: {
     title: 'Enterprise Document Management System',
     highlight: 'Powered by High-Speed AI Vault',
@@ -418,6 +418,14 @@ class CMSStoreManager {
 
   constructor() {
     this.data = this.loadFromStorage();
+    if (typeof window !== 'undefined') {
+      window.addEventListener('storage', (e) => {
+        if (e.key === STORAGE_KEY) {
+          this.data = this.loadFromStorage();
+          this.notify();
+        }
+      });
+    }
   }
 
   private loadFromStorage(): CMSData {

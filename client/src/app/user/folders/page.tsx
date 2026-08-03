@@ -75,46 +75,22 @@ export default function FoldersPage() {
 
   const saveFoldersState = (updated: FolderItem[]) => {
     setFolders(updated);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('dms_admin_folders', JSON.stringify(updated));
-    }
   };
 
   const fetchFolders = async () => {
     setLoading(true);
-    let savedFolds = null;
-    if (typeof window !== 'undefined') {
-      savedFolds = localStorage.getItem('dms_admin_folders');
-    }
-    if (savedFolds) {
-      try {
-        const parsed = JSON.parse(savedFolds);
-        if (parsed.length > 0) {
-          setFolders(parsed);
-          setLoading(false);
-          return;
-        }
-      } catch {}
-    }
-
     try {
       const res = await api.get('/folders');
-      if (res.data && res.data.folders && res.data.folders.length > 0) {
-        saveFoldersState(res.data.folders);
-        setLoading(false);
-        return;
+      if (res.data && res.data.folders) {
+        setFolders(res.data.folders);
+      } else {
+        setFolders([]);
       }
-    } catch { /* fallback below */ }
-
-    const initialFolds: FolderItem[] = [
-      { id: 1, user_id: 1, folder_name: 'Important Tax Receipts', description: 'Tax returns and payment proofs for fiscal year 2025-2026', color: '#EF4444', icon_name: 'Folder', document_count: 3, created_at: '2026-01-10T10:00:00Z' },
-      { id: 2, user_id: 1, folder_name: 'University Degree Transcripts', description: 'Certified academic marks, semester transcripts & graduation proof', color: '#10B981', icon_name: 'GraduationCap', document_count: 4, created_at: '2026-01-12T10:00:00Z' },
-      { id: 3, user_id: 1, folder_name: 'System Architecture Diagrams', description: 'Client project specs, diagrams and scope documents', color: '#8B5CF6', icon_name: 'FolderGit2', document_count: 2, created_at: '2026-01-15T10:00:00Z' },
-      { id: 4, user_id: 1, folder_name: 'Passport & Identity Verification', description: 'National passport, driver license and identity proofs', color: '#FF6B00', icon_name: 'UserCheck', document_count: 1, created_at: '2026-01-18T10:00:00Z' }
-    ];
-
-    saveFoldersState(initialFolds);
-    setLoading(false);
+    } catch {
+      setFolders([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const filteredFolders = useMemo(() => {
@@ -310,12 +286,13 @@ export default function FoldersPage() {
             >
               <div className="space-y-2.5">
                 <div className="flex items-center justify-between">
-                  <div
-                    className="w-10 h-10 rounded-2xl flex items-center justify-center text-white shadow-md transform group-hover:scale-110 transition-transform"
+                  <Link 
+                    href={`/user/documents?folder_id=${folder.id}&folder=${encodeURIComponent(folder.folder_name)}`}
+                    className="w-10 h-10 rounded-2xl flex items-center justify-center text-white shadow-md transform group-hover:scale-110 transition-transform cursor-pointer"
                     style={{ backgroundColor: folder.color && folder.color !== '#3B82F6' ? folder.color : '#FF6B00' }}
                   >
                     <FolderClosed className="w-5 h-5" />
-                  </div>
+                  </Link>
 
                   <div className="flex items-center gap-1">
                     <button
@@ -335,14 +312,14 @@ export default function FoldersPage() {
                   </div>
                 </div>
 
-                <div>
-                  <h3 className="text-base font-extrabold text-slate-900 dark:text-white group-hover:text-[#FF6B00] dark:group-hover:text-orange-400 transition-colors truncate">
+                <Link href={`/user/documents?folder_id=${folder.id}&folder=${encodeURIComponent(folder.folder_name)}`} className="block group/link">
+                  <h3 className="text-base font-extrabold text-slate-900 dark:text-white group-hover/link:text-[#FF6B00] dark:group-hover/link:text-orange-400 transition-colors truncate">
                     {folder.folder_name}
                   </h3>
-                  <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2 mt-0.5 leading-relaxed">
+                  <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2 mt-0.5 leading-relaxed group-hover/link:text-slate-800 dark:group-hover/link:text-slate-300 transition-colors">
                     {folder.description || 'No description provided.'}
                   </p>
-                </div>
+                </Link>
               </div>
 
               <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between">
@@ -350,7 +327,7 @@ export default function FoldersPage() {
                   {folder.document_count || 0} Files
                 </span>
                 <Link
-                  href={`/user/documents?folder=${encodeURIComponent(folder.folder_name)}`}
+                  href={`/user/documents?folder_id=${folder.id}&folder=${encodeURIComponent(folder.folder_name)}`}
                   className="text-sm font-bold text-[#FF6B00] dark:text-orange-400 hover:text-orange-600 dark:hover:text-orange-300 flex items-center gap-1 hover:underline"
                 >
                   Open Folder →

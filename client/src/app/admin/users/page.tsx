@@ -62,21 +62,15 @@ export default function AdminUsersPage() {
     setLoading(true);
     try {
       const res = await api.get('/admin/users', { params: { search: searchQuery.trim(), page, limit: 15 } });
-      if (res.data?.success && res.data.users?.length > 0) {
-        setUsers(res.data.users);
+      if (res.data?.success) {
+        setUsers(res.data.users || []);
         setTotalPages(res.data.totalPages || 1);
-        setTotalCount(res.data.totalCount || res.data.users.length);
+        setTotalCount(res.data.totalCount || (res.data.users || []).length);
       } else {
-        let filtered = DEFAULT_USERS;
-        if (searchQuery.trim()) {
-          const q = searchQuery.toLowerCase().trim();
-          filtered = DEFAULT_USERS.filter(u => u.full_name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q));
-        }
-        setUsers(filtered);
-        setTotalCount(filtered.length);
-        setTotalPages(Math.ceil(filtered.length / 15) || 1);
+        throw new Error('Failed to fetch from API');
       }
     } catch {
+      // Only fallback to mock data if the API actually fails
       let filtered = DEFAULT_USERS;
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase().trim();
@@ -84,7 +78,7 @@ export default function AdminUsersPage() {
       }
       setUsers(filtered);
       setTotalCount(filtered.length);
-      setTotalPages(1);
+      setTotalPages(Math.ceil(filtered.length / 15) || 1);
     } finally {
       setLoading(false);
     }
@@ -126,23 +120,16 @@ export default function AdminUsersPage() {
     e.preventDefault();
     setSubmitting(true);
     try {
-      const res = await api.post('/admin/users', { full_name: formName, email: formEmail, password: formPassword, user_type: formRole }).catch(() => null);
-      const newUser = res?.data?.user || {
-        id: Date.now(),
-        full_name: formName,
-        email: formEmail,
-        user_type: formRole,
-        total_documents: 0,
-        is_active: 1,
-        is_blocked: 0,
-        created_at: new Date().toISOString()
-      };
-      setUsers(prev => [newUser, ...prev]);
-      showToast('User created successfully!');
-      setActiveModal(null);
-    } catch {
-      showToast('User created successfully!');
-      setActiveModal(null);
+      const res = await api.post('/admin/users', { full_name: formName, email: formEmail, password: formPassword, user_type: formRole });
+      if (res.data?.success) {
+        showToast('User created successfully!');
+        setActiveModal(null);
+        fetchUsers();
+      } else {
+        showToast(res.data?.message || 'Failed to create user.', 'error');
+      }
+    } catch (error: any) {
+      showToast(error.response?.data?.message || 'Error creating user.', 'error');
     } finally {
       setSubmitting(false);
     }
@@ -153,14 +140,16 @@ export default function AdminUsersPage() {
     if (!selectedUser) return;
     setSubmitting(true);
     try {
-      await api.put(`/admin/users/${selectedUser.id}`, { full_name: formName, email: formEmail, user_type: formRole }).catch(() => null);
-      setUsers(prev => prev.map(u => u.id === selectedUser.id ? { ...u, full_name: formName, email: formEmail, user_type: formRole } : u));
-      showToast('User updated successfully!');
-      setActiveModal(null);
-    } catch {
-      setUsers(prev => prev.map(u => u.id === selectedUser.id ? { ...u, full_name: formName, email: formEmail, user_type: formRole } : u));
-      showToast('User updated successfully!');
-      setActiveModal(null);
+      const res = await api.put(`/admin/users/${selectedUser.id}`, { full_name: formName, email: formEmail, user_type: formRole });
+      if (res.data?.success) {
+        showToast('User updated successfully!');
+        setActiveModal(null);
+        fetchUsers();
+      } else {
+        showToast(res.data?.message || 'Failed to update user.', 'error');
+      }
+    } catch (error: any) {
+      showToast(error.response?.data?.message || 'Error updating user.', 'error');
     } finally {
       setSubmitting(false);
     }
@@ -170,14 +159,16 @@ export default function AdminUsersPage() {
     if (!selectedUser) return;
     setSubmitting(true);
     try {
-      await api.delete(`/admin/users/${selectedUser.id}`).catch(() => null);
-      showToast(`User "${selectedUser.full_name}" deleted.`);
-      setUsers(prev => prev.filter(u => u.id !== selectedUser.id));
-      setActiveModal(null);
-    } catch {
-      showToast(`User "${selectedUser.full_name}" deleted.`);
-      setUsers(prev => prev.filter(u => u.id !== selectedUser.id));
-      setActiveModal(null);
+      const res = await api.delete(`/admin/users/${selectedUser.id}`);
+      if (res.data?.success) {
+        showToast(`User "${selectedUser.full_name}" deleted.`);
+        setActiveModal(null);
+        fetchUsers();
+      } else {
+        showToast(res.data?.message || 'Failed to delete user.', 'error');
+      }
+    } catch (error: any) {
+      showToast(error.response?.data?.message || 'Error deleting user.', 'error');
     } finally {
       setSubmitting(false);
     }
@@ -185,25 +176,29 @@ export default function AdminUsersPage() {
 
   const handleToggleActive = async (user: any) => {
     try {
-      const res = await api.patch(`/admin/users/${user.id}/toggle-active`).catch(() => null);
-      const newActive = res?.data?.isActive !== undefined ? res.data.isActive : (user.is_active ? 0 : 1);
-      setUsers(prev => prev.map(u => u.id === user.id ? { ...u, is_active: newActive } : u));
-      showToast(`User account ${newActive ? 'activated' : 'deactivated'}.`);
-    } catch {
-      setUsers(prev => prev.map(u => u.id === user.id ? { ...u, is_active: user.is_active ? 0 : 1 } : u));
-      showToast('Status updated.');
+      const res = await api.patch(`/admin/users/${user.id}/toggle-active`);
+      if (res.data?.success) {
+        showToast(`User account ${res.data.isActive ? 'activated' : 'deactivated'}.`);
+        fetchUsers();
+      } else {
+        showToast(res.data?.message || 'Failed to update status.', 'error');
+      }
+    } catch (error: any) {
+      showToast(error.response?.data?.message || 'Error updating status.', 'error');
     }
   };
 
   const handleToggleBlock = async (user: any) => {
     try {
-      const res = await api.patch(`/admin/users/${user.id}/toggle-block`).catch(() => null);
-      const newBlocked = res?.data?.isBlocked !== undefined ? res.data.isBlocked : (user.is_blocked ? 0 : 1);
-      setUsers(prev => prev.map(u => u.id === user.id ? { ...u, is_blocked: newBlocked } : u));
-      showToast(`User account ${newBlocked ? 'blocked' : 'unblocked'}.`);
-    } catch {
-      setUsers(prev => prev.map(u => u.id === user.id ? { ...u, is_blocked: user.is_blocked ? 0 : 1 } : u));
-      showToast('Block status updated.');
+      const res = await api.patch(`/admin/users/${user.id}/toggle-block`);
+      if (res.data?.success) {
+        showToast(`User account ${res.data.isBlocked ? 'blocked' : 'unblocked'}.`);
+        fetchUsers();
+      } else {
+        showToast(res.data?.message || 'Failed to update block status.', 'error');
+      }
+    } catch (error: any) {
+      showToast(error.response?.data?.message || 'Error updating block status.', 'error');
     }
   };
 
@@ -212,14 +207,16 @@ export default function AdminUsersPage() {
     if (!selectedUser || !newPassword) return;
     setSubmitting(true);
     try {
-      await api.patch(`/admin/users/${selectedUser.id}/reset-password`, { new_password: newPassword }).catch(() => null);
-      showToast('Password reset successfully!');
-      setNewPassword('');
-      setActiveModal(null);
-    } catch {
-      showToast('Password reset successfully!');
-      setNewPassword('');
-      setActiveModal(null);
+      const res = await api.patch(`/admin/users/${selectedUser.id}/reset-password`, { new_password: newPassword });
+      if (res.data?.success) {
+        showToast('Password reset successfully!');
+        setNewPassword('');
+        setActiveModal(null);
+      } else {
+        showToast(res.data?.message || 'Failed to reset password.', 'error');
+      }
+    } catch (error: any) {
+      showToast(error.response?.data?.message || 'Error resetting password.', 'error');
     } finally {
       setSubmitting(false);
     }

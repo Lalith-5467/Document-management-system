@@ -34,49 +34,8 @@ export default function AdminActivityPage() {
         fetchedLogs = res.data.logs;
       }
 
-      let localActivities = [];
-      if (typeof window !== 'undefined') {
-        try {
-          const stored = localStorage.getItem('dms_user_activities');
-          if (stored) localActivities = JSON.parse(stored);
-        } catch (e) {}
-      }
-
-      const defaultLogs = [
-        { id: 101, user_name: 'Kalpana', user_email: 'kalpana@gmail.com', action_type: 'UPLOAD', document_name: 'lalith passport size pic.jpg', details: 'Uploaded document file (1.59 MB) to Vault', created_at: new Date().toISOString() },
-        { id: 102, user_name: 'Kalpana', user_email: 'kalpana@gmail.com', action_type: 'UPLOAD', document_name: 'LALITH VELARASI_CV.pdf', details: 'Uploaded document file (0.08 MB)', created_at: new Date(Date.now() - 1800000).toISOString() },
-        { id: 103, user_name: 'Kalpana', user_email: 'kalpana@gmail.com', action_type: 'FAVORITE_ADD', document_name: 'lalith passport size pic.jpg', details: 'Starred document as Favorite', created_at: new Date(Date.now() - 3600000).toISOString() },
-        { id: 104, user_name: 'Kalpana', user_email: 'kalpana@gmail.com', action_type: 'LOGIN', document_name: null, details: 'Admin login authenticated successfully', created_at: new Date(Date.now() - 7200000).toISOString() },
-        { id: 105, user_name: 'Lalith Velarasi', user_email: 'lalith@gmail.com', action_type: 'CREATE_FOLDER', document_name: null, details: 'Created workspace folder "Project Specs"', created_at: new Date(Date.now() - 14400000).toISOString() }
-      ];
-
-      let combinedLogs = [];
-      if (fetchedLogs.length > 0) {
-        const fetchedIds = new Set(fetchedLogs.map((l: any) => String(l.id)));
-        const extraLocal = localActivities.map((la: any) => ({
-          id: la.id,
-          user_name: 'Kalpana',
-          user_email: 'kalpana@gmail.com',
-          action_type: la.action_type,
-          document_name: la.document_name,
-          details: la.details,
-          created_at: la.created_at
-        })).filter((l: any) => !fetchedIds.has(String(l.id)));
-        combinedLogs = [...fetchedLogs, ...extraLocal];
-      } else if (localActivities.length > 0) {
-        combinedLogs = localActivities.map((la: any) => ({
-          id: la.id,
-          user_name: 'Kalpana',
-          user_email: 'kalpana@gmail.com',
-          action_type: la.action_type,
-          document_name: la.document_name,
-          details: la.details,
-          created_at: la.created_at
-        }));
-      } else {
-        combinedLogs = defaultLogs;
-      }
-
+      let combinedLogs = fetchedLogs;
+      
       let filtered = combinedLogs;
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();

@@ -129,30 +129,16 @@ export default function MyDocumentsPage() {
       const fetchedCats = catRes?.data?.categories;
       const fetchedFolds = foldRes?.data?.folders;
 
-      if (fetchedCats && fetchedCats.length > 0) {
+      if (fetchedCats) {
         setCategories(fetchedCats);
       } else {
-        const savedCats = typeof window !== 'undefined' ? localStorage.getItem('dms_admin_categories') : null;
-        setCategories(savedCats ? JSON.parse(savedCats) : [
-          { id: 1, category_name: 'Personal Identity & Passports', color: '#FF6B00' },
-          { id: 2, category_name: 'Academic Records & Diplomas', color: '#10B981' },
-          { id: 3, category_name: 'Career & Employment Assets', color: '#F59E0B' },
-          { id: 4, category_name: 'Projects & Technical Specs', color: '#8B5CF6' },
-          { id: 5, category_name: 'Certificates & Achievements', color: '#EC4899' },
-          { id: 6, category_name: 'Client Requirements & Contracts', color: '#06B6D4' },
-        ]);
+        setCategories([]);
       }
 
-      if (fetchedFolds && fetchedFolds.length > 0) {
+      if (fetchedFolds) {
         setFolders(fetchedFolds);
       } else {
-        const savedFolds = typeof window !== 'undefined' ? localStorage.getItem('dms_admin_folders') : null;
-        setFolders(savedFolds ? JSON.parse(savedFolds) : [
-          { id: 1, folder_name: 'Academic Transcripts', color: '#10B981' },
-          { id: 2, folder_name: 'Tax Filings 2026', color: '#EF4444' },
-          { id: 3, folder_name: 'Passport & Identity', color: '#FF6B00' },
-          { id: 4, folder_name: 'Project Architecture', color: '#8B5CF6' },
-        ]);
+        setFolders([]);
       }
     } catch { /* fallback */ }
   };
@@ -238,7 +224,12 @@ export default function MyDocumentsPage() {
       );
     }
     if (selectedFolder) {
-      filtered = filtered.filter(d => String(d.folder_id) === String(selectedFolder));
+      const folderLower = selectedFolder.toLowerCase();
+      filtered = filtered.filter(d => 
+        String(d.folder_id) === String(selectedFolder) ||
+        (d.folder_name && d.folder_name.toLowerCase().includes(folderLower)) ||
+        (d.folder_name && folderLower.includes(d.folder_name.toLowerCase()))
+      );
     }
     if (onlyFavorites) {
       filtered = filtered.filter(d => Boolean(d.is_favorite));

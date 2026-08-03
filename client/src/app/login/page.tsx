@@ -206,21 +206,25 @@ export default function LoginPage() {
               </button>
             </div>
 
-            {/* Password Strength Meter */}
-            {password.length > 0 && (
-              <div className="mt-2.5 space-y-1 animate-fade-in font-auth-body">
-                <div className="flex items-center justify-between text-[10px] font-bold">
-                  <span className="text-slate-500 font-auth-label uppercase">Password Strength</span>
-                  <span className={strength.color}>{strength.label}</span>
-                </div>
-                <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                  <div
-                    className={`h-full ${strength.bgColor} transition-all duration-500 rounded-full`}
-                    style={{ width: strength.width }}
-                  />
-                </div>
-              </div>
-            )}
+            {/* Professional Login Options */}
+            <div className="flex items-center justify-between mt-3.5 mb-2 font-auth-body">
+              <label className="flex items-center gap-2 cursor-pointer group">
+                <input 
+                  type="checkbox" 
+                  className="w-4 h-4 rounded-md border-slate-300 text-[#FF6B00] focus:ring-[#FF6B00] cursor-pointer transition-colors" 
+                />
+                <span className="text-[11px] font-semibold text-slate-500 group-hover:text-slate-700 transition-colors">
+                  Remember me for 30 days
+                </span>
+              </label>
+              
+              <Link 
+                href="/forgot-password" 
+                className="text-[11px] font-black text-[#FF6B00] hover:text-[#E65C00] transition-colors tracking-wide"
+              >
+                Forgot password?
+              </Link>
+            </div>
 
             {/* Inline Password Error Message */}
             {passwordTouched && passwordError && (

@@ -48,15 +48,45 @@ class UserController {
                 });
             }
 
-            const updatedUser = {
-                ...user,
-                full_name: nameToUpdate || user.full_name,
-                user_type: typeToUpdate || user.user_type,
-                job_title: job_title !== undefined ? job_title : user.job_title,
-                organization: organization !== undefined ? organization : user.organization,
-                phone: phone !== undefined ? phone : user.phone,
-                location: location !== undefined ? location : user.location
-            };
+            let designation = user.designation;
+            let department = user.department;
+            let occupation = user.occupation;
+            let company_name = user.company_name;
+            let college_name = user.college_name;
+            let city = user.city;
+            let mobile_number = phone !== undefined ? phone : user.mobile_number;
+
+            if (job_title !== undefined) {
+                if (typeToUpdate === 'professional') designation = job_title;
+                else if (typeToUpdate === 'student') department = job_title;
+                else occupation = job_title;
+            }
+
+            if (organization !== undefined) {
+                if (typeToUpdate === 'professional') company_name = organization;
+                else if (typeToUpdate === 'student') college_name = organization;
+            }
+
+            if (location !== undefined) {
+                city = location;
+            }
+
+            const { getSqliteDb, pool } = require('../config/db');
+            const sqliteDb = getSqliteDb();
+
+            if (sqliteDb) {
+                await sqliteDb.run(
+                    `UPDATE users SET full_name = ?, user_type = ?, mobile_number = ?, designation = ?, department = ?, occupation = ?, company_name = ?, college_name = ?, city = ? WHERE id = ?`,
+                    [nameToUpdate || user.full_name, typeToUpdate || user.user_type, mobile_number, designation, department, occupation, company_name, college_name, city, userId]
+                );
+            } else if (pool) {
+                await pool.execute(
+                    `UPDATE users SET full_name = ?, user_type = ?, mobile_number = ?, designation = ?, department = ?, occupation = ?, company_name = ?, college_name = ?, city = ? WHERE id = ?`,
+                    [nameToUpdate || user.full_name, typeToUpdate || user.user_type, mobile_number, designation, department, occupation, company_name, college_name, city, userId]
+                );
+            }
+
+            const updatedUser = await UserModel.findById(userId);
 
             return res.status(200).json({
                 success: true,

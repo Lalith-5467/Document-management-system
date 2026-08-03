@@ -83,9 +83,9 @@ export default function DocumentPreviewModal({ documentId, document, initialDocu
       }
     } catch (err: any) {
       console.warn('Backend preview query fallback to local check');
-      if (initialDocument) {
-        setDoc(initialDocument);
-        setCanPreview(checkCanPreviewLocal(initialDocument));
+      if (initialData) {
+        setDoc(initialData);
+        setCanPreview(checkCanPreviewLocal(initialData));
       } else {
         setError('Failed to load document details for preview.');
       }
@@ -190,6 +190,19 @@ export default function DocumentPreviewModal({ documentId, document, initialDocu
     return ['pptx', 'ppt', 'docx', 'doc', 'xlsx', 'xls', 'csv'].includes(ext) ||
            mime.includes('presentation') || mime.includes('word') || mime.includes('sheet') ||
            mime.includes('officedocument') || mime.includes('ms-powerpoint') || mime.includes('ms-excel');
+  };
+
+  const getFileUrl = () => {
+    if (!doc?.file_path) return '';
+    if (doc.file_path.startsWith('http') || doc.file_path.startsWith('data:') || doc.file_path.startsWith('blob:')) {
+      return doc.file_path;
+    }
+    const envApiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+    const baseUrl = envApiUrl.endsWith('/api') ? envApiUrl.slice(0, -4) : envApiUrl;
+    if (doc.file_path.startsWith('/uploads') || doc.file_path.startsWith('uploads')) {
+      return `${baseUrl}${doc.file_path.startsWith('/') ? '' : '/'}${doc.file_path}`;
+    }
+    return `${baseUrl}/api/documents/${doc.id}/stream${typeof window !== 'undefined' && localStorage.getItem('dms_token') ? `?token=${localStorage.getItem('dms_token')}` : '?token=demo_token'}`;
   };
 
 // Helper to create a 100% Spec-Compliant Valid PDF 1.4 File Blob
@@ -592,11 +605,7 @@ const createValidImageBlob = (title: string, category: string, description: stri
               /* IMAGE PREVIEW (JPG, JPEG, PNG) */
               <div className="overflow-auto max-w-full max-h-full flex items-center justify-center p-4">
                 <img
-                  src={doc?.file_path?.startsWith('http') || doc?.file_path?.startsWith('data:') || doc?.file_path?.startsWith('blob:')
-                    ? doc.file_path
-                    : doc?.file_path && (doc.file_path.startsWith('/uploads') || doc.file_path.startsWith('uploads'))
-                    ? `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}${doc.file_path.startsWith('/') ? '' : '/'}${doc.file_path}`
-                    : `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/documents/${doc?.id}/stream${typeof window !== 'undefined' && localStorage.getItem('dms_token') ? `?token=${localStorage.getItem('dms_token')}` : '?token=demo_token'}`}
+                  src={getFileUrl()}
                   alt={doc?.title || 'Document'}
                   className="max-h-[75vh] object-contain rounded-2xl shadow-2xl transition-transform duration-200"
                   style={{ transform: `scale(${zoomLevel / 100})` }}
@@ -618,13 +627,13 @@ const createValidImageBlob = (title: string, category: string, description: stri
               </div>
             ) : isPdf() ? (
               /* ELEGANT HIGH-RES PDF & DOCUMENT VIEWER CANVAS */
-              doc?.file_path?.startsWith('http') || doc?.file_path?.startsWith('data:') || doc?.file_path?.startsWith('blob:') ? (
+              doc?.file_path ? (
                 <div 
                   className="w-full h-full flex items-center justify-center transition-all"
                   style={{ transform: `scale(${zoomLevel / 100})`, transformOrigin: 'top center' }}
                 >
                   <iframe
-                    src={doc.file_path}
+                    src={getFileUrl()}
                     className="w-full h-[78vh] rounded-2xl border border-slate-800 shadow-2xl bg-white"
                     title={doc?.title || 'PDF Preview'}
                   />
@@ -711,17 +720,27 @@ const createValidImageBlob = (title: string, category: string, description: stri
                   </div>
                 </div>
               )
-            ) : isOfficeDoc() && doc?.file_path?.startsWith('http') ? (
+            ) : isOfficeDoc() ? (
               /* OFFICE DOCUMENT PREVIEW (PPTX, DOCX, XLSX) */
                 <div 
                   className="w-full h-full flex items-center justify-center transition-all"
                   style={{ transform: `scale(${zoomLevel / 100})`, transformOrigin: 'top center' }}
                 >
-                  <iframe
-                    src={`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(doc.file_path)}`}
-                    className="w-full h-[78vh] rounded-2xl border border-slate-800 shadow-2xl bg-white"
-                    title={doc?.title || 'Presentation Preview'}
-                  />
+                  {getFileUrl().includes('localhost') || getFileUrl().includes('127.0.0.1') ? (
+                    <div className="w-full h-[78vh] flex flex-col items-center justify-center bg-slate-900 rounded-2xl border border-slate-800 text-slate-300 space-y-4">
+                      <p className="text-sm font-medium">Office document previews require a public internet URL.</p>
+                      <p className="text-xs text-slate-500 max-w-sm text-center">Since you are running this on localhost, Microsoft's preview servers cannot access your file. Please download it to view.</p>
+                      <button onClick={handleDownloadClick} className="mt-4 px-5 py-2.5 bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:brightness-110 text-white rounded-xl text-sm font-bold shadow-md cursor-pointer">
+                        Download File
+                      </button>
+                    </div>
+                  ) : (
+                    <iframe
+                      src={`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(getFileUrl())}`}
+                      className="w-full h-[78vh] rounded-2xl border border-slate-800 shadow-2xl bg-white"
+                      title={doc?.title || 'Presentation Preview'}
+                    />
+                  )}
                 </div>
             ) : isTxt() ? (
               /* TEXT PREVIEW (TXT) */

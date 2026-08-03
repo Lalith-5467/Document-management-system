@@ -107,49 +107,19 @@ export default function CategoriesPage() {
   const fetchCategories = async () => {
     setLoading(true);
     setError(null);
-    let saved = null;
-    if (typeof window !== 'undefined') {
-      saved = localStorage.getItem('dms_admin_categories');
-    }
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (parsed.length > 0) {
-          setCategories(parsed);
-          setLoading(false);
-          return;
-        }
-      } catch {}
-    }
-
     try {
       const res = await api.get('/categories');
-      if (res.data && res.data.categories && res.data.categories.length > 0) {
+      if (res.data && res.data.categories) {
         setCategories(res.data.categories);
-        setLoading(false);
-        return;
+      } else {
+        setCategories([]);
       }
     } catch (err: any) {
       console.error('Failed to fetch categories:', err);
+      setCategories([]);
+    } finally {
+      setLoading(false);
     }
-
-    const defaultCats = [
-      { id: 1, user_id: null, category_name: 'Personal Identity & Passports', description: 'National IDs, Passports, Visas, Driver Licenses, Birth Certificates', color: '#FF6B00', icon_name: 'UserCheck', document_count: 5, created_at: '2026-01-10T10:00:00Z' },
-      { id: 2, user_id: null, category_name: 'Academic Records & Diplomas', description: 'Degrees, Transcripts, Semester Marksheets, Diplomas, Board Certificates', color: '#10B981', icon_name: 'GraduationCap', document_count: 6, created_at: '2026-01-12T10:00:00Z' },
-      { id: 3, user_id: null, category_name: 'Career & Employment Assets', description: 'Resume versions, CVs, Offer & Relieving Letters, Pay Slips, Portfolios', color: '#F59E0B', icon_name: 'FileText', document_count: 4, created_at: '2026-01-15T10:00:00Z' },
-      { id: 4, user_id: null, category_name: 'Projects & Technical Specs', description: 'BRDs, Architecture Diagrams, Code Specs, Technical Proposals', color: '#8B5CF6', icon_name: 'FolderGit2', document_count: 3, created_at: '2026-01-18T10:00:00Z' },
-      { id: 5, user_id: null, category_name: 'Certificates & Achievements', description: 'Professional Certifications, Cloud Credentials, Training Badges', color: '#EC4899', icon_name: 'Award', document_count: 2, created_at: '2026-01-20T10:00:00Z' },
-      { id: 6, user_id: null, category_name: 'Client Requirements & Contracts', description: 'Client BRDs, SOW Agreements, NDAs, Service Contracts', color: '#06B6D4', icon_name: 'Briefcase', document_count: 3, created_at: '2026-01-22T10:00:00Z' },
-      { id: 7, user_id: null, category_name: 'Bills, Taxes & Invoices', description: 'Tax Return Filings, Utility Invoices, Bank Statements, Subscriptions', color: '#EF4444', icon_name: 'Receipt', document_count: 4, created_at: '2026-01-25T10:00:00Z' },
-      { id: 8, user_id: null, category_name: 'Legal & Property Documents', description: 'Property Deeds, Lease Agreements, Insurance Policies, Legal Contracts', color: '#6366F1', icon_name: 'ShieldCheck', document_count: 2, created_at: '2026-01-26T10:00:00Z' },
-      { id: 9, user_id: null, category_name: 'Medical & Health Records', description: 'Vaccination Certificates, Health Insurance Policies, Diagnostic Reports', color: '#14B8A6', icon_name: 'Bookmark', document_count: 2, created_at: '2026-01-27T10:00:00Z' },
-      { id: 10, user_id: null, category_name: 'General & Uncategorized', description: 'Miscellaneous notes, temporary files & quick uploads', color: '#64748B', icon_name: 'Layers', document_count: 1, created_at: '2026-01-28T10:00:00Z' },
-    ];
-    setCategories(defaultCats);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('dms_admin_categories', JSON.stringify(defaultCats));
-    }
-    setLoading(false);
   };
 
   // Search Filter

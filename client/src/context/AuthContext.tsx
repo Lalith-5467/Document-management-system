@@ -15,8 +15,9 @@ interface AuthContextType {
   token: string | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<{ success: boolean; message: string }>;
-  register: (fullName: string, email: string, password: string, userType: string) => Promise<{ success: boolean; message: string }>;
+  register: (userData: any) => Promise<{ success: boolean; message: string }>;
   logout: () => Promise<void>;
+  setUser: (user: any) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -56,26 +57,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         return { success: true, message: 'Login successful!' };
       }
-    } catch (err: any) { /* fallback below */ }
 
-    // Standalone client mode login fallback
-    const authUser: User = {
-      id: 1,
-      full_name: email.split('@')[0] ? (email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1)) : 'Demo User',
-      email: email,
-      user_type: 'individual'
-    };
-    const authToken = 'demo_token_' + Date.now();
-    setToken(authToken);
-    setUser(authUser);
-    localStorage.setItem('dms_token', authToken);
-    localStorage.setItem('dms_user', JSON.stringify(authUser));
-    return { success: true, message: 'Logged in successfully!' };
+      return { success: false, message: 'Invalid response from server' };
+    } catch (err: any) {
+      return { 
+        success: false, 
+        message: err.response?.data?.message || 'Login failed. Please check your credentials.'
+      };
+    }
   };
 
-  const register = async (fullName: string, email: string, password: string, userType: string) => {
+  const register = async (userData: any) => {
     try {
-      const res = await api.post('/auth/register', { fullName, email, password, userType });
+      const res = await api.post('/auth/register', userData);
       if (res.data && res.data.token) {
         const authToken = res.data.token;
         const authUser = res.data.user;
@@ -88,20 +82,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         return { success: true, message: 'Account registered successfully!' };
       }
-    } catch { /* fallback below */ }
-
-    const fallbackUser: User = {
-      id: Date.now(),
-      full_name: fullName,
-      email: email,
-      user_type: (userType as any) || 'individual'
-    };
-    const authToken = 'demo_token_' + Date.now();
-    setToken(authToken);
-    setUser(fallbackUser);
-    localStorage.setItem('dms_token', authToken);
-    localStorage.setItem('dms_user', JSON.stringify(fallbackUser));
-    return { success: true, message: 'Registered successfully!' };
+      return { success: false, message: 'Invalid response from server' };
+    } catch (err: any) {
+      return { 
+        success: false, 
+        message: err.response?.data?.message || 'Registration failed. Please try again.'
+      };
+    }
   };
 
   const logout = async () => {
@@ -121,7 +108,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, token, loading, login, register, logout, setUser }}>
       {children}
     </AuthContext.Provider>
   );

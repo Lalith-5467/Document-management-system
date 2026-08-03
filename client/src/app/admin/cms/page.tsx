@@ -228,7 +228,7 @@ export default function AdminCmsPage() {
           <Link
             href="/"
             target="_blank"
-            className="px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-xs font-bold text-white shadow-lg shadow-indigo-600/30 transition flex items-center gap-1.5"
+            className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:brightness-110 text-xs font-bold text-white shadow-lg shadow-orange-500/30 transition flex items-center gap-1.5"
           >
             View Public Landing Page <ArrowUpRight className="w-3.5 h-3.5" />
           </Link>
@@ -263,19 +263,29 @@ export default function AdminCmsPage() {
       {activeTab === 'hero' && (
         <form onSubmit={handleSaveHero} className="space-y-6">
           <div className="p-6 rounded-3xl border border-slate-200 bg-white shadow-xs space-y-5">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-              <h2 className="text-base font-black text-slate-900 flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-[#FF6B00]" />
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-4 gap-4">
+              <h2 className="text-lg font-black text-slate-900 flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-[#FF6B00]" />
                 <span>Hero Section Content & CTA Controls</span>
               </h2>
-              <div className="flex items-center gap-3">
-                <span className="text-xs text-slate-400 font-semibold">Enable Hero Section:</span>
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200">
+                  <span className="text-xs text-slate-500 font-bold">Enable Hero Section:</span>
+                  <button
+                    type="button"
+                    onClick={() => setCms(p => ({ ...p, hero: { ...p.hero, enabled: !p.hero.enabled } }))}
+                    className={`relative w-11 h-6 rounded-full transition-colors focus:outline-none ${cms.hero.enabled ? 'bg-gradient-to-r from-[#FF6B00] to-[#F97316] shadow-md shadow-orange-500/20' : 'bg-slate-300'}`}
+                  >
+                    <span className={`absolute top-1/2 -translate-y-1/2 w-4.5 h-4.5 rounded-full bg-white transition-all shadow-sm ${cms.hero.enabled ? 'left-[22px]' : 'left-[3px]'}`} />
+                  </button>
+                </div>
+                
                 <button
-                  type="button"
-                  onClick={() => setCms(p => ({ ...p, hero: { ...p.hero, enabled: !p.hero.enabled } }))}
-                  className={`relative w-10 h-5.5 rounded-full transition-colors ${cms.hero.enabled ? 'bg-[#FF6B00]' : 'bg-slate-200'}`}
+                  type="submit"
+                  disabled={submitting}
+                  className="px-5 py-2 rounded-xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:brightness-110 text-white text-xs font-bold shadow-lg shadow-orange-500/30 flex items-center gap-2 transition-all cursor-pointer"
                 >
-                  <span className={`absolute top-0.5 w-4.5 h-4.5 rounded-full bg-white transition-transform ${cms.hero.enabled ? 'translate-x-5' : 'translate-x-0.5'}`} />
+                  <Save className="w-4 h-4" /> Save Changes
                 </button>
               </div>
             </div>
@@ -371,8 +381,18 @@ export default function AdminCmsPage() {
                 <input
                   type="file"
                   accept="image/*"
-                  onChange={e => handleImageUpload(e, 'hero_bg')}
-                  className="text-2xs text-slate-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-2xs file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500"
+                  onChange={e => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      const reader = new FileReader();
+                      reader.onloadend = () => {
+                        setCms(p => ({ ...p, hero: { ...p.hero, bgImage: reader.result as string } }));
+                        showToast(`Hero Background uploaded!`);
+                      };
+                      reader.readAsDataURL(file);
+                    }
+                  }}
+                  className="text-2xs text-slate-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-2xs file:font-bold file:bg-slate-200 file:text-slate-700 hover:file:bg-slate-300 cursor-pointer"
                 />
               </div>
 
@@ -388,20 +408,24 @@ export default function AdminCmsPage() {
                 <input
                   type="file"
                   accept="image/*"
-                  onChange={e => handleImageUpload(e, 'hero_dashboard')}
-                  className="text-2xs text-slate-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-2xs file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500"
+                  onChange={e => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      const reader = new FileReader();
+                      reader.onloadend = () => {
+                        setCms(p => ({ ...p, hero: { ...p.hero, dashboardImage: reader.result as string } }));
+                        showToast(`Dashboard Image uploaded!`);
+                      };
+                      reader.readAsDataURL(file);
+                    }
+                  }}
+                  className="text-2xs text-slate-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-2xs file:font-bold file:bg-slate-200 file:text-slate-700 hover:file:bg-slate-300 cursor-pointer"
                 />
               </div>
             </div>
 
-            <div className="flex justify-end pt-3">
-              <button
-                type="submit"
-                disabled={submitting}
-                className="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-lg shadow-indigo-600/30 flex items-center gap-2 transition"
-              >
-                <Save className="w-4 h-4" /> Save Hero Changes
-              </button>
+            <div className="flex justify-end pt-4 border-t border-slate-100">
+              <span className="text-xs text-slate-400 font-medium">All changes apply instantly to the public landing page upon saving.</span>
             </div>
           </div>
         </form>
@@ -515,7 +539,7 @@ export default function AdminCmsPage() {
             <div className="flex justify-end pt-3">
               <button
                 type="submit"
-                className="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-lg shadow-indigo-600/30 flex items-center gap-2 transition"
+                className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:brightness-110 text-white text-xs font-bold shadow-lg shadow-orange-500/30 flex items-center gap-2 transition"
               >
                 <Save className="w-4 h-4" /> Save Statistics Changes
               </button>
@@ -530,11 +554,32 @@ export default function AdminCmsPage() {
       {activeTab === 'cta' && (
         <form onSubmit={handleSaveCTA} className="space-y-6">
           <div className="p-6 rounded-3xl border border-slate-200 bg-white shadow-xs space-y-5">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-              <h2 className="text-base font-black text-slate-900 flex items-center gap-2">
-                <ArrowUpRight className="w-4 h-4 text-[#FF6B00]" />
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-4 gap-4">
+              <h2 className="text-lg font-black text-slate-900 flex items-center gap-2">
+                <ArrowUpRight className="w-5 h-5 text-[#FF6B00]" />
                 <span>Call To Action (CTA) Section Controls</span>
               </h2>
+              
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200">
+                  <span className="text-xs text-slate-500 font-bold">Enable CTA Section:</span>
+                  <button
+                    type="button"
+                    onClick={() => setCms(p => ({ ...p, cta: { ...p.cta, enabled: !p.cta.enabled } }))}
+                    className={`relative w-11 h-6 rounded-full transition-colors focus:outline-none ${cms.cta.enabled ? 'bg-gradient-to-r from-[#FF6B00] to-[#F97316] shadow-md shadow-orange-500/20' : 'bg-slate-300'}`}
+                  >
+                    <span className={`absolute top-1/2 -translate-y-1/2 w-4.5 h-4.5 rounded-full bg-white transition-all shadow-sm ${cms.cta.enabled ? 'left-[22px]' : 'left-[3px]'}`} />
+                  </button>
+                </div>
+                
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="px-5 py-2 rounded-xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:brightness-110 text-white text-xs font-bold shadow-lg shadow-orange-500/30 flex items-center gap-2 transition-all cursor-pointer"
+                >
+                  <Save className="w-4 h-4" /> Save Changes
+                </button>
+              </div>
             </div>
 
             <div>
@@ -601,13 +646,35 @@ export default function AdminCmsPage() {
               </div>
             </div>
 
-            <div className="flex justify-end pt-3">
-              <button
-                type="submit"
-                className="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-lg shadow-indigo-600/30 flex items-center gap-2 transition"
-              >
-                <Save className="w-4 h-4" /> Save CTA Changes
-              </button>
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 space-y-2">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block">CTA Background Image</span>
+              <div className="h-32 rounded-xl bg-slate-100/80 overflow-hidden relative flex items-center justify-center border border-slate-200">
+                {cms.cta.bgImage ? (
+                  <img src={cms.cta.bgImage} alt="CTA Background" className="w-full h-full object-cover" />
+                ) : (
+                  <span className="text-2xs text-slate-500">No Background Image Uploaded</span>
+                )}
+              </div>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={e => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                      setCms(p => ({ ...p, cta: { ...p.cta, bgImage: reader.result as string } }));
+                      showToast(`CTA Background uploaded!`);
+                    };
+                    reader.readAsDataURL(file);
+                  }
+                }}
+                className="text-2xs text-slate-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-2xs file:font-bold file:bg-slate-200 file:text-slate-700 hover:file:bg-slate-300 cursor-pointer"
+              />
+            </div>
+
+            <div className="flex justify-end pt-4 border-t border-slate-100">
+              <span className="text-xs text-slate-400 font-medium">All changes apply instantly to the public landing page upon saving.</span>
             </div>
           </div>
         </form>
@@ -686,7 +753,7 @@ export default function AdminCmsPage() {
             <div className="flex justify-end pt-3">
               <button
                 type="submit"
-                className="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-lg shadow-indigo-600/30 flex items-center gap-2 transition"
+                className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:brightness-110 text-white text-xs font-bold shadow-lg shadow-orange-500/30 flex items-center gap-2 transition"
               >
                 <Save className="w-4 h-4" /> Save Footer Information
               </button>
@@ -698,7 +765,7 @@ export default function AdminCmsPage() {
       {/* ============================================================ */}
       {/* MODALS: CREATE / EDIT / VIEW / DELETE */}
       {/* ============================================================ */}
-      {modal?.type === 'delete' && (
+      {modal?.type === 'delete' && modal?.module !== 'carousel' && (
         <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md animate-fade-in">
           <div className="w-full max-w-md p-6 rounded-3xl bg-white border border-slate-200 shadow-2xl space-y-4">
             <div className="flex items-center gap-3 text-rose-400">
@@ -727,7 +794,7 @@ export default function AdminCmsPage() {
         </div>
       )}
 
-      {modal?.type === 'view' && (
+      {modal?.type === 'view' && modal?.module !== 'carousel' && (
         <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md animate-fade-in">
           <div className="w-full max-w-xl p-6 rounded-3xl bg-white border border-slate-200 shadow-2xl space-y-4">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
@@ -754,7 +821,7 @@ export default function AdminCmsPage() {
             </div>
 
             <div className="flex justify-end pt-2">
-              <button onClick={() => setModal(null)} className="px-5 py-2 rounded-xl bg-indigo-600 text-slate-900 font-bold text-xs">
+              <button onClick={() => setModal(null)} className="px-5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 transition text-slate-700 font-bold text-xs">
                 Close Popup
               </button>
             </div>
@@ -762,7 +829,7 @@ export default function AdminCmsPage() {
         </div>
       )}
 
-      {(modal?.type === 'create' || modal?.type === 'edit') && (
+      {(modal?.type === 'create' || modal?.type === 'edit') && modal?.module !== 'carousel' && (
         <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md animate-fade-in">
           <div className="w-full max-w-lg p-6 rounded-3xl bg-white border border-slate-200 shadow-2xl space-y-4">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
@@ -779,10 +846,10 @@ export default function AdminCmsPage() {
                 <input
                   type="text"
                   required
-                  value={formData.title || formData.name || formData.question || ''}
-                  onChange={e => setFormData((p: any) => ({ ...p, title: e.target.value, name: e.target.value, question: e.target.value }))}
+                  value={formData.title || formData.name || formData.question || formData.platform || ''}
+                  onChange={e => setFormData((p: any) => ({ ...p, title: e.target.value, name: e.target.value, question: e.target.value, platform: e.target.value }))}
                   className="w-full px-3.5 py-2 bg-slate-100/80 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#FF6B00] font-medium"
-                  placeholder="Enter title or name"
+                  placeholder="Enter title, name, or platform"
                 />
               </div>
 
@@ -810,9 +877,120 @@ export default function AdminCmsPage() {
                   type="file"
                   accept="image/*"
                   onChange={e => handleImageUpload(e, 'image')}
-                  className="text-2xs text-slate-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-2xs file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500"
+                  className="text-2xs text-slate-400 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-2xs file:font-semibold file:bg-orange-600 file:text-white hover:file:bg-orange-500 cursor-pointer"
                 />
               </div>
+
+              {/* Global Theme Color */}
+              <div>
+                <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">Theme Color (Hex or Classes)</label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={formData.color || ''}
+                    onChange={e => setFormData((p: any) => ({ ...p, color: e.target.value }))}
+                    className="flex-1 px-3.5 py-2 bg-slate-100/80 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#FF6B00]"
+                    placeholder="e.g. #FF6B00 or from-blue-500/20..."
+                  />
+                  <select
+                    value={COLOR_OPTIONS.includes(formData.color) ? formData.color : ''}
+                    onChange={e => setFormData((p: any) => ({ ...p, color: e.target.value }))}
+                    className="w-12 h-[34px] rounded-xl border border-slate-200 bg-white cursor-pointer focus:outline-none text-xs"
+                    title="Quick select hex color"
+                  >
+                    <option value="">...</option>
+                    {COLOR_OPTIONS.map(c => <option key={c} value={c} style={{ background: c, color: '#fff' }}>{c}</option>)}
+                  </select>
+                </div>
+              </div>
+
+              {/* Module Specific Fields */}
+              {['features', 'categories', 'audience', 'socials'].includes(modal.module) && (
+                <div>
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">Icon</label>
+                  <select
+                    value={formData.icon || ''}
+                    onChange={e => setFormData((p: any) => ({ ...p, icon: e.target.value }))}
+                    className="w-full px-3.5 py-2 bg-slate-100/80 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#FF6B00]"
+                  >
+                    <option value="">Select an icon...</option>
+                    {ICON_OPTIONS.map(icon => <option key={icon} value={icon}>{icon}</option>)}
+                  </select>
+                </div>
+              )}
+
+              {['audience'].includes(modal.module) && (
+                <>
+                  <div>
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">Badge</label>
+                    <input
+                      type="text"
+                      value={formData.badge || ''}
+                      onChange={e => setFormData((p: any) => ({ ...p, badge: e.target.value }))}
+                      className="w-full px-3.5 py-2 bg-slate-100/80 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#FF6B00]"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">Features (Comma Separated)</label>
+                    <input
+                      type="text"
+                      value={Array.isArray(formData.features) ? formData.features.join(', ') : formData.features || ''}
+                      onChange={e => setFormData((p: any) => ({ ...p, features: e.target.value.split(',').map((s: string) => s.trim()).filter(Boolean) }))}
+                      className="w-full px-3.5 py-2 bg-slate-100/80 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#FF6B00]"
+                    />
+                  </div>
+                </>
+              )}
+
+              {['categories'].includes(modal.module) && (
+                <div className="grid grid-cols-1 gap-3">
+                  <div>
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">Document Count</label>
+                    <input
+                      type="number"
+                      value={formData.documentCount || 0}
+                      onChange={e => setFormData((p: any) => ({ ...p, documentCount: Number(e.target.value) }))}
+                      className="w-full px-3.5 py-2 bg-slate-100/80 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#FF6B00]"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {['testimonials'].includes(modal.module) && (
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">Role / Job Title</label>
+                    <input
+                      type="text"
+                      value={formData.role || ''}
+                      onChange={e => setFormData((p: any) => ({ ...p, role: e.target.value }))}
+                      className="w-full px-3.5 py-2 bg-slate-100/80 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#FF6B00]"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">Company</label>
+                    <input
+                      type="text"
+                      value={formData.company || ''}
+                      onChange={e => setFormData((p: any) => ({ ...p, company: e.target.value }))}
+                      className="w-full px-3.5 py-2 bg-slate-100/80 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#FF6B00]"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {['socials', 'navigation', 'companies'].includes(modal.module) && (
+                <div>
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">URL / Link</label>
+                  <input
+                    type="text"
+                    value={formData.url || formData.website || ''}
+                    onChange={e => setFormData((p: any) => ({ ...p, url: e.target.value, website: e.target.value }))}
+                    className="w-full px-3.5 py-2 bg-slate-100/80 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#FF6B00]"
+                    placeholder="https://"
+                  />
+                </div>
+              )}
 
               {/* Display Order & Status */}
               <div className="grid grid-cols-2 gap-3">
@@ -850,7 +1028,7 @@ export default function AdminCmsPage() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-lg shadow-indigo-600/30"
+                  className="px-5 py-2 rounded-xl bg-orange-600 hover:bg-orange-500 hover:scale-105 active:scale-95 text-white text-xs font-bold shadow-lg shadow-orange-600/30 flex items-center gap-2 transition-all cursor-pointer"
                 >
                   {modal.type === 'create' ? 'Add Item' : 'Save Changes'}
                 </button>
@@ -968,9 +1146,13 @@ export default function AdminCmsPage() {
 
                       {/* Slide Content */}
                       <div className="p-5 space-y-2 bg-white">
-                        <p className="text-[10px] font-black text-[#FF6B00] uppercase tracking-wider line-clamp-1 font-mono">{slide.title}</p>
-                        <h3 className="text-sm font-black text-slate-900 leading-snug line-clamp-1 font-auth-heading">{slide.highlight}</h3>
-                        <p className="text-xs text-slate-500 line-clamp-2 font-medium leading-relaxed">{slide.sub}</p>
+                        <h3 className="text-xs sm:text-sm font-black text-slate-900 leading-snug line-clamp-2 font-auth-heading">
+                          {slide.title}{' '}
+                          <span className="bg-gradient-to-r from-[#FF6B00] to-[#F97316] bg-clip-text text-transparent">
+                            {slide.highlight}
+                          </span>
+                        </h3>
+                        <p className="text-[10px] sm:text-xs text-slate-500 font-medium leading-relaxed">{slide.sub}</p>
                         
                         <div className="flex items-center gap-2 pt-2.5 border-t border-slate-100 mt-3">
                           <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-600 font-mono text-[10px] font-bold border border-slate-200">#{slide.displayOrder}</span>
@@ -1029,14 +1211,14 @@ export default function AdminCmsPage() {
 
             {/* Create / Edit Modal */}
             {modal && (modal.type === 'create' || modal.type === 'edit') && modal.module === 'carousel' && (
-              <div className="fixed inset-0 z-[80] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-                <div className="w-full max-w-2xl bg-slate-100/80 border border-slate-200 rounded-3xl shadow-2xl overflow-hidden">
+              <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md animate-fade-in">
+                <div className="w-full max-w-2xl bg-white border border-slate-200 rounded-3xl shadow-2xl overflow-hidden">
                   <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
-                    <h3 className="font-extrabold text-white text-sm flex items-center gap-2">
+                    <h3 className="text-slate-900 font-extrabold flex items-center gap-2 text-sm tracking-wide">
                       <Play className="w-4 h-4 text-orange-400" />
                       {modal.type === 'create' ? 'Add New Carousel Slide' : 'Edit Carousel Slide'}
                     </h3>
-                    <button onClick={() => setModal(null)} className="text-slate-400 hover:text-slate-900"><X className="w-5 h-5" /></button>
+                    <button type="button" onClick={() => setModal(null)} className="text-slate-400 hover:text-slate-900 transition"><X className="w-5 h-5" /></button>
                   </div>
                   <form onSubmit={handleItemSubmit} className="p-6 space-y-4 overflow-y-auto max-h-[80vh]">
                     {/* Badge */}
@@ -1059,7 +1241,7 @@ export default function AdminCmsPage() {
                           required
                           value={formData.title || ''}
                           onChange={e => setFormData((p: any) => ({ ...p, title: e.target.value }))}
-                          placeholder="One Secure AI Vault for All Your"
+                          placeholder="e.g. One Secure AI Vault for All Your"
                           className="w-full px-4 py-2.5 bg-slate-100/80 border border-slate-200 rounded-xl text-xs text-slate-900 font-medium focus:outline-none focus:ring-1 focus:ring-orange-500/50"
                         />
                       </div>
@@ -1069,7 +1251,7 @@ export default function AdminCmsPage() {
                           required
                           value={formData.highlight || ''}
                           onChange={e => setFormData((p: any) => ({ ...p, highlight: e.target.value }))}
-                          placeholder="Critical Paperwork & Digital Assets"
+                          placeholder="e.g. Critical Paperwork & Digital Assets"
                           className="w-full px-4 py-2.5 bg-slate-100/80 border border-slate-200 rounded-xl text-xs text-slate-900 font-medium focus:outline-none focus:ring-1 focus:ring-orange-500/50"
                         />
                       </div>
@@ -1083,7 +1265,7 @@ export default function AdminCmsPage() {
                         rows={3}
                         value={formData.sub || ''}
                         onChange={e => setFormData((p: any) => ({ ...p, sub: e.target.value }))}
-                        placeholder="DocVault is your enterprise-grade personal document repository..."
+                        placeholder="e.g. DocVault is your enterprise-grade personal document repository..."
                         className="w-full px-4 py-2.5 bg-slate-100/80 border border-slate-200 rounded-xl text-xs text-slate-900 font-medium resize-none focus:outline-none focus:ring-1 focus:ring-orange-500/50"
                       />
                     </div>
@@ -1199,9 +1381,11 @@ export default function AdminCmsPage() {
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-end gap-3 pt-2">
-                      <button type="button" onClick={() => setModal(null)} className="px-5 py-2 rounded-xl border border-slate-200 text-slate-400 text-xs hover:text-slate-900 transition">Cancel</button>
-                      <button type="submit" disabled={submitting} className="px-6 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold flex items-center gap-2 shadow-lg shadow-orange-600/25 transition">
+                    <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
+                      <button type="button" onClick={() => setModal(null)} className="px-5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 transition text-slate-700 font-bold text-xs">
+                        Cancel
+                      </button>
+                      <button type="submit" disabled={submitting} className="px-6 py-2 rounded-xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:brightness-110 hover:scale-105 active:scale-95 text-white text-xs font-bold shadow-lg shadow-orange-600/30 flex items-center gap-2 transition-all cursor-pointer">
                         <Save className="w-3.5 h-3.5" />
                         {submitting ? 'Saving...' : modal.type === 'create' ? 'Create Slide' : 'Save Changes'}
                       </button>
@@ -1213,24 +1397,21 @@ export default function AdminCmsPage() {
 
             {/* Delete Confirmation Modal */}
             {modal?.type === 'delete' && modal.module === 'carousel' && (
-              <div className="fixed inset-0 z-[80] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-                <div className="w-full max-w-md bg-slate-100/80 border border-rose-500/30 rounded-3xl shadow-2xl p-6 space-y-5">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-2xl bg-rose-600/20 flex items-center justify-center shrink-0">
-                      <Trash2 className="w-5 h-5 text-rose-400" />
-                    </div>
-                    <div>
-                      <h3 className="font-extrabold text-white text-sm">Delete Carousel Slide</h3>
-                      <p className="text-2xs text-slate-400 mt-0.5">This action cannot be undone.</p>
-                    </div>
+              <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-md animate-fade-in">
+                <div className="w-full max-w-md bg-white border border-slate-200 rounded-3xl shadow-2xl p-6 space-y-4">
+                  <div className="flex items-center gap-3 text-rose-400">
+                    <AlertTriangle className="w-6 h-6" />
+                    <h3 className="text-lg font-black text-slate-900 tracking-tight">Delete Slide?</h3>
                   </div>
-                  <p className="text-xs text-slate-300">
-                    Are you sure you want to delete <strong className="text-slate-900">"{modal.data?.title}"</strong>?
+                  <p className="text-sm text-slate-600 font-medium leading-relaxed">
+                    Are you sure you want to delete <span className="text-slate-900 font-bold">{modal.data?.title}</span>? This action cannot be undone.
                   </p>
-                  <div className="flex gap-3">
-                    <button onClick={() => setModal(null)} className="flex-1 py-2.5 rounded-xl border border-slate-200 text-slate-400 text-xs hover:text-slate-900 transition">Cancel</button>
-                    <button onClick={handleDeleteItem} disabled={submitting} className="flex-1 py-2.5 rounded-xl bg-rose-500 hover:bg-rose-600 text-white text-xs font-bold transition">
-                      {submitting ? 'Deleting...' : 'Yes, Delete Slide'}
+                  <div className="flex justify-end gap-2 pt-4">
+                    <button type="button" onClick={() => setModal(null)} className="px-5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 transition text-slate-700 font-bold text-xs">
+                      Cancel
+                    </button>
+                    <button onClick={handleDeleteItem} disabled={submitting} className="px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs shadow-lg shadow-rose-600/30 transition">
+                      {submitting ? 'Deleting...' : 'Delete Permanently'}
                     </button>
                   </div>
                 </div>
@@ -1325,7 +1506,7 @@ function RenderArrayModuleCRUD({
 
           <button
             onClick={onOpenCreate}
-            className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-xs font-bold text-white shadow-sm flex items-center gap-1.5 transition cursor-pointer"
+            className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:brightness-110 text-xs font-bold text-white shadow-md shadow-orange-500/20 flex items-center gap-1.5 transition cursor-pointer"
           >
             <Plus className="w-3.5 h-3.5" /> Add New Item
           </button>
@@ -1342,7 +1523,7 @@ function RenderArrayModuleCRUD({
                   type="checkbox"
                   checked={selectedIds.length > 0 && selectedIds.length === paginated.length}
                   onChange={toggleSelectAll}
-                  className="rounded border-slate-300 text-indigo-600 focus:ring-0 cursor-pointer"
+                  className="rounded border-slate-300 text-orange-600 focus:ring-0 cursor-pointer accent-[#FF6B00]"
                 />
               </th>
               <th className="py-3.5 px-4">Item / Title</th>
@@ -1367,7 +1548,7 @@ function RenderArrayModuleCRUD({
                       type="checkbox"
                       checked={selectedIds.includes(item.id)}
                       onChange={() => toggleSelectOne(item.id)}
-                      className="rounded border-slate-300 text-indigo-600 focus:ring-0 cursor-pointer"
+                      className="rounded border-slate-300 text-orange-600 focus:ring-0 cursor-pointer accent-[#FF6B00]"
                     />
                   </td>
                   <td className="py-3.5 px-4">

@@ -306,40 +306,56 @@ Thank you for subscribing to DocVault Enterprise SaaS.
 
       {/* 4 CRM FINANCIAL METRIC CARDS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="p-5 rounded-3xl bg-white border border-slate-200 shadow-xs space-y-4">
-          <div className="flex justify-between items-center text-xs font-bold text-slate-400">
-            <span>TOTAL REVENUE COLLECTED</span>
-            <DollarSign className="w-4 h-4 text-emerald-500" />
+        <div className="p-5 rounded-3xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition space-y-4">
+          <div className="flex justify-between items-center text-xs font-bold text-slate-500 dark:text-slate-400">
+            <span>TOTAL REVENUE</span>
+            <span className="w-8 h-8 rounded-full bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center">
+              <DollarSign className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+            </span>
           </div>
-          <p className="text-3xl font-black text-emerald-400">₹{totalRevenue.toLocaleString('en-IN', { maximumFractionDigits: 2 })}</p>
-          <p className="text-[10px] font-bold text-emerald-400">{totalPaidCount} Paid Invoices</p>
+          <p className="text-3xl font-black text-slate-900 dark:text-white">₹{totalRevenue.toLocaleString('en-IN', { maximumFractionDigits: 2 })}</p>
+          <p className="text-[10px] font-extrabold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 inline-block px-2 py-1 rounded-md">
+            {totalPaidCount} Paid Invoices
+          </p>
         </div>
 
-        <div className="p-5 rounded-3xl bg-white border border-slate-200 shadow-xs space-y-4">
-          <div className="flex justify-between items-center text-xs font-bold text-slate-400">
+        <div className="p-5 rounded-3xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition space-y-4">
+          <div className="flex justify-between items-center text-xs font-bold text-slate-500 dark:text-slate-400">
             <span>PENDING INVOICES</span>
-            <Clock className="w-4 h-4 text-amber-400" />
+            <span className="w-8 h-8 rounded-full bg-amber-50 dark:bg-amber-500/10 flex items-center justify-center">
+              <Clock className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+            </span>
           </div>
-          <p className="text-3xl font-black text-amber-400">{totalPendingCount}</p>
-          <p className="text-[10px] font-bold text-amber-400">Awaiting customer payment</p>
+          <p className="text-3xl font-black text-slate-900 dark:text-white">{totalPendingCount}</p>
+          <p className="text-[10px] font-extrabold text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-500/10 inline-block px-2 py-1 rounded-md">
+            Awaiting Payments
+          </p>
         </div>
 
-        <div className="p-5 rounded-3xl bg-white border border-slate-200 shadow-xs space-y-4">
-          <div className="flex justify-between items-center text-xs font-bold text-slate-400">
+        <div className="p-5 rounded-3xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition space-y-4">
+          <div className="flex justify-between items-center text-xs font-bold text-slate-500 dark:text-slate-400">
             <span>REFUNDS PROCESSED</span>
-            <RefreshCw className="w-4 h-4 text-purple-400" />
+            <span className="w-8 h-8 rounded-full bg-purple-50 dark:bg-purple-500/10 flex items-center justify-center">
+              <RefreshCw className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+            </span>
           </div>
-          <p className="text-3xl font-black text-purple-400">₹{totalRefunded.toLocaleString('en-IN')}</p>
-          <p className="text-[10px] font-bold text-purple-400">Refunded to original method</p>
+          <p className="text-3xl font-black text-slate-900 dark:text-white">₹{totalRefunded.toLocaleString('en-IN')}</p>
+          <p className="text-[10px] font-extrabold text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-500/10 inline-block px-2 py-1 rounded-md">
+            Refunded to Source
+          </p>
         </div>
 
-        <div className="p-5 rounded-3xl bg-white border border-slate-200 shadow-xs space-y-4">
-          <div className="flex justify-between items-center text-xs font-bold text-slate-400">
-            <span>TOTAL BILLS GENERATED</span>
-            <FileText className="w-4 h-4 text-blue-400" />
+        <div className="p-5 rounded-3xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition space-y-4">
+          <div className="flex justify-between items-center text-xs font-bold text-slate-500 dark:text-slate-400">
+            <span>TOTAL BILLS</span>
+            <span className="w-8 h-8 rounded-full bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center">
+              <FileText className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+            </span>
           </div>
-          <p className="text-3xl font-black text-slate-900">{invoices.length}</p>
-          <p className="text-[10px] font-bold text-blue-400">Active CRM Billing Logs</p>
+          <p className="text-3xl font-black text-slate-900 dark:text-white">{invoices.length}</p>
+          <p className="text-[10px] font-extrabold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-500/10 inline-block px-2 py-1 rounded-md">
+            Total CRM Records
+          </p>
         </div>
       </div>
 
@@ -389,18 +405,33 @@ Thank you for subscribing to DocVault Enterprise SaaS.
             </thead>
             <tbody className="divide-y divide-slate-100/80">
               {filteredInvoices.map((inv) => (
-                <tr key={inv.id} className="hover:bg-slate-100/40 transition-colors">
-                  <td className="py-3.5 px-4 font-mono font-bold text-blue-400">
+                <tr key={inv.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <td className="py-3.5 px-4 font-mono font-bold text-blue-600 dark:text-blue-400">
                     {inv.invoiceNo}
                   </td>
                   <td className="py-3.5 px-4">
                     <div>
-                      <p className="font-extrabold text-slate-900">{inv.customerName}</p>
-                      <p className="text-[10px] text-slate-400 font-mono">{inv.customerEmail}</p>
+                      <p className="font-extrabold text-slate-900 dark:text-white">{inv.customerName}</p>
+                      <p className="text-[10px] text-slate-500 dark:text-slate-400 font-mono">{inv.customerEmail}</p>
                     </div>
                   </td>
-                  <td className="py-3.5 px-4 font-semibold">
-                    <span className="flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-black text-white bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:opacity-90 shadow-md shadow-orange-500/20 hover:scale-105 transition cursor-pointer">
+                  <td className="py-3.5 px-4">
+                    <p className="font-bold text-slate-700 dark:text-slate-300">{inv.planName}</p>
+                    <p className="text-[10px] uppercase font-black tracking-wider text-slate-500 dark:text-slate-500">{inv.billingCycle}</p>
+                  </td>
+                  <td className="py-3.5 px-4 text-slate-600 dark:text-slate-400 font-medium">
+                    {inv.billedDate}
+                  </td>
+                  <td className="py-3.5 px-4 font-mono font-black text-slate-900 dark:text-white">
+                    ₹{inv.totalAmount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
+                  </td>
+                  <td className="py-3.5 px-4">
+                    <span className={`px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border ${
+                      inv.status === 'paid' ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20' :
+                      inv.status === 'pending' ? 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20' :
+                      inv.status === 'refunded' ? 'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-500/10 dark:text-purple-400 dark:border-purple-500/20' :
+                      'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-500/10 dark:text-rose-400 dark:border-rose-500/20'
+                    }`}>
                       {inv.status}
                     </span>
                   </td>

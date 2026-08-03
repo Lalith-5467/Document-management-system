@@ -260,7 +260,7 @@ export default function AdminDashboardPage() {
         {activeSection === 'documents' && <DocumentsSection showToast={showToast} />}
         {activeSection === 'categories' && <CategoriesSection showToast={showToast} />}
         {activeSection === 'folders' && <FoldersSection showToast={showToast} />}
-        {activeSection === 'activity' && <ActivitySection />}
+        {activeSection === 'activity' && <ActivitySection showToast={showToast} />}
         {activeSection === 'reports' && <ReportsSection />}
         {activeSection === 'cms' && <CmsSection showToast={showToast} />}
         {activeSection === 'system' && <SystemSection />}
@@ -1385,13 +1385,16 @@ function FoldersSection({ showToast }: { showToast: any }) {
 // ============================================================
 // ACTIVITY SECTION
 // ============================================================
-function ActivitySection() {
+function ActivitySection({ showToast }: { showToast: any }) {
   const [logs, setLogs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('ALL');
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [modal, setModal] = useState<any>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [form, setForm] = useState({ action_type: 'LOGIN', details: '', user_name: 'Admin' });
 
   const ACTION_COLORS: Record<string, string> = {
     LOGIN: 'text-emerald-400', LOGOUT: 'text-slate-400', UPLOAD: 'text-blue-400',
@@ -1419,15 +1422,57 @@ function ActivitySection() {
     const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' })); a.download = `activity_${Date.now()}.csv`; a.click();
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    try {
+      if (modal?.type === 'create') {
+        const newLog = {
+          id: Date.now(),
+          user_name: form.user_name || 'System Admin',
+          action_type: form.action_type,
+          details: form.details,
+          created_at: new Date().toISOString()
+        };
+        setLogs([newLog, ...logs]);
+        showToast('Activity log added successfully!');
+      } else if (modal?.type === 'edit') {
+        setLogs(logs.map(l => l.id === modal.log.id ? { ...l, ...form } : l));
+        showToast('Activity log updated successfully!');
+      }
+    } catch {} finally {
+      setSubmitting(false);
+      setModal(null);
+    }
+  };
+
+  const handleDelete = async (log: any) => {
+    setSubmitting(true);
+    try {
+      setLogs(logs.filter(l => l.id !== log.id));
+      showToast('Activity log deleted permanently.');
+    } catch {} finally {
+      setSubmitting(false);
+      setModal(null);
+    }
+  };
+
   return (
     <div className="space-y-4">
+      <div className="flex items-center justify-between">
+         <SectionTitle icon={Activity} title="Activity Log Management" subtitle="View and manage system audit trails" color="text-[#FF6B00]" />
+         <button onClick={() => { setForm({ action_type: 'LOGIN', details: '', user_name: 'Admin' }); setModal({ type: 'create' }); }} className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#FF6B00] hover:bg-[#EA580C] text-white text-xs font-bold shadow-md shadow-orange-500/20 transition cursor-pointer">
+           <Plus className="w-3.5 h-3.5" /> Add Log
+         </button>
+      </div>
+      
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
           <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
           <input value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} placeholder="Search activity logs..." className="pl-9 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#FF6B00] w-full" />
         </div>
         <select value={filter} onChange={e => { setFilter(e.target.value); setPage(1); }} className="px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:border-[#FF6B00] cursor-pointer">
-          {['ALL', 'LOGIN', 'LOGOUT', 'UPLOAD', 'DOWNLOAD', 'DELETE', 'RESTORE', 'UPDATE'].map(a => <option key={a} value={a}>{a === 'ALL' ? 'All Actions' : a}</option>)}
+          {['ALL', 'LOGIN', 'LOGOUT', 'UPLOAD', 'DOWNLOAD', 'DELETE', 'RESTORE', 'UPDATE', 'CREATE_FOLDER', 'CREATE_CATEGORY'].map(a => <option key={a} value={a}>{a === 'ALL' ? 'All Actions' : a}</option>)}
         </select>
         <button onClick={handleExport} className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200/80 text-xs font-extrabold text-slate-800 flex items-center gap-2 transition cursor-pointer shadow-2xs">
           <Download className="w-3.5 h-3.5 text-slate-600" /> Export CSV
@@ -1463,9 +1508,27 @@ function ActivitySection() {
                     </div>
                     <p className="text-xs text-slate-600 font-medium truncate mt-0.5">{log.details}</p>
                   </div>
-                  <span className="text-xs font-mono font-bold text-slate-600 shrink-0 bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-200/60">
-                    {fmtTime(log.created_at)}
-                  </span>
+                  <div className="flex items-center gap-4 shrink-0">
+                    <span className="text-xs font-mono font-bold text-slate-600 bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-200/60">
+                      {fmtTime(log.created_at)}
+                    </span>
+                    <div className="flex items-center gap-1 bg-slate-50 p-1 rounded-xl border border-slate-200/80">
+                      <button
+                        onClick={() => { setForm({ action_type: log.action_type || 'LOGIN', details: log.details || '', user_name: log.user_name || '' }); setModal({ type: 'edit', log }); }}
+                        className="p-1.5 rounded-lg text-slate-500 hover:text-[#FF6B00] hover:bg-white transition cursor-pointer"
+                        title="Edit Log"
+                      >
+                        <Edit2 className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        onClick={() => setModal({ type: 'delete', log })}
+                        className="p-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-white transition cursor-pointer"
+                        title="Delete Log"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
                 </div>
               );
             })}
@@ -1485,6 +1548,39 @@ function ActivitySection() {
           </div>
         )}
       </div>
+
+      {(modal?.type === 'create' || modal?.type === 'edit') && (
+        <Modal title={modal.type === 'create' ? 'Create Activity Log' : 'Edit Activity Log'} onClose={() => setModal(null)}>
+          <form onSubmit={handleSubmit} className="space-y-3">
+            <div>
+              <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">User Name</label>
+              <input required type="text" value={form.user_name} onChange={e => setForm(f => ({ ...f, user_name: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#FF6B00]" placeholder="e.g. Admin System" />
+            </div>
+            <div>
+              <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">Action Type</label>
+              <select value={form.action_type} onChange={e => setForm(f => ({ ...f, action_type: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-[#FF6B00]">
+                {['LOGIN', 'LOGOUT', 'UPLOAD', 'DOWNLOAD', 'DELETE', 'RESTORE', 'UPDATE', 'CREATE_FOLDER', 'CREATE_CATEGORY'].map(a => <option key={a} value={a}>{a}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">Details</label>
+              <textarea rows={2} required value={form.details} onChange={e => setForm(f => ({ ...f, details: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#FF6B00] resize-none" placeholder="e.g. Uploaded confidential document" />
+            </div>
+            <ModalActions onCancel={() => setModal(null)} submitting={submitting} label={modal.type === 'create' ? 'Create Log' : 'Save Changes'} color="bg-[#FF6B00] hover:bg-[#EA580C]" />
+          </form>
+        </Modal>
+      )}
+
+      {modal?.type === 'delete' && (
+        <Modal title="Delete Activity Log?" onClose={() => setModal(null)}>
+          <p className="text-xs text-slate-600 mb-4">Are you sure you want to delete this activity log? This cannot be undone.</p>
+          <div className="bg-slate-50 border border-slate-200 p-3 rounded-xl mb-4">
+             <p className="text-xs font-bold text-slate-900">{modal.log?.action_type}</p>
+             <p className="text-[10px] text-slate-500">{modal.log?.details}</p>
+          </div>
+          <ModalActions onCancel={() => setModal(null)} submitting={submitting} label="Delete Log" color="bg-rose-600 hover:bg-rose-500" onConfirm={() => handleDelete(modal.log)} />
+        </Modal>
+      )}
     </div>
   );
 }
