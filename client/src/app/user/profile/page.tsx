@@ -167,7 +167,7 @@ export default function ProfilePage() {
   const displayLocation = displayLocRaw || 'Not specified';
 
   if (isLoading) {
-    return <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 text-[#FF6B00] animate-spin" /></div>;
+    return <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 text-themePrimary animate-spin" /></div>;
   }
 
   return (

@@ -168,7 +168,7 @@ export default function AdminFoldersPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
         <div>
           <h1 className="text-2xl font-black text-slate-900 flex items-center gap-2 font-auth-heading">
-            <FolderOpen className="w-6 h-6 text-[#FF6B00]" /> Folder Management
+            <FolderOpen className="w-6 h-6 text-themePrimary" /> Folder Management
           </h1>
           <p className="text-xs text-slate-500 font-medium mt-1">{folders.length} folders · Create, edit, move documents, and delete folders system-wide</p>
         </div>
@@ -176,7 +176,7 @@ export default function AdminFoldersPage() {
           <button onClick={fetchFolders} className="text-xs font-extrabold px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-100 hover:bg-slate-200 text-slate-800 flex items-center gap-2 shadow-2xs transition cursor-pointer">
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} /> Refresh
           </button>
-          <button onClick={openCreate} className="flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-black text-white bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:opacity-90 shadow-md shadow-orange-500/20 hover:scale-105 transition cursor-pointer">
+          <button onClick={openCreate} className="flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-black text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:opacity-90 shadow-md shadow-orange-500/20 hover:scale-105 transition cursor-pointer">
             <Plus className="w-4 h-4" /> New Folder
           </button>
         </div>
@@ -191,14 +191,14 @@ export default function AdminFoldersPage() {
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
             placeholder="Search folders by name..."
-            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#FF6B00]"
+            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-themePrimary"
           />
         </div>
       </div>
 
       {/* Folders Grid */}
       {loading ? (
-        <div className="p-16 flex items-center justify-center gap-2 text-xs text-slate-500"><Loader2 className="w-5 h-5 animate-spin text-[#FF6B00]" /> Loading folders...</div>
+        <div className="p-16 flex items-center justify-center gap-2 text-xs text-slate-500"><Loader2 className="w-5 h-5 animate-spin text-themePrimary" /> Loading folders...</div>
       ) : folders.length === 0 ? (
         <div className="p-16 text-center text-xs text-slate-500 bg-white rounded-3xl border border-slate-200 font-medium">No folders found.</div>
       ) : (
@@ -206,23 +206,23 @@ export default function AdminFoldersPage() {
           {folders.map(folder => (
             <div
               key={folder.id}
-              className="group relative p-5 rounded-3xl border border-slate-200 bg-white shadow-2xs hover:shadow-xl hover:shadow-orange-500/10 hover:border-[#FF6B00] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between overflow-hidden cursor-pointer"
+              className="group relative p-5 rounded-3xl border border-slate-200 bg-white shadow-2xs hover:shadow-xl hover:shadow-orange-500/10 hover:border-themePrimary hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between overflow-hidden cursor-pointer"
             >
               {/* Top Orange Hover Accent Bar */}
-              <div className="absolute top-0 left-0 right-0 h-1 bg-transparent group-hover:bg-gradient-to-r group-hover:from-[#FF6B00] group-hover:to-[#F97316] transition-all duration-300" />
+              <div className="absolute top-0 left-0 right-0 h-1 bg-transparent group-hover:bg-gradient-to-r group-hover:from-themePrimary group-hover:to-[#F97316] transition-all duration-300" />
 
               <div>
                 <div className="flex items-center justify-between">
                   <div
                     className="w-11 h-11 rounded-2xl flex items-center justify-center text-white shadow-md font-bold transition-transform duration-300 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-orange-500/20"
-                    style={{ backgroundColor: folder.color || '#FF6B00' }}
+                    style={{ backgroundColor: folder.color || 'var(--theme-primary, #FF6B00)' }}
                   >
                     <FolderOpen className="w-5 h-5 text-white" />
                   </div>
                   <div className="flex items-center gap-1 bg-slate-50 p-1 rounded-xl border border-slate-200/80">
                     <button
                       onClick={() => openEdit(folder)}
-                      className="p-1.5 rounded-lg text-slate-500 hover:text-[#FF6B00] hover:bg-white transition cursor-pointer"
+                      className="p-1.5 rounded-lg text-slate-500 hover:text-themePrimary hover:bg-white transition cursor-pointer"
                       title="Edit Folder"
                     >
                       <Edit2 className="w-3.5 h-3.5" />
@@ -238,7 +238,7 @@ export default function AdminFoldersPage() {
                 </div>
 
                 <div className="mt-4 space-y-1">
-                  <h4 className="text-sm font-black text-slate-900 line-clamp-1 font-auth-heading tracking-tight group-hover:text-[#FF6B00] transition-colors duration-300">
+                  <h4 className="text-sm font-black text-slate-900 line-clamp-1 font-auth-heading tracking-tight group-hover:text-themePrimary transition-colors duration-300">
                     {folder.folder_name}
                   </h4>
                   <p className="text-xs text-slate-600 line-clamp-2 font-medium leading-relaxed">
@@ -248,8 +248,8 @@ export default function AdminFoldersPage() {
               </div>
 
               <div className="pt-3.5 border-t border-slate-100 mt-4 flex items-center justify-between">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-100 group-hover:bg-orange-50 group-hover:border-orange-200 border border-slate-200 text-xs font-mono font-bold text-slate-700 group-hover:text-[#FF6B00] transition-colors duration-300">
-                  <FileText className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#FF6B00]" />
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-100 group-hover:bg-orange-50 group-hover:border-orange-200 border border-slate-200 text-xs font-mono font-bold text-slate-700 group-hover:text-themePrimary transition-colors duration-300">
+                  <FileText className="w-3.5 h-3.5 text-slate-400 group-hover:text-themePrimary" />
                   {folder.document_count || 0} docs
                 </span>
                 <span className="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-md border border-slate-200 bg-slate-100 text-slate-600">
@@ -272,21 +272,21 @@ export default function AdminFoldersPage() {
             <form onSubmit={handleSubmit} className="space-y-3">
               <div>
                 <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">Folder Name</label>
-                <input required type="text" value={formName} onChange={e => setFormName(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#FF6B00]" placeholder="e.g. Tax Documents 2026" />
+                <input required type="text" value={formName} onChange={e => setFormName(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-themePrimary" placeholder="e.g. Tax Documents 2026" />
               </div>
               <div>
                 <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">Description</label>
-                <textarea rows={2} value={formDesc} onChange={e => setFormDesc(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#FF6B00] resize-none" placeholder="Add folder notes or details..." />
+                <textarea rows={2} value={formDesc} onChange={e => setFormDesc(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-themePrimary resize-none" placeholder="Add folder notes or details..." />
               </div>
               <div>
                 <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-2">Color Accent</label>
                 <div className="flex flex-wrap gap-2">
-                  {COLORS.map(c => <button key={c} type="button" onClick={() => setFormColor(c)} className={`w-7 h-7 rounded-full transition cursor-pointer ${formColor === c ? 'ring-2 ring-[#FF6B00] ring-offset-2' : ''}`} style={{ backgroundColor: c }} />)}
+                  {COLORS.map(c => <button key={c} type="button" onClick={() => setFormColor(c)} className={`w-7 h-7 rounded-full transition cursor-pointer ${formColor === c ? 'ring-2 ring-themePrimary ring-offset-2' : ''}`} style={{ backgroundColor: c }} />)}
                 </div>
               </div>
               <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100 mt-4">
                 <button type="button" onClick={() => setActiveModal(null)} className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-bold text-slate-700 transition cursor-pointer">Cancel</button>
-                <button type="submit" disabled={submitting} className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white font-extrabold text-xs shadow-md shadow-orange-500/20 disabled:opacity-50 transition cursor-pointer">
+                <button type="submit" disabled={submitting} className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-extrabold text-xs shadow-md shadow-orange-500/20 disabled:opacity-50 transition cursor-pointer">
                   {submitting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : null}{activeModal === 'create' ? 'Create Folder' : 'Save Changes'}
                 </button>
               </div>

@@ -52,6 +52,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               try {
+                // Handle dark mode
                 const isUserRoute = window.location.pathname.startsWith('/user');
                 if (isUserRoute) {
                   const savedTheme = localStorage.getItem('dms_theme');
@@ -65,12 +66,33 @@ export default function RootLayout({
                 } else {
                   document.documentElement.classList.remove('dark');
                 }
+
+                // Handle custom themes
+                const customThemeStr = localStorage.getItem('dms_custom_theme');
+                if (customThemeStr) {
+                  const colors = JSON.parse(customThemeStr);
+                  const root = document.documentElement;
+                  if (colors.primary_color) root.style.setProperty('--theme-primary', colors.primary_color);
+                  if (colors.secondary_color) root.style.setProperty('--theme-secondary', colors.secondary_color);
+                  if (colors.background_color) root.style.setProperty('--theme-bg', colors.background_color);
+                  if (colors.sidebar_color) root.style.setProperty('--theme-sidebar', colors.sidebar_color);
+                  if (colors.header_color) root.style.setProperty('--theme-header', colors.header_color);
+                  if (colors.card_color) root.style.setProperty('--theme-card', colors.card_color);
+                  if (colors.text_color) root.style.setProperty('--theme-text', colors.text_color);
+                  if (colors.border_color) root.style.setProperty('--theme-border', colors.border_color);
+                  if (colors.hover_color) root.style.setProperty('--theme-hover', colors.hover_color);
+                  if (colors.button_color) root.style.setProperty('--theme-button', colors.button_color);
+                  if (colors.button_text_color) root.style.setProperty('--theme-button-text', colors.button_text_color);
+                  if (colors.success_color) root.style.setProperty('--theme-success', colors.success_color);
+                  if (colors.warning_color) root.style.setProperty('--theme-warning', colors.warning_color);
+                  if (colors.error_color) root.style.setProperty('--theme-error', colors.error_color);
+                }
               } catch (e) {}
             `,
           }}
         />
       </head>
-      <body className={`${poppins.className} bg-slate-50 text-slate-900 dark:bg-[#0b1120] dark:text-slate-100 transition-colors duration-200 antialiased selection:bg-[#FF6B00] selection:text-white`}>
+      <body className={`${poppins.className} bg-slate-50 text-slate-900 dark:bg-[#0b1120] dark:text-slate-100 transition-colors duration-200 antialiased selection:bg-themePrimary selection:text-white`}>
         <AuthProvider>
           <ThemeProvider>
             <LanguageProvider>

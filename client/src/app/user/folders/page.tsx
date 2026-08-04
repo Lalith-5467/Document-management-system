@@ -21,7 +21,7 @@ export interface FolderItem {
 }
 
 const COLOR_OPTIONS = [
-  { name: 'Primary Orange', value: '#FF6B00' },
+  { name: 'Primary Orange', value: 'var(--theme-primary, #FF6B00)' },
   { name: 'Emerald', value: '#10B981' },
   { name: 'Violet', value: '#8B5CF6' },
   { name: 'Pink', value: '#EC4899' },
@@ -46,7 +46,7 @@ export default function FoldersPage() {
   const [selectedFolder, setSelectedFolder] = useState<FolderItem | null>(null);
   const [formName, setFormName] = useState<string>('');
   const [formDescription, setFormDescription] = useState<string>('');
-  const [formColor, setFormColor] = useState<string>('#FF6B00');
+  const [formColor, setFormColor] = useState<string>('var(--theme-primary, #FF6B00)');
   const [formInitialFile, setFormInitialFile] = useState<File | null>(null);
   const [formSubmitting, setFormSubmitting] = useState<boolean>(false);
   const [formError, setFormError] = useState<string | null>(null);
@@ -61,7 +61,7 @@ export default function FoldersPage() {
       if (urlParams.get('create') === 'true' || urlParams.get('new') === 'true') {
         setFormName('');
         setFormDescription('');
-        setFormColor('#FF6B00');
+        setFormColor('var(--theme-primary, #FF6B00)');
         setFormError(null);
         setIsCreateOpen(true);
       }
@@ -105,7 +105,7 @@ export default function FoldersPage() {
   const handleOpenCreate = () => {
     setFormName('');
     setFormDescription('');
-    setFormColor('#FF6B00');
+    setFormColor('var(--theme-primary, #FF6B00)');
     setFormInitialFile(null);
     setFormError(null);
     setIsCreateOpen(true);
@@ -150,7 +150,7 @@ export default function FoldersPage() {
     setSelectedFolder(folder);
     setFormName(folder.folder_name);
     setFormDescription(folder.description || '');
-    setFormColor(folder.color || '#FF6B00');
+    setFormColor(folder.color || 'var(--theme-primary, #FF6B00)');
     setFormError(null);
     setIsEditOpen(true);
   };
@@ -223,21 +223,21 @@ export default function FoldersPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800/80 pb-5">
         <div>
           <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-1">
-            <Link href="/user" className="hover:text-[#FF6B00] dark:hover:text-orange-400 flex items-center gap-1">
+            <Link href="/user" className="hover:text-themePrimary dark:hover:text-orange-400 flex items-center gap-1">
               <ArrowLeft className="w-3.5 h-3.5" /> Workspace
             </Link>
             <span>/</span>
             <span className="text-slate-900 dark:text-white font-semibold">Workspace Folders</span>
           </div>
           <h1 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-2.5">
-            <FolderClosed className="w-6 h-6 text-[#FF6B00] dark:text-orange-400" /> Workspace Folders
+            <FolderClosed className="w-6 h-6 text-themePrimary dark:text-orange-400" /> Workspace Folders
           </h1>
           <p className="text-sm text-slate-600 dark:text-slate-400">Organize and group your documents inside custom folders.</p>
         </div>
 
         <button
           onClick={handleOpenCreate}
-          className="group relative overflow-hidden px-6 py-2.5 text-sm font-black text-white bg-gradient-to-r from-[#FF6B00] via-[#F97316] to-[#EA580C] hover:scale-105 rounded-xl shadow-[0_8px_25px_rgba(255,107,0,0.3)] hover:shadow-[0_12px_35px_rgba(255,107,0,0.5)] transition-all duration-300 flex items-center justify-center gap-2.5 whitespace-nowrap active-press border border-orange-400/50"
+          className="group relative overflow-hidden px-6 py-2.5 text-sm font-black text-white bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] hover:scale-105 rounded-xl shadow-[0_8px_25px_rgba(255,107,0,0.3)] hover:shadow-[0_12px_35px_rgba(255,107,0,0.5)] transition-all duration-300 flex items-center justify-center gap-2.5 whitespace-nowrap active-press border border-orange-400/50"
         >
           <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-1000 ease-in-out" />
           <FolderPlus className="w-4.5 h-4.5 group-hover:rotate-12 group-hover:scale-110 transition-transform duration-300 relative z-10" /> 
@@ -254,7 +254,7 @@ export default function FoldersPage() {
             placeholder="Search folders by name or description..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 text-sm bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-[#FF6B00] transition-all"
+            className="w-full pl-10 pr-4 py-2 text-sm bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-themePrimary transition-all"
           />
         </div>
         <span className="text-sm font-bold text-slate-600 dark:text-slate-400">Total: {filteredFolders.length} Folders</span>
@@ -263,7 +263,7 @@ export default function FoldersPage() {
       {/* Folders Grid */}
       {loading ? (
         <div className="py-16 text-center text-slate-500 dark:text-slate-400 space-y-3">
-          <Loader2 className="w-8 h-8 animate-spin mx-auto text-[#FF6B00] dark:text-orange-400" />
+          <Loader2 className="w-8 h-8 animate-spin mx-auto text-themePrimary dark:text-orange-400" />
           <p className="text-sm">Loading folders...</p>
         </div>
       ) : filteredFolders.length === 0 ? (
@@ -272,7 +272,7 @@ export default function FoldersPage() {
           <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">No folders found matching your query.</p>
           <button
             onClick={handleOpenCreate}
-            className="px-4 py-2 text-sm font-bold text-white bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:brightness-110 rounded-xl shadow-md shadow-orange-500/25 transition"
+            className="px-4 py-2 text-sm font-bold text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 rounded-xl shadow-md shadow-orange-500/25 transition"
           >
             Create New Folder
           </button>
@@ -282,14 +282,14 @@ export default function FoldersPage() {
           {filteredFolders.map((folder) => (
             <div
               key={folder.id}
-              className="bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 hover:border-[#FF6B00]/40 p-5 rounded-2xl space-y-3 transition-all duration-300 group flex flex-col justify-between shadow-sm hover:shadow-[0_12px_35px_rgba(255,107,0,0.12)] hover:-translate-y-1.5 active-press cursor-pointer relative overflow-hidden"
+              className="bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 hover:border-themePrimary/40 p-5 rounded-2xl space-y-3 transition-all duration-300 group flex flex-col justify-between shadow-sm hover:shadow-[0_12px_35px_rgba(255,107,0,0.12)] hover:-translate-y-1.5 active-press cursor-pointer relative overflow-hidden"
             >
               <div className="space-y-2.5">
                 <div className="flex items-center justify-between">
                   <Link 
                     href={`/user/documents?folder_id=${folder.id}&folder=${encodeURIComponent(folder.folder_name)}`}
                     className="w-10 h-10 rounded-2xl flex items-center justify-center text-white shadow-md transform group-hover:scale-110 transition-transform cursor-pointer"
-                    style={{ backgroundColor: folder.color && folder.color !== '#3B82F6' ? folder.color : '#FF6B00' }}
+                    style={{ backgroundColor: folder.color && folder.color !== '#3B82F6' ? folder.color : 'var(--theme-primary, #FF6B00)' }}
                   >
                     <FolderClosed className="w-5 h-5" />
                   </Link>
@@ -313,7 +313,7 @@ export default function FoldersPage() {
                 </div>
 
                 <Link href={`/user/documents?folder_id=${folder.id}&folder=${encodeURIComponent(folder.folder_name)}`} className="block group/link">
-                  <h3 className="text-base font-extrabold text-slate-900 dark:text-white group-hover/link:text-[#FF6B00] dark:group-hover/link:text-orange-400 transition-colors truncate">
+                  <h3 className="text-base font-extrabold text-slate-900 dark:text-white group-hover/link:text-themePrimary dark:group-hover/link:text-orange-400 transition-colors truncate">
                     {folder.folder_name}
                   </h3>
                   <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2 mt-0.5 leading-relaxed group-hover/link:text-slate-800 dark:group-hover/link:text-slate-300 transition-colors">
@@ -328,7 +328,7 @@ export default function FoldersPage() {
                 </span>
                 <Link
                   href={`/user/documents?folder_id=${folder.id}&folder=${encodeURIComponent(folder.folder_name)}`}
-                  className="text-sm font-bold text-[#FF6B00] dark:text-orange-400 hover:text-orange-600 dark:hover:text-orange-300 flex items-center gap-1 hover:underline"
+                  className="text-sm font-bold text-themePrimary dark:text-orange-400 hover:text-orange-600 dark:hover:text-orange-300 flex items-center gap-1 hover:underline"
                 >
                   Open Folder →
                 </Link>
@@ -443,7 +443,7 @@ export default function FoldersPage() {
                 <button type="button" onClick={() => setIsCreateOpen(false)} className="px-4 py-2 rounded-xl border border-slate-800 text-slate-400 font-semibold hover:text-white">
                   Cancel
                 </button>
-                <button type="submit" disabled={formSubmitting} className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:brightness-110 text-white font-bold flex items-center gap-2 shadow-lg shadow-orange-500/25">
+                <button type="submit" disabled={formSubmitting} className="px-4 py-2 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 text-white font-bold flex items-center gap-2 shadow-lg shadow-orange-500/25">
                   {formSubmitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />} Create Folder
                 </button>
               </div>
@@ -511,7 +511,7 @@ export default function FoldersPage() {
                 <button type="button" onClick={() => setIsEditOpen(false)} className="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 font-semibold hover:text-slate-900 dark:hover:text-white">
                   Cancel
                 </button>
-                <button type="submit" disabled={formSubmitting} className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:brightness-110 text-white font-bold flex items-center gap-2 shadow-lg shadow-orange-500/25">
+                <button type="submit" disabled={formSubmitting} className="px-4 py-2 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 text-white font-bold flex items-center gap-2 shadow-lg shadow-orange-500/25">
                   {formSubmitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />} Save Changes
                 </button>
               </div>

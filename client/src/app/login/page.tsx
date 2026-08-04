@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ShieldCheck, Mail, Lock, Eye, EyeOff, ArrowRight, AlertCircle, Loader2, CheckCircle2 } from 'lucide-react';
+import { ShieldCheck, Mail, Lock, Eye, EyeOff, ArrowRight, AlertCircle, Loader2, CheckCircle2, Check } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import {
   validateEmail,
@@ -116,44 +116,40 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen w-full bg-[#F4F6F9] flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 font-sans relative overflow-hidden animate-fade-up">
-      {/* Soft Ambient Background Glows */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-orange-500/8 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-orange-400/8 rounded-full blur-3xl pointer-events-none" />
-
       {/* Centered White Card Box */}
-      <div className="w-full max-w-md bg-white rounded-[32px] p-8 sm:p-10 border border-slate-200/90 shadow-2xl shadow-slate-900/8 space-y-6 relative z-10 my-auto">
+      <div className="w-full max-w-[460px] bg-white rounded-[32px] p-8 sm:p-10 shadow-[0_20px_60px_rgba(0,0,0,0.04)] space-y-8 relative z-10 my-auto">
         {/* Header */}
-        <div className="text-center space-y-3">
-          <Link href="/" className="inline-flex items-center justify-center group">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#FF6B00] to-[#FF8A00] flex items-center justify-center text-white shadow-lg shadow-orange-500/30 group-hover:scale-105 transition-transform border border-white/20">
+        <div className="text-center space-y-4">
+          <Link href="/" className="inline-flex items-center justify-center group mb-2">
+            <div className="w-[60px] h-[60px] rounded-[20px] bg-[#FF6B00] flex items-center justify-center text-white shadow-lg shadow-orange-500/30 group-hover:scale-105 transition-transform">
               <ShieldCheck className="w-8 h-8 stroke-[2.5]" />
             </div>
           </Link>
-          <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight font-auth-heading leading-tight">
+          <h2 className="text-[32px] font-black text-[#1A1A1A] tracking-tight leading-tight">
             Sign In to <span className="text-[#FF6B00]">DocVault</span>
           </h2>
-          <p className="text-sm text-slate-500 font-medium leading-relaxed max-w-xs mx-auto font-auth-body">
+          <p className="text-[15px] text-[#64748B] font-medium leading-relaxed max-w-[320px] mx-auto">
             Access your secure encrypted document vault and record storage
           </p>
         </div>
 
         {/* Global Server Error Message */}
         {errorMsg && (
-          <div className="p-3.5 rounded-2xl bg-red-50 border border-red-200 flex items-start gap-3 text-red-700 text-xs font-semibold animate-fade-in font-auth-body">
-            <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" />
+          <div className="p-3.5 rounded-xl bg-red-50 border border-red-100 flex items-center gap-3 text-red-600 text-[14px] font-semibold animate-fade-in">
+            <AlertCircle className="w-5 h-5 flex-shrink-0" />
             <span>{errorMsg}</span>
           </div>
         )}
 
-        {/* Form - Vanilla JS Validation without HTML5 popups */}
-        <form onSubmit={handleSubmit} noValidate className="space-y-5">
+        {/* Form */}
+        <form onSubmit={handleSubmit} noValidate className="space-y-6">
           {/* 1. Email Address Field */}
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-900 mb-1.5 font-auth-label">
+            <label className="block text-[13px] font-black uppercase tracking-wide text-[#1A1A1A] mb-2">
               Email Address
             </label>
-            <div className="relative font-auth-body">
-              <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+            <div className="relative">
+              <Mail className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
                 ref={emailInputRef}
                 type="text"
@@ -162,15 +158,15 @@ export default function LoginPage() {
                 onBlur={handleEmailBlur}
                 onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleSubmit(e as any); } }}
                 placeholder="name@example.com"
-                className={`w-full pl-10 pr-10 py-3 bg-white border rounded-[14px] text-sm text-slate-900 placeholder-slate-400 focus:outline-none transition-all duration-300 font-medium font-auth-body ${getFieldStatusClasses(emailTouched, emailRes.isValid, emailError)}`}
+                className={`w-full h-[56px] pl-12 pr-12 bg-white border ${emailError ? 'border-red-300' : 'border-slate-200 focus:border-[#FF6B00]'} rounded-[16px] text-[15px] text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-orange-500/10 transition-all duration-300 font-medium`}
               />
               {emailTouched && emailRes.isValid && !emailError && (
-                <CheckCircle2 className="w-4 h-4 absolute right-3.5 top-1/2 -translate-y-1/2 text-emerald-500" />
+                <CheckCircle2 className="w-5 h-5 absolute right-4 top-1/2 -translate-y-1/2 text-emerald-500" />
               )}
             </div>
             {/* Inline Email Error Message */}
             {emailTouched && emailError && (
-              <p className="text-red-500 text-[11px] font-semibold tracking-wide flex items-center gap-1.5 mt-1.5 animate-fade-in font-auth-body">
+              <p className="text-red-500 text-[12px] font-semibold tracking-wide flex items-center gap-1.5 mt-2 animate-fade-in">
                 <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                 <span>{emailError}</span>
               </p>
@@ -179,13 +175,11 @@ export default function LoginPage() {
 
           {/* 2. Password Field */}
           <div>
-            <div className="flex items-center justify-between mb-1.5">
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-900 font-auth-label">
-                Password
-              </label>
-            </div>
-            <div className="relative font-auth-body">
-              <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+            <label className="block text-[13px] font-black uppercase tracking-wide text-[#1A1A1A] mb-2">
+              Password
+            </label>
+            <div className="relative">
+              <Lock className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
                 ref={passwordInputRef}
                 type={showPassword ? 'text' : 'password'}
@@ -194,33 +188,36 @@ export default function LoginPage() {
                 onBlur={handlePasswordBlur}
                 onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleSubmit(e as any); } }}
                 placeholder="••••••••"
-                className={`w-full pl-10 pr-10 py-3 bg-white border rounded-[14px] text-sm text-slate-900 placeholder-slate-400 focus:outline-none transition-all duration-300 font-medium font-auth-body ${getFieldStatusClasses(passwordTouched, passRes.isValid, passwordError)}`}
+                className={`w-full h-[56px] pl-12 pr-12 bg-white border ${passwordError ? 'border-red-300' : 'border-slate-200 focus:border-[#FF6B00]'} rounded-[16px] text-[15px] text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-orange-500/10 transition-all duration-300 font-medium`}
               />
               <button
                 type="button"
                 onClick={togglePasswordVisibility}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
                 title={showPassword ? 'Hide password' : 'Show password'}
               >
-                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
               </button>
             </div>
 
             {/* Professional Login Options */}
-            <div className="flex items-center justify-between mt-3.5 mb-2 font-auth-body">
-              <label className="flex items-center gap-2 cursor-pointer group">
-                <input 
-                  type="checkbox" 
-                  className="w-4 h-4 rounded-md border-slate-300 text-[#FF6B00] focus:ring-[#FF6B00] cursor-pointer transition-colors" 
-                />
-                <span className="text-[11px] font-semibold text-slate-500 group-hover:text-slate-700 transition-colors">
+            <div className="flex items-center justify-between mt-4 mb-2">
+              <label className="flex items-center gap-2.5 cursor-pointer group">
+                <div className="w-[18px] h-[18px] rounded-[4px] border border-slate-300 flex items-center justify-center group-hover:border-slate-400 transition-colors">
+                  <input 
+                    type="checkbox" 
+                    className="opacity-0 absolute w-0 h-0" 
+                  />
+                  <Check className="w-3.5 h-3.5 text-transparent" />
+                </div>
+                <span className="text-[14px] font-medium text-[#64748B] group-hover:text-slate-700 transition-colors">
                   Remember me for 30 days
                 </span>
               </label>
               
               <Link 
                 href="/forgot-password" 
-                className="text-[11px] font-black text-[#FF6B00] hover:text-[#E65C00] transition-colors tracking-wide"
+                className="text-[14px] font-black text-[#FF6B00] hover:text-[#E65C00] transition-colors"
               >
                 Forgot password?
               </Link>
@@ -228,38 +225,38 @@ export default function LoginPage() {
 
             {/* Inline Password Error Message */}
             {passwordTouched && passwordError && (
-              <p className="text-red-500 text-[11px] font-semibold tracking-wide flex items-center gap-1.5 mt-1.5 animate-fade-in font-auth-body">
+              <p className="text-red-500 text-[12px] font-semibold tracking-wide flex items-center gap-1.5 mt-2 animate-fade-in">
                 <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                 <span>{passwordError}</span>
               </p>
             )}
           </div>
 
-          {/* Submit Button (Disabled until form is valid) */}
+          {/* Submit Button */}
           <button
             type="submit"
             disabled={loading || (emailTouched && passwordTouched && !isFormValid)}
-            className="w-full py-4 px-6 rounded-2xl text-xs sm:text-sm font-black tracking-wider uppercase text-white bg-gradient-to-r from-[#FF6B00] to-[#FF8A00] hover:brightness-110 shadow-lg shadow-orange-500/30 hover:-translate-y-1 hover:scale-[1.01] hover:shadow-xl active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:scale-100 mt-4 cursor-pointer font-auth-heading"
+            className="w-full h-[56px] rounded-[16px] text-[15px] font-black tracking-wide uppercase text-white bg-[#FF6B00] hover:brightness-110 shadow-lg shadow-orange-500/25 hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed mt-2"
           >
             {loading ? (
               <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                <span>Verifying Credentials...</span>
+                <Loader2 className="w-5 h-5 animate-spin" />
+                <span>Signing In...</span>
               </>
             ) : (
               <>
-                <span>Sign In to Vault</span>
-                <ArrowRight className="w-4 h-4" />
+                <span>Sign In To Vault</span>
+                <ArrowRight className="w-5 h-5" />
               </>
             )}
           </button>
         </form>
 
         {/* Footer Link */}
-        <div className="text-center pt-2 border-t border-[#E8E8E8]">
-          <p className="text-xs text-[#6B7280] font-medium font-auth-body">
+        <div className="text-center pt-8 border-t border-slate-100 mt-8">
+          <p className="text-[14px] text-[#64748B] font-medium">
             Don't have an account yet?{' '}
-            <Link href="/register" className="font-black text-[#FF6B00] hover:underline transition-all font-auth-heading">
+            <Link href="/register" className="font-black text-[#FF6B00] hover:underline">
               Create an account
             </Link>
           </p>
@@ -267,8 +264,8 @@ export default function LoginPage() {
       </div>
 
       {/* Back to Home Page Link */}
-      <div className="text-center py-4 relative z-10">
-        <Link href="/" className="text-xs font-bold text-[#6B7280] hover:text-[#FF6B00] transition-colors inline-flex items-center gap-1">
+      <div className="text-center mt-8 relative z-10">
+        <Link href="/" className="text-[14px] font-bold text-[#64748B] hover:text-[#1A1A1A] transition-colors inline-flex items-center gap-2">
           ← Back to Home Page
         </Link>
       </div>

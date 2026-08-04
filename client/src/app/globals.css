@@ -51,7 +51,7 @@ html.light {
 body {
   color: var(--text-primary);
   background-color: var(--bg-app);
-  font-family: var(--font-poppins), 'Poppins', var(--font-inter), 'Inter', sans-serif;
+  font-family: var(--font-poppins), 'Poppins', sans-serif;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -63,7 +63,11 @@ body {
   scrollbar-width: none !important;
 }
 
-/* Poppins Form & Authentication Typography System */
+input, textarea, button, select {
+  font-family: var(--font-poppins), 'Poppins', sans-serif;
+}
+
+/* Form & Authentication Typography System */
 .font-auth-heading {
   font-family: var(--font-poppins), 'Poppins', sans-serif !important;
   letter-spacing: -0.015em;

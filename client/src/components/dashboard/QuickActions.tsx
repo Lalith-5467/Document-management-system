@@ -35,7 +35,7 @@ export default function QuickActions({ onSearchFocus }: QuickActionsProps) {
         <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
           <Link
             href="/user/upload"
-            className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold text-white bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:brightness-110 rounded-xl shadow-md shadow-orange-500/25 transition-all hover:scale-[1.02]"
+            className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 rounded-xl shadow-md shadow-orange-500/25 transition-all hover:scale-[1.02]"
           >
             <Upload className="w-4 h-4" />
             <span>Upload Document</span>

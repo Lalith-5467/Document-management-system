@@ -182,7 +182,7 @@ export default function MyDocumentsPage() {
     const sampleDocs: DocumentItem[] = [
       { id: 1, user_id: 1, category_id: 4, folder_id: 4, title: 'Software Architecture Proposal 2026.pdf', file_name: 'Software_Architecture_Proposal_v2.pdf', description: 'System BRD briefs and cloud node specifications.', file_path: '/uploads/proposal.pdf', file_size: 2516582, mime_type: 'application/pdf', is_favorite: 1, is_archived: 0, created_at: '2026-07-23T10:00:00Z', category_name: 'Projects & Technical Specs', color: '#8B5CF6', folder_name: 'Project Architecture' },
       { id: 2, user_id: 1, category_id: 3, folder_id: null, title: 'Senior_Developer_Resume_2026.docx', file_name: 'Senior_Developer_Resume_2026.docx', description: 'Updated Senior Full Stack Engineer CV and portfolio.', file_path: '/uploads/resume.docx', file_size: 870400, mime_type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', is_favorite: 1, is_archived: 0, created_at: '2026-07-23T08:30:00Z', category_name: 'Career & Employment Assets', color: '#F59E0B', folder_name: 'Unassigned' },
-      { id: 3, user_id: 1, category_id: 1, folder_id: 3, title: 'Official_Passport_Scan_Copy.png', file_name: 'Official_Passport_Scan_Copy.png', description: 'High-res biometric passport scan for visa applications.', file_path: '/uploads/passport.png', file_size: 3407872, mime_type: 'image/png', is_favorite: 0, is_archived: 0, created_at: '2026-07-22T14:15:00Z', category_name: 'Personal Identity & Passports', color: '#FF6B00', folder_name: 'Passport & Identity' },
+      { id: 3, user_id: 1, category_id: 1, folder_id: 3, title: 'Official_Passport_Scan_Copy.png', file_name: 'Official_Passport_Scan_Copy.png', description: 'High-res biometric passport scan for visa applications.', file_path: '/uploads/passport.png', file_size: 3407872, mime_type: 'image/png', is_favorite: 0, is_archived: 0, created_at: '2026-07-22T14:15:00Z', category_name: 'Personal Identity & Passports', color: 'var(--theme-primary, #FF6B00)', folder_name: 'Passport & Identity' },
       { id: 4, user_id: 1, category_id: 2, folder_id: 1, title: 'Official_Academic_Marksheet_Degree.pdf', file_name: 'Official_Academic_Marksheet_Degree.pdf', description: 'Certified degree transcript and marksheet.', file_path: '/uploads/degree.pdf', file_size: 1843200, mime_type: 'application/pdf', is_favorite: 0, is_archived: 0, created_at: '2026-07-21T11:45:00Z', category_name: 'Academic Records & Diplomas', color: '#10B981', folder_name: 'Academic Transcripts' },
       { id: 5, user_id: 1, category_id: 5, folder_id: null, title: 'AWS_Solutions_Architect_Certificate.pdf', file_name: 'AWS_Solutions_Architect_Certificate.pdf', description: 'Cloud Solutions Architect certification badge.', file_path: '/uploads/aws_cert.pdf', file_size: 1258291, mime_type: 'application/pdf', is_favorite: 1, is_archived: 0, created_at: '2026-07-20T09:20:00Z', category_name: 'Certificates & Achievements', color: '#EC4899', folder_name: 'Unassigned' },
       { id: 6, user_id: 1, category_id: 6, folder_id: 2, title: 'Tax_Returns_Assessment_2026.pdf', file_name: 'Tax_Returns_Assessment_2026.pdf', description: 'Annual tax assessment receipts and income disclosures.', file_path: '/uploads/tax_2026.pdf', file_size: 943718, mime_type: 'application/pdf', is_favorite: 0, is_archived: 0, created_at: '2026-07-19T16:00:00Z', category_name: 'Client Requirements & Contracts', color: '#06B6D4', folder_name: 'Tax Filings 2026' }
@@ -452,7 +452,7 @@ export default function MyDocumentsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800/80 pb-5">
         <div>
           <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-1">
-            <Link href="/user" className="hover:text-[#FF6B00] dark:hover:text-orange-400 transition flex items-center gap-1 font-semibold">
+            <Link href="/user" className="hover:text-themePrimary dark:hover:text-orange-400 transition flex items-center gap-1 font-semibold">
               <ArrowLeft className="w-3.5 h-3.5" /> {t('dashboard', 'Workspace')}
             </Link>
             <span>/</span>
@@ -463,11 +463,11 @@ export default function MyDocumentsPage() {
           <h1 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-2.5">
             {isRecentMode ? (
               <>
-                <Clock className="w-6 h-6 text-[#FF6B00] dark:text-orange-400" /> {t('recentDocuments', 'Recent Documents')}
+                <Clock className="w-6 h-6 text-themePrimary dark:text-orange-400" /> {t('recentDocuments', 'Recent Documents')}
               </>
             ) : (
               <>
-                <FileText className="w-6 h-6 text-[#FF6B00] dark:text-orange-400" /> {t('myDocuments', 'My Documents')}
+                <FileText className="w-6 h-6 text-themePrimary dark:text-orange-400" /> {t('myDocuments', 'My Documents')}
               </>
             )}
           </h1>
@@ -488,7 +488,7 @@ export default function MyDocumentsPage() {
           </button>
           <Link
             href="/user/upload"
-            className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-bold text-white bg-gradient-to-r from-[#FF6B00] via-[#F97316] to-[#EA580C] hover:brightness-110 rounded-xl shadow-lg shadow-orange-500/25 border border-orange-400/30 transition-all active-press hover:scale-105"
+            className="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-bold text-white bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] hover:brightness-110 rounded-xl shadow-lg shadow-orange-500/25 border border-orange-400/30 transition-all active-press hover:scale-105"
           >
             <Plus className="w-4 h-4" /> {t('uploadDocument', 'Upload Document')}
           </Link>
@@ -505,7 +505,7 @@ export default function MyDocumentsPage() {
               value={searchQuery}
               onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
               placeholder={t('searchPlaceholder', 'Search by Title, File Name, Description, or Tags...')}
-              className="w-full pl-10 pr-9 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-[#FF6B00] focus:ring-1 focus:ring-[#FF6B00]/20 transition-all"
+              className="w-full pl-10 pr-9 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-themePrimary focus:ring-1 focus:ring-themePrimary/20 transition-all"
             />
             {searchQuery && (
               <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-white">
@@ -518,7 +518,7 @@ export default function MyDocumentsPage() {
             <button
               onClick={() => setViewMode('grid')}
               className={`p-2 rounded-lg text-sm transition-all flex items-center gap-1.5 font-bold ${
-                viewMode === 'grid' ? 'bg-[#FF6B00] text-white shadow-md' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                viewMode === 'grid' ? 'bg-themePrimary text-white shadow-md' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               <LayoutGrid className="w-4 h-4" /> {t('grid', 'Grid')}
@@ -526,7 +526,7 @@ export default function MyDocumentsPage() {
             <button
               onClick={() => setViewMode('list')}
               className={`p-2 rounded-lg text-sm transition-all flex items-center gap-1.5 font-bold ${
-                viewMode === 'list' ? 'bg-[#FF6B00] text-white shadow-md' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                viewMode === 'list' ? 'bg-themePrimary text-white shadow-md' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
               <List className="w-4 h-4" /> {t('list', 'List')}
@@ -540,7 +540,7 @@ export default function MyDocumentsPage() {
             <select
               value={selectedCategory}
               onChange={(e) => { setSelectedCategory(e.target.value); setCurrentPage(1); }}
-              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white font-medium focus:outline-none focus:border-[#FF6B00]"
+              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white font-medium focus:outline-none focus:border-themePrimary"
             >
               <option value="">{t('allCategories', 'All Categories')}</option>
               {categories.map((c) => (
@@ -554,7 +554,7 @@ export default function MyDocumentsPage() {
             <select
               value={selectedFolder}
               onChange={(e) => { setSelectedFolder(e.target.value); setCurrentPage(1); }}
-              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white font-medium focus:outline-none focus:border-[#FF6B00]"
+              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white font-medium focus:outline-none focus:border-themePrimary"
             >
               <option value="">{t('allFolders', 'All Folders')}</option>
               {folders.map((f) => (
@@ -568,7 +568,7 @@ export default function MyDocumentsPage() {
             <select
               value={selectedFileType}
               onChange={(e) => { setSelectedFileType(e.target.value); setCurrentPage(1); }}
-              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white font-medium focus:outline-none focus:border-[#FF6B00]"
+              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white font-medium focus:outline-none focus:border-themePrimary"
             >
               <option value="">{t('allFileTypes', 'All File Types')}</option>
               <option value="pdf">📄 PDF Documents</option>
@@ -583,7 +583,7 @@ export default function MyDocumentsPage() {
             <select
               value={selectedDateRange}
               onChange={(e) => { setSelectedDateRange(e.target.value); setCurrentPage(1); }}
-              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white font-medium focus:outline-none focus:border-[#FF6B00]"
+              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white font-medium focus:outline-none focus:border-themePrimary"
             >
               <option value="">{t('allTime', 'All Time')}</option>
               <option value="today">{t('today', 'Today')}</option>
@@ -597,7 +597,7 @@ export default function MyDocumentsPage() {
             <select
               value={sortBy}
               onChange={(e) => { setSortBy(e.target.value); setCurrentPage(1); }}
-              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white font-medium focus:outline-none focus:border-[#FF6B00]"
+              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white font-medium focus:outline-none focus:border-themePrimary"
             >
               <option value="date_desc">{t('sortByNewest', 'Date (Newest)')}</option>
               <option value="date_asc">{t('sortByOldest', 'Date (Oldest)')}</option>
@@ -612,7 +612,7 @@ export default function MyDocumentsPage() {
             <select
               value={sortBy}
               onChange={(e) => { setSortBy(e.target.value); setCurrentPage(1); }}
-              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white font-medium focus:outline-none focus:border-[#FF6B00]"
+              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white font-medium focus:outline-none focus:border-themePrimary"
             >
               <option value="date_desc">Date (Newest)</option>
               <option value="date_asc">Date (Oldest)</option>
@@ -626,7 +626,7 @@ export default function MyDocumentsPage() {
           <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-200 dark:border-slate-800 text-sm">
             <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Active Filters:</span>
             {debouncedSearch && (
-              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-orange-50 dark:bg-orange-950 text-[#FF6B00] dark:text-orange-400 border border-orange-200 dark:border-orange-900/60 text-xs font-semibold">
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-orange-50 dark:bg-orange-950 text-themePrimary dark:text-orange-400 border border-orange-200 dark:border-orange-900/60 text-xs font-semibold">
                 Search: &quot;{debouncedSearch}&quot;
                 <button onClick={() => { setSearchQuery(''); setDebouncedSearch(''); }}><X className="w-3 h-3" /></button>
               </span>
@@ -641,7 +641,7 @@ export default function MyDocumentsPage() {
       {/* Main Results View */}
       {loading ? (
         <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-12 sm:p-16 text-center space-y-3 shadow-xl">
-          <Loader2 className="w-8 h-8 text-[#FF6B00] dark:text-orange-400 animate-spin mx-auto" />
+          <Loader2 className="w-8 h-8 text-themePrimary dark:text-orange-400 animate-spin mx-auto" />
           <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">Loading documents...</p>
         </div>
       ) : documents.length === 0 ? (
@@ -653,7 +653,7 @@ export default function MyDocumentsPage() {
           </p>
           <Link
             href="/user/upload"
-            className="inline-flex items-center gap-2 text-sm font-bold text-white bg-[#FF6B00] hover:bg-[#E05E00] px-4 py-2 rounded-xl transition"
+            className="inline-flex items-center gap-2 text-sm font-bold text-white bg-themePrimary hover:bg-[#E05E00] px-4 py-2 rounded-xl transition"
           >
             <Plus className="w-4 h-4" /> Upload New Document
           </Link>
@@ -663,10 +663,10 @@ export default function MyDocumentsPage() {
           {documents.map((doc) => (
             <div
               key={doc.id}
-              className="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-[#FF6B00]/50 p-5 shadow-md hover:shadow-xl transition-all flex flex-col justify-between space-y-4 relative"
+              className="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-themePrimary/50 p-5 shadow-md hover:shadow-xl transition-all flex flex-col justify-between space-y-4 relative"
             >
               <div className="flex items-start justify-between gap-3">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center text-[#FF6B00] dark:text-orange-400 bg-orange-50 dark:bg-orange-950/60 border border-orange-200 dark:border-orange-900/60 font-bold text-sm">
+                <div className="px-3 h-10 rounded-full flex items-center justify-center text-themePrimary dark:text-orange-400 bg-orange-50 dark:bg-orange-950/60 border border-orange-200 dark:border-orange-900/60 font-black text-xs tracking-wider shadow-sm">
                   {getFileTypeLabel(doc.file_name, doc.mime_type)}
                 </div>
 
@@ -689,7 +689,7 @@ export default function MyDocumentsPage() {
                     {actionMenuOpen === doc.id && (
                       <div className="absolute right-0 top-8 z-40 w-48 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl py-1 text-sm text-slate-700 dark:text-slate-300 space-y-0.5 backdrop-blur-xl">
                         <button onClick={() => handleOpenModal(doc, 'preview')} className="w-full px-3.5 py-2 text-left hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
-                          <Eye className="w-3.5 h-3.5 text-[#FF6B00] dark:text-orange-400" /> Preview File
+                          <Eye className="w-3.5 h-3.5 text-themePrimary dark:text-orange-400" /> Preview File
                         </button>
                         <button onClick={() => handleDownload(doc)} className="w-full px-3.5 py-2 text-left hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
                           <Download className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> Download
@@ -711,23 +711,23 @@ export default function MyDocumentsPage() {
               </div>
 
               <div className="space-y-1.5">
-                <h3 className="font-extrabold text-slate-900 dark:text-white text-base group-hover:text-[#FF6B00] dark:group-hover:text-orange-400 transition-colors truncate">
+                <h3 className="font-extrabold text-slate-900 dark:text-white text-base group-hover:text-themePrimary dark:group-hover:text-orange-400 transition-colors truncate">
                   {doc.title}
                 </h3>
-                <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2 min-h-[32px]">
+                <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2 min-h-[40px] break-all leading-relaxed">
                   {doc.description || doc.file_name}
                 </p>
                 <div className="flex flex-wrap items-center gap-1.5 pt-1">
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-bold uppercase bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
                     {getFileTypeLabel(doc.file_name, doc.mime_type)}
                   </span>
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-semibold bg-orange-50 dark:bg-orange-950/60 text-[#FF6B00] dark:text-orange-400 border border-orange-200 dark:border-orange-900/60">
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-bold tracking-wide bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 border border-orange-200 dark:border-orange-900/60">
                     {doc.category_name || 'Category'}
                   </span>
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-slate-200 dark:border-slate-800/80 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 font-mono">
+              <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 font-mono font-medium">
                 <span>{formatFileSize(doc.file_size)}</span>
                 <span>{formatDate(doc.created_at)}</span>
               </div>
@@ -771,7 +771,7 @@ export default function MyDocumentsPage() {
                     </td>
                     <td className="py-4 px-5">
                       <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-sm font-semibold bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">
-                        <span className="w-2 h-2 rounded-full" style={{ backgroundColor: doc.color && doc.color !== '#3B82F6' ? doc.color : '#FF6B00' }} />
+                        <span className="w-2 h-2 rounded-full" style={{ backgroundColor: doc.color && doc.color !== '#3B82F6' ? doc.color : 'var(--theme-primary, #FF6B00)' }} />
                         {doc.category_name || 'Category'}
                       </span>
                     </td>
@@ -819,11 +819,11 @@ export default function MyDocumentsPage() {
                 required
                 value={editTitle}
                 onChange={(e) => setEditTitle(e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-[#0b1120] border border-slate-800 rounded-xl text-white text-sm focus:outline-none focus:border-[#FF6B00]"
+                className="w-full px-3.5 py-2.5 bg-[#0b1120] border border-slate-800 rounded-xl text-white text-sm focus:outline-none focus:border-themePrimary"
               />
               <div className="flex justify-end gap-3 pt-2">
                 <button type="button" onClick={() => setActiveModal(null)} className="px-4 py-2 text-sm font-semibold text-slate-400">Cancel</button>
-                <button type="submit" disabled={submitting} className="px-4 py-2 text-sm font-bold text-white bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:brightness-110 rounded-xl shadow-lg shadow-orange-500/25">
+                <button type="submit" disabled={submitting} className="px-4 py-2 text-sm font-bold text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 rounded-xl shadow-lg shadow-orange-500/25">
                   Save
                 </button>
               </div>
@@ -841,7 +841,7 @@ export default function MyDocumentsPage() {
               <select
                 value={editFolderId}
                 onChange={(e) => setEditFolderId(e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-[#0b1120] border border-slate-800 rounded-xl text-white text-sm focus:outline-none focus:border-[#FF6B00]"
+                className="w-full px-3.5 py-2.5 bg-[#0b1120] border border-slate-800 rounded-xl text-white text-sm focus:outline-none focus:border-themePrimary"
               >
                 <option value="">(No specific folder)</option>
                 {folders.map(f => (
@@ -850,7 +850,7 @@ export default function MyDocumentsPage() {
               </select>
               <div className="flex justify-end gap-3 pt-2">
                 <button type="button" onClick={() => setActiveModal(null)} className="px-4 py-2 text-sm font-semibold text-slate-400">Cancel</button>
-                <button type="submit" disabled={submitting} className="px-4 py-2 text-sm font-bold text-white bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:brightness-110 rounded-xl shadow-lg shadow-orange-500/25">
+                <button type="submit" disabled={submitting} className="px-4 py-2 text-sm font-bold text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 rounded-xl shadow-lg shadow-orange-500/25">
                   Move Document
                 </button>
               </div>

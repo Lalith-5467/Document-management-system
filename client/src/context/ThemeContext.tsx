@@ -1,74 +1,176 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { usePathname } from 'next/navigation';
+import api from '@/lib/api';
 
-type Theme = 'dark' | 'light';
+export interface ThemeColors {
+  primary_color: string;
+  secondary_color: string;
+  background_color: string;
+  sidebar_color: string;
+  header_color: string;
+  card_color: string;
+  text_color: string;
+  border_color: string;
+  hover_color: string;
+  button_color: string;
+  button_text_color: string;
+  success_color: string;
+  warning_color: string;
+  error_color: string;
+}
+
+export interface CustomTheme extends ThemeColors {
+  id: number;
+  theme_name: string;
+  is_active?: number;
+}
 
 interface ThemeContextType {
-  theme: Theme;
+  themeMode: 'light' | 'dark' | 'system';
+  theme: 'light' | 'dark' | 'system';
   toggleTheme: () => void;
-  setTheme: (theme: Theme) => void;
+  setTheme: (mode: 'light' | 'dark' | 'system') => void;
+  customTheme: CustomTheme | null;
+  setCustomTheme: (theme: CustomTheme | null) => void;
+  saveUserTheme: (themeId: number | null, customColors?: Partial<ThemeColors>) => Promise<void>;
+  applyThemeVariables: (colors: Partial<ThemeColors>) => void;
+  resetToDefault: () => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>('dark');
+  const [themeMode, setThemeModeState] = useState<'light' | 'dark' | 'system'>('system');
+  const [customTheme, setCustomThemeState] = useState<CustomTheme | null>(null);
   const [mounted, setMounted] = useState(false);
-  const pathname = usePathname();
+
+  // Apply CSS variables to :root
+  const applyThemeVariables = (colors: Partial<ThemeColors>) => {
+    const root = document.documentElement;
+    if (colors.primary_color) root.style.setProperty('--theme-primary', colors.primary_color);
+    if (colors.secondary_color) root.style.setProperty('--theme-secondary', colors.secondary_color);
+    if (colors.background_color) root.style.setProperty('--theme-bg', colors.background_color);
+    if (colors.sidebar_color) root.style.setProperty('--theme-sidebar', colors.sidebar_color);
+    if (colors.header_color) root.style.setProperty('--theme-header', colors.header_color);
+    if (colors.card_color) root.style.setProperty('--theme-card', colors.card_color);
+    if (colors.text_color) root.style.setProperty('--theme-text', colors.text_color);
+    if (colors.border_color) root.style.setProperty('--theme-border', colors.border_color);
+    if (colors.hover_color) root.style.setProperty('--theme-hover', colors.hover_color);
+    if (colors.button_color) root.style.setProperty('--theme-button', colors.button_color);
+    if (colors.button_text_color) root.style.setProperty('--theme-button-text', colors.button_text_color);
+    if (colors.success_color) root.style.setProperty('--theme-success', colors.success_color);
+    if (colors.warning_color) root.style.setProperty('--theme-warning', colors.warning_color);
+    if (colors.error_color) root.style.setProperty('--theme-error', colors.error_color);
+  };
+
+  const clearThemeVariables = () => {
+    const root = document.documentElement;
+    const vars = [
+      '--theme-primary', '--theme-secondary', '--theme-bg', '--theme-sidebar', 
+      '--theme-header', '--theme-card', '--theme-text', '--theme-border', 
+      '--theme-hover', '--theme-button', '--theme-button-text', 
+      '--theme-success', '--theme-warning', '--theme-error'
+    ];
+    vars.forEach(v => root.style.removeProperty(v));
+  };
+
+  const setCustomTheme = (theme: CustomTheme | null) => {
+    setCustomThemeState(theme);
+    if (theme) {
+      applyThemeVariables(theme);
+      localStorage.setItem('dms_custom_theme', JSON.stringify(theme));
+    } else {
+      clearThemeVariables();
+      localStorage.removeItem('dms_custom_theme');
+    }
+  };
+
+  const resetToDefault = () => {
+    setCustomTheme(null);
+  };
+
+  const saveUserTheme = async (themeId: number | null, customColors?: Partial<ThemeColors>) => {
+    try {
+      await api.put('/themes/preference', {
+        theme_id: themeId,
+        is_custom: !!customColors,
+        ...customColors
+      });
+    } catch (error) {
+      console.error('Failed to save theme preference', error);
+    }
+  };
+
+  const fetchUserTheme = async () => {
+    const token = localStorage.getItem('dms_token');
+    if (!token) return;
+
+    try {
+      const res = await api.get('/themes/preference');
+      if (res.data?.success && res.data?.theme) {
+        setCustomTheme(res.data.theme);
+      } else if (res.data?.preference?.is_custom) {
+        const pref = res.data.preference;
+        applyThemeVariables(pref);
+      }
+    } catch (error) {
+      console.error('Error fetching theme preference', error);
+    }
+  };
+
+  const setThemeMode = (mode: 'light' | 'dark' | 'system') => {
+    setThemeModeState(mode);
+    localStorage.setItem('dms_theme_mode', mode);
+    
+    if (mode === 'dark' || (mode === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  };
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem('dms_theme') as Theme | null;
-    if (savedTheme && (savedTheme === 'dark' || savedTheme === 'light')) {
-      setThemeState(savedTheme);
-      applyTheme(savedTheme, pathname);
-    } else {
-      const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const initialTheme: Theme = systemDark ? 'dark' : 'dark'; // Default to dark as requested
-      setThemeState(initialTheme);
-      applyTheme(initialTheme, pathname);
+    const stored = localStorage.getItem('dms_custom_theme');
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        setCustomThemeState(parsed);
+        applyThemeVariables(parsed);
+      } catch(e) {}
     }
+    
+    const storedMode = localStorage.getItem('dms_theme_mode') as 'light' | 'dark' | 'system' | null;
+    if (storedMode) {
+      setThemeMode(storedMode);
+    } else {
+      setThemeMode('system');
+    }
+    
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = (e: MediaQueryListEvent) => {
+      if (localStorage.getItem('dms_theme_mode') === 'system') {
+        if (e.matches) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      }
+    };
+    mediaQuery.addEventListener('change', handleChange);
+    
+    fetchUserTheme();
     setMounted(true);
+    
+    return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
 
-  // Re-apply theme whenever the route changes
-  useEffect(() => {
-    if (mounted) {
-      applyTheme(theme, pathname);
-    }
-  }, [pathname, theme, mounted]);
-
-  const applyTheme = (newTheme: Theme, currentPath: string = pathname) => {
-    const root = document.documentElement;
-    if (currentPath && currentPath.startsWith('/user')) {
-      if (newTheme === 'dark') {
-        root.classList.add('dark');
-        root.classList.remove('light');
-      } else {
-        root.classList.remove('dark');
-        root.classList.add('light');
-      }
-    } else {
-      // Force light mode on all non-user routes (landing, admin, auth)
-      root.classList.remove('dark');
-      root.classList.add('light');
-    }
-  };
-
-  const setTheme = (newTheme: Theme) => {
-    setThemeState(newTheme);
-    localStorage.setItem('dms_theme', newTheme);
-    applyTheme(newTheme, pathname);
-  };
-
   const toggleTheme = () => {
-    const nextTheme: Theme = theme === 'dark' ? 'light' : 'dark';
-    setTheme(nextTheme);
+    setThemeMode(themeMode === 'light' ? 'dark' : 'light');
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
+    <ThemeContext.Provider value={{ theme: themeMode, themeMode, toggleTheme, setTheme: setThemeMode, customTheme, setCustomTheme, saveUserTheme, applyThemeVariables, resetToDefault }}>
       {children}
     </ThemeContext.Provider>
   );

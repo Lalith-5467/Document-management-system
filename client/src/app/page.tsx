@@ -64,16 +64,16 @@ export default function HomePage() {
   if (!mounted) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-white">
-        <div className="w-16 h-16 rounded-3xl bg-gradient-to-tr from-[#FF6B00] to-[#FF8A00] flex items-center justify-center text-white shadow-xl shadow-orange-500/30 animate-pulse border border-orange-400/20">
+        <div className="w-16 h-16 rounded-3xl bg-gradient-to-tr from-themePrimary to-themePrimary flex items-center justify-center text-white shadow-xl shadow-orange-500/30 animate-pulse border border-orange-400/20">
           <ShieldCheck className="w-8 h-8 stroke-[2.5]" />
         </div>
         <h2 className="mt-6 text-sm font-black text-slate-900 tracking-[0.2em] uppercase font-auth-heading">
           DocVault
         </h2>
         <div className="flex items-center gap-1.5 mt-3">
-          <div className="w-1.5 h-1.5 rounded-full bg-[#FF6B00] animate-bounce" style={{ animationDelay: '0ms' }} />
-          <div className="w-1.5 h-1.5 rounded-full bg-[#FF6B00] animate-bounce" style={{ animationDelay: '150ms' }} />
-          <div className="w-1.5 h-1.5 rounded-full bg-[#FF6B00] animate-bounce" style={{ animationDelay: '300ms' }} />
+          <div className="w-1.5 h-1.5 rounded-full bg-themePrimary animate-bounce" style={{ animationDelay: '0ms' }} />
+          <div className="w-1.5 h-1.5 rounded-full bg-themePrimary animate-bounce" style={{ animationDelay: '150ms' }} />
+          <div className="w-1.5 h-1.5 rounded-full bg-themePrimary animate-bounce" style={{ animationDelay: '300ms' }} />
         </div>
       </div>
     );
@@ -103,7 +103,7 @@ export default function HomePage() {
             <div className="space-y-4 max-w-4xl mx-auto">
               <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-slate-900 tracking-tight leading-[1.1]">
                 {cms.hero.title}{' '}
-                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#FF6B00] to-[#F97316]">
+                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-themePrimary to-[#F97316]">
                   {cms.hero.highlight}
                 </span>
               </h1>
@@ -115,7 +115,7 @@ export default function HomePage() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
               <Link
                 href={cms.hero.primaryBtnUrl || '/register'}
-                className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white font-black shadow-xl shadow-orange-500/20 hover:scale-105 transition-transform flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-black shadow-xl shadow-orange-500/20 hover:scale-105 transition-transform flex items-center justify-center gap-2"
               >
                 {cms.hero.primaryBtnText || 'Get Started'} <ArrowRight className="w-5 h-5" />
               </Link>
@@ -153,7 +153,7 @@ export default function HomePage() {
         <section id="features" className="scroll-mt-24 pt-12 pb-16 bg-[#F8FAFC] border-b border-slate-200/80 relative z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
             <div className="text-center max-w-2xl mx-auto space-y-3.5">
-              <span className="text-xs font-black uppercase tracking-wider text-[#FF6B00] font-mono px-4 py-1.5 rounded-full bg-orange-50 border border-orange-200 inline-block shadow-2xs">
+              <span className="text-xs font-black uppercase tracking-wider text-themePrimary font-mono px-4 py-1.5 rounded-full bg-orange-50 border border-orange-200 inline-block shadow-2xs">
                 Enterprise Capabilities
               </span>
               <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight font-auth-heading">
@@ -171,16 +171,16 @@ export default function HomePage() {
                   className="landing-card relative p-7 space-y-5 group bg-white border border-slate-200/80 shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 rounded-[20px] overflow-hidden"
                 >
                   {/* Animated Box Outline */}
-                  <div className="absolute inset-0 rounded-[20px] border-2 border-transparent group-hover:border-[#FF6B00] opacity-0 group-hover:opacity-100 transition-all duration-500 scale-105 group-hover:scale-100 pointer-events-none z-20" />
+                  <div className="absolute inset-0 rounded-[20px] border-2 border-transparent group-hover:border-themePrimary opacity-0 group-hover:opacity-100 transition-all duration-500 scale-105 group-hover:scale-100 pointer-events-none z-20" />
                   
                   {/* Subtle Glow Background on Hover */}
                   <div className="absolute inset-0 bg-gradient-to-br from-orange-50/0 to-orange-50/80 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0" />
 
-                  <div className="relative z-10 w-12 h-12 rounded-2xl bg-orange-50 text-[#FF6B00] flex items-center justify-center border border-orange-200/80 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-orange-500/20 transition-all duration-300">
+                  <div className="relative z-10 w-12 h-12 rounded-2xl bg-orange-50 text-themePrimary flex items-center justify-center border border-orange-200/80 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-orange-500/20 transition-all duration-300">
                     {renderIcon(feat.icon, Zap)}
                   </div>
                   <div className="relative z-10 space-y-2.5">
-                    <h3 className="text-base font-black text-slate-900 group-hover:text-[#FF6B00] transition-colors font-auth-heading tracking-tight">
+                    <h3 className="text-base font-black text-slate-900 group-hover:text-themePrimary transition-colors font-auth-heading tracking-tight">
                       {feat.title}
                     </h3>
                     <p className="text-[13px] text-slate-600 leading-relaxed font-medium">
@@ -199,7 +199,7 @@ export default function HomePage() {
         <section id="categories" className="scroll-mt-24 py-16 bg-white border-b border-slate-200/80 relative z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-14 space-y-3.5">
-              <span className="text-xs font-black uppercase tracking-wider text-[#FF6B00] font-mono px-4 py-1.5 rounded-full bg-orange-50 border border-orange-200 inline-block shadow-2xs">
+              <span className="text-xs font-black uppercase tracking-wider text-themePrimary font-mono px-4 py-1.5 rounded-full bg-orange-50 border border-orange-200 inline-block shadow-2xs">
                 Document Categorization
               </span>
               <h2 className="text-3xl font-black text-slate-900 tracking-tight">
@@ -215,24 +215,24 @@ export default function HomePage() {
                 <Link
                   key={cat.id}
                   href="/register"
-                  className="landing-card p-6 border-t-4 border-t-[#FF6B00] flex flex-col justify-between group"
+                  className="landing-card p-6 border-t-4 border-t-themePrimary flex flex-col justify-between group"
                 >
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <div
-                        className="w-11 h-11 rounded-2xl flex items-center justify-center text-white shadow-md group-hover:scale-110 transition-transform bg-gradient-to-tr from-[#FF6B00] to-[#F97316]"
+                        className="w-11 h-11 rounded-2xl flex items-center justify-center text-white shadow-md group-hover:scale-110 transition-transform bg-gradient-to-tr from-themePrimary to-[#F97316]"
                       >
                         {renderIcon(cat.icon, UserCheck)}
                       </div>
-                      <span className="text-xs font-black px-3 py-1 rounded-full bg-orange-50 text-[#FF6B00] border border-orange-200 font-mono">
+                      <span className="text-xs font-black px-3 py-1 rounded-full bg-orange-50 text-themePrimary border border-orange-200 font-mono">
                         {cat.documentCount} docs
                       </span>
                     </div>
 
                     <div>
-                      <h3 className="text-lg font-black text-slate-900 group-hover:text-[#FF6B00] transition-colors flex items-center justify-between">
+                      <h3 className="text-lg font-black text-slate-900 group-hover:text-themePrimary transition-colors flex items-center justify-between">
                         {cat.name}
-                        <ArrowRight className="w-4 h-4 text-[#FF6B00] opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
+                        <ArrowRight className="w-4 h-4 text-themePrimary opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
                       </h3>
                       <p className="text-sm text-slate-600 leading-relaxed mt-1 font-medium">{cat.description}</p>
                     </div>
@@ -249,7 +249,7 @@ export default function HomePage() {
         <section id="solutions" className="scroll-mt-24 py-16 bg-white border-b border-slate-200/80 relative z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
             <div className="text-center max-w-3xl mx-auto space-y-4">
-              <span className="text-xs font-black uppercase tracking-widest text-[#FF6B00] font-mono px-4 py-1.5 rounded-full bg-orange-50 border border-orange-200 inline-block shadow-2xs">
+              <span className="text-xs font-black uppercase tracking-widest text-themePrimary font-mono px-4 py-1.5 rounded-full bg-orange-50 border border-orange-200 inline-block shadow-2xs">
                 WHO IT'S FOR
               </span>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight">
@@ -268,14 +268,14 @@ export default function HomePage() {
                     className="landing-card group relative p-8 rounded-[24px] transition-all duration-500 flex flex-col h-full bg-white border border-slate-200/80 shadow-sm hover:shadow-2xl hover:-translate-y-1"
                   >
                     {/* Animated Box Outline */}
-                    <div className="absolute inset-0 rounded-[24px] border-2 border-transparent group-hover:border-[#FF6B00] transition-colors duration-300 pointer-events-none z-20" />
+                    <div className="absolute inset-0 rounded-[24px] border-2 border-transparent group-hover:border-themePrimary transition-colors duration-300 pointer-events-none z-20" />
                     
                     {/* Subtle Glow Background */}
                     <div className="absolute inset-0 bg-gradient-to-br from-orange-50/0 to-orange-50/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0 rounded-[24px]" />
 
                     <div className="space-y-6 relative z-10 flex-1">
                       <div className="flex items-start justify-between">
-                        <div className="w-14 h-14 rounded-2xl flex items-center justify-center group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-orange-500/20 transition-all duration-300 bg-orange-50 text-[#FF6B00] border border-orange-200/80">
+                        <div className="w-14 h-14 rounded-2xl flex items-center justify-center group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-orange-500/20 transition-all duration-300 bg-orange-50 text-themePrimary border border-orange-200/80">
                           {renderIcon(userGroup.icon, GraduationCap)}
                         </div>
                         <span className="text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full text-slate-500 bg-slate-100 border border-slate-200/80 shadow-xs">
@@ -284,7 +284,7 @@ export default function HomePage() {
                       </div>
 
                       <div>
-                        <h3 className="text-2xl font-black text-slate-900 group-hover:text-[#FF6B00] transition-colors mb-2 tracking-tight">
+                        <h3 className="text-2xl font-black text-slate-900 group-hover:text-themePrimary transition-colors mb-2 tracking-tight">
                           {userGroup.title}
                         </h3>
                         <p className="text-sm leading-relaxed font-medium text-slate-600">
@@ -302,7 +302,7 @@ export default function HomePage() {
                               key={fIdx}
                               className="flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1.5 rounded-lg bg-slate-50 border border-slate-100 text-slate-600 group-hover:border-orange-100 group-hover:bg-orange-50/80 transition-colors"
                             >
-                              <CheckCircle2 className="w-3.5 h-3.5 shrink-0 text-[#FF6B00]" />
+                              <CheckCircle2 className="w-3.5 h-3.5 shrink-0 text-themePrimary" />
                               <span>{feat}</span>
                             </div>
                           ))}
@@ -313,7 +313,7 @@ export default function HomePage() {
                     <div className="pt-8 relative z-10 mt-auto">
                       <Link
                         href="/register"
-                        className="w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl font-bold text-sm transition-all duration-300 bg-white border-2 border-slate-100 text-slate-700 hover:text-[#FF6B00] hover:border-[#FF6B00] hover:bg-orange-50 hover:shadow-lg hover:shadow-orange-500/20 group/btn"
+                        className="w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl font-bold text-sm transition-all duration-300 bg-white border-2 border-slate-100 text-slate-700 hover:text-themePrimary hover:border-themePrimary hover:bg-orange-50 hover:shadow-lg hover:shadow-orange-500/20 group/btn"
                       >
                         <span>Start Vaulting as {userGroup.title.split('&')[0].trim()}</span>
                         <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
@@ -332,7 +332,7 @@ export default function HomePage() {
         <section id="faq" className="scroll-mt-24 py-16 bg-white border-b border-slate-200/80 relative z-10">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
             <div className="text-center space-y-4">
-              <span className="text-sm font-black uppercase tracking-widest text-[#FF6B00] font-mono px-4 py-1.5 rounded-full bg-orange-50 border border-orange-200 inline-block shadow-2xs">
+              <span className="text-sm font-black uppercase tracking-widest text-themePrimary font-mono px-4 py-1.5 rounded-full bg-orange-50 border border-orange-200 inline-block shadow-2xs">
                 FREQUENTLY ASKED QUESTIONS
               </span>
               <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
@@ -353,16 +353,16 @@ export default function HomePage() {
                   >
                     <button
                       onClick={() => setOpenFaq(isOpen ? null : faq.id)}
-                      className="w-full py-5 px-6 sm:px-8 text-left flex items-center justify-between gap-4 font-extrabold text-base sm:text-lg text-slate-900 hover:text-[#FF6B00] transition-colors"
+                      className="w-full py-5 px-6 sm:px-8 text-left flex items-center justify-between gap-4 font-extrabold text-base sm:text-lg text-slate-900 hover:text-themePrimary transition-colors"
                     >
                       <span className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-xl bg-orange-50 text-[#FF6B00] flex items-center justify-center shrink-0 border border-orange-200/80 group-hover:scale-110 transition-transform">
+                        <div className="w-8 h-8 rounded-xl bg-orange-50 text-themePrimary flex items-center justify-center shrink-0 border border-orange-200/80 group-hover:scale-110 transition-transform">
                           <HelpCircle className="w-4 h-4 icon-hover-rotate" />
                         </div>
                         <span className="font-extrabold">{faq.question}</span>
                       </span>
                       <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center shrink-0 border border-slate-200/80 group-hover:bg-orange-50 group-hover:border-orange-200 transition-colors">
-                        <ChevronDown className={`w-4 h-4 text-[#FF6B00] transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+                        <ChevronDown className={`w-4 h-4 text-themePrimary transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
                       </div>
                     </button>
                     {isOpen && (
@@ -382,7 +382,7 @@ export default function HomePage() {
       {cms.cta?.enabled !== false && (
         <section className="py-20 bg-white relative z-10">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="bg-gradient-to-r from-[#FF6B00] via-[#F97316] to-[#FF8A00] rounded-[24px] p-8 sm:p-12 text-center text-white space-y-6 shadow-2xl shadow-orange-500/25 relative overflow-hidden">
+            <div className="bg-gradient-to-r from-themePrimary via-[#F97316] to-themePrimary rounded-[24px] p-8 sm:p-12 text-center text-white space-y-6 shadow-2xl shadow-orange-500/25 relative overflow-hidden">
               <div className="absolute top-0 right-0 -mt-8 -mr-8 w-40 h-40 rounded-full bg-white/10 blur-2xl pointer-events-none" />
               <div className="absolute bottom-0 left-0 -mb-8 -ml-8 w-40 h-40 rounded-full bg-black/10 blur-2xl pointer-events-none" />
 
@@ -395,10 +395,10 @@ export default function HomePage() {
               <div className="flex flex-wrap items-center justify-center gap-3.5 pt-2 relative z-10">
                 <Link
                   href={cms.cta?.primaryBtnUrl || '/register'}
-                  className="inline-flex items-center gap-2 px-8 py-3.5 text-xs font-black text-[#FF6B00] bg-white hover:bg-orange-50 rounded-2xl shadow-xl transition-all hover:scale-105 active:scale-95"
+                  className="inline-flex items-center gap-2 px-8 py-3.5 text-xs font-black text-themePrimary bg-white hover:bg-orange-50 rounded-2xl shadow-xl transition-all hover:scale-105 active:scale-95"
                 >
                   {cms.cta?.primaryBtnText || 'Create Free Account'}
-                  <ArrowRight className="w-4 h-4 text-[#FF6B00]" />
+                  <ArrowRight className="w-4 h-4 text-themePrimary" />
                 </Link>
                 {cms.cta?.secondaryBtnText && (
                   <Link

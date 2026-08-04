@@ -39,7 +39,7 @@ export default function TrialBanner() {
 
           <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 text-left text-xs space-y-2">
             <p className="font-extrabold text-slate-900 dark:text-white flex items-center gap-1.5">
-              <Lock className="w-3.5 h-3.5 text-[#FF6B00]" /> Features Currently Locked:
+              <Lock className="w-3.5 h-3.5 text-themePrimary" /> Features Currently Locked:
             </p>
             <ul className="grid grid-cols-2 gap-1.5 text-[11px] text-slate-600 dark:text-slate-400 font-medium">
               <li>• Document Uploads</li>
@@ -52,7 +52,7 @@ export default function TrialBanner() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
             <button
               onClick={() => openUpgradeModal()}
-              className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-gradient-to-r from-[#FF6B00] via-[#F97316] to-[#EA580C] text-white text-xs font-black shadow-lg shadow-orange-500/25 hover:scale-105 active:scale-95 transition flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] text-white text-xs font-black shadow-lg shadow-orange-500/25 hover:scale-105 active:scale-95 transition flex items-center justify-center gap-2"
             >
               <Zap className="w-4 h-4 fill-white" /> Upgrade Now →
             </button>
@@ -76,8 +76,8 @@ export default function TrialBanner() {
     <div className="w-full py-3 px-4 sm:px-6 rounded-2xl mb-6 shadow-sm relative overflow-hidden flex items-center justify-between gap-4 text-xs bg-gradient-to-r from-orange-50 via-amber-50/70 to-orange-50 dark:from-slate-900 dark:via-orange-950/40 dark:to-slate-900 border border-orange-200 dark:border-orange-900/60 shadow-[0_8px_25px_rgba(255,107,0,0.06)]">
       {/* Left Active Badge */}
       <div className="flex items-center gap-2 shrink-0 z-10">
-        <span className="px-3 py-1 rounded-full bg-orange-100 dark:bg-orange-950/80 text-[#FF6B00] dark:text-orange-300 text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5 border border-orange-200 dark:border-orange-900/60 shadow-sm">
-          <span className="w-2 h-2 rounded-full bg-[#FF6B00] animate-ping" />
+        <span className="px-3 py-1 rounded-full bg-orange-100 dark:bg-orange-950/80 text-themePrimary dark:text-orange-300 text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5 border border-orange-200 dark:border-orange-900/60 shadow-sm">
+          <span className="w-2 h-2 rounded-full bg-themePrimary animate-ping" />
           Trial Active
         </span>
       </div>
@@ -88,14 +88,14 @@ export default function TrialBanner() {
           {/* Item 1 */}
           <div className="flex items-center gap-3">
             <span className="font-black text-slate-900 dark:text-white flex items-center gap-1.5">
-              <Crown className="w-4 h-4 text-[#FF6B00] fill-[#FF6B00]/20" /> 7-Day Free Trial Mode
+              <Crown className="w-4 h-4 text-themePrimary fill-themePrimary/20" /> 7-Day Free Trial Mode
             </span>
-            <span className="text-[#FF6B00] font-bold">•</span>
+            <span className="text-themePrimary font-bold">•</span>
             <span className="text-slate-600 dark:text-slate-300">
-              <strong className="text-[#FF6B00] font-black underline decoration-orange-400 decoration-2">{daysRemaining} {daysRemaining === 1 ? 'Day' : 'Days'} Remaining</strong> ($0.00 / ₹0 Billed)
+              <strong className="text-themePrimary font-black underline decoration-orange-400 decoration-2">{daysRemaining} {daysRemaining === 1 ? 'Day' : 'Days'} Remaining</strong> ($0.00 / ₹0 Billed)
             </span>
-            <span className="text-[#FF6B00] font-bold">•</span>
-            <span className="px-2 py-0.5 rounded bg-white dark:bg-slate-800 border border-orange-200 dark:border-orange-900/60 text-[#FF6B00] dark:text-orange-300 text-[10px] font-black shadow-2xs">
+            <span className="text-themePrimary font-bold">•</span>
+            <span className="px-2 py-0.5 rounded bg-white dark:bg-slate-800 border border-orange-200 dark:border-orange-900/60 text-themePrimary dark:text-orange-300 text-[10px] font-black shadow-2xs">
               ⚡ OCR & AI Search Enabled
             </span>
           </div>
@@ -103,14 +103,14 @@ export default function TrialBanner() {
           {/* Item 2 (Duplicated for Seamless 100% Continuous Infinite Loop) */}
           <div className="flex items-center gap-3">
             <span className="font-black text-slate-900 dark:text-white flex items-center gap-1.5">
-              <Crown className="w-4 h-4 text-[#FF6B00] fill-[#FF6B00]/20" /> 7-Day Free Trial Mode
+              <Crown className="w-4 h-4 text-themePrimary fill-themePrimary/20" /> 7-Day Free Trial Mode
             </span>
-            <span className="text-[#FF6B00] font-bold">•</span>
+            <span className="text-themePrimary font-bold">•</span>
             <span className="text-slate-600 dark:text-slate-300">
-              <strong className="text-[#FF6B00] font-black underline decoration-orange-400 decoration-2">{daysRemaining} {daysRemaining === 1 ? 'Day' : 'Days'} Remaining</strong> ($0.00 / ₹0 Billed)
+              <strong className="text-themePrimary font-black underline decoration-orange-400 decoration-2">{daysRemaining} {daysRemaining === 1 ? 'Day' : 'Days'} Remaining</strong> ($0.00 / ₹0 Billed)
             </span>
-            <span className="text-[#FF6B00] font-bold">•</span>
-            <span className="px-2 py-0.5 rounded bg-white dark:bg-slate-800 border border-orange-200 dark:border-orange-900/60 text-[#FF6B00] dark:text-orange-300 text-[10px] font-black shadow-2xs">
+            <span className="text-themePrimary font-bold">•</span>
+            <span className="px-2 py-0.5 rounded bg-white dark:bg-slate-800 border border-orange-200 dark:border-orange-900/60 text-themePrimary dark:text-orange-300 text-[10px] font-black shadow-2xs">
               ⚡ OCR & AI Search Enabled
             </span>
           </div>
@@ -121,7 +121,7 @@ export default function TrialBanner() {
       <div className="flex items-center gap-2 shrink-0 z-10">
         <button
           onClick={() => openUpgradeModal()}
-          className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#FF6B00] via-[#F97316] to-[#EA580C] text-white font-black text-xs shadow-md shadow-orange-500/20 hover:scale-105 active:scale-95 transition flex items-center gap-1.5"
+          className="px-4 py-2 rounded-xl bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] text-white font-black text-xs shadow-md shadow-orange-500/20 hover:scale-105 active:scale-95 transition flex items-center gap-1.5"
         >
           <Zap className="w-3.5 h-3.5 fill-white" /> Upgrade Plan
         </button>

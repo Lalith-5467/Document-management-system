@@ -21,7 +21,7 @@ export default function StatCard({
   const schemeClasses = {
     blue: 'bg-blue-50/80 text-blue-600 border-blue-200',
     emerald: 'bg-emerald-50/80 text-emerald-600 border-emerald-200',
-    purple: 'bg-orange-50/80 text-[#FF6B00] border-orange-200',
+    purple: 'bg-orange-50/80 text-themePrimary border-orange-200',
     amber: 'bg-amber-50/80 text-amber-600 border-amber-200',
     cyan: 'bg-cyan-50/80 text-cyan-600 border-cyan-200',
     rose: 'bg-rose-50/80 text-rose-600 border-rose-200',

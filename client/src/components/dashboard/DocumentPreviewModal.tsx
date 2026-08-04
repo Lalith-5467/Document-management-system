@@ -463,7 +463,7 @@ const createValidImageBlob = (title: string, category: string, description: stri
         <div className="h-16 bg-slate-950 px-4 sm:px-6 flex items-center justify-between border-b border-slate-800 text-white shrink-0 font-auth-body">
           {/* File Title & Extension Badge */}
           <div className="flex items-center gap-3 overflow-hidden min-w-0">
-            <div className="h-9 px-2.5 rounded-xl bg-orange-500/15 text-[#FF6B00] border border-orange-500/30 flex items-center justify-center font-black text-xs shrink-0 font-mono uppercase tracking-wider">
+            <div className="h-9 px-2.5 rounded-xl bg-orange-500/15 text-themePrimary border border-orange-500/30 flex items-center justify-center font-black text-xs shrink-0 font-mono uppercase tracking-wider">
               {getExtLabel()}
             </div>
             <div className="truncate min-w-0">
@@ -516,7 +516,7 @@ const createValidImageBlob = (title: string, category: string, description: stri
             <button
               onClick={() => setShowInfoPanel(!showInfoPanel)}
               className={`p-2 rounded-xl border text-xs transition cursor-pointer ${
-                showInfoPanel ? 'bg-[#FF6B00] text-white border-orange-500' : 'border-slate-800 text-slate-300 hover:bg-slate-800'
+                showInfoPanel ? 'bg-themePrimary text-white border-orange-500' : 'border-slate-800 text-slate-300 hover:bg-slate-800'
               }`}
               title="Toggle Document Info Panel"
             >
@@ -535,7 +535,7 @@ const createValidImageBlob = (title: string, category: string, description: stri
             {/* Download Button */}
             <button
               onClick={handleDownloadClick}
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:brightness-110 text-white text-xs font-extrabold shadow-md shadow-orange-500/25 transition cursor-pointer font-auth-heading"
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 text-white text-xs font-extrabold shadow-md shadow-orange-500/25 transition cursor-pointer font-auth-heading"
               title="Download File"
             >
               <Download className="w-4 h-4" />
@@ -559,7 +559,7 @@ const createValidImageBlob = (title: string, category: string, description: stri
           <div className="flex-1 bg-slate-950 overflow-auto flex items-center justify-center p-4">
             {loading ? (
               <div className="text-center space-y-3">
-                <Loader2 className="w-10 h-10 text-[#FF6B00] animate-spin mx-auto" />
+                <Loader2 className="w-10 h-10 text-themePrimary animate-spin mx-auto" />
                 <p className="text-xs text-slate-400 font-medium">Loading document stream preview...</p>
               </div>
             ) : error ? (
@@ -569,7 +569,7 @@ const createValidImageBlob = (title: string, category: string, description: stri
                 <p className="text-xs text-slate-400">{error}</p>
                 <button
                   onClick={handleDownloadClick}
-                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white font-bold text-xs inline-flex items-center gap-1.5 shadow-md shadow-orange-500/25"
+                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-bold text-xs inline-flex items-center gap-1.5 shadow-md shadow-orange-500/25"
                 >
                   <Download className="w-4 h-4" /> Download File
                 </button>
@@ -594,7 +594,7 @@ const createValidImageBlob = (title: string, category: string, description: stri
                 <div className="pt-2">
                   <button
                     onClick={handleDownloadClick}
-                    className="w-full py-3 rounded-2xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:brightness-110 text-white font-bold text-xs shadow-lg shadow-orange-500/25 transition flex items-center justify-center gap-2"
+                    className="w-full py-3 rounded-2xl bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 text-white font-bold text-xs shadow-lg shadow-orange-500/25 transition flex items-center justify-center gap-2"
                   >
                     <Download className="w-4 h-4" />
                     Download {doc?.title || 'Document'}
@@ -654,7 +654,7 @@ const createValidImageBlob = (title: string, category: string, description: stri
                     <div className="flex items-start justify-between border-b-2 border-slate-100 pb-6">
                       <div className="space-y-1.5">
                         <div className="flex items-center gap-2">
-                          <span className="px-2.5 py-0.5 rounded-full bg-orange-100 text-[#FF6B00] text-[10px] font-black uppercase tracking-wider font-mono">
+                          <span className="px-2.5 py-0.5 rounded-full bg-orange-100 text-themePrimary text-[10px] font-black uppercase tracking-wider font-mono">
                             PDF DOCUMENT
                           </span>
                           <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-bold font-mono flex items-center gap-1">
@@ -670,7 +670,7 @@ const createValidImageBlob = (title: string, category: string, description: stri
                       </div>
 
                       <div className="text-right shrink-0">
-                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200 text-[#FF6B00] flex items-center justify-center font-black text-xs shadow-xs ml-auto mb-1 font-mono">
+                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200 text-themePrimary flex items-center justify-center font-black text-xs shadow-xs ml-auto mb-1 font-mono">
                           PDF
                         </div>
                         <span className="text-[10px] font-mono font-bold text-slate-400">ID: #{doc?.id || '2026-VAL'}</span>
@@ -712,7 +712,7 @@ const createValidImageBlob = (title: string, category: string, description: stri
 
                       <button
                         onClick={handleDownloadClick}
-                        className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:brightness-110 text-white font-extrabold shadow-md shadow-orange-500/20 transition flex items-center justify-center gap-2 font-auth-heading cursor-pointer"
+                        className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 text-white font-extrabold shadow-md shadow-orange-500/20 transition flex items-center justify-center gap-2 font-auth-heading cursor-pointer"
                       >
                         <Download className="w-4 h-4" /> Download PDF Asset
                       </button>
@@ -730,7 +730,7 @@ const createValidImageBlob = (title: string, category: string, description: stri
                     <div className="w-full h-[78vh] flex flex-col items-center justify-center bg-slate-900 rounded-2xl border border-slate-800 text-slate-300 space-y-4">
                       <p className="text-sm font-medium">Office document previews require a public internet URL.</p>
                       <p className="text-xs text-slate-500 max-w-sm text-center">Since you are running this on localhost, Microsoft's preview servers cannot access your file. Please download it to view.</p>
-                      <button onClick={handleDownloadClick} className="mt-4 px-5 py-2.5 bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:brightness-110 text-white rounded-xl text-sm font-bold shadow-md cursor-pointer">
+                      <button onClick={handleDownloadClick} className="mt-4 px-5 py-2.5 bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 text-white rounded-xl text-sm font-bold shadow-md cursor-pointer">
                         Download File
                       </button>
                     </div>
@@ -768,7 +768,7 @@ const createValidImageBlob = (title: string, category: string, description: stri
                   <div className="flex items-start justify-between border-b-2 border-slate-100 pb-6">
                     <div className="space-y-1.5">
                       <div className="flex items-center gap-2">
-                        <span className="px-2.5 py-0.5 rounded-full bg-orange-100 text-[#FF6B00] text-[10px] font-black uppercase tracking-wider font-mono">
+                        <span className="px-2.5 py-0.5 rounded-full bg-orange-100 text-themePrimary text-[10px] font-black uppercase tracking-wider font-mono">
                           FORMAT: {getExtLabel()}
                         </span>
                         <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-bold font-mono flex items-center gap-1">
@@ -784,7 +784,7 @@ const createValidImageBlob = (title: string, category: string, description: stri
                     </div>
 
                     <div className="text-right shrink-0">
-                      <div className="min-w-[48px] h-10 px-3.5 rounded-2xl bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200 text-[#FF6B00] flex items-center justify-center font-black text-xs shadow-xs ml-auto mb-1 font-mono uppercase tracking-wider shrink-0">
+                      <div className="min-w-[48px] h-10 px-3.5 rounded-2xl bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200 text-themePrimary flex items-center justify-center font-black text-xs shadow-xs ml-auto mb-1 font-mono uppercase tracking-wider shrink-0">
                         {getExtLabel()}
                       </div>
                       <span className="text-[10px] font-mono font-bold text-slate-400">ID: #{doc?.id || '2026-VAL'}</span>
@@ -826,7 +826,7 @@ const createValidImageBlob = (title: string, category: string, description: stri
 
                     <button
                       onClick={handleDownloadClick}
-                      className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:brightness-110 text-white font-extrabold shadow-md shadow-orange-500/20 transition flex items-center justify-center gap-2 font-auth-heading cursor-pointer"
+                      className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 text-white font-extrabold shadow-md shadow-orange-500/20 transition flex items-center justify-center gap-2 font-auth-heading cursor-pointer"
                     >
                       <Download className="w-4 h-4" /> Download File Asset
                     </button>

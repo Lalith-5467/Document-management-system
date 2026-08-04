@@ -104,7 +104,7 @@ export default function AdminActivityPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
         <div>
           <h1 className="text-2xl font-black text-slate-900 flex items-center gap-2 font-auth-heading">
-            <Activity className="w-6 h-6 text-[#FF6B00]" /> Activity Audit Logs
+            <Activity className="w-6 h-6 text-themePrimary" /> Activity Audit Logs
           </h1>
           <p className="text-xs text-slate-500 font-medium mt-1">{totalCount} total activities tracked system-wide</p>
         </div>
@@ -127,14 +127,14 @@ export default function AdminActivityPage() {
             value={searchQuery}
             onChange={e => { setSearchQuery(e.target.value); setPage(1); }}
             placeholder="Search by user, action, document, or details..."
-            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#FF6B00]"
+            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-themePrimary"
           />
         </div>
         <div>
           <select
             value={actionFilter}
             onChange={e => { setActionFilter(e.target.value); setPage(1); }}
-            className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:border-[#FF6B00] cursor-pointer"
+            className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:border-themePrimary cursor-pointer"
           >
             {ACTION_TYPES.map(a => <option key={a} value={a}>{a === 'ALL' ? 'All Actions' : a.replace(/_/g, ' ')}</option>)}
           </select>
@@ -144,7 +144,7 @@ export default function AdminActivityPage() {
       {/* Table */}
       <div className="bg-white rounded-3xl border border-slate-200 shadow-2xs overflow-hidden">
         {loading ? (
-          <div className="p-12 flex items-center justify-center gap-2 text-xs text-slate-500"><Loader2 className="w-5 h-5 animate-spin text-[#FF6B00]" /> Loading logs...</div>
+          <div className="p-12 flex items-center justify-center gap-2 text-xs text-slate-500"><Loader2 className="w-5 h-5 animate-spin text-themePrimary" /> Loading logs...</div>
         ) : logs.length === 0 ? (
           <div className="p-12 text-center text-xs text-slate-500 font-medium">No activity logs found.</div>
         ) : (
@@ -164,11 +164,11 @@ export default function AdminActivityPage() {
                   <tr key={log.id} className="group hover:bg-orange-50/20 transition-all duration-200">
                     <td className="py-3.5 px-5">
                       <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#FF6B00] to-[#F97316] text-white font-black text-xs flex items-center justify-center shrink-0 shadow-md group-hover:scale-105 transition-transform">
+                        <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-themePrimary to-[#F97316] text-white font-black text-xs flex items-center justify-center shrink-0 shadow-md group-hover:scale-105 transition-transform">
                           {(log.user_name || 'S').charAt(0).toUpperCase()}
                         </div>
                         <div>
-                          <p className="font-black text-slate-900 text-xs font-auth-heading group-hover:text-[#FF6B00] transition-colors">{log.user_name || 'System'}</p>
+                          <p className="font-black text-slate-900 text-xs font-auth-heading group-hover:text-themePrimary transition-colors">{log.user_name || 'System'}</p>
                           <p className="text-[10px] text-slate-500 font-medium">{log.user_email}</p>
                         </div>
                       </div>
@@ -178,7 +178,7 @@ export default function AdminActivityPage() {
                         log.action_type === 'LOGIN' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
                         log.action_type === 'UPLOAD' ? 'bg-blue-50 text-blue-700 border-blue-200' :
                         log.action_type === 'DELETE' ? 'bg-rose-50 text-rose-700 border-rose-200' :
-                        log.action_type === 'CREATE_FOLDER' ? 'bg-orange-50 text-[#FF6B00] border-orange-200' :
+                        log.action_type === 'CREATE_FOLDER' ? 'bg-orange-50 text-themePrimary border-orange-200' :
                         'bg-slate-100 text-slate-700 border-slate-200'
                       }`}>
                         {log.action_type?.replace(/_/g, ' ')}

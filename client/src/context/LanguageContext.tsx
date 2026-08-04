@@ -327,17 +327,53 @@ interface LanguageContextType {
   language: SupportedLanguage;
   setLanguage: (lang: SupportedLanguage) => void;
   t: (key: string, defaultText?: string) => string;
+  languageOptions: LanguageOption[];
+  refreshLanguageOptions: () => void;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [language, setLanguageState] = useState<SupportedLanguage>('en');
+  const [languageOptions, setLanguageOptions] = useState<LanguageOption[]>(LANGUAGE_OPTIONS);
+
+  const refreshLanguageOptions = () => {
+    let activeOpts = [...LANGUAGE_OPTIONS];
+    const adminLangs = localStorage.getItem('dms_admin_languages');
+    if (adminLangs) {
+      try {
+        const parsed = JSON.parse(adminLangs);
+        const active = parsed.filter((l: any) => l.is_active === 1);
+        if (active.length > 0) {
+          activeOpts = active.map((l: any) => ({ code: l.code, name: l.name, nativeName: l.nativeName }));
+          setLanguageOptions(activeOpts);
+        }
+      } catch (e) {}
+    }
+  };
 
   useEffect(() => {
+    refreshLanguageOptions();
+    let activeOpts = [...LANGUAGE_OPTIONS];
+    const adminLangs = localStorage.getItem('dms_admin_languages');
+    if (adminLangs) {
+      try {
+        const parsed = JSON.parse(adminLangs);
+        const active = parsed.filter((l: any) => l.is_active === 1);
+        if (active.length > 0) {
+          activeOpts = active.map((l: any) => ({ code: l.code, name: l.name, nativeName: l.nativeName }));
+        }
+      } catch (e) {}
+    }
+
     const savedLang = localStorage.getItem('dms_language') as SupportedLanguage | null;
-    if (savedLang && (LANGUAGE_OPTIONS.some(o => o.code === savedLang))) {
+    if (savedLang && (activeOpts.some(o => o.code === savedLang))) {
       setLanguageState(savedLang);
+    } else {
+      const defAdmin = adminLangs ? JSON.parse(adminLangs).find((l: any) => l.is_default === 1 && l.is_active === 1) : null;
+      if (defAdmin) {
+        setLanguageState(defAdmin.code);
+      }
     }
   }, []);
 
@@ -357,7 +393,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+    <LanguageContext.Provider value={{ language, setLanguage, t, languageOptions, refreshLanguageOptions }}>
       {children}
     </LanguageContext.Provider>
   );
@@ -370,6 +406,8 @@ export function useLanguage() {
       language: 'en' as SupportedLanguage,
       setLanguage: () => {},
       t: (key: string, defaultText?: string) => defaultText || key,
+      languageOptions: LANGUAGE_OPTIONS,
+      refreshLanguageOptions: () => {},
     };
   }
   return context;

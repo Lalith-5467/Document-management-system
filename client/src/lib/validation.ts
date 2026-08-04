@@ -234,7 +234,7 @@ export function validateLogin(email: string, password: string): { isValid: boole
  */
 export function getFieldStatusClasses(isTouched: boolean, isValid: boolean, errorMsg: string): string {
   if (!isTouched) {
-    return 'border-slate-200 dark:border-slate-800 focus:border-[#FF6B00] focus:ring-2 focus:ring-orange-500/20';
+    return 'border-slate-200 dark:border-slate-800 focus:border-themePrimary focus:ring-2 focus:ring-orange-500/20';
   }
   if (isValid && !errorMsg) {
     return 'border-emerald-500 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 bg-emerald-50/10 dark:bg-emerald-950/10';

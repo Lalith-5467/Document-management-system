@@ -13,7 +13,7 @@ class AuthController {
                 fullName, email, password, userType, mobileNumber,
                 collegeName, department, yearOfStudy, studentId,
                 companyName, designation, industry, yearsOfExperience, employeeId,
-                occupation, country, state, city
+                occupation, country, state, city, phoneVerified
             } = req.body;
 
             if (!fullName || !email || !password || !mobileNumber) {
@@ -51,7 +51,7 @@ class AuthController {
 
             // Save user
             const newUser = await UserModel.create({
-                fullName, email, password: hashedPassword, userType: userType || 'individual', mobileNumber,
+                fullName, email, password: hashedPassword, userType: userType || 'individual', mobileNumber, phoneVerified,
                 collegeName, department, yearOfStudy, studentId,
                 companyName, designation, industry, yearsOfExperience, employeeId,
                 occupation, country, state, city

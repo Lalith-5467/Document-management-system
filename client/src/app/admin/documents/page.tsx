@@ -50,7 +50,7 @@ export default function AdminDocumentsPage() {
   };
 
   const getDefaultCategories = () => [
-    { id: 1, category_name: 'Personal Identity & Passports', color: '#FF6B00' },
+    { id: 1, category_name: 'Personal Identity & Passports', color: 'var(--theme-primary, #FF6B00)' },
     { id: 2, category_name: 'Academic Records & Diplomas', color: '#10B981' },
     { id: 3, category_name: 'Career & Employment Assets', color: '#F59E0B' },
     { id: 4, category_name: 'Projects & Technical Specs', color: '#8B5CF6' },
@@ -169,7 +169,7 @@ export default function AdminDocumentsPage() {
       { id: 103, user_id: 1, category_id: 6, folder_id: 2, title: 'Tax_Returns_Assessment_2026.pdf', file_name: 'Tax_Returns_Assessment_2026.pdf', owner_name: 'Michael Scott', description: 'Annual tax return assessment and income tax audit statements.', file_path: '/uploads/tax_2026.pdf', file_size: 943718, mime_type: 'application/pdf', created_at: '2026-07-19T16:00:00Z', category_name: 'Client Requirements & Contracts', color: '#06B6D4', folder_name: 'Tax Filings 2026' },
       { id: 104, user_id: 1, category_id: 3, folder_id: null, title: 'Lalith Velarasi. S CV & Credentials.pdf', file_name: 'Lalith Velarasi. S.pdf', owner_name: 'Kalpana', description: 'Professional resume CV and technical profile credentials.', file_path: '/uploads/cv.pdf', file_size: 4865392, mime_type: 'application/pdf', created_at: '2026-07-27T14:10:00Z', category_name: 'Career & Employment Assets', color: '#F59E0B', folder_name: 'Unassigned' },
       { id: 105, user_id: 1, category_id: 2, folder_id: 1, title: 'University_Degree_Certificate_2026.pdf', file_name: 'University_Degree_Certificate.pdf', owner_name: 'Alex Johnson', description: 'Bachelor of Technology official degree transcript.', file_path: '/uploads/degree.pdf', file_size: 2454159, mime_type: 'application/pdf', created_at: '2026-07-28T11:45:00Z', category_name: 'Academic Records & Diplomas', color: '#10B981', folder_name: 'Academic Transcripts' },
-      { id: 106, user_id: 1, category_id: 1, folder_id: 3, title: 'Senior_Software_Engineer_Identity_Card.png', file_name: 'Senior_Software_Engineer_ID.png', owner_name: 'Kalpana', description: 'High resolution digital identity passport card.', file_path: '/uploads/id.png', file_size: 1672313, mime_type: 'image/png', created_at: '2026-07-29T08:00:00Z', category_name: 'Personal Identity & Passports', color: '#FF6B00', folder_name: 'Passport & Identity' }
+      { id: 106, user_id: 1, category_id: 1, folder_id: 3, title: 'Senior_Software_Engineer_Identity_Card.png', file_name: 'Senior_Software_Engineer_ID.png', owner_name: 'Kalpana', description: 'High resolution digital identity passport card.', file_path: '/uploads/id.png', file_size: 1672313, mime_type: 'image/png', created_at: '2026-07-29T08:00:00Z', category_name: 'Personal Identity & Passports', color: 'var(--theme-primary, #FF6B00)', folder_name: 'Passport & Identity' }
     ];
 
     let filtered = [...samples];
@@ -335,7 +335,7 @@ export default function AdminDocumentsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
         <div>
           <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-3 font-auth-heading">
-            <span className="w-10 h-10 rounded-2xl bg-orange-50 border border-orange-200 text-[#FF6B00] flex items-center justify-center shadow-2xs shrink-0">
+            <span className="w-10 h-10 rounded-2xl bg-orange-50 border border-orange-200 text-themePrimary flex items-center justify-center shadow-2xs shrink-0">
               <FileText className="w-5 h-5" />
             </span>
             <span>Document Management</span>
@@ -346,7 +346,7 @@ export default function AdminDocumentsPage() {
         </div>
         <div className="flex items-center gap-3">
           <div className="flex rounded-2xl p-1 bg-slate-100 border border-slate-200">
-            <button onClick={() => { setViewMode('active'); setPage(1); }} className={`px-4 py-2 text-xs font-black rounded-xl transition-all cursor-pointer ${viewMode === 'active' ? 'bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white shadow-md shadow-orange-500/20' : 'text-slate-600 hover:text-slate-900'}`}>Active</button>
+            <button onClick={() => { setViewMode('active'); setPage(1); }} className={`px-4 py-2 text-xs font-black rounded-xl transition-all cursor-pointer ${viewMode === 'active' ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/20' : 'text-slate-600 hover:text-slate-900'}`}>Active</button>
             <button onClick={() => { setViewMode('archived'); setPage(1); }} className={`px-4 py-2 text-xs font-black rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${viewMode === 'archived' ? 'bg-rose-600 text-white shadow-md shadow-rose-600/20' : 'text-slate-600 hover:text-slate-900'}`}>
               <Archive className="w-3.5 h-3.5" /> Trash
             </button>
@@ -367,13 +367,13 @@ export default function AdminDocumentsPage() {
               value={searchQuery}
               onChange={e => { setSearchQuery(e.target.value); setPage(1); }}
               placeholder="Search documents by title, file name, description..."
-              className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#FF6B00]"
+              className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-themePrimary"
             />
           </div>
           <select
             value={selectedCategory}
             onChange={e => { setSelectedCategory(e.target.value); setPage(1); }}
-            className="px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:border-[#FF6B00] cursor-pointer"
+            className="px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:border-themePrimary cursor-pointer"
           >
             <option value="">All Categories</option>
             {categories.map(c => <option key={c.id} value={c.id}>{c.category_name}</option>)}
@@ -385,7 +385,7 @@ export default function AdminDocumentsPage() {
       <div className="bg-white rounded-3xl border border-slate-200 shadow-2xs overflow-hidden">
         {loading ? (
           <div className="p-12 flex items-center justify-center gap-2 text-xs text-slate-500 font-medium">
-            <Loader2 className="w-5 h-5 animate-spin text-[#FF6B00]" /> Loading documents...
+            <Loader2 className="w-5 h-5 animate-spin text-themePrimary" /> Loading documents...
           </div>
         ) : documents.length === 0 ? (
           <div className="p-12 text-center text-xs text-slate-500 font-medium">
@@ -409,11 +409,11 @@ export default function AdminDocumentsPage() {
                   <tr key={doc.id} className="group hover:bg-orange-50/20 transition-all duration-200">
                     <td className="py-3.5 px-5">
                       <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-xl bg-orange-50 border border-orange-200 text-[#FF6B00] flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                        <div className="w-9 h-9 rounded-xl bg-orange-50 border border-orange-200 text-themePrimary flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
                           <FileText className="w-4 h-4" />
                         </div>
                         <div>
-                          <span className="font-black text-slate-900 text-xs font-auth-heading block truncate max-w-[220px] group-hover:text-[#FF6B00] transition-colors">{doc.title}</span>
+                          <span className="font-black text-slate-900 text-xs font-auth-heading block truncate max-w-[220px] group-hover:text-themePrimary transition-colors">{doc.title}</span>
                           <span className="text-[11px] text-slate-500 font-mono truncate max-w-[220px] block">{doc.file_name}</span>
                         </div>
                       </div>
@@ -425,7 +425,7 @@ export default function AdminDocumentsPage() {
                       </div>
                     </td>
                     <td className="py-3.5 px-5">
-                      <span className="px-2.5 py-1 rounded-full bg-orange-50 text-[#FF6B00] border border-orange-200 text-[10px] font-black uppercase">
+                      <span className="px-2.5 py-1 rounded-full bg-orange-50 text-themePrimary border border-orange-200 text-[10px] font-black uppercase">
                         {doc.category_name || 'General'}
                       </span>
                     </td>
@@ -435,8 +435,8 @@ export default function AdminDocumentsPage() {
                       <div className="flex items-center justify-end gap-1 bg-slate-50 p-1 rounded-xl border border-slate-200/80 inline-flex">
                         {viewMode === 'active' ? (
                           <>
-                            <button onClick={() => { setSelectedDoc(doc); setActiveModal('preview'); }} className="p-1.5 rounded-lg text-slate-500 hover:text-[#FF6B00] hover:bg-white transition cursor-pointer" title="Preview"><Eye className="w-3.5 h-3.5" /></button>
-                            <button onClick={() => openEdit(doc)} className="p-1.5 rounded-lg text-slate-500 hover:text-[#FF6B00] hover:bg-white transition cursor-pointer" title="Edit Metadata"><Edit2 className="w-3.5 h-3.5" /></button>
+                            <button onClick={() => { setSelectedDoc(doc); setActiveModal('preview'); }} className="p-1.5 rounded-lg text-slate-500 hover:text-themePrimary hover:bg-white transition cursor-pointer" title="Preview"><Eye className="w-3.5 h-3.5" /></button>
+                            <button onClick={() => openEdit(doc)} className="p-1.5 rounded-lg text-slate-500 hover:text-themePrimary hover:bg-white transition cursor-pointer" title="Edit Metadata"><Edit2 className="w-3.5 h-3.5" /></button>
                             <button onClick={() => handleDownload(doc)} className="p-1.5 rounded-lg text-slate-500 hover:text-emerald-600 hover:bg-white transition cursor-pointer" title="Download"><Download className="w-3.5 h-3.5" /></button>
                             <button onClick={() => handleSoftDelete(doc)} className="p-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-white transition cursor-pointer" title="Move to Trash"><Trash2 className="w-3.5 h-3.5" /></button>
                           </>
@@ -482,35 +482,35 @@ export default function AdminDocumentsPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-pop-in">
           <div className="bg-white rounded-3xl max-w-md w-full p-6 border border-slate-200 shadow-2xl space-y-4 text-xs text-slate-900">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <h2 className="text-base font-black text-slate-900 flex items-center gap-2 font-auth-heading"><Edit2 className="w-5 h-5 text-[#FF6B00]" /> Edit Document Metadata</h2>
+              <h2 className="text-base font-black text-slate-900 flex items-center gap-2 font-auth-heading"><Edit2 className="w-5 h-5 text-themePrimary" /> Edit Document Metadata</h2>
               <button onClick={() => setActiveModal(null)} className="text-slate-400 hover:text-slate-900 p-1.5 rounded-xl hover:bg-slate-100 transition cursor-pointer"><X className="w-4 h-4" /></button>
             </div>
             <form onSubmit={handleEditSave} className="space-y-3">
               <div>
                 <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">Document Title</label>
-                <input required type="text" value={editTitle} onChange={e => setEditTitle(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-[#FF6B00]" />
+                <input required type="text" value={editTitle} onChange={e => setEditTitle(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary" />
               </div>
               <div>
                 <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">Description</label>
-                <textarea rows={3} value={editDesc} onChange={e => setEditDesc(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 focus:outline-none focus:border-[#FF6B00] resize-none" />
+                <textarea rows={3} value={editDesc} onChange={e => setEditDesc(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 focus:outline-none focus:border-themePrimary resize-none" />
               </div>
               <div>
                 <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">Category Tag</label>
-                <select value={editCatId} onChange={e => setEditCatId(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-[#FF6B00] cursor-pointer">
+                <select value={editCatId} onChange={e => setEditCatId(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary cursor-pointer">
                   <option value="">No Category</option>
                   {categories.map(c => <option key={c.id} value={c.id}>{c.category_name}</option>)}
                 </select>
               </div>
               <div>
                 <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">Folder Container</label>
-                <select value={editFolderId} onChange={e => setEditFolderId(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-[#FF6B00] cursor-pointer">
+                <select value={editFolderId} onChange={e => setEditFolderId(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary cursor-pointer">
                   <option value="">No Folder</option>
                   {folders.map(f => <option key={f.id} value={f.id}>{f.folder_name}</option>)}
                 </select>
               </div>
               <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
                 <button type="button" onClick={() => setActiveModal(null)} className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-bold text-slate-700 transition cursor-pointer">Cancel</button>
-                <button type="submit" disabled={submitting} className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white font-extrabold text-xs shadow-md shadow-orange-500/20 disabled:opacity-50 transition cursor-pointer flex items-center gap-2">
+                <button type="submit" disabled={submitting} className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-extrabold text-xs shadow-md shadow-orange-500/20 disabled:opacity-50 transition cursor-pointer flex items-center gap-2">
                   {submitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />} Save Changes
                 </button>
               </div>

@@ -325,7 +325,7 @@ export const DEFAULT_CMS_DATA: CMSData = {
     {
       id: 1,
       badge: '★ NEXT-GEN DOCUMENT MANAGEMENT',
-      title: 'One Secure AI Vault for All Your',
+      title: 'One Secure AI Vault for',
       highlight: 'Critical Paperwork & Digital Assets',
       sub: 'DocVault is your enterprise-grade personal document repository. Store, categorize, and locate academic credentials, career resumes, property papers, and client requirement files in one central vault.',
       slideImage: '/images/carousel/slide_1.png',
@@ -333,8 +333,8 @@ export const DEFAULT_CMS_DATA: CMSData = {
       primaryCtaHref: '/register',
       secondaryCtaLabel: 'Sign In to Vault',
       secondaryCtaHref: '/login',
-      accentGradient: 'from-[#FF6B00] via-[#F97316] to-[#FF8A00]',
-      accentColor: 'text-[#FF6B00]',
+      accentGradient: 'from-themePrimary via-[#F97316] to-themePrimary',
+      accentColor: 'text-themePrimary',
       displayOrder: 1,
       status: 'active',
       created_at: '2026-01-10T10:00:00Z',
@@ -342,7 +342,7 @@ export const DEFAULT_CMS_DATA: CMSData = {
     {
       id: 2,
       badge: '⚡ 3-STEP SEAMLESS AUTOMATION',
-      title: 'How DocVault Works —',
+      title: 'How DocVault Works',
       highlight: '3 Easy Steps to Secure & Organize',
       sub: 'Transform chaotic computer folders into a structured digital vault in seconds. Our automated pipeline handles uploading, indexing, and instant retrieval effortlessly.',
       slideImage: '/images/carousel/slide_2.png',
@@ -350,8 +350,8 @@ export const DEFAULT_CMS_DATA: CMSData = {
       primaryCtaHref: '/register',
       secondaryCtaLabel: 'Sign In to Vault',
       secondaryCtaHref: '/login',
-      accentGradient: 'from-[#FF6B00] via-[#F97316] to-[#FF8A00]',
-      accentColor: 'text-[#FF6B00]',
+      accentGradient: 'from-themePrimary via-[#F97316] to-themePrimary',
+      accentColor: 'text-themePrimary',
       displayOrder: 2,
       status: 'active',
       created_at: '2026-01-12T10:00:00Z',
@@ -359,7 +359,7 @@ export const DEFAULT_CMS_DATA: CMSData = {
     {
       id: 3,
       badge: '📁 MULTI-FORMAT SUPPORTED VAULT',
-      title: 'Organize Every Document —',
+      title: 'Organize Every Document',
       highlight: 'From Passports to Project BRDs',
       sub: 'DocVault natively indexes all key personal, academic, and business paper trails with live in-browser preview and mime-type detection.',
       slideImage: '/images/carousel/slide_3.png',
@@ -367,8 +367,8 @@ export const DEFAULT_CMS_DATA: CMSData = {
       primaryCtaHref: '/register',
       secondaryCtaLabel: 'Sign In to Vault',
       secondaryCtaHref: '/login',
-      accentGradient: 'from-[#FF6B00] via-[#F97316] to-[#FF8A00]',
-      accentColor: 'text-[#FF6B00]',
+      accentGradient: 'from-themePrimary via-[#F97316] to-themePrimary',
+      accentColor: 'text-themePrimary',
       displayOrder: 3,
       status: 'active',
       created_at: '2026-01-15T10:00:00Z',
@@ -376,7 +376,7 @@ export const DEFAULT_CMS_DATA: CMSData = {
     {
       id: 4,
       badge: '🛡️ MILITARY-GRADE ENCRYPTION',
-      title: 'Enterprise Architecture —',
+      title: 'Enterprise Architecture',
       highlight: 'Built for Total Privacy & Control',
       sub: 'Rest easy knowing your files are guarded with bank-level encryption, multi-tenant workspace separation, and robust audit trails.',
       slideImage: '/images/carousel/slide_4.png',
@@ -384,8 +384,8 @@ export const DEFAULT_CMS_DATA: CMSData = {
       primaryCtaHref: '/register',
       secondaryCtaLabel: 'Sign In to Vault',
       secondaryCtaHref: '/login',
-      accentGradient: 'from-[#FF6B00] via-[#F97316] to-[#FF8A00]',
-      accentColor: 'text-[#FF6B00]',
+      accentGradient: 'from-themePrimary via-[#F97316] to-themePrimary',
+      accentColor: 'text-themePrimary',
       displayOrder: 4,
       status: 'active',
       created_at: '2026-01-18T10:00:00Z',
@@ -393,7 +393,7 @@ export const DEFAULT_CMS_DATA: CMSData = {
     {
       id: 5,
       badge: '🚀 REALTIME CLOUD STREAMING',
-      title: 'Seamless Upload Pipeline —',
+      title: 'Seamless Upload Pipeline',
       highlight: 'Instant Versioning & Live Audit',
       sub: 'Experience ultra-fast drag and drop file ingestion with live progress indicators, mime validation, and full document version tracking.',
       slideImage: '/images/carousel/slide_5.png',
@@ -401,8 +401,8 @@ export const DEFAULT_CMS_DATA: CMSData = {
       primaryCtaHref: '/register',
       secondaryCtaLabel: 'Sign In to Vault',
       secondaryCtaHref: '/login',
-      accentGradient: 'from-[#FF6B00] via-[#F97316] to-[#FF8A00]',
-      accentColor: 'text-[#FF6B00]',
+      accentGradient: 'from-themePrimary via-[#F97316] to-themePrimary',
+      accentColor: 'text-themePrimary',
       displayOrder: 5,
       status: 'active',
       created_at: '2026-01-20T10:00:00Z',
@@ -410,7 +410,7 @@ export const DEFAULT_CMS_DATA: CMSData = {
   ],
 };
 
-const STORAGE_KEY = 'docvault_dynamic_cms_store_v1';
+const STORAGE_KEY = 'docvault_dynamic_cms_store_v2';
 
 class CMSStoreManager {
   private data: CMSData;

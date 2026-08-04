@@ -232,7 +232,7 @@ export default function AdminUsersPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
         <div>
           <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-3 font-auth-heading">
-            <span className="w-10 h-10 rounded-2xl bg-orange-50 border border-orange-200 text-[#FF6B00] flex items-center justify-center shadow-2xs shrink-0">
+            <span className="w-10 h-10 rounded-2xl bg-orange-50 border border-orange-200 text-themePrimary flex items-center justify-center shadow-2xs shrink-0">
               <Users className="w-5 h-5" />
             </span>
             <span>User Management</span>
@@ -245,7 +245,7 @@ export default function AdminUsersPage() {
           <button onClick={fetchUsers} className="text-xs font-extrabold px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-100 hover:bg-slate-200 text-slate-800 flex items-center gap-2 shadow-2xs transition cursor-pointer">
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} /> Refresh
           </button>
-          <button onClick={openCreate} className="flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-black text-white bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:opacity-90 shadow-md shadow-orange-500/20 hover:scale-105 transition cursor-pointer">
+          <button onClick={openCreate} className="flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-black text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:opacity-90 shadow-md shadow-orange-500/20 hover:scale-105 transition cursor-pointer">
             <Plus className="w-4 h-4" /> Add User
           </button>
         </div>
@@ -260,7 +260,7 @@ export default function AdminUsersPage() {
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
             placeholder="Search by full name or email address..."
-            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#FF6B00]"
+            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-themePrimary"
           />
         </div>
       </div>
@@ -269,7 +269,7 @@ export default function AdminUsersPage() {
       <div className="bg-white rounded-3xl border border-slate-200 shadow-2xs overflow-hidden">
         {loading ? (
           <div className="p-12 text-center text-xs text-slate-500 flex items-center justify-center gap-2 font-medium">
-            <Loader2 className="w-5 h-5 animate-spin text-[#FF6B00]" /> Loading users...
+            <Loader2 className="w-5 h-5 animate-spin text-themePrimary" /> Loading users...
           </div>
         ) : users.length === 0 ? (
           <div className="p-12 text-center text-xs text-slate-500 font-medium">No users found matching query.</div>
@@ -291,11 +291,11 @@ export default function AdminUsersPage() {
                   <tr key={user.id} className={`group hover:bg-orange-50/20 transition-all duration-200 ${user.is_blocked ? 'opacity-60 bg-rose-50/10' : ''}`}>
                     <td className="py-3.5 px-5">
                       <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-xl font-black flex items-center justify-center text-xs text-white bg-gradient-to-tr from-[#FF6B00] to-[#F97316] shadow-md group-hover:scale-105 transition-transform">
+                        <div className="w-9 h-9 rounded-xl font-black flex items-center justify-center text-xs text-white bg-gradient-to-tr from-themePrimary to-[#F97316] shadow-md group-hover:scale-105 transition-transform">
                           {(user.full_name || 'U').charAt(0).toUpperCase()}
                         </div>
                         <div>
-                          <span className="font-black text-slate-900 text-xs font-auth-heading block group-hover:text-[#FF6B00] transition-colors">{user.full_name}</span>
+                          <span className="font-black text-slate-900 text-xs font-auth-heading block group-hover:text-themePrimary transition-colors">{user.full_name}</span>
                           <span className="text-[11px] text-slate-500 font-mono">{user.email}</span>
                           {user.is_blocked ? <span className="text-[10px] text-rose-600 font-extrabold block">⛔ Blocked</span> : null}
                         </div>
@@ -326,9 +326,9 @@ export default function AdminUsersPage() {
                     <td className="py-3.5 px-5 text-slate-500 font-medium">{fmt(user.created_at)}</td>
                     <td className="py-3.5 px-5 text-right">
                       <div className="flex items-center justify-end gap-1 bg-slate-50 p-1 rounded-xl border border-slate-200/80 inline-flex">
-                        <button onClick={() => openDetails(user)} className="p-1.5 rounded-lg text-slate-500 hover:text-[#FF6B00] hover:bg-white transition cursor-pointer" title="View Details"><Eye className="w-3.5 h-3.5" /></button>
-                        <button onClick={() => openEdit(user)} className="p-1.5 rounded-lg text-slate-500 hover:text-[#FF6B00] hover:bg-white transition cursor-pointer" title="Edit User"><Edit2 className="w-3.5 h-3.5" /></button>
-                        <button onClick={() => { setSelectedUser(user); setNewPassword(''); setActiveModal('reset-password'); }} className="p-1.5 rounded-lg text-slate-500 hover:text-[#FF6B00] hover:bg-white transition cursor-pointer" title="Reset Password"><KeyRound className="w-3.5 h-3.5" /></button>
+                        <button onClick={() => openDetails(user)} className="p-1.5 rounded-lg text-slate-500 hover:text-themePrimary hover:bg-white transition cursor-pointer" title="View Details"><Eye className="w-3.5 h-3.5" /></button>
+                        <button onClick={() => openEdit(user)} className="p-1.5 rounded-lg text-slate-500 hover:text-themePrimary hover:bg-white transition cursor-pointer" title="Edit User"><Edit2 className="w-3.5 h-3.5" /></button>
+                        <button onClick={() => { setSelectedUser(user); setNewPassword(''); setActiveModal('reset-password'); }} className="p-1.5 rounded-lg text-slate-500 hover:text-themePrimary hover:bg-white transition cursor-pointer" title="Reset Password"><KeyRound className="w-3.5 h-3.5" /></button>
                         <button onClick={() => handleToggleActive(user)} className={`p-1.5 rounded-lg transition cursor-pointer ${user.is_active !== 0 ? 'text-amber-600 hover:bg-white' : 'text-emerald-600 hover:bg-white'}`} title={user.is_active !== 0 ? 'Deactivate' : 'Activate'}>
                           {user.is_active !== 0 ? <UserX className="w-3.5 h-3.5" /> : <UserCheck className="w-3.5 h-3.5" />}
                         </button>
@@ -369,18 +369,18 @@ export default function AdminUsersPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-pop-in">
           <div className="bg-white rounded-3xl max-w-lg w-full p-6 border border-slate-200 shadow-2xl space-y-4 text-xs text-slate-900 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <h2 className="text-base font-black text-slate-900 flex items-center gap-2 font-auth-heading"><Users className="w-5 h-5 text-[#FF6B00]" /> User Profile & Activity</h2>
+              <h2 className="text-base font-black text-slate-900 flex items-center gap-2 font-auth-heading"><Users className="w-5 h-5 text-themePrimary" /> User Profile & Activity</h2>
               <button onClick={() => setActiveModal(null)} className="text-slate-400 hover:text-slate-900 p-1.5 rounded-xl hover:bg-slate-100 transition cursor-pointer"><X className="w-4 h-4" /></button>
             </div>
             <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-200">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#FF6B00] to-[#F97316] text-white font-black text-lg flex items-center justify-center shrink-0 shadow-md">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-themePrimary to-[#F97316] text-white font-black text-lg flex items-center justify-center shrink-0 shadow-md">
                 {selectedUser.full_name?.charAt(0).toUpperCase()}
               </div>
               <div>
                 <h3 className="font-black text-slate-900 text-sm font-auth-heading">{selectedUser.full_name}</h3>
                 <p className="text-xs text-slate-500 font-mono">{selectedUser.email}</p>
                 <div className="flex gap-2 mt-1.5">
-                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase bg-orange-50 text-[#FF6B00] border border-orange-200">{selectedUser.user_type}</span>
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase bg-orange-50 text-themePrimary border border-orange-200">{selectedUser.user_type}</span>
                   <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase border ${selectedUser.is_active ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-rose-50 text-rose-700 border-rose-200'}`}>
                     {selectedUser.is_active ? 'Active' : 'Inactive'}
                   </span>
@@ -403,7 +403,7 @@ export default function AdminUsersPage() {
                   <div className="space-y-1.5 max-h-32 overflow-y-auto">
                     {userDocs.map((d: any) => (
                       <div key={d.id} className="flex items-center gap-2 p-2 bg-white rounded-xl border border-slate-200/80">
-                        <FileText className="w-3.5 h-3.5 text-[#FF6B00] shrink-0" />
+                        <FileText className="w-3.5 h-3.5 text-themePrimary shrink-0" />
                         <span className="text-xs text-slate-800 font-bold truncate">{d.title}</span>
                       </div>
                     ))}
@@ -421,7 +421,7 @@ export default function AdminUsersPage() {
           <div className="bg-white rounded-3xl max-w-md w-full p-6 border border-slate-200 shadow-2xl space-y-4 text-xs text-slate-900">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <h2 className="text-base font-black text-slate-900 flex items-center gap-2 font-auth-heading">
-                {activeModal === 'create' ? <Plus className="w-5 h-5 text-[#FF6B00]" /> : <Edit2 className="w-5 h-5 text-[#FF6B00]" />}
+                {activeModal === 'create' ? <Plus className="w-5 h-5 text-themePrimary" /> : <Edit2 className="w-5 h-5 text-themePrimary" />}
                 {activeModal === 'create' ? 'Create New User' : 'Edit User Profile'}
               </h2>
               <button onClick={() => setActiveModal(null)} className="text-slate-400 hover:text-slate-900 p-1.5 rounded-xl hover:bg-slate-100 transition cursor-pointer"><X className="w-4 h-4" /></button>
@@ -429,21 +429,21 @@ export default function AdminUsersPage() {
             <form onSubmit={activeModal === 'create' ? handleCreate : handleEdit} className="space-y-3">
               <div>
                 <label className="block text-[10px] font-extrabold uppercase text-slate-600 mb-1">Full Name</label>
-                <input required type="text" value={formName} onChange={e => setFormName(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-[#FF6B00]" placeholder="e.g. Sarah Connor" />
+                <input required type="text" value={formName} onChange={e => setFormName(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary" placeholder="e.g. Sarah Connor" />
               </div>
               <div>
                 <label className="block text-[10px] font-extrabold uppercase text-slate-600 mb-1">Email Address</label>
-                <input required type="email" value={formEmail} onChange={e => setFormEmail(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-[#FF6B00]" placeholder="sarah@example.com" />
+                <input required type="email" value={formEmail} onChange={e => setFormEmail(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary" placeholder="sarah@example.com" />
               </div>
               {activeModal === 'create' && (
                 <div>
                   <label className="block text-[10px] font-extrabold uppercase text-slate-600 mb-1">Password</label>
-                  <input required type="password" value={formPassword} onChange={e => setFormPassword(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-[#FF6B00]" placeholder="Min. 6 characters" />
+                  <input required type="password" value={formPassword} onChange={e => setFormPassword(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary" placeholder="Min. 6 characters" />
                 </div>
               )}
               <div>
                 <label className="block text-[10px] font-extrabold uppercase text-slate-600 mb-1">Role / User Type</label>
-                <select value={formRole} onChange={e => setFormRole(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-[#FF6B00] cursor-pointer">
+                <select value={formRole} onChange={e => setFormRole(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary cursor-pointer">
                   {ROLES.map(r => (
                     <option key={r} value={r}>
                       {r.charAt(0).toUpperCase() + r.slice(1)}
@@ -453,7 +453,7 @@ export default function AdminUsersPage() {
               </div>
               <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
                 <button type="button" onClick={() => setActiveModal(null)} className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-bold text-slate-700 transition cursor-pointer">Cancel</button>
-                <button type="submit" disabled={submitting} className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white font-extrabold text-xs shadow-md shadow-orange-500/20 disabled:opacity-50 transition cursor-pointer flex items-center gap-2">
+                <button type="submit" disabled={submitting} className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-extrabold text-xs shadow-md shadow-orange-500/20 disabled:opacity-50 transition cursor-pointer flex items-center gap-2">
                   {submitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                   {activeModal === 'create' ? 'Create User' : 'Save Changes'}
                 </button>
@@ -468,18 +468,18 @@ export default function AdminUsersPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-pop-in">
           <div className="bg-white rounded-3xl max-w-md w-full p-6 border border-slate-200 shadow-2xl space-y-4 text-xs text-slate-900">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <h2 className="text-base font-black text-slate-900 flex items-center gap-2 font-auth-heading"><KeyRound className="w-5 h-5 text-[#FF6B00]" /> Reset User Password</h2>
+              <h2 className="text-base font-black text-slate-900 flex items-center gap-2 font-auth-heading"><KeyRound className="w-5 h-5 text-themePrimary" /> Reset User Password</h2>
               <button onClick={() => setActiveModal(null)} className="text-slate-400 hover:text-slate-900 p-1.5 rounded-xl hover:bg-slate-100 transition cursor-pointer"><X className="w-4 h-4" /></button>
             </div>
             <p className="text-xs text-slate-600 font-medium">Reset password for <strong className="text-slate-900 font-bold">{selectedUser.full_name}</strong> ({selectedUser.email})</p>
             <form onSubmit={handleResetPassword} className="space-y-3">
               <div>
                 <label className="block text-[10px] font-extrabold uppercase text-slate-600 mb-1">New Password</label>
-                <input required type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-[#FF6B00]" placeholder="Minimum 6 characters" />
+                <input required type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary" placeholder="Minimum 6 characters" />
               </div>
               <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
                 <button type="button" onClick={() => setActiveModal(null)} className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-bold text-slate-700 transition cursor-pointer">Cancel</button>
-                <button type="submit" disabled={submitting} className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white font-extrabold text-xs shadow-md shadow-orange-500/20 disabled:opacity-50 transition cursor-pointer flex items-center gap-2">
+                <button type="submit" disabled={submitting} className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-extrabold text-xs shadow-md shadow-orange-500/20 disabled:opacity-50 transition cursor-pointer flex items-center gap-2">
                   {submitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />} Reset Password
                 </button>
               </div>

@@ -34,13 +34,13 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-[#09090B] text-zinc-400 border-t border-zinc-800/80">
+    <footer className="bg-[#09090B] text-zinc-400 border-t border-zinc-800/80 font-sans">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 lg:gap-12">
           {/* Brand Col */}
           <div className="space-y-4 md:col-span-1">
             <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#FF6B00] to-[#F97316] flex items-center justify-center text-white shadow-md shadow-orange-500/30">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-themePrimary to-[#F97316] flex items-center justify-center text-white shadow-md shadow-orange-500/30">
                 <ShieldCheck className="w-5 h-5" />
               </div>
               <span className="font-black text-lg text-white tracking-tight">{footerInfo.companyName || 'DocVault'}</span>
@@ -48,7 +48,7 @@ export default function Footer() {
             <p className="text-sm text-zinc-400 leading-relaxed">
               A secure, central document management system designed to organize personal records, academic credentials, resumes, and client requirements in one organized vault.
             </p>
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#121215] border border-zinc-800 shadow-sm w-fit whitespace-nowrap mt-1">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#121215] border border-zinc-800 shadow-sm w-fit whitespace-nowrap mt-1 hover:border-emerald-500/40 hover:bg-emerald-500/10 transition-colors duration-300 cursor-default">
               <Lock className="w-3.5 h-3.5 text-emerald-500" />
               <span className="text-xs font-medium text-zinc-300 tracking-wide">
                 AES-256 Encrypted <span className="text-zinc-600 mx-1">&bull;</span> Privacy First
@@ -61,15 +61,15 @@ export default function Footer() {
             <h4 className="text-sm font-black text-white uppercase tracking-wider mb-4">Contact Info</h4>
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-2.5 text-zinc-300">
-                <MapPin className="w-4 h-4 text-[#FF6B00] shrink-0 mt-0.5" />
+                <MapPin className="w-4 h-4 text-themePrimary shrink-0 mt-0.5" />
                 <span>{footerInfo.address}</span>
               </li>
               <li className="flex items-center gap-2.5 text-zinc-300">
-                <Phone className="w-4 h-4 text-[#FF6B00] shrink-0" />
+                <Phone className="w-4 h-4 text-themePrimary shrink-0" />
                 <span>{footerInfo.phone}</span>
               </li>
               <li className="flex items-center gap-2.5 text-zinc-300">
-                <Mail className="w-4 h-4 text-[#FF6B00] shrink-0" />
+                <Mail className="w-4 h-4 text-themePrimary shrink-0" />
                 <span>{footerInfo.email}</span>
               </li>
             </ul>
@@ -78,18 +78,18 @@ export default function Footer() {
           {/* Quick Links */}
           <div>
             <h4 className="text-sm font-black text-white uppercase tracking-wider mb-4">Quick Links</h4>
-            <ul className="space-y-2.5 text-sm">
+            <ul className="space-y-3 text-sm">
               <li>
-                <Link href="/" className="hover:text-[#FF6B00] transition-colors">Home</Link>
+                <Link href="/" className="inline-flex hover:text-themePrimary hover:translate-x-1 transition-all duration-300">Home</Link>
               </li>
               <li>
-                <Link href="/login" className="hover:text-[#FF6B00] transition-colors">Sign In to Vault</Link>
+                <Link href="/login" className="inline-flex hover:text-themePrimary hover:translate-x-1 transition-all duration-300">Sign In to Vault</Link>
               </li>
               <li>
-                <Link href="/register" className="hover:text-[#FF6B00] transition-colors">Create Account</Link>
+                <Link href="/register" className="inline-flex hover:text-themePrimary hover:translate-x-1 transition-all duration-300">Create Account</Link>
               </li>
               <li>
-                <Link href="/admin" className="hover:text-[#FF6B00] transition-colors">Admin Control Center</Link>
+                <Link href="/admin" className="inline-flex hover:text-themePrimary hover:translate-x-1 transition-all duration-300">Admin Control Center</Link>
               </li>
             </ul>
           </div>
@@ -107,7 +107,7 @@ export default function Footer() {
                   href={soc.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-8 h-8 rounded-xl bg-[#121215] border border-zinc-800 flex items-center justify-center text-zinc-400 hover:text-[#FF6B00] hover:border-[#FF6B00]/50 transition-all"
+                  className="w-9 h-9 rounded-xl bg-[#121215] border border-zinc-800 flex items-center justify-center text-zinc-400 hover:text-white hover:bg-themePrimary hover:-translate-y-1 hover:shadow-[0_0_15px_rgba(249,115,22,0.5)] hover:border-themePrimary transition-all duration-300"
                   title={soc.platform}
                 >
                   {renderSocialIcon(soc.platform)}

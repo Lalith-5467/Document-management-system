@@ -97,10 +97,10 @@ function NotificationPanel() {
         <Bell className="w-4 h-4 text-slate-300" />
         {unreadCount > 0 && (
           <>
-            <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#FF6B00] text-white text-[9px] font-black flex items-center justify-center z-10 border border-[#0f0f19]">
+            <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-themePrimary text-white text-[9px] font-black flex items-center justify-center z-10 border border-[#0f0f19]">
               {unreadCount > 9 ? '9+' : unreadCount}
             </span>
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#FF6B00] rounded-full animate-ping opacity-75" />
+            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-themePrimary rounded-full animate-ping opacity-75" />
           </>
         )}
       </button>
@@ -111,10 +111,10 @@ function NotificationPanel() {
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-white/5">
             <div className="flex items-center gap-2">
-              <Bell className="w-3.5 h-3.5 text-[#FF6B00]" />
+              <Bell className="w-3.5 h-3.5 text-themePrimary" />
               <span className="text-xs font-extrabold text-white">Notifications</span>
               {unreadCount > 0 && (
-                <span className="px-1.5 py-0.5 rounded-full bg-[#FF6B00] text-white text-[9px] font-black">{unreadCount} new</span>
+                <span className="px-1.5 py-0.5 rounded-full bg-themePrimary text-white text-[9px] font-black">{unreadCount} new</span>
               )}
             </div>
             <div className="flex items-center gap-1">
@@ -167,7 +167,7 @@ function NotificationPanel() {
                   >
                     {/* Unread dot */}
                     {!notif.is_read && (
-                      <span className="absolute left-2 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#FF6B00]" />
+                      <span className="absolute left-2 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-themePrimary" />
                     )}
 
                     {/* Type Icon */}
@@ -211,7 +211,7 @@ function NotificationPanel() {
               <Link
                 href="/admin/activity"
                 onClick={() => setOpen(false)}
-                className="flex items-center justify-center gap-1.5 text-[10px] font-bold text-slate-400 hover:text-[#FF6B00] transition"
+                className="flex items-center justify-center gap-1.5 text-[10px] font-bold text-slate-400 hover:text-themePrimary transition"
               >
                 View all activity logs
                 <ChevronRight className="w-3 h-3" />
@@ -340,6 +340,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: 'Billing & CRM', href: '/admin/billing', icon: CreditCard, badge: 'CRM' },
     { name: 'Help & Support', href: '/admin/support', icon: MessageSquare, badge: 'Help' },
     { name: 'Settings', href: '/admin/settings', icon: Settings, badge: null },
+    { name: 'Themes', href: '/admin/settings/themes', icon: Zap, badge: 'New' },
   ];
 
   return (
@@ -356,13 +357,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       >
         {/* Brand */}
         <div className="h-14 flex items-center px-5 border-b border-slate-100 justify-between bg-white">
-          <Link href="/admin" className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-xl bg-gradient-to-tr from-[#FF6B00] to-[#F97316] flex items-center justify-center shadow-md shadow-orange-500/25">
+          <Link href="/admin" className="flex items-center gap-3 group">
+            <div className="w-8 h-8 rounded-[10px] bg-gradient-to-tr from-themePrimary to-[#F97316] flex items-center justify-center shadow-md shadow-orange-500/20 group-hover:scale-105 transition-transform duration-300">
               <ShieldCheck className="w-4 h-4 text-white" />
             </div>
-            <div>
-              <span className="font-black text-xs text-slate-900 tracking-tight block">DocVault</span>
-              <span className="text-[9px] font-bold uppercase tracking-wider text-[#FF6B00] block">Admin Center</span>
+            <div className="flex flex-col justify-center">
+              <span className="font-black text-sm text-slate-900 tracking-tight leading-none mb-0.5">DocVault</span>
+              <span className="text-[9px] font-extrabold uppercase tracking-widest text-themePrimary leading-none">Admin Center</span>
             </div>
           </Link>
           <button onClick={() => setMobileOpen(false)} className="lg:hidden text-slate-400 hover:text-slate-700 p-1 rounded-lg"><X className="w-4 h-4" /></button>
@@ -387,7 +388,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 px-3 pb-2 pt-1 font-mono">Main Menu</p>
           {navItems.map(item => {
             const Icon = item.icon;
-            const isActive = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href));
+            let isActive = false;
+            if (item.href === '/admin') {
+              isActive = pathname === '/admin';
+            } else if (item.name === 'Settings') {
+              isActive = pathname === '/admin/settings';
+            } else {
+              isActive = pathname === item.href || pathname.startsWith(item.href + '/');
+            }
             return (
               <Link
                 key={item.name}
@@ -395,7 +403,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 onClick={() => setMobileOpen(false)}
                 className={`group flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all relative ${
                   isActive
-                    ? 'bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white shadow-md shadow-orange-500/20'
+                    ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/20'
                     : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
                 }`}
               >
@@ -403,7 +411,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-white' : 'text-slate-400 group-hover:text-slate-700'}`} />
                 <span className="flex-1 font-medium">{item.name}</span>
                 {item.badge && (
-                  <span className={`px-1.5 py-0.5 rounded-full text-[9px] font-bold ${isActive ? 'bg-white/20 text-white' : 'bg-orange-50 text-[#FF6B00] border border-orange-200'}`}>{item.badge}</span>
+                  <span className={`px-1.5 py-0.5 rounded-full text-[9px] font-bold ${isActive ? 'bg-white/20 text-white' : 'bg-orange-50 text-themePrimary border border-orange-200'}`}>{item.badge}</span>
                 )}
               </Link>
             );
@@ -412,7 +420,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <div className="pt-3">
             <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400 px-3 pb-2 font-mono">Quick Access</p>
             <a href="/user" target="_blank" className="group flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 transition">
-              <Zap className="w-4 h-4 text-slate-400 group-hover:text-[#FF6B00]" />
+              <Zap className="w-4 h-4 text-slate-400 group-hover:text-themePrimary" />
               <span>User Portal</span>
               <ChevronRight className="w-3 h-3 ml-auto text-slate-300 group-hover:text-slate-500" />
             </a>
@@ -422,12 +430,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {/* Admin Footer */}
         <div className="p-3 border-t border-slate-100 bg-slate-50/50">
           <div className="flex items-center gap-2.5 p-2 rounded-xl bg-white border border-slate-200/80 shadow-2xs hover:bg-slate-50 transition cursor-pointer group">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-[#FF6B00] to-[#F97316] text-white font-black text-xs flex items-center justify-center shrink-0 shadow-2xs">
-              {(user?.full_name || 'A').charAt(0).toUpperCase()}
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-themePrimary to-[#F97316] text-white font-black text-xs flex items-center justify-center shrink-0 shadow-2xs">
+              A
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-bold text-slate-800 truncate">{user?.full_name || 'System Admin'}</p>
-              <p className="text-[9px] text-[#FF6B00] font-mono font-bold uppercase tracking-wider">Administrator</p>
+              <p className="text-xs font-bold text-slate-800 truncate">System Administrator</p>
+              <p className="text-[9px] text-themePrimary font-mono font-bold uppercase tracking-wider">DocVault Admin</p>
             </div>
             <button
               onClick={logout}
@@ -454,13 +462,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </button>
 
             <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-[#FF6B00]/10 text-[#FF6B00] flex items-center justify-center border border-[#FF6B00]/25 shadow-2xs">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-themePrimary to-[#F97316] flex items-center justify-center text-white shadow-md shadow-orange-500/25">
                 <ShieldCheck className="w-5 h-5" />
               </div>
               <div>
                 <h1 className="text-sm sm:text-base font-black text-slate-900 tracking-tight leading-none flex items-center gap-2 font-auth-heading">
                   Admin Control Center
-                  <span className="px-2 py-0.5 rounded-full bg-[#FF6B00] text-white text-[10px] font-extrabold uppercase font-mono tracking-wider shadow-2xs">
+                  <span className="px-2 py-0.5 rounded-full bg-themePrimary text-white text-[10px] font-extrabold uppercase font-mono tracking-wider shadow-2xs">
                     v2.4
                   </span>
                 </h1>
@@ -477,7 +485,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               onClick={() => setCommandOpen(true)}
               className="hidden sm:flex items-center gap-2 px-3.5 h-9 rounded-xl bg-slate-100 hover:bg-slate-200/80 border border-slate-200 text-slate-600 hover:text-slate-900 transition text-xs font-semibold shadow-2xs"
             >
-              <Command className="w-3.5 h-3.5 text-[#FF6B00]" />
+              <Command className="w-3.5 h-3.5 text-themePrimary" />
               <span>Quick Search</span>
               <kbd className="px-1.5 py-0.5 rounded bg-white font-mono text-[10px] text-slate-500 border border-slate-200 shadow-2xs">⌘K</kbd>
             </button>
@@ -488,7 +496,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             {/* User Portal Link */}
             <Link
               href="/user"
-              className="h-9 px-4 rounded-xl border border-[#FF6B00]/40 bg-[#FF6B00]/10 text-[#FF6B00] hover:bg-[#FF6B00] hover:text-white text-xs font-extrabold transition-all shadow-2xs flex items-center gap-1.5 font-auth-heading"
+              className="h-9 px-4 rounded-xl border border-themePrimary/40 bg-themePrimary/10 text-themePrimary hover:bg-themePrimary hover:text-white text-xs font-extrabold transition-all shadow-2xs flex items-center gap-1.5 font-auth-heading"
             >
               <span>User Portal</span>
               <ChevronRight className="w-3.5 h-3.5" />

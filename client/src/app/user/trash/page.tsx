@@ -294,7 +294,7 @@ export default function TrashPage() {
           </div>
           <Link
             href="/user/documents"
-            className="inline-flex items-center gap-1.5 text-sm font-bold text-[#FF6B00] dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 bg-orange-50 dark:bg-orange-950/60 px-4 py-2 rounded-xl border border-orange-200 dark:border-orange-900/60 transition"
+            className="inline-flex items-center gap-1.5 text-sm font-bold text-themePrimary dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 bg-orange-50 dark:bg-orange-950/60 px-4 py-2 rounded-xl border border-orange-200 dark:border-orange-900/60 transition"
           >
             Go to My Documents
           </Link>

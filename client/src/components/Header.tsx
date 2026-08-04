@@ -84,12 +84,12 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
           }}
           className="relative w-full sm:w-72 md:w-80 group"
         >
-          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 group-focus-within:text-[#FF6B00] transition-colors" />
+          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 group-focus-within:text-themePrimary transition-colors" />
           <input
             name="headerSearch"
             type="text"
             placeholder={t('common.searchPlaceholder', 'Search documents, folders, categories...')}
-            className="w-full pl-10 pr-12 py-2 text-xs bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:bg-white dark:focus:bg-slate-800 focus:border-[#FF6B00] focus:ring-2 focus:ring-[#FF6B00]/20 transition-all shadow-inner"
+            className="w-full pl-10 pr-12 py-2 text-xs bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:bg-white dark:focus:bg-slate-800 focus:border-themePrimary focus:ring-2 focus:ring-themePrimary/20 transition-all shadow-inner"
           />
           <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-[10px] font-mono text-slate-600 dark:text-slate-300 pointer-events-none">
             <Command className="w-2.5 h-2.5" /> K
@@ -99,7 +99,7 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
         {/* Upload Document Primary Button */}
         <Link
           href="/user/upload"
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-extrabold bg-gradient-to-r from-[#FF6B00] via-[#F97316] to-[#EA580C] hover:brightness-110 text-white shadow-lg shadow-orange-500/25 border border-orange-400/30 transition-all active-press hover:scale-105 shrink-0"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-extrabold bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] hover:brightness-110 text-white shadow-lg shadow-orange-500/25 border border-orange-400/30 transition-all active-press hover:scale-105 shrink-0"
         >
           <Upload className="w-4 h-4" />
           <span className="hidden sm:inline">{t('nav.uploadDocument', 'Upload Document')}</span>
@@ -138,8 +138,8 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
             <Bell className="w-4 h-4" />
             {unreadCount > 0 && (
               <span className="absolute top-1 right-1 flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF6B00] opacity-75" />
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#FF6B00] border border-white dark:border-slate-900" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-themePrimary opacity-75" />
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-themePrimary border border-white dark:border-slate-900" />
               </span>
             )}
           </button>
@@ -148,10 +148,10 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
             <div className="absolute right-0 mt-2 w-[340px] sm:w-[420px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl z-50 p-4 space-y-3 backdrop-blur-xl animate-pop-in text-slate-900 dark:text-white">
               <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2.5">
                 <span className="text-xs font-black flex items-center gap-1.5">
-                  <Bell className="w-4 h-4 text-[#FF6B00]" /> Notifications
+                  <Bell className="w-4 h-4 text-themePrimary" /> Notifications
                 </span>
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-orange-50 dark:bg-orange-950/60 text-[#FF6B00] dark:text-orange-400 border border-orange-200 dark:border-orange-900/60">
+                  <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 border border-orange-200 dark:border-orange-900/60">
                     {unreadCount} Unread
                   </span>
                   {unreadCount > 0 && (
@@ -182,7 +182,7 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
                     >
                       <div className="flex items-center justify-between">
                         <span className="font-extrabold text-slate-900 dark:text-white truncate max-w-[180px]">{notif.title}</span>
-                        {!notif.is_read && <span className="w-2 h-2 rounded-full bg-[#FF6B00]" />}
+                        {!notif.is_read && <span className="w-2 h-2 rounded-full bg-themePrimary" />}
                       </div>
                       <p className="text-[11px] text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed">{notif.message}</p>
                     </Link>
@@ -194,7 +194,7 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
                 <Link
                   href="/user/notifications"
                   onClick={() => setShowNotifications(false)}
-                  className="text-xs font-black text-[#FF6B00] dark:text-orange-400 hover:underline inline-flex items-center gap-1"
+                  className="text-xs font-black text-themePrimary dark:text-orange-400 hover:underline inline-flex items-center gap-1"
                 >
                   View All Notifications Center →
                 </Link>
@@ -212,7 +212,7 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
             }}
             className="flex items-center gap-2.5 p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-all text-left active-press hover:scale-105"
           >
-            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#FF6B00] to-[#F97316] text-white font-bold flex items-center justify-center text-xs shadow-md border border-orange-300 dark:border-orange-500/50">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-themePrimary to-[#F97316] text-white font-bold flex items-center justify-center text-xs shadow-md border border-orange-300 dark:border-orange-500/50">
               {userName.charAt(0).toUpperCase()}
             </div>
             <div className="hidden md:block">
@@ -235,18 +235,18 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
               <Link
                 href="/user/profile"
                 onClick={() => setShowProfileMenu(false)}
-                className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-[#FF6B00] dark:hover:text-[#FF6B00] transition-colors font-medium"
+                className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-themePrimary dark:hover:text-themePrimary transition-colors font-medium"
               >
-                <User className="w-4 h-4 text-[#FF6B00]" />
+                <User className="w-4 h-4 text-themePrimary" />
                 <span>{t('nav.userProfile', 'My Profile')}</span>
               </Link>
 
               <Link
                 href="/user/settings"
                 onClick={() => setShowProfileMenu(false)}
-                className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-[#FF6B00] dark:hover:text-[#FF6B00] transition-colors font-medium"
+                className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-themePrimary dark:hover:text-themePrimary transition-colors font-medium"
               >
-                <Settings className="w-4 h-4 text-[#FF6B00]" />
+                <Settings className="w-4 h-4 text-themePrimary" />
                 <span>{t('nav.settings', 'Account Settings')}</span>
               </Link>
 

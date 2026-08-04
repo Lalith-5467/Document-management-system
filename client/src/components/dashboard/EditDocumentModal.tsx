@@ -316,7 +316,7 @@ export default function EditDocumentModal({
                 <button
                   type="button"
                   onClick={() => onDownload(initialDoc)}
-                  className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:brightness-110 text-white font-bold text-xs flex items-center gap-2 shadow-md shadow-orange-500/25"
+                  className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 text-white font-bold text-xs flex items-center gap-2 shadow-md shadow-orange-500/25"
                 >
                   <Download className="w-4 h-4" /> Download File
                 </button>
@@ -357,13 +357,13 @@ export default function EditDocumentModal({
             {(mode === 'edit' || mode === 'move') && (
               <div>
                 <label className="block font-semibold text-slate-800 mb-1 flex items-center gap-1.5">
-                  <Folder className="w-3.5 h-3.5 text-[#FF6B00]" />
+                  <Folder className="w-3.5 h-3.5 text-themePrimary" />
                   Folder Destination
                 </label>
                 <select
                   value={folderId}
                   onChange={(e) => setFolderId(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-[#FF6B00] focus:bg-white text-xs font-medium"
+                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-themePrimary focus:bg-white text-xs font-medium"
                 >
                   <option value="">Root Vault (No folder assignment)</option>
                   {folders.map((f) => (
@@ -383,7 +383,7 @@ export default function EditDocumentModal({
                 <select
                   value={categoryId}
                   onChange={(e) => setCategoryId(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-[#FF6B00] focus:bg-white text-xs font-medium"
+                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-themePrimary focus:bg-white text-xs font-medium"
                 >
                   {categories.map((c) => (
                     <option key={c.id} value={c.id}>{c.category_name}</option>
@@ -404,7 +404,7 @@ export default function EditDocumentModal({
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Optional notes or details about this document..."
-                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-[#FF6B00] focus:bg-white text-xs resize-none"
+                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-themePrimary focus:bg-white text-xs resize-none"
                 />
               </div>
             )}
@@ -413,7 +413,7 @@ export default function EditDocumentModal({
             {mode === 'edit' && (
               <div className="space-y-2">
                 <label className="block font-semibold text-slate-800 flex items-center gap-1.5">
-                  <Tag className="w-3.5 h-3.5 text-[#FF6B00]" />
+                  <Tag className="w-3.5 h-3.5 text-themePrimary" />
                   Document Tags
                 </label>
                 <div className="flex gap-2">
@@ -428,7 +428,7 @@ export default function EditDocumentModal({
                       }
                     }}
                     placeholder="Add tag (e.g. urgent, tax, 2026)..."
-                    className="flex-1 px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-[#FF6B00] text-xs"
+                    className="flex-1 px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-themePrimary text-xs"
                   />
                   <button
                     type="button"
@@ -442,7 +442,7 @@ export default function EditDocumentModal({
                 {tags.length > 0 && (
                   <div className="flex flex-wrap gap-1.5 pt-1">
                     {tags.map((t, idx) => (
-                      <span key={idx} className="px-2.5 py-1 rounded-xl bg-orange-50 text-[#FF6B00] border border-orange-200 text-2xs font-semibold flex items-center gap-1.5">
+                      <span key={idx} className="px-2.5 py-1 rounded-xl bg-orange-50 text-themePrimary border border-orange-200 text-2xs font-semibold flex items-center gap-1.5">
                         #{t}
                         <button type="button" onClick={() => handleRemoveTag(t)} className="hover:text-rose-600 text-slate-400">
                           <X className="w-3 h-3" />
@@ -466,7 +466,7 @@ export default function EditDocumentModal({
               <button
                 type="submit"
                 disabled={loading}
-                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] hover:brightness-110 text-white font-semibold text-xs flex items-center gap-2 shadow-sm transition"
+                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 text-white font-semibold text-xs flex items-center gap-2 shadow-sm transition"
               >
                 {loading && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                 {mode === 'rename' && 'Rename Document'}

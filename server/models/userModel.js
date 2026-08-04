@@ -41,7 +41,7 @@ class UserModel {
 
     static async create(userData) {
         const {
-            fullName, email, password, userType, mobileNumber,
+            fullName, email, password, userType, mobileNumber, phoneVerified,
             collegeName, department, yearOfStudy, studentId,
             companyName, designation, industry, yearsOfExperience, employeeId,
             occupation, country, state, city
@@ -50,13 +50,13 @@ class UserModel {
         try {
             const [result] = await pool.execute(
                 `INSERT INTO users (
-                    full_name, email, password, user_type, mobile_number,
+                    full_name, email, password, user_type, mobile_number, phone_verified,
                     college_name, department, year_of_study, student_id,
                     company_name, designation, industry, years_of_experience, employee_id,
                     occupation, country, state, city
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                 [
-                    fullName, email, password, userType || 'individual', mobileNumber || null,
+                    fullName, email, password, userType || 'individual', mobileNumber || null, phoneVerified ? 1 : 0,
                     collegeName || null, department || null, yearOfStudy || null, studentId || null,
                     companyName || null, designation || null, industry || null, yearsOfExperience || null, employeeId || null,
                     occupation || null, country || null, state || null, city || null
@@ -76,6 +76,7 @@ class UserModel {
                 password,
                 user_type: userType || 'individual',
                 mobile_number: mobileNumber || null,
+                phone_verified: phoneVerified ? 1 : 0,
                 college_name: collegeName || null,
                 department: department || null,
                 year_of_study: yearOfStudy || null,

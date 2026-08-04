@@ -56,11 +56,11 @@ export default function PasswordUnlockModal({
         </button>
 
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-2xl bg-orange-50 dark:bg-orange-950/60 border border-orange-200 dark:border-orange-900/60 text-[#FF6B00] flex items-center justify-center shrink-0 shadow-md">
+          <div className="w-12 h-12 rounded-2xl bg-orange-50 dark:bg-orange-950/60 border border-orange-200 dark:border-orange-900/60 text-themePrimary flex items-center justify-center shrink-0 shadow-md">
             <Lock className="w-6 h-6 stroke-[2.5]" />
           </div>
           <div>
-            <span className="px-2.5 py-0.5 rounded-full bg-orange-100 dark:bg-orange-950 text-[#FF6B00] text-[10px] font-black uppercase tracking-wider">
+            <span className="px-2.5 py-0.5 rounded-full bg-orange-100 dark:bg-orange-950 text-themePrimary text-[10px] font-black uppercase tracking-wider">
               🔒 Protected Document
             </span>
             <h3 className="text-base font-black text-slate-900 dark:text-white mt-0.5 truncate max-w-[240px]">
@@ -92,7 +92,7 @@ export default function PasswordUnlockModal({
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-4 pr-10 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-xs font-mono font-bold text-slate-900 dark:text-white focus:outline-none focus:border-[#FF6B00]"
+                className="w-full pl-4 pr-10 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-xs font-mono font-bold text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary"
               />
               <button
                 type="button"
@@ -111,7 +111,7 @@ export default function PasswordUnlockModal({
                 if (onResetPassword) onResetPassword();
                 else alert('Password reset link sent to your registered email address.');
               }}
-              className="text-[11px] font-extrabold text-[#FF6B00] dark:text-orange-400 hover:underline"
+              className="text-[11px] font-extrabold text-themePrimary dark:text-orange-400 hover:underline"
             >
               Forgot / Reset Password?
             </button>
@@ -128,7 +128,7 @@ export default function PasswordUnlockModal({
             <button
               type="submit"
               disabled={loading}
-              className="px-6 py-2.5 rounded-2xl bg-gradient-to-r from-[#FF6B00] via-[#F97316] to-[#EA580C] text-white font-black text-xs shadow-lg shadow-orange-500/25 hover:scale-105 transition flex items-center gap-2"
+              className="px-6 py-2.5 rounded-2xl bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] text-white font-black text-xs shadow-lg shadow-orange-500/25 hover:scale-105 transition flex items-center gap-2"
             >
               <Unlock className="w-4 h-4" /> Unlock Document
             </button>

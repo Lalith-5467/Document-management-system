@@ -34,6 +34,7 @@ const favoriteRoutes = require('./routes/favoriteRoutes');
 const reportRoutes = require('./routes/reportRoutes');
 const subscriptionRoutes = require('./routes/subscriptionRoutes');
 const settingRoutes = require('./routes/settingRoutes');
+const themeRoutes = require('./routes/themeRoutes');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/documents', documentRoutes);
@@ -47,6 +48,7 @@ app.use('/api/favorites', favoriteRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/subscriptions', subscriptionRoutes);
 app.use('/api/settings', settingRoutes);
+app.use('/api/themes', themeRoutes);
 
 // Health Check Endpoint
 app.get('/api/health', (req, res) => {

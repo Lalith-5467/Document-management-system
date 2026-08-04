@@ -175,7 +175,7 @@ export default function DocumentCalendarPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200 dark:border-slate-800">
         <div>
           <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-3">
-            <span className="w-9 h-9 rounded-2xl bg-orange-100 dark:bg-orange-950/60 text-[#FF6B00] border border-orange-200 dark:border-orange-900/60 flex items-center justify-center shrink-0">
+            <span className="w-9 h-9 rounded-2xl bg-orange-100 dark:bg-orange-950/60 text-themePrimary border border-orange-200 dark:border-orange-900/60 flex items-center justify-center shrink-0">
               <CalendarDays className="w-5 h-5" />
             </span>
             Document Timeline
@@ -192,13 +192,13 @@ export default function DocumentCalendarPage() {
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               placeholder="Search documents..."
-              className="pl-9 pr-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-[#FF6B00] w-48"
+              className="pl-9 pr-3 py-2 text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-themePrimary w-48"
             />
           </div>
           <select
             value={selectedCategory}
             onChange={e => setSelectedCategory(e.target.value)}
-            className="px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-300 focus:outline-none focus:border-[#FF6B00]"
+            className="px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-300 focus:outline-none focus:border-themePrimary"
           >
             {categoryOptions.map(cat => (
               <option key={cat} value={cat}>{cat === 'all' ? 'All Categories' : cat}</option>
@@ -280,7 +280,7 @@ export default function DocumentCalendarPage() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-sm font-black transition-all ${activeTab === tab.id ? 'bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white shadow-md shadow-orange-500/25' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-sm font-black transition-all ${activeTab === tab.id ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/25' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
               >
                 {tab.label}
                 <span className={`text-xs px-1.5 py-0.5 rounded-full font-extrabold ${activeTab === tab.id ? 'bg-white/20 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'}`}>
@@ -306,7 +306,7 @@ export default function DocumentCalendarPage() {
                 return (
                   <div
                     key={evt.id}
-                    className="group bg-white dark:bg-slate-900/80 border border-slate-200/80 dark:border-slate-800/80 rounded-2xl p-4 shadow-sm hover:shadow-[0_8px_30px_rgba(255,107,0,0.1)] hover:border-[#FF6B00]/30 transition-all duration-300 cursor-pointer"
+                    className="group bg-white dark:bg-slate-900/80 border border-slate-200/80 dark:border-slate-800/80 rounded-2xl p-4 shadow-sm hover:shadow-[0_8px_30px_rgba(255,107,0,0.1)] hover:border-themePrimary/30 transition-all duration-300 cursor-pointer"
                     onClick={() => setSelectedEvent(evt)}
                     style={{ animationDelay: `${idx * 40}ms` }}
                   >
@@ -327,7 +327,7 @@ export default function DocumentCalendarPage() {
                               </span>
                               <span className="text-xs text-slate-400 dark:text-slate-500 font-medium">{evt.category}</span>
                             </div>
-                            <h3 className="text-base font-black text-slate-900 dark:text-white group-hover:text-[#FF6B00] transition-colors truncate">
+                            <h3 className="text-base font-black text-slate-900 dark:text-white group-hover:text-themePrimary transition-colors truncate">
                               {evt.title}
                             </h3>
                           </div>
@@ -349,7 +349,7 @@ export default function DocumentCalendarPage() {
                           </div>
                           <button
                             onClick={e => { e.stopPropagation(); setRenewModalDoc(evt); setRenewDateInput(evt.expiryDate); }}
-                            className="flex items-center gap-1 px-3 py-1 rounded-lg bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white text-xs font-black shadow-sm shadow-orange-500/20 hover:scale-105 transition-transform opacity-0 group-hover:opacity-100 shrink-0"
+                            className="flex items-center gap-1 px-3 py-1 rounded-lg bg-gradient-to-r from-themePrimary to-[#F97316] text-white text-xs font-black shadow-sm shadow-orange-500/20 hover:scale-105 transition-transform opacity-0 group-hover:opacity-100 shrink-0"
                           >
                             <RefreshCw className="w-3 h-3" /> Renew
                           </button>
@@ -369,7 +369,7 @@ export default function DocumentCalendarPage() {
           {/* Upcoming Deadlines */}
           <div className="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 shadow-sm">
             <div className="flex items-center gap-2 mb-4">
-              <Bell className="w-4 h-4 text-[#FF6B00]" />
+              <Bell className="w-4 h-4 text-themePrimary" />
               <h3 className="text-base font-black text-slate-900 dark:text-white">Upcoming Deadlines</h3>
             </div>
             <div className="space-y-3">
@@ -379,12 +379,12 @@ export default function DocumentCalendarPage() {
                   <div
                     key={evt.id}
                     onClick={() => setSelectedEvent(evt)}
-                    className="flex items-center justify-between gap-3 p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 hover:bg-orange-50 dark:hover:bg-orange-950/20 border border-transparent hover:border-[#FF6B00]/20 transition-all cursor-pointer group"
+                    className="flex items-center justify-between gap-3 p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 hover:bg-orange-50 dark:hover:bg-orange-950/20 border border-transparent hover:border-themePrimary/20 transition-all cursor-pointer group"
                   >
                     <div className="flex items-center gap-2.5 min-w-0">
                       <span className={`w-2 h-2 rounded-full shrink-0 ${cfg.dot} ${evt.status === 'expiring_soon' ? 'animate-pulse' : ''}`} />
                       <div className="min-w-0">
-                        <p className="text-sm font-bold text-slate-900 dark:text-white truncate group-hover:text-[#FF6B00] transition-colors">{evt.title}</p>
+                        <p className="text-sm font-bold text-slate-900 dark:text-white truncate group-hover:text-themePrimary transition-colors">{evt.title}</p>
                         <p className="text-xs text-slate-400">{formatDate(evt.expiryDate)}</p>
                       </div>
                     </div>
@@ -400,7 +400,7 @@ export default function DocumentCalendarPage() {
           {/* Category Breakdown */}
           <div className="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 shadow-sm">
             <div className="flex items-center gap-2 mb-4">
-              <BarChart3 className="w-4 h-4 text-[#FF6B00]" />
+              <BarChart3 className="w-4 h-4 text-themePrimary" />
               <h3 className="text-base font-black text-slate-900 dark:text-white">Category Breakdown</h3>
             </div>
             <div className="space-y-3.5">
@@ -437,7 +437,7 @@ export default function DocumentCalendarPage() {
           {/* Quick Legend */}
           <div className="bg-gradient-to-br from-orange-50 to-amber-50/40 dark:from-orange-950/30 dark:to-amber-950/20 border border-orange-100 dark:border-orange-900/40 rounded-3xl p-5">
             <div className="flex items-center gap-2 mb-3">
-              <Shield className="w-4 h-4 text-[#FF6B00]" />
+              <Shield className="w-4 h-4 text-themePrimary" />
               <h3 className="text-sm font-black text-slate-900 dark:text-white">Status Guide</h3>
             </div>
             <div className="space-y-2">
@@ -497,7 +497,7 @@ export default function DocumentCalendarPage() {
               </button>
               <button
                 onClick={() => { setRenewModalDoc(selectedEvent); setRenewDateInput(selectedEvent.expiryDate); }}
-                className="flex-1 py-2.5 rounded-2xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white font-black text-sm shadow-lg shadow-orange-500/20 hover:scale-105 transition flex items-center justify-center gap-1.5"
+                className="flex-1 py-2.5 rounded-2xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-black text-sm shadow-lg shadow-orange-500/20 hover:scale-105 transition flex items-center justify-center gap-1.5"
               >
                 <CalendarCheck className="w-4 h-4" /> Renew Now
               </button>
@@ -512,7 +512,7 @@ export default function DocumentCalendarPage() {
           <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-5 animate-pop-in">
             <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4">
               <div className="flex items-center gap-2">
-                <span className="w-8 h-8 rounded-xl bg-orange-100 dark:bg-orange-950/60 text-[#FF6B00] border border-orange-200 dark:border-orange-900 flex items-center justify-center">
+                <span className="w-8 h-8 rounded-xl bg-orange-100 dark:bg-orange-950/60 text-themePrimary border border-orange-200 dark:border-orange-900 flex items-center justify-center">
                   <CalendarCheck className="w-4 h-4" />
                 </span>
                 <h3 className="text-base font-black text-slate-900 dark:text-white">Renew Document</h3>
@@ -534,14 +534,14 @@ export default function DocumentCalendarPage() {
                   required
                   value={renewDateInput}
                   onChange={e => setRenewDateInput(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-base font-bold text-slate-900 dark:text-white focus:outline-none focus:border-[#FF6B00] transition"
+                  className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-base font-bold text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary transition"
                 />
               </div>
               <div className="flex gap-3 pt-1">
                 <button type="button" onClick={() => setRenewModalDoc(null)} className="flex-1 py-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 text-sm font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition">
                   Cancel
                 </button>
-                <button type="submit" className="flex-1 py-2.5 rounded-2xl bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white text-sm font-black shadow-md shadow-orange-500/25 hover:scale-105 transition">
+                <button type="submit" className="flex-1 py-2.5 rounded-2xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white text-sm font-black shadow-md shadow-orange-500/25 hover:scale-105 transition">
                   Save Date
                 </button>
               </div>

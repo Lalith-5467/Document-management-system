@@ -53,7 +53,7 @@ function Skeleton({ className }: { className?: string }) {
 }
 
 // ─── Section Header ──────────────────────────────────
-function SectionTitle({ icon: Icon, title, subtitle, color = 'text-[#FF6B00]', action }: any) {
+function SectionTitle({ icon: Icon, title, subtitle, color = 'text-themePrimary', action }: any) {
   return (
     <div className="flex items-center justify-between mb-5">
       <div className="flex items-center gap-3">
@@ -89,13 +89,13 @@ function StatCard({ title, value, icon: Icon, gradient, badge, href, onClick, lo
             <Link
               href={href}
               onClick={(e) => e.stopPropagation()}
-              className="w-7 h-7 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-400 group-hover:text-[#FF6B00] group-hover:border-orange-200 hover:bg-orange-50 transition-all shrink-0"
+              className="w-7 h-7 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-400 group-hover:text-themePrimary group-hover:border-orange-200 hover:bg-orange-50 transition-all shrink-0"
               title="Open full page"
             >
               <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </Link>
           ) : (
-            <div className="w-7 h-7 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-400 group-hover:text-[#FF6B00] group-hover:border-orange-200 transition-colors">
+            <div className="w-7 h-7 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-400 group-hover:text-themePrimary group-hover:border-orange-200 transition-colors">
               <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </div>
           )}
@@ -106,9 +106,9 @@ function StatCard({ title, value, icon: Icon, gradient, badge, href, onClick, lo
           {loading ? (
             <Skeleton className="h-8 w-24 rounded-lg bg-slate-100" />
           ) : (
-            <p className="text-2xl font-black text-slate-900 tracking-tight group-hover:text-[#FF6B00] transition-colors font-auth-heading">{value}</p>
+            <p className="text-2xl font-black text-slate-900 tracking-tight group-hover:text-themePrimary transition-colors font-auth-heading">{value}</p>
           )}
-          {badge && <p className="text-[10px] font-semibold text-slate-500 mt-1.5 flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-[#FF6B00] animate-pulse" /> {badge}</p>}
+          {badge && <p className="text-[10px] font-semibold text-slate-500 mt-1.5 flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-themePrimary animate-pulse" /> {badge}</p>}
         </div>
       </div>
     </div>
@@ -116,7 +116,7 @@ function StatCard({ title, value, icon: Icon, gradient, badge, href, onClick, lo
 }
 
 // ─── Quick Action Card ───────────────────────────────
-function QuickAction({ icon: Icon, label, description, onClick, color = 'from-[#FF6B00] to-[#F97316]' }: any) {
+function QuickAction({ icon: Icon, label, description, onClick, color = 'from-themePrimary to-[#F97316]' }: any) {
   return (
     <button
       onClick={onClick}
@@ -125,7 +125,7 @@ function QuickAction({ icon: Icon, label, description, onClick, color = 'from-[#
       <div className={`w-10 h-10 rounded-xl bg-gradient-to-tr ${color} flex items-center justify-center mb-3 shadow-md shadow-orange-500/20 group-hover:scale-110 transition-transform duration-300`}>
         <Icon className="w-4.5 h-4.5 text-white" />
       </div>
-      <p className="text-xs font-bold text-slate-900 group-hover:text-[#FF6B00] transition-colors font-auth-heading">{label}</p>
+      <p className="text-xs font-bold text-slate-900 group-hover:text-themePrimary transition-colors font-auth-heading">{label}</p>
       <p className="text-[10px] text-slate-500 mt-0.5 leading-relaxed">{description}</p>
     </button>
   );
@@ -194,10 +194,10 @@ export default function AdminDashboardPage() {
 
         <div className="space-y-1 relative z-10">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-xl bg-gradient-to-tr from-[#FF6B00] to-[#F97316] flex items-center justify-center shadow-md shadow-orange-500/25">
+            <div className="w-7 h-7 rounded-xl bg-gradient-to-tr from-themePrimary to-[#F97316] flex items-center justify-center shadow-md shadow-orange-500/25">
               <Zap className="w-4 h-4 text-white animate-pulse" />
             </div>
-            <span className="text-[10px] font-black uppercase tracking-widest text-[#FF6B00] font-mono">
+            <span className="text-[10px] font-black uppercase tracking-widest text-themePrimary font-mono">
               ENTERPRISE CONTROL CENTER
             </span>
           </div>
@@ -213,7 +213,7 @@ export default function AdminDashboardPage() {
           onClick={fetchStats}
           className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200/80 border border-slate-200 text-xs font-extrabold text-slate-700 hover:text-slate-900 shadow-2xs transition-all active-press shrink-0 font-auth-heading cursor-pointer"
         >
-          <RefreshCw className={`w-3.5 h-3.5 text-[#FF6B00] ${statsLoading ? 'animate-spin' : ''}`} /> Refresh All
+          <RefreshCw className={`w-3.5 h-3.5 text-themePrimary ${statsLoading ? 'animate-spin' : ''}`} /> Refresh All
         </button>
       </div>
 
@@ -244,7 +244,7 @@ export default function AdminDashboardPage() {
             onClick={() => setActiveSection(sec.id)}
             className={`shrink-0 px-4 py-2.5 rounded-2xl text-xs font-bold transition-all duration-200 whitespace-nowrap active-press cursor-pointer font-auth-heading ${
               activeSection === sec.id
-                ? 'bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white shadow-md shadow-orange-500/20 border border-orange-400/30'
+                ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/20 border border-orange-400/30'
                 : 'text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-100/80 border border-slate-200/80'
             }`}
           >
@@ -303,7 +303,7 @@ function OverviewSection({ stats, loading }: { stats: any; loading: boolean }) {
       {/* Recent Uploads */}
       <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs">
         <SectionTitle icon={Upload} title="Recent System Uploads" subtitle="Latest documents added" color="text-emerald-500"
-          action={<Link href="/admin/documents" className="text-2xs font-bold text-[#FF6B00] hover:underline flex items-center gap-1">View all <ChevronRight className="w-3 h-3" /></Link>}
+          action={<Link href="/admin/documents" className="text-2xs font-bold text-themePrimary hover:underline flex items-center gap-1">View all <ChevronRight className="w-3 h-3" /></Link>}
         />
         {loading ? (
           <div className="space-y-2">{Array(4).fill(0).map((_, i) => <Skeleton key={i} className="h-12 bg-slate-100" />)}</div>
@@ -330,7 +330,7 @@ function OverviewSection({ stats, loading }: { stats: any; loading: boolean }) {
       {/* Top Downloads */}
       <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs">
         <SectionTitle icon={Download} title="Most Downloaded" subtitle="Highest-traffic documents" color="text-cyan-500"
-          action={<Link href="/admin/reports" className="text-2xs font-bold text-[#FF6B00] hover:underline flex items-center gap-1">Reports <ChevronRight className="w-3 h-3" /></Link>}
+          action={<Link href="/admin/reports" className="text-2xs font-bold text-themePrimary hover:underline flex items-center gap-1">Reports <ChevronRight className="w-3 h-3" /></Link>}
         />
         {loading ? (
           <div className="space-y-2">{Array(4).fill(0).map((_, i) => <Skeleton key={i} className="h-12 bg-slate-100" />)}</div>
@@ -355,7 +355,7 @@ function OverviewSection({ stats, loading }: { stats: any; loading: boolean }) {
       {/* Most Active Users */}
       <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs">
         <SectionTitle icon={Award} title="Most Active Users" subtitle="Users with highest engagement" color="text-amber-500"
-          action={<Link href="/admin/users" className="text-2xs font-bold text-[#FF6B00] hover:underline flex items-center gap-1">Manage <ChevronRight className="w-3 h-3" /></Link>}
+          action={<Link href="/admin/users" className="text-2xs font-bold text-themePrimary hover:underline flex items-center gap-1">Manage <ChevronRight className="w-3 h-3" /></Link>}
         />
         {loading ? (
           <div className="space-y-2">{Array(4).fill(0).map((_, i) => <Skeleton key={i} className="h-12 bg-slate-100" />)}</div>
@@ -365,7 +365,7 @@ function OverviewSection({ stats, loading }: { stats: any; loading: boolean }) {
           <div className="space-y-2">
             {stats.activeUsers.slice(0, 5).map((u: any, i: number) => (
               <div key={u.id} className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 hover:bg-slate-100/80 border border-slate-100 transition">
-                <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-[#FF6B00] to-[#F97316] text-white font-black text-xs flex items-center justify-center shrink-0 shadow-2xs">
+                <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-themePrimary to-[#F97316] text-white font-black text-xs flex items-center justify-center shrink-0 shadow-2xs">
                   {(u.full_name || 'U').charAt(0).toUpperCase()}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -400,13 +400,13 @@ function MonthlyMiniChart() {
 
   return (
     <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs">
-      <SectionTitle icon={TrendingUp} title="Monthly Upload Trends" subtitle="Last 6 months" color="text-[#FF6B00]" />
+      <SectionTitle icon={TrendingUp} title="Monthly Upload Trends" subtitle="Last 6 months" color="text-themePrimary" />
       {loading ? <Skeleton className="h-32 bg-slate-100" /> : (
         <div className="flex items-end gap-2 h-32 mt-2">
           {data.map((m: any, i: number) => (
             <div key={i} className="flex-1 flex flex-col items-center gap-1 h-full justify-end">
               <span className="text-2xs text-slate-500 font-mono font-bold">{m.count}</span>
-              <div className="w-full rounded-t-lg bg-gradient-to-t from-[#FF6B00] to-[#F97316] transition-all min-h-[4px]"
+              <div className="w-full rounded-t-lg bg-gradient-to-t from-themePrimary to-[#F97316] transition-all min-h-[4px]"
                 style={{ height: `${Math.max(4, (m.count / max) * 100)}px` }}
               />
               <span className="text-[9px] text-slate-500 font-mono">{m.label}</span>
@@ -507,13 +507,13 @@ function UsersSection({ showToast }: { showToast: any }) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <SectionTitle icon={Users} title="User Management" subtitle={`${users.length} users loaded`} color="text-[#FF6B00]" />
+        <SectionTitle icon={Users} title="User Management" subtitle={`${users.length} users loaded`} color="text-themePrimary" />
         <div className="flex items-center gap-2">
           <div className="relative">
             <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-            <input value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} placeholder="Search users..." className="pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#FF6B00] w-44 font-medium" />
+            <input value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} placeholder="Search users..." className="pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-themePrimary w-44 font-medium" />
           </div>
-          <button onClick={() => { setForm({ full_name: '', email: '', password: '', user_type: 'individual' }); setModal({ type: 'create' }); }} className="flex items-center gap-2 px-3 py-2 rounded-xl bg-[#FF6B00] hover:bg-[#EA580C] text-white text-xs font-bold shadow-md shadow-orange-500/20 transition cursor-pointer">
+          <button onClick={() => { setForm({ full_name: '', email: '', password: '', user_type: 'individual' }); setModal({ type: 'create' }); }} className="flex items-center gap-2 px-3 py-2 rounded-xl bg-themePrimary hover:bg-[#EA580C] text-white text-xs font-bold shadow-md shadow-orange-500/20 transition cursor-pointer">
             <Plus className="w-3.5 h-3.5" /> Add User
           </button>
         </div>
@@ -541,18 +541,18 @@ function UsersSection({ showToast }: { showToast: any }) {
                   <tr key={u.id} className={`group hover:bg-orange-50/20 transition-all duration-200 bg-white ${u.is_blocked ? 'opacity-50' : ''}`}>
                     <td className="py-4 px-5">
                       <div className="flex items-center gap-3">
-                        <div className={`w-9 h-9 rounded-2xl font-black text-xs flex items-center justify-center text-white shrink-0 shadow-md group-hover:scale-105 transition-transform ${u.user_type === 'admin' ? 'bg-gradient-to-tr from-[#FF6B00] to-[#F97316]' : 'bg-blue-600'}`}>
+                        <div className={`w-9 h-9 rounded-2xl font-black text-xs flex items-center justify-center text-white shrink-0 shadow-md group-hover:scale-105 transition-transform ${u.user_type === 'admin' ? 'bg-gradient-to-tr from-themePrimary to-[#F97316]' : 'bg-blue-600'}`}>
                           {(u.full_name || 'U').charAt(0).toUpperCase()}
                         </div>
                         <div>
-                          <p className="font-black text-slate-900 text-sm font-auth-heading group-hover:text-[#FF6B00] transition-colors">{u.full_name}</p>
+                          <p className="font-black text-slate-900 text-sm font-auth-heading group-hover:text-themePrimary transition-colors">{u.full_name}</p>
                           <p className="text-xs text-slate-500 font-medium">{u.email}</p>
                         </div>
                       </div>
                     </td>
                     <td className="py-4 px-5">
                       <span className={`px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider border shadow-2xs ${
-                        u.user_type === 'admin' ? 'bg-orange-50 text-[#FF6B00] border-orange-200' :
+                        u.user_type === 'admin' ? 'bg-orange-50 text-themePrimary border-orange-200' :
                         u.user_type === 'professional' ? 'bg-purple-50 text-purple-700 border-purple-200' :
                         u.user_type === 'student' ? 'bg-blue-50 text-blue-700 border-blue-200' :
                         'bg-slate-100 text-slate-700 border-slate-200'
@@ -610,7 +610,7 @@ function UsersSection({ showToast }: { showToast: any }) {
       </div>
 
       <div className="flex justify-end">
-        <Link href="/admin/users" className="text-xs font-bold text-[#FF6B00] hover:underline flex items-center gap-1 transition">Full User Management <ChevronRight className="w-3.5 h-3.5" /></Link>
+        <Link href="/admin/users" className="text-xs font-bold text-themePrimary hover:underline flex items-center gap-1 transition">Full User Management <ChevronRight className="w-3.5 h-3.5" /></Link>
       </div>
 
       {/* Create User Modal */}
@@ -622,12 +622,12 @@ function UsersSection({ showToast }: { showToast: any }) {
                 <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">{label as string}</label>
                 <input required type={type as string} placeholder={ph as string} value={(form as any)[key as string]}
                   onChange={e => setForm(f => ({ ...f, [key as string]: e.target.value }))}
-                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#FF6B00]" />
+                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-themePrimary" />
               </div>
             ))}
             <div>
               <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">Role</label>
-              <select value={form.user_type} onChange={e => setForm(f => ({ ...f, user_type: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-[#FF6B00] cursor-pointer">
+              <select value={form.user_type} onChange={e => setForm(f => ({ ...f, user_type: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary cursor-pointer">
                 {['individual', 'student', 'professional', 'admin'].map(r => (
                   <option key={r} value={r} className="bg-white text-slate-900 py-1">
                     {r.charAt(0).toUpperCase() + r.slice(1)}
@@ -653,15 +653,15 @@ function UsersSection({ showToast }: { showToast: any }) {
           }} className="space-y-3">
             <div>
               <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">Full Name</label>
-              <input required type="text" value={form.full_name} onChange={e => setForm(f => ({ ...f, full_name: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-[#FF6B00]" />
+              <input required type="text" value={form.full_name} onChange={e => setForm(f => ({ ...f, full_name: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary" />
             </div>
             <div>
               <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">Email Address</label>
-              <input required type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-[#FF6B00]" />
+              <input required type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary" />
             </div>
             <div>
               <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">Role</label>
-              <select value={form.user_type} onChange={e => setForm(f => ({ ...f, user_type: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-[#FF6B00] cursor-pointer">
+              <select value={form.user_type} onChange={e => setForm(f => ({ ...f, user_type: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary cursor-pointer">
                 {['individual', 'student', 'professional', 'admin'].map(r => (
                   <option key={r} value={r} className="bg-white text-slate-900 py-1">
                     {r.charAt(0).toUpperCase() + r.slice(1)}
@@ -669,7 +669,7 @@ function UsersSection({ showToast }: { showToast: any }) {
                 ))}
               </select>
             </div>
-            <ModalActions onCancel={() => setModal(null)} submitting={submitting} label="Save Changes" color="bg-[#FF6B00] hover:bg-[#EA580C]" />
+            <ModalActions onCancel={() => setModal(null)} submitting={submitting} label="Save Changes" color="bg-themePrimary hover:bg-[#EA580C]" />
           </form>
         </Modal>
       )}
@@ -680,7 +680,7 @@ function UsersSection({ showToast }: { showToast: any }) {
           <form onSubmit={handleResetPwd} className="space-y-3">
             <div>
               <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">New Password</label>
-              <input required type="password" value={newPwd} onChange={e => setNewPwd(e.target.value)} placeholder="Minimum 6 characters" className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-[#FF6B00]" />
+              <input required type="password" value={newPwd} onChange={e => setNewPwd(e.target.value)} placeholder="Minimum 6 characters" className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary" />
             </div>
             <ModalActions onCancel={() => setModal(null)} submitting={submitting} label="Reset Password" color="bg-violet-600 hover:bg-violet-500" />
           </form>
@@ -776,7 +776,7 @@ function DocumentsSection({ showToast }: { showToast: any }) {
         <div className="flex items-center gap-2">
           <div className="relative">
             <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-            <input value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} placeholder="Search documents..." className="pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#FF6B00] w-44" />
+            <input value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} placeholder="Search documents..." className="pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-themePrimary w-44" />
           </div>
           <Link href="/admin/documents" className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-bold text-slate-700 transition">
             Full View <ChevronRight className="w-3.5 h-3.5" />
@@ -1069,24 +1069,24 @@ function CategoriesSection({ showToast }: { showToast: any }) {
             return (
               <div
                 key={cat.id}
-                className={`group relative p-5 rounded-3xl border border-slate-200 bg-white shadow-2xs hover:shadow-xl hover:shadow-orange-500/10 hover:border-[#FF6B00] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between overflow-hidden cursor-pointer ${!isActive ? 'opacity-60' : ''}`}
+                className={`group relative p-5 rounded-3xl border border-slate-200 bg-white shadow-2xs hover:shadow-xl hover:shadow-orange-500/10 hover:border-themePrimary hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between overflow-hidden cursor-pointer ${!isActive ? 'opacity-60' : ''}`}
               >
                 {/* Top Orange Hover Accent Bar */}
-                <div className="absolute top-0 left-0 right-0 h-1 bg-transparent group-hover:bg-gradient-to-r group-hover:from-[#FF6B00] group-hover:to-[#F97316] transition-all duration-300" />
+                <div className="absolute top-0 left-0 right-0 h-1 bg-transparent group-hover:bg-gradient-to-r group-hover:from-themePrimary group-hover:to-[#F97316] transition-all duration-300" />
 
                 <div>
                   <div className="flex items-center justify-between">
                     <div
                       className="w-11 h-11 rounded-2xl flex items-center justify-center text-white shadow-md font-bold transition-transform duration-300 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-orange-500/20"
-                      style={{ backgroundColor: cat.color || '#FF6B00' }}
+                      style={{ backgroundColor: cat.color || 'var(--theme-primary, #FF6B00)' }}
                     >
                       <Tags className="w-5 h-5 text-white" />
                     </div>
                     <div className="flex items-center gap-1 bg-slate-50 p-1 rounded-xl border border-slate-200/80">
-                      <button onClick={() => handleToggle(cat)} className="p-1.5 rounded-lg text-slate-500 hover:text-[#FF6B00] hover:bg-orange-50 transition cursor-pointer" title={isActive ? 'Disable' : 'Enable'}>
+                      <button onClick={() => handleToggle(cat)} className="p-1.5 rounded-lg text-slate-500 hover:text-themePrimary hover:bg-orange-50 transition cursor-pointer" title={isActive ? 'Disable' : 'Enable'}>
                         {isActive ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                       </button>
-                      <button onClick={() => { setForm({ category_name: cat.category_name, description: cat.description || '', color: cat.color || '#3B82F6', icon_name: cat.icon_name || 'Folder' }); setModal({ type: 'edit', cat }); }} className="p-1.5 rounded-lg text-slate-500 hover:text-[#FF6B00] hover:bg-orange-50 transition cursor-pointer" title="Edit Category">
+                      <button onClick={() => { setForm({ category_name: cat.category_name, description: cat.description || '', color: cat.color || '#3B82F6', icon_name: cat.icon_name || 'Folder' }); setModal({ type: 'edit', cat }); }} className="p-1.5 rounded-lg text-slate-500 hover:text-themePrimary hover:bg-orange-50 transition cursor-pointer" title="Edit Category">
                         <Edit2 className="w-3.5 h-3.5" />
                       </button>
                       <button onClick={() => setModal({ type: 'delete', cat })} className="p-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition cursor-pointer" title="Delete Category">
@@ -1095,7 +1095,7 @@ function CategoriesSection({ showToast }: { showToast: any }) {
                     </div>
                   </div>
                   <div className="mt-4 space-y-1">
-                    <h4 className="text-sm font-black text-slate-900 line-clamp-1 font-auth-heading tracking-tight group-hover:text-[#FF6B00] transition-colors duration-300">
+                    <h4 className="text-sm font-black text-slate-900 line-clamp-1 font-auth-heading tracking-tight group-hover:text-themePrimary transition-colors duration-300">
                       {cat.category_name}
                     </h4>
                     <p className="text-xs text-slate-600 line-clamp-2 font-medium leading-relaxed">
@@ -1105,8 +1105,8 @@ function CategoriesSection({ showToast }: { showToast: any }) {
                 </div>
 
                 <div className="pt-3.5 border-t border-slate-100 mt-4 flex items-center justify-between">
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-100 group-hover:bg-orange-50 group-hover:border-orange-200 border border-slate-200 text-xs font-mono font-bold text-slate-700 group-hover:text-[#FF6B00] transition-colors duration-300">
-                    <FileText className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#FF6B00]" />
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-100 group-hover:bg-orange-50 group-hover:border-orange-200 border border-slate-200 text-xs font-mono font-bold text-slate-700 group-hover:text-themePrimary transition-colors duration-300">
+                    <FileText className="w-3.5 h-3.5 text-slate-400 group-hover:text-themePrimary" />
                     {cat.document_count || 0} docs
                   </span>
                   <span className={`text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-md border ${isActive ? 'text-emerald-700 bg-emerald-50 border-emerald-200' : 'text-slate-500 bg-slate-100 border-slate-200'}`}>
@@ -1282,8 +1282,8 @@ function FoldersSection({ showToast }: { showToast: any }) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <SectionTitle icon={FolderOpen} title="Folder Management" subtitle={`${folders.length} folders`} color="text-[#FF6B00]" />
-        <button onClick={() => { setForm({ folder_name: '', description: '', color: '#3B82F6' }); setModal({ type: 'create' }); }} className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#FF6B00] hover:bg-[#EA580C] text-white text-xs font-bold shadow-md shadow-orange-500/20 transition cursor-pointer">
+        <SectionTitle icon={FolderOpen} title="Folder Management" subtitle={`${folders.length} folders`} color="text-themePrimary" />
+        <button onClick={() => { setForm({ folder_name: '', description: '', color: '#3B82F6' }); setModal({ type: 'create' }); }} className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-themePrimary hover:bg-[#EA580C] text-white text-xs font-bold shadow-md shadow-orange-500/20 transition cursor-pointer">
           <Plus className="w-3.5 h-3.5" /> New Folder
         </button>
       </div>
@@ -1295,23 +1295,23 @@ function FoldersSection({ showToast }: { showToast: any }) {
           {folders.map(f => (
             <div
               key={f.id}
-              className="group relative p-5 rounded-3xl border border-slate-200 bg-white shadow-2xs hover:shadow-xl hover:shadow-orange-500/10 hover:border-[#FF6B00] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between overflow-hidden cursor-pointer"
+              className="group relative p-5 rounded-3xl border border-slate-200 bg-white shadow-2xs hover:shadow-xl hover:shadow-orange-500/10 hover:border-themePrimary hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between overflow-hidden cursor-pointer"
             >
               {/* Top Orange Hover Accent Bar */}
-              <div className="absolute top-0 left-0 right-0 h-1 bg-transparent group-hover:bg-gradient-to-r group-hover:from-[#FF6B00] group-hover:to-[#F97316] transition-all duration-300" />
+              <div className="absolute top-0 left-0 right-0 h-1 bg-transparent group-hover:bg-gradient-to-r group-hover:from-themePrimary group-hover:to-[#F97316] transition-all duration-300" />
 
               <div>
                 <div className="flex items-center justify-between">
                   <div
                     className="w-11 h-11 rounded-2xl flex items-center justify-center text-white shadow-md font-bold transition-transform duration-300 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-orange-500/20"
-                    style={{ backgroundColor: f.color || '#FF6B00' }}
+                    style={{ backgroundColor: f.color || 'var(--theme-primary, #FF6B00)' }}
                   >
                     <FolderOpen className="w-5 h-5 text-white" />
                   </div>
                   <div className="flex items-center gap-1 bg-slate-50 p-1 rounded-xl border border-slate-200/80">
                     <button
                       onClick={() => { setForm({ folder_name: f.folder_name, description: f.description || '', color: f.color || '#3B82F6' }); setModal({ type: 'edit', folder: f }); }}
-                      className="p-1.5 rounded-lg text-slate-500 hover:text-[#FF6B00] hover:bg-white transition cursor-pointer"
+                      className="p-1.5 rounded-lg text-slate-500 hover:text-themePrimary hover:bg-white transition cursor-pointer"
                       title="Edit Folder"
                     >
                       <Edit2 className="w-3.5 h-3.5" />
@@ -1327,7 +1327,7 @@ function FoldersSection({ showToast }: { showToast: any }) {
                 </div>
 
                 <div className="mt-4 space-y-1">
-                  <h4 className="text-sm font-black text-slate-900 line-clamp-1 font-auth-heading tracking-tight group-hover:text-[#FF6B00] transition-colors duration-300">
+                  <h4 className="text-sm font-black text-slate-900 line-clamp-1 font-auth-heading tracking-tight group-hover:text-themePrimary transition-colors duration-300">
                     {f.folder_name}
                   </h4>
                   <p className="text-xs text-slate-600 line-clamp-2 font-medium leading-relaxed">
@@ -1337,8 +1337,8 @@ function FoldersSection({ showToast }: { showToast: any }) {
               </div>
 
               <div className="pt-3.5 border-t border-slate-100 mt-4 flex items-center justify-between">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-100 group-hover:bg-orange-50 group-hover:border-orange-200 border border-slate-200 text-xs font-mono font-bold text-slate-700 group-hover:text-[#FF6B00] transition-colors duration-300">
-                  <FileText className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#FF6B00]" />
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-100 group-hover:bg-orange-50 group-hover:border-orange-200 border border-slate-200 text-xs font-mono font-bold text-slate-700 group-hover:text-themePrimary transition-colors duration-300">
+                  <FileText className="w-3.5 h-3.5 text-slate-400 group-hover:text-themePrimary" />
                   {f.document_count || 0} docs
                 </span>
                 <span className="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-md border border-slate-200 bg-slate-100 text-slate-600">
@@ -1355,19 +1355,19 @@ function FoldersSection({ showToast }: { showToast: any }) {
           <form onSubmit={handleSubmit} className="space-y-3">
             <div>
               <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">Folder Name</label>
-              <input required type="text" value={form.folder_name} onChange={e => setForm(f => ({ ...f, folder_name: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#FF6B00]" placeholder="e.g. Tax Documents 2026" />
+              <input required type="text" value={form.folder_name} onChange={e => setForm(f => ({ ...f, folder_name: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-themePrimary" placeholder="e.g. Tax Documents 2026" />
             </div>
             <div>
               <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">Description</label>
-              <textarea rows={2} value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#FF6B00] resize-none" />
+              <textarea rows={2} value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-themePrimary resize-none" />
             </div>
             <div>
               <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-2">Color Accent</label>
               <div className="flex flex-wrap gap-2">
-                {COLORS.map(c => <button key={c} type="button" onClick={() => setForm(f => ({ ...f, color: c }))} className={`w-7 h-7 rounded-full transition cursor-pointer ${form.color === c ? 'ring-2 ring-[#FF6B00] ring-offset-2' : ''}`} style={{ backgroundColor: c }} />)}
+                {COLORS.map(c => <button key={c} type="button" onClick={() => setForm(f => ({ ...f, color: c }))} className={`w-7 h-7 rounded-full transition cursor-pointer ${form.color === c ? 'ring-2 ring-themePrimary ring-offset-2' : ''}`} style={{ backgroundColor: c }} />)}
               </div>
             </div>
-            <ModalActions onCancel={() => setModal(null)} submitting={submitting} label={modal.type === 'create' ? 'Create Folder' : 'Save Changes'} color="bg-[#FF6B00] hover:bg-[#EA580C]" />
+            <ModalActions onCancel={() => setModal(null)} submitting={submitting} label={modal.type === 'create' ? 'Create Folder' : 'Save Changes'} color="bg-themePrimary hover:bg-[#EA580C]" />
           </form>
         </Modal>
       )}
@@ -1460,8 +1460,8 @@ function ActivitySection({ showToast }: { showToast: any }) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-         <SectionTitle icon={Activity} title="Activity Log Management" subtitle="View and manage system audit trails" color="text-[#FF6B00]" />
-         <button onClick={() => { setForm({ action_type: 'LOGIN', details: '', user_name: 'Admin' }); setModal({ type: 'create' }); }} className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#FF6B00] hover:bg-[#EA580C] text-white text-xs font-bold shadow-md shadow-orange-500/20 transition cursor-pointer">
+         <SectionTitle icon={Activity} title="Activity Log Management" subtitle="View and manage system audit trails" color="text-themePrimary" />
+         <button onClick={() => { setForm({ action_type: 'LOGIN', details: '', user_name: 'Admin' }); setModal({ type: 'create' }); }} className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-themePrimary hover:bg-[#EA580C] text-white text-xs font-bold shadow-md shadow-orange-500/20 transition cursor-pointer">
            <Plus className="w-3.5 h-3.5" /> Add Log
          </button>
       </div>
@@ -1469,9 +1469,9 @@ function ActivitySection({ showToast }: { showToast: any }) {
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
           <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-          <input value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} placeholder="Search activity logs..." className="pl-9 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#FF6B00] w-full" />
+          <input value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} placeholder="Search activity logs..." className="pl-9 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-themePrimary w-full" />
         </div>
-        <select value={filter} onChange={e => { setFilter(e.target.value); setPage(1); }} className="px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:border-[#FF6B00] cursor-pointer">
+        <select value={filter} onChange={e => { setFilter(e.target.value); setPage(1); }} className="px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:border-themePrimary cursor-pointer">
           {['ALL', 'LOGIN', 'LOGOUT', 'UPLOAD', 'DOWNLOAD', 'DELETE', 'RESTORE', 'UPDATE', 'CREATE_FOLDER', 'CREATE_CATEGORY'].map(a => <option key={a} value={a}>{a === 'ALL' ? 'All Actions' : a}</option>)}
         </select>
         <button onClick={handleExport} className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200/80 text-xs font-extrabold text-slate-800 flex items-center gap-2 transition cursor-pointer shadow-2xs">
@@ -1491,16 +1491,16 @@ function ActivitySection({ showToast }: { showToast: any }) {
               return (
                 <div key={log.id} className="group flex items-center gap-3.5 px-5 py-3.5 hover:bg-orange-50/20 transition-all duration-200">
                   <div className="w-9 h-9 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
-                    <Icon className="w-4 h-4 text-[#FF6B00]" />
+                    <Icon className="w-4 h-4 text-themePrimary" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-black text-slate-900 font-auth-heading group-hover:text-[#FF6B00] transition-colors">{log.user_name || 'System'}</span>
+                      <span className="text-xs font-black text-slate-900 font-auth-heading group-hover:text-themePrimary transition-colors">{log.user_name || 'System'}</span>
                       <span className={`text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md border ${
                         log.action_type === 'LOGIN' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
                         log.action_type === 'UPLOAD' ? 'bg-blue-50 text-blue-700 border-blue-200' :
                         log.action_type === 'DELETE' ? 'bg-rose-50 text-rose-700 border-rose-200' :
-                        log.action_type === 'CREATE_FOLDER' ? 'bg-orange-50 text-[#FF6B00] border-orange-200' :
+                        log.action_type === 'CREATE_FOLDER' ? 'bg-orange-50 text-themePrimary border-orange-200' :
                         'bg-slate-100 text-slate-700 border-slate-200'
                       }`}>
                         {log.action_type?.replace(/_/g, ' ')}
@@ -1515,7 +1515,7 @@ function ActivitySection({ showToast }: { showToast: any }) {
                     <div className="flex items-center gap-1 bg-slate-50 p-1 rounded-xl border border-slate-200/80">
                       <button
                         onClick={() => { setForm({ action_type: log.action_type || 'LOGIN', details: log.details || '', user_name: log.user_name || '' }); setModal({ type: 'edit', log }); }}
-                        className="p-1.5 rounded-lg text-slate-500 hover:text-[#FF6B00] hover:bg-white transition cursor-pointer"
+                        className="p-1.5 rounded-lg text-slate-500 hover:text-themePrimary hover:bg-white transition cursor-pointer"
                         title="Edit Log"
                       >
                         <Edit2 className="w-3.5 h-3.5" />
@@ -1554,19 +1554,19 @@ function ActivitySection({ showToast }: { showToast: any }) {
           <form onSubmit={handleSubmit} className="space-y-3">
             <div>
               <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">User Name</label>
-              <input required type="text" value={form.user_name} onChange={e => setForm(f => ({ ...f, user_name: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#FF6B00]" placeholder="e.g. Admin System" />
+              <input required type="text" value={form.user_name} onChange={e => setForm(f => ({ ...f, user_name: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-themePrimary" placeholder="e.g. Admin System" />
             </div>
             <div>
               <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">Action Type</label>
-              <select value={form.action_type} onChange={e => setForm(f => ({ ...f, action_type: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-[#FF6B00]">
+              <select value={form.action_type} onChange={e => setForm(f => ({ ...f, action_type: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary">
                 {['LOGIN', 'LOGOUT', 'UPLOAD', 'DOWNLOAD', 'DELETE', 'RESTORE', 'UPDATE', 'CREATE_FOLDER', 'CREATE_CATEGORY'].map(a => <option key={a} value={a}>{a}</option>)}
               </select>
             </div>
             <div>
               <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">Details</label>
-              <textarea rows={2} required value={form.details} onChange={e => setForm(f => ({ ...f, details: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#FF6B00] resize-none" placeholder="e.g. Uploaded confidential document" />
+              <textarea rows={2} required value={form.details} onChange={e => setForm(f => ({ ...f, details: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-themePrimary resize-none" placeholder="e.g. Uploaded confidential document" />
             </div>
-            <ModalActions onCancel={() => setModal(null)} submitting={submitting} label={modal.type === 'create' ? 'Create Log' : 'Save Changes'} color="bg-[#FF6B00] hover:bg-[#EA580C]" />
+            <ModalActions onCancel={() => setModal(null)} submitting={submitting} label={modal.type === 'create' ? 'Create Log' : 'Save Changes'} color="bg-themePrimary hover:bg-[#EA580C]" />
           </form>
         </Modal>
       )}
@@ -1608,9 +1608,9 @@ function ReportsSection() {
           { label: 'Total Documents', value: reports?.totalDocuments ?? '0', icon: FileText },
           { label: 'Storage Used', value: fmtBytes(reports?.totalStorageBytes ?? 0), icon: HardDrive },
         ].map((k, i) => (
-          <div key={i} className="group p-5 rounded-3xl border border-slate-200 bg-white shadow-2xs hover:shadow-lg hover:border-[#FF6B00] transition-all duration-300 flex items-center gap-4 cursor-pointer">
-            <div className="w-12 h-12 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-center text-[#FF6B00] group-hover:scale-110 group-hover:bg-orange-50 transition-all shrink-0">
-              <k.icon className="w-6 h-6 text-[#FF6B00]" />
+          <div key={i} className="group p-5 rounded-3xl border border-slate-200 bg-white shadow-2xs hover:shadow-lg hover:border-themePrimary transition-all duration-300 flex items-center gap-4 cursor-pointer">
+            <div className="w-12 h-12 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-center text-themePrimary group-hover:scale-110 group-hover:bg-orange-50 transition-all shrink-0">
+              <k.icon className="w-6 h-6 text-themePrimary" />
             </div>
             <div>
               <p className="text-xs font-black text-slate-500 uppercase tracking-wider">{k.label}</p>
@@ -1622,14 +1622,14 @@ function ReportsSection() {
 
       {/* Monthly Chart */}
       <div className="p-6 rounded-3xl border border-slate-200 bg-white shadow-2xs">
-        <SectionTitle icon={TrendingUp} title="Monthly Uploads" subtitle="Last 6 months document vault activity" color="text-[#FF6B00]" />
+        <SectionTitle icon={TrendingUp} title="Monthly Uploads" subtitle="Last 6 months document vault activity" color="text-themePrimary" />
         {loading ? <Skeleton className="h-40 mt-4 bg-slate-100 rounded-2xl" /> : (
           <div className="flex items-end gap-4 h-44 mt-4 pt-4 border-t border-slate-100">
             {(reports?.monthlyUploads || []).map((m: any, i: number) => (
               <div key={i} className="flex-1 flex flex-col items-center gap-2 h-full justify-end group cursor-pointer">
-                <span className="text-xs text-slate-800 font-mono font-bold group-hover:text-[#FF6B00] transition-colors">{m.count}</span>
+                <span className="text-xs text-slate-800 font-mono font-bold group-hover:text-themePrimary transition-colors">{m.count}</span>
                 <div
-                  className="w-full rounded-t-xl bg-gradient-to-t from-[#FF6B00] to-[#F97316] group-hover:from-[#EA580C] group-hover:to-[#FF6B00] min-h-[6px] transition-all duration-300 shadow-md shadow-orange-500/10"
+                  className="w-full rounded-t-xl bg-gradient-to-t from-themePrimary to-[#F97316] group-hover:from-[#EA580C] group-hover:to-themePrimary min-h-[6px] transition-all duration-300 shadow-md shadow-orange-500/10"
                   style={{ height: `${Math.max(6, (m.count / maxM) * 100)}%` }}
                 />
                 <span className="text-xs text-slate-500 font-bold uppercase tracking-wider">{m.label}</span>
@@ -1642,20 +1642,20 @@ function ReportsSection() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         {/* Category Breakdown */}
         <div className="p-6 rounded-3xl border border-slate-200 bg-white shadow-2xs">
-          <SectionTitle icon={BarChart3} title="Category Distribution" subtitle="Document counts per classification category" color="text-[#FF6B00]" />
+          <SectionTitle icon={BarChart3} title="Category Distribution" subtitle="Document counts per classification category" color="text-themePrimary" />
           {loading ? <div className="space-y-3 mt-4">{Array(5).fill(0).map((_, i) => <Skeleton key={i} className="h-8 bg-slate-100" />)}</div> : (
             <div className="space-y-4 mt-4 pt-4 border-t border-slate-100">
               {(reports?.categoryBreakdown || []).slice(0, 8).map((c: any, i: number) => (
                 <div key={i} className="space-y-1.5">
                   <div className="flex items-center justify-between text-xs">
                     <div className="flex items-center gap-2">
-                      <span className="w-2.5 h-2.5 rounded-full inline-block shrink-0 shadow-2xs" style={{ backgroundColor: c.color || '#FF6B00' }} />
+                      <span className="w-2.5 h-2.5 rounded-full inline-block shrink-0 shadow-2xs" style={{ backgroundColor: c.color || 'var(--theme-primary, #FF6B00)' }} />
                       <span className="text-slate-900 font-black font-auth-heading truncate max-w-[180px]">{c.category_name}</span>
                     </div>
                     <span className="text-slate-600 font-mono font-bold">{c.document_count} docs</span>
                   </div>
                   <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
-                    <div className="h-2 rounded-full transition-all duration-500" style={{ width: `${Math.max(3, (c.document_count / maxC) * 100)}%`, backgroundColor: c.color || '#FF6B00' }} />
+                    <div className="h-2 rounded-full transition-all duration-500" style={{ width: `${Math.max(3, (c.document_count / maxC) * 100)}%`, backgroundColor: c.color || 'var(--theme-primary, #FF6B00)' }} />
                   </div>
                 </div>
               ))}
@@ -1665,17 +1665,17 @@ function ReportsSection() {
 
         {/* Top Downloads */}
         <div className="p-6 rounded-3xl border border-slate-200 bg-white shadow-2xs">
-          <SectionTitle icon={Download} title="Top Downloads" subtitle="Most frequently accessed document vaults" color="text-[#FF6B00]" />
+          <SectionTitle icon={Download} title="Top Downloads" subtitle="Most frequently accessed document vaults" color="text-themePrimary" />
           {loading ? <div className="space-y-2 mt-4">{Array(5).fill(0).map((_, i) => <Skeleton key={i} className="h-12 bg-slate-100" />)}</div> : (
             <div className="space-y-2.5 mt-4 pt-4 border-t border-slate-100">
               {(reports?.topDownloads || []).slice(0, 6).map((d: any, i: number) => (
                 <div key={d.id} className="flex items-center gap-3 p-3 rounded-2xl bg-slate-50 hover:bg-orange-50/40 border border-slate-200/60 transition group cursor-pointer">
                   <span className="text-xs font-mono font-bold text-slate-500 w-5">#{i + 1}</span>
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs font-black text-slate-900 font-auth-heading group-hover:text-[#FF6B00] transition-colors truncate">{d.title}</p>
+                    <p className="text-xs font-black text-slate-900 font-auth-heading group-hover:text-themePrimary transition-colors truncate">{d.title}</p>
                     <p className="text-xs text-slate-500 font-medium">{d.owner_name}</p>
                   </div>
-                  <span className="px-2.5 py-1 rounded-full bg-orange-50 text-[#FF6B00] border border-orange-200 text-xs font-mono font-black shrink-0">
+                  <span className="px-2.5 py-1 rounded-full bg-orange-50 text-themePrimary border border-orange-200 text-xs font-mono font-black shrink-0">
                     {d.download_count}x
                   </span>
                 </div>
@@ -1717,13 +1717,13 @@ function SystemSection() {
 
   return (
     <div className="space-y-6">
-      <SectionTitle icon={Server} title="System Health Monitor" subtitle="Real-time server & infrastructure status" color="text-[#FF6B00]" />
+      <SectionTitle icon={Server} title="System Health Monitor" subtitle="Real-time server & infrastructure status" color="text-themePrimary" />
 
       {/* Server Time */}
       <div className="p-6 rounded-3xl border border-slate-200 bg-white shadow-2xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-2xl bg-orange-50 border border-orange-200 flex items-center justify-center shrink-0">
-            <Clock className="w-6 h-6 text-[#FF6B00]" />
+            <Clock className="w-6 h-6 text-themePrimary" />
           </div>
           <div>
             <p className="text-xs font-black uppercase tracking-wider text-slate-500">Live Server Clock</p>
@@ -1742,14 +1742,14 @@ function SystemSection() {
       {/* Status Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {items.map((item, i) => (
-          <div key={i} className="group p-5 rounded-3xl border border-slate-200 bg-white shadow-2xs hover:shadow-lg hover:border-[#FF6B00] transition-all duration-300 cursor-pointer">
+          <div key={i} className="group p-5 rounded-3xl border border-slate-200 bg-white shadow-2xs hover:shadow-lg hover:border-themePrimary transition-all duration-300 cursor-pointer">
             <div className="flex items-center justify-between mb-3">
               <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-extrabold uppercase border shadow-2xs ${item.color}`}>
                 <span className={`w-2 h-2 rounded-full ${item.dot} animate-pulse`} />
                 {item.status}
               </span>
             </div>
-            <h4 className="text-sm font-black text-slate-900 font-auth-heading tracking-tight group-hover:text-[#FF6B00] transition-colors">{item.label}</h4>
+            <h4 className="text-sm font-black text-slate-900 font-auth-heading tracking-tight group-hover:text-themePrimary transition-colors">{item.label}</h4>
             <p className="text-xs text-slate-600 font-medium mt-1">{item.detail}</p>
           </div>
         ))}
@@ -1770,7 +1770,7 @@ function SystemSection() {
             { name: 'MVC Pattern', type: 'Modular Architecture' },
           ].map((t, i) => (
             <div key={i} className="p-4 rounded-2xl border border-slate-200/80 bg-slate-50 hover:bg-orange-50/40 hover:border-orange-200 transition-all duration-300 cursor-pointer group">
-              <p className="text-xs font-black text-slate-900 font-auth-heading group-hover:text-[#FF6B00] transition-colors">{t.name}</p>
+              <p className="text-xs font-black text-slate-900 font-auth-heading group-hover:text-themePrimary transition-colors">{t.name}</p>
               <p className="text-xs text-slate-500 font-medium mt-0.5">{t.type}</p>
             </div>
           ))}
@@ -1797,7 +1797,7 @@ function Modal({ title, children, onClose }: any) {
   );
 }
 
-function ModalActions({ onCancel, onConfirm, submitting, label, color = 'bg-[#FF6B00] hover:bg-[#EA580C]' }: any) {
+function ModalActions({ onCancel, onConfirm, submitting, label, color = 'bg-themePrimary hover:bg-[#EA580C]' }: any) {
   return (
     <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100 mt-4">
       <button type="button" onClick={onCancel} className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-bold text-slate-700 transition cursor-pointer">Cancel</button>
@@ -1812,7 +1812,7 @@ function FieldInput({ label, value, onChange, type = 'text', placeholder }: { la
   return (
     <div>
       <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">{label}</label>
-      <input type={type} value={value} onChange={(e: any) => onChange(e.target.value)} placeholder={placeholder || ''} className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-[#FF6B00] placeholder-slate-400" />
+      <input type={type} value={value} onChange={(e: any) => onChange(e.target.value)} placeholder={placeholder || ''} className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary placeholder-slate-400" />
     </div>
   );
 }
@@ -1821,7 +1821,7 @@ function FieldArea({ label, value, onChange, rows = 3 }: { label: string; value:
   return (
     <div>
       <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">{label}</label>
-      <textarea rows={rows} value={value} onChange={(e: any) => onChange(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 focus:outline-none focus:border-[#FF6B00] resize-none" />
+      <textarea rows={rows} value={value} onChange={(e: any) => onChange(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 focus:outline-none focus:border-themePrimary resize-none" />
     </div>
   );
 }

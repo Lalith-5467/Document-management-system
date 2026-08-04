@@ -130,14 +130,14 @@ export default function NotificationsCenterPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800/80 pb-5">
         <div>
           <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-1 font-medium">
-            <Link href="/user" className="hover:text-[#FF6B00] dark:hover:text-orange-400 transition flex items-center gap-1">
+            <Link href="/user" className="hover:text-themePrimary dark:hover:text-orange-400 transition flex items-center gap-1">
               <ArrowLeft className="w-3.5 h-3.5" /> Workspace
             </Link>
             <span>/</span>
             <span className="text-slate-900 dark:text-white font-semibold">Notifications Center</span>
           </div>
           <h1 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-2.5">
-            <span className="w-8 h-8 rounded-2xl bg-orange-100 dark:bg-orange-950/60 text-[#FF6B00] dark:text-orange-400 border border-orange-200 dark:border-orange-900/60 flex items-center justify-center shrink-0">
+            <span className="w-8 h-8 rounded-2xl bg-orange-100 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 border border-orange-200 dark:border-orange-900/60 flex items-center justify-center shrink-0">
               <Bell className="w-4 h-4" />
             </span>
             Notifications Center
@@ -182,7 +182,7 @@ export default function NotificationsCenterPage() {
               onClick={() => setActiveTab(tab.id as any)}
               className={`px-3 py-1.5 rounded-xl text-sm font-bold transition-all flex items-center gap-1.5 whitespace-nowrap ${
                 activeTab === tab.id
-                  ? 'bg-gradient-to-r from-[#FF6B00] to-[#F97316] text-white shadow-md'
+                  ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
@@ -204,7 +204,7 @@ export default function NotificationsCenterPage() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search notifications..."
-            className="w-full pl-9 pr-3.5 py-2 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-[#FF6B00]"
+            className="w-full pl-9 pr-3.5 py-2 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-themePrimary"
           />
         </div>
       </div>
@@ -212,7 +212,7 @@ export default function NotificationsCenterPage() {
       {/* Notifications List */}
       {filteredNotifications.length === 0 ? (
         <div className="bg-white dark:bg-slate-900 p-16 rounded-3xl border border-slate-200 dark:border-slate-800 text-center space-y-4 shadow-lg max-w-md mx-auto">
-          <div className="w-14 h-14 rounded-2xl bg-orange-50 dark:bg-orange-950/60 text-[#FF6B00] dark:text-orange-400 flex items-center justify-center mx-auto border border-orange-200 dark:border-orange-900/60">
+          <div className="w-14 h-14 rounded-2xl bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 flex items-center justify-center mx-auto border border-orange-200 dark:border-orange-900/60">
             <Bell className="w-7 h-7" />
           </div>
           <div>
@@ -232,7 +232,7 @@ export default function NotificationsCenterPage() {
                 key={notif.id}
                 className={`p-4 rounded-3xl border transition-all shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ${
                   !notif.is_read
-                    ? 'bg-orange-50/40 dark:bg-orange-950/20 border-[#FF6B00]/40 dark:border-orange-900/60'
+                    ? 'bg-orange-50/40 dark:bg-orange-950/20 border-themePrimary/40 dark:border-orange-900/60'
                     : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800'
                 }`}
               >
@@ -248,7 +248,7 @@ export default function NotificationsCenterPage() {
                       </span>
                       <h4 className="text-sm font-black text-slate-900 dark:text-white">{notif.title}</h4>
                       {!notif.is_read && (
-                        <span className="w-2 h-2 rounded-full bg-[#FF6B00] animate-pulse" />
+                        <span className="w-2 h-2 rounded-full bg-themePrimary animate-pulse" />
                       )}
                     </div>
                     <p className="text-sm text-slate-600 dark:text-slate-300 font-medium leading-relaxed">
@@ -277,7 +277,7 @@ export default function NotificationsCenterPage() {
                         handleMarkAsRead(notif.id);
                         router.push(notif.link!);
                       }}
-                      className="px-4 py-2 text-sm font-bold text-white bg-gradient-to-r from-[#FF6B00] to-[#F97316] rounded-xl shadow-md shadow-orange-500/20 hover:scale-105 transition flex items-center justify-center gap-1.5"
+                      className="px-4 py-2 text-sm font-bold text-white bg-gradient-to-r from-themePrimary to-[#F97316] rounded-xl shadow-md shadow-orange-500/20 hover:scale-105 transition flex items-center justify-center gap-1.5"
                     >
                       <span>View</span> <ExternalLink className="w-3.5 h-3.5" />
                     </button>
