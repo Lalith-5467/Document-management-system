@@ -5,11 +5,11 @@ const path = require('path');
 const fs = require('fs');
 
 let memoryDocuments = [
-    { id: 101, user_id: 1, category_id: 2, folder_id: 2, title: 'University_Degree_Certificate.pdf', description: 'Official bachelor degree certificate', file_name: 'University_Degree_Certificate.pdf', file_path: 'uploads/academic/University_Degree_Certificate.pdf', file_size: 2450000, mime_type: 'application/pdf', is_favorite: 1, is_archived: 0, created_at: new Date(Date.now() - 3600000 * 2).toISOString(), updated_at: new Date(Date.now() - 3600000 * 2).toISOString(), category_name: 'Academic Documents', color: '#10B981', icon_name: 'GraduationCap' },
-    { id: 102, user_id: 1, category_id: 5, folder_id: null, title: 'Senior_Software_Engineer_Resume.pdf', description: 'Updated CV 2026 version', file_name: 'Senior_Software_Engineer_Resume.pdf', file_path: 'uploads/personal/Senior_Software_Engineer_Resume.pdf', file_size: 1120000, mime_type: 'application/pdf', is_favorite: 1, is_archived: 0, created_at: new Date(Date.now() - 3600000 * 5).toISOString(), updated_at: new Date(Date.now() - 3600000 * 5).toISOString(), category_name: 'Resume', color: '#F59E0B', icon_name: 'FileText' },
-    { id: 103, user_id: 1, category_id: 1, folder_id: 4, title: 'National_Passport_Copy.pdf', description: 'Passport front and back scan', file_name: 'National_Passport_Copy.pdf', file_path: 'uploads/personal/National_Passport_Copy.pdf', file_size: 3400000, mime_type: 'application/pdf', is_favorite: 0, is_archived: 0, created_at: new Date(Date.now() - 3600000 * 24).toISOString(), updated_at: new Date(Date.now() - 3600000 * 24).toISOString(), category_name: 'Personal Documents', color: '#3B82F6', icon_name: 'UserCheck' },
-    { id: 104, user_id: 1, category_id: 6, folder_id: 3, title: 'System_Architecture_BRD_v2.docx', description: 'Client project business requirement doc', file_name: 'System_Architecture_BRD_v2.docx', file_path: 'uploads/client-documents/System_Architecture_BRD_v2.docx', file_size: 4800000, mime_type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', is_favorite: 1, is_archived: 0, created_at: new Date(Date.now() - 3600000 * 48).toISOString(), updated_at: new Date(Date.now() - 3600000 * 48).toISOString(), category_name: 'Client Requirement Documents', color: '#06B6D4', icon_name: 'Briefcase' },
-    { id: 105, user_id: 1, category_id: 4, folder_id: null, title: 'AWS_Solutions_Architect_Certificate.png', description: 'AWS certification badge image', file_name: 'AWS_Solutions_Architect_Certificate.png', file_path: 'uploads/certificates/AWS_Solutions_Architect_Certificate.png', file_size: 1850000, mime_type: 'image/png', is_favorite: 0, is_archived: 0, created_at: new Date(Date.now() - 3600000 * 72).toISOString(), updated_at: new Date(Date.now() - 3600000 * 72).toISOString(), category_name: 'Certificates', color: '#EC4899', icon_name: 'Award' }
+    { id: 101, user_id: 1, category_id: 2, folder_id: 2, title: 'University_Degree_Certificate.pdf', description: 'Official bachelor degree certificate', file_name: 'University_Degree_Certificate.pdf', file_path: 'uploads/academic/University_Degree_Certificate.pdf', file_size: 2450000, mime_type: 'application/pdf', is_favorite: 1, is_archived: 0, expiry_date: null, created_at: new Date(Date.now() - 3600000 * 2).toISOString(), updated_at: new Date(Date.now() - 3600000 * 2).toISOString(), category_name: 'Academic Documents', color: '#10B981', icon_name: 'GraduationCap' },
+    { id: 102, user_id: 1, category_id: 5, folder_id: null, title: 'Senior_Software_Engineer_Resume.pdf', description: 'Updated CV 2026 version', file_name: 'Senior_Software_Engineer_Resume.pdf', file_path: 'uploads/personal/Senior_Software_Engineer_Resume.pdf', file_size: 1120000, mime_type: 'application/pdf', is_favorite: 1, is_archived: 0, expiry_date: null, created_at: new Date(Date.now() - 3600000 * 5).toISOString(), updated_at: new Date(Date.now() - 3600000 * 5).toISOString(), category_name: 'Resume', color: '#F59E0B', icon_name: 'FileText' },
+    { id: 103, user_id: 1, category_id: 1, folder_id: 4, title: 'National_Passport_Copy.pdf', description: 'Passport front and back scan', file_name: 'National_Passport_Copy.pdf', file_path: 'uploads/personal/National_Passport_Copy.pdf', file_size: 3400000, mime_type: 'application/pdf', is_favorite: 0, is_archived: 0, expiry_date: '2027-01-15', created_at: new Date(Date.now() - 3600000 * 24).toISOString(), updated_at: new Date(Date.now() - 3600000 * 24).toISOString(), category_name: 'Personal Documents', color: '#3B82F6', icon_name: 'UserCheck' },
+    { id: 104, user_id: 1, category_id: 6, folder_id: 3, title: 'System_Architecture_BRD_v2.docx', description: 'Client project business requirement doc', file_name: 'System_Architecture_BRD_v2.docx', file_path: 'uploads/client-documents/System_Architecture_BRD_v2.docx', file_size: 4800000, mime_type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', is_favorite: 1, is_archived: 0, expiry_date: null, created_at: new Date(Date.now() - 3600000 * 48).toISOString(), updated_at: new Date(Date.now() - 3600000 * 48).toISOString(), category_name: 'Client Requirement Documents', color: '#06B6D4', icon_name: 'Briefcase' },
+    { id: 105, user_id: 1, category_id: 4, folder_id: null, title: 'AWS_Solutions_Architect_Certificate.png', description: 'AWS certification badge image', file_name: 'AWS_Solutions_Architect_Certificate.png', file_path: 'uploads/certificates/AWS_Solutions_Architect_Certificate.png', file_size: 1850000, mime_type: 'image/png', is_favorite: 0, is_archived: 0, expiry_date: '2026-08-30', created_at: new Date(Date.now() - 3600000 * 72).toISOString(), updated_at: new Date(Date.now() - 3600000 * 72).toISOString(), category_name: 'Certificates', color: '#EC4899', icon_name: 'Award' }
 ];
 let nextDocId = 200;
 
@@ -328,7 +328,7 @@ class DocumentModel {
     /**
      * Create / Upload new document
      */
-    static async create({ userId, category_id, folder_id, title, description, file_name, file_path, file_size, mime_type, is_favorite = 0 }) {
+    static async create({ userId, category_id, folder_id, title, description, file_name, file_path, file_size, mime_type, is_favorite = 0, expiry_date = null }) {
         const catId = Number(category_id) || 8;
         const foldId = folder_id ? Number(folder_id) : null;
         const docTitle = title || file_name;
@@ -348,6 +348,7 @@ class DocumentModel {
             mime_type,
             is_favorite: isFav,
             is_archived: 0,
+            expiry_date: expiry_date,
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
             category_name: 'General Document',
@@ -358,8 +359,8 @@ class DocumentModel {
         try {
             if (sqliteDb) {
                 const res = await sqliteDb.run(
-                    `INSERT INTO documents (user_id, category_id, folder_id, title, description, file_name, file_path, file_size, mime_type, is_favorite) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-                    [Number(userId), catId, foldId, docTitle, description || '', file_name, file_path, file_size, mime_type, isFav]
+                    `INSERT INTO documents (user_id, category_id, folder_id, title, description, file_name, file_path, file_size, mime_type, is_favorite, expiry_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                    [Number(userId), catId, foldId, docTitle, description || '', file_name, file_path, file_size, mime_type, isFav, expiry_date]
                 );
                 if (res && res.lastID) {
                     newDoc.id = res.lastID;
@@ -369,8 +370,8 @@ class DocumentModel {
                 }
             } else if (pool) {
                 const [result] = await pool.execute(
-                    `INSERT INTO documents (user_id, category_id, folder_id, title, description, file_name, file_path, file_size, mime_type, is_favorite) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-                    [Number(userId), catId, foldId, docTitle, description || '', file_name, file_path, file_size, mime_type, isFav]
+                    `INSERT INTO documents (user_id, category_id, folder_id, title, description, file_name, file_path, file_size, mime_type, is_favorite, expiry_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                    [Number(userId), catId, foldId, docTitle, description || '', file_name, file_path, file_size, mime_type, isFav, expiry_date]
                 );
                 if (result && result.insertId) {
                     newDoc.id = result.insertId;
@@ -513,7 +514,7 @@ class DocumentModel {
     /**
      * Update document details (title, description, category_id, folder_id, tags)
      */
-    static async update(id, userId, { title, description, category_id, folder_id, tags }) {
+    static async update(id, userId, { title, description, category_id, folder_id, tags, expiry_date }) {
         try {
             const updates = ['updated_at = CURRENT_TIMESTAMP'];
             const values = [];
@@ -537,6 +538,10 @@ class DocumentModel {
             if (tags !== undefined) {
                 updates.push('tags = ?');
                 values.push(tags);
+            }
+            if (expiry_date !== undefined) {
+                updates.push('expiry_date = ?');
+                values.push(expiry_date || null);
             }
 
             values.push(id, userId);
@@ -567,6 +572,7 @@ class DocumentModel {
                 if (category_id !== undefined) memoryDocuments[idx].category_id = Number(category_id);
                 if (folder_id !== undefined) memoryDocuments[idx].folder_id = folder_id ? Number(folder_id) : null;
                 if (tags !== undefined) memoryDocuments[idx].tags = tags;
+                if (expiry_date !== undefined) memoryDocuments[idx].expiry_date = expiry_date || null;
                 memoryDocuments[idx].updated_at = new Date().toISOString();
                 return memoryDocuments[idx];
             }

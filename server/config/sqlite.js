@@ -92,6 +92,7 @@ async function initSqlite() {
             mime_type TEXT NOT NULL,
             is_favorite INTEGER DEFAULT 0,
             is_archived INTEGER DEFAULT 0,
+            expiry_date TEXT NULL,
             deleted_at TEXT NULL,
             created_at TEXT DEFAULT CURRENT_TIMESTAMP,
             updated_at TEXT DEFAULT CURRENT_TIMESTAMP
@@ -168,6 +169,7 @@ async function initSqlite() {
         "ALTER TABLE users ADD COLUMN state TEXT NULL",
         "ALTER TABLE users ADD COLUMN city TEXT NULL",
         "ALTER TABLE documents ADD COLUMN deleted_at TEXT NULL",
+        "ALTER TABLE documents ADD COLUMN expiry_date TEXT NULL",
         "ALTER TABLE categories ADD COLUMN is_active INTEGER DEFAULT 1"
     ];
 

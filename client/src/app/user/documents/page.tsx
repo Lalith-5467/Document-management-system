@@ -34,6 +34,7 @@ export interface DocumentItem {
   category_name?: string;
   color?: string;
   folder_name?: string;
+  expiry_date?: string | null;
 }
 
 export default function MyDocumentsPage() {

@@ -17,81 +17,82 @@ export interface ExpiryDocumentItem {
   fileSize: string;
 }
 
-const SAMPLE_EXPIRY_DOCS: ExpiryDocumentItem[] = [
-  {
-    id: 1,
-    title: 'Passport_Scan_Copy.png',
-    category: 'Personal Identity',
-    expiryDate: '2026-08-11',
-    daysRemaining: 18,
-    status: 'expiring_soon',
-    fileSize: '1.2 MB'
-  },
-  {
-    id: 2,
-    title: 'Health_Insurance_Policy.pdf',
-    category: 'Insurance',
-    expiryDate: '2026-07-29',
-    daysRemaining: 5,
-    status: 'expiring_soon',
-    fileSize: '3.4 MB'
-  },
-  {
-    id: 3,
-    title: 'Driving_License_Official.pdf',
-    category: 'Personal Identity',
-    expiryDate: '2026-08-18',
-    daysRemaining: 25,
-    status: 'expiring_soon',
-    fileSize: '850 KB'
-  },
-  {
-    id: 4,
-    title: 'AWS_Certificate_Badge.pdf',
-    category: 'Certificates & Achievements',
-    expiryDate: '2026-07-15',
-    daysRemaining: 0,
-    status: 'expired',
-    fileSize: '1.8 MB'
-  },
-  {
-    id: 5,
-    title: 'Vehicle_Registration_RC.pdf',
-    category: 'Personal Identity',
-    expiryDate: '2026-07-10',
-    daysRemaining: -14,
-    status: 'expired',
-    fileSize: '2.1 MB'
-  },
-  {
-    id: 6,
-    title: 'Project_Contract_NDA.pdf',
-    category: 'Legal',
-    expiryDate: '2026-11-30',
-    daysRemaining: 128,
-    status: 'valid',
-    fileSize: '4.5 MB'
-  },
-  {
-    id: 7,
-    title: 'Visa_Entry_Permit.pdf',
-    category: 'Personal Identity',
-    expiryDate: '2026-12-15',
-    daysRemaining: 143,
-    status: 'valid',
-    fileSize: '1.9 MB'
-  }
-];
+import api from '@/lib/api';
+import { logActivity } from '@/lib/activityLogger';
+import DocumentPreviewModal from '@/components/dashboard/DocumentPreviewModal';
+
+const formatFileSize = (bytes: number): string => {
+  if (bytes === 0) return '0 Bytes';
+  const k = 1024;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+};
 
 export default function ExpiryRemindersPage() {
   const { t } = useLanguage();
-  const [docs, setDocs] = useState<ExpiryDocumentItem[]>(SAMPLE_EXPIRY_DOCS);
+  const [docs, setDocs] = useState<ExpiryDocumentItem[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState<'all' | 'today' | 'week' | 'month' | 'expired' | 'upcoming'>('all');
 
   const [renewModalDoc, setRenewModalDoc] = useState<ExpiryDocumentItem | null>(null);
+  const [previewModalDocId, setPreviewModalDocId] = useState<number | null>(null);
   const [newExpiryDate, setNewExpiryDate] = useState('');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  const handleDownload = async (doc: any) => {
+    try {
+      showToast(`Downloading ${doc.title}...`);
+      logActivity('DOWNLOAD', doc.title, `Downloaded document "${doc.title}"`);
+      
+      const token = typeof window !== 'undefined' ? localStorage.getItem('dms_token') : '';
+      const envApiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+      const baseUrl = envApiUrl.endsWith('/') ? envApiUrl.slice(0, -1) : envApiUrl;
+      const rootUrl = baseUrl.endsWith('/api') ? baseUrl.slice(0, -4) : baseUrl;
+      
+      const downloadUrl = `${rootUrl}/api/documents/${doc.id}/download${token ? `?token=${token}` : ''}`;
+      window.location.assign(downloadUrl);
+      
+      showToast('Download initiated.');
+    } catch (err) {
+      showToast('Failed to initiate download.');
+    }
+  };
+
+  React.useEffect(() => {
+    const fetchDocs = async () => {
+      try {
+        const res = await api.get('/documents?limit=1000');
+        if (res.data?.success && Array.isArray(res.data.documents)) {
+          const items = res.data.documents
+            .filter((d: any) => d.expiry_date != null)
+            .map((d: any) => {
+              const eDate = new Date(d.expiry_date);
+              const now = new Date();
+              const diffDays = Math.ceil((eDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+              
+              let status: 'valid' | 'expiring_soon' | 'expired' = 'valid';
+              if (diffDays <= 0) status = 'expired';
+              else if (diffDays <= 30) status = 'expiring_soon';
+
+              return {
+                id: d.id,
+                title: d.title || d.file_name,
+                category: d.category_name || 'General Document',
+                expiryDate: d.expiry_date,
+                daysRemaining: diffDays,
+                status: status,
+                fileSize: formatFileSize(d.file_size || 0)
+              };
+            });
+          setDocs(items);
+        }
+      } catch (err) {
+        console.error('Failed to fetch expiry documents:', err);
+      }
+    };
+    fetchDocs();
+  }, []);
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -118,28 +119,38 @@ export default function ExpiryRemindersPage() {
   const expiringCount = docs.filter(d => d.status === 'expiring_soon').length;
   const expiredCount = docs.filter(d => d.status === 'expired').length;
 
-  const handleUpdateExpiry = (e: React.FormEvent) => {
+  const handleUpdateExpiry = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!renewModalDoc || !newExpiryDate) return;
 
-    const newDate = new Date(newExpiryDate);
-    const now = new Date();
-    const diffDays = Math.ceil((newDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+    try {
+      const res = await api.put(`/documents/${renewModalDoc.id}`, {
+        expiry_date: newExpiryDate
+      });
+      if (res.data?.success) {
+        const newDate = new Date(newExpiryDate);
+        const now = new Date();
+        const diffDays = Math.ceil((newDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
 
-    setDocs(prev => prev.map(item => {
-      if (item.id === renewModalDoc.id) {
-        return {
-          ...item,
-          expiryDate: newExpiryDate,
-          daysRemaining: diffDays,
-          status: diffDays <= 0 ? 'expired' : diffDays <= 30 ? 'expiring_soon' : 'valid'
-        };
+        setDocs(prev => prev.map(item => {
+          if (item.id === renewModalDoc.id) {
+            return {
+              ...item,
+              expiryDate: newExpiryDate,
+              daysRemaining: diffDays,
+              status: diffDays <= 0 ? 'expired' : diffDays <= 30 ? 'expiring_soon' : 'valid'
+            };
+          }
+          return item;
+        }));
+
+        showToast(`Expiry date updated for ${renewModalDoc.title}`);
+        setRenewModalDoc(null);
       }
-      return item;
-    }));
-
-    showToast(`Expiry date updated for ${renewModalDoc.title}`);
-    setRenewModalDoc(null);
+    } catch (err) {
+      console.error('Failed to update expiry date:', err);
+      showToast('Failed to update expiry date');
+    }
   };
 
   return (
@@ -279,7 +290,7 @@ export default function ExpiryRemindersPage() {
                   }`}
                 >
                   {isExpired
-                    ? '🔴 Expired'
+                    ? `🔴 Your ${doc.title.split('.')[0].substring(0, 15)} was expired`
                     : isWarning
                     ? `🟡 ${doc.daysRemaining} Days Remaining`
                     : '🟢 Valid'}
@@ -302,7 +313,10 @@ export default function ExpiryRemindersPage() {
 
               <div className="pt-2 border-t border-[#F3F0FA] dark:border-[#2D1F47] flex items-center justify-between">
                 <button
-                  onClick={() => alert(`Opening ${doc.title}...`)}
+                  onClick={() => {
+                    logActivity('PREVIEW', doc.title, `Viewed document preview for "${doc.title}"`);
+                    setPreviewModalDocId(doc.id);
+                  }}
                   className="px-3 py-1.5 rounded-xl border border-[#EAE4F8] dark:border-[#2D1F47] text-[#7B7393] hover:text-[#1E1235] dark:hover:text-white text-sm font-bold transition flex items-center gap-1"
                 >
                   <Eye className="w-3.5 h-3.5" /> View
@@ -355,6 +369,15 @@ export default function ExpiryRemindersPage() {
             </form>
           </div>
         </div>
+      )}
+
+      {/* DOCUMENT PREVIEW MODAL */}
+      {previewModalDocId && (
+        <DocumentPreviewModal
+          documentId={previewModalDocId}
+          onClose={() => setPreviewModalDocId(null)}
+          onDownload={handleDownload as any}
+        />
       )}
     </div>
   );

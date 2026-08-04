@@ -133,7 +133,7 @@ class DocumentController {
                 });
             }
 
-            const { title, description, category_id, folder_id, is_favorite } = req.body;
+            const { title, description, category_id, folder_id, is_favorite, expiry_date } = req.body;
             const isFav = (is_favorite === 'true' || is_favorite === '1' || is_favorite === 1 || is_favorite === true) ? 1 : 0;
 
             let filePath = '';
@@ -188,7 +188,8 @@ class DocumentController {
                 file_path: filePath,
                 file_size: file.size,
                 mime_type: file.mimetype,
-                is_favorite: isFav
+                is_favorite: isFav,
+                expiry_date: expiry_date || null
             });
 
             return res.status(201).json({
@@ -216,7 +217,7 @@ class DocumentController {
         try {
             const userId = req.user.id;
             const docId = req.params.id;
-            const { title, description, category_id, folder_id, tags } = req.body;
+            const { title, description, category_id, folder_id, tags, expiry_date } = req.body;
 
             if (title && !title.trim()) {
                 return res.status(400).json({
@@ -251,7 +252,8 @@ class DocumentController {
                 description,
                 category_id,
                 folder_id,
-                tags: Array.isArray(tags) ? tags.join(',') : tags
+                tags: Array.isArray(tags) ? tags.join(',') : tags,
+                expiry_date
             });
 
             return res.status(200).json({

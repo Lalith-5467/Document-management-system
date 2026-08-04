@@ -26,18 +26,9 @@ const MONTH_NAMES = [
   'July', 'August', 'September', 'October', 'November', 'December'
 ];
 
-const INITIAL_EVENTS: CalendarDocEvent[] = [
-  { id: 'evt-1', title: 'Passport Renewal', category: 'Personal Identity', expiryDate: '2026-07-29', year: 2026, month: 6, dayOfMonth: 29, daysRemaining: 2, status: 'expiring_soon' },
-  { id: 'evt-2', title: 'Health Insurance Expiry', category: 'Insurance', expiryDate: '2026-07-15', year: 2026, month: 6, dayOfMonth: 15, daysRemaining: -12, status: 'expired' },
-  { id: 'evt-3', title: 'Driving License Renewal', category: 'Personal Identity', expiryDate: '2026-08-18', year: 2026, month: 7, dayOfMonth: 18, daysRemaining: 22, status: 'expiring_soon' },
-  { id: 'evt-4', title: 'AWS Certification Expiry', category: 'Certificates', expiryDate: '2026-07-10', year: 2026, month: 6, dayOfMonth: 10, daysRemaining: -17, status: 'expired' },
-  { id: 'evt-5', title: 'Project Contract Renewal', category: 'Legal & Contracts', expiryDate: '2026-07-31', year: 2026, month: 6, dayOfMonth: 31, daysRemaining: 4, status: 'expiring_soon' },
-  { id: 'evt-6', title: 'Visa Entry Permit', category: 'Personal Identity', expiryDate: '2026-07-05', year: 2026, month: 6, dayOfMonth: 5, daysRemaining: -22, status: 'expired' },
-  { id: 'evt-7', title: 'Property Deed Assessment', category: 'Legal & Contracts', expiryDate: '2026-07-22', year: 2026, month: 6, dayOfMonth: 22, daysRemaining: -5, status: 'expired' },
-  { id: 'evt-8', title: 'Vehicle Registration RC', category: 'Personal Identity', expiryDate: '2026-11-30', year: 2026, month: 10, dayOfMonth: 30, daysRemaining: 126, status: 'valid' },
-  { id: 'evt-9', title: 'Home Insurance Policy', category: 'Insurance', expiryDate: '2026-09-15', year: 2026, month: 8, dayOfMonth: 15, daysRemaining: 50, status: 'valid' },
-  { id: 'evt-10', title: 'ISO Quality Certificate', category: 'Certificates', expiryDate: '2026-08-05', year: 2026, month: 7, dayOfMonth: 5, daysRemaining: 9, status: 'expiring_soon' },
-];
+const INITIAL_EVENTS: CalendarDocEvent[] = [];
+
+import api from '@/lib/api';
 
 function formatDate(dateStr: string) {
   const d = new Date(dateStr);
@@ -71,46 +62,67 @@ export default function DocumentCalendarPage() {
     setTimeout(() => setToast(null), 3500);
   };
 
-  const loadEvents = () => {
-    let loadedUserDocs: any[] = [];
-    if (typeof window !== 'undefined') {
-      try {
-        const saved = localStorage.getItem('dms_user_documents');
-        if (saved) loadedUserDocs = JSON.parse(saved);
-      } catch (e) {}
+  const loadEvents = async () => {
+    try {
+      const res = await api.get('/documents?limit=1000');
+      if (res.data?.success && Array.isArray(res.data.documents)) {
+        const todayDate = new Date();
+        const dynamicEvents: CalendarDocEvent[] = res.data.documents
+          .filter((doc: any) => doc.expiry_date != null)
+          .map((doc: any) => {
+            const expStr = doc.expiry_date;
+            const dateObj = new Date(expStr);
+            const diffDays = Math.ceil((dateObj.getTime() - todayDate.getTime()) / (1000 * 60 * 60 * 24));
+            
+            let status: 'valid' | 'expiring_soon' | 'expired' = 'valid';
+            if (diffDays <= 0) status = 'expired';
+            else if (diffDays <= 30) status = 'expiring_soon';
+            
+            return {
+              id: doc.id,
+              title: doc.title || doc.file_name,
+              category: doc.category_name || 'General Document',
+              expiryDate: expStr.split('T')[0],
+              year: dateObj.getFullYear(),
+              month: dateObj.getMonth(),
+              dayOfMonth: dateObj.getDate(),
+              daysRemaining: diffDays,
+              status
+            };
+          });
+        setEvents(dynamicEvents);
+      }
+    } catch (e) {
+      console.error('Failed to load events:', e);
     }
-    const todayDate = new Date(2026, 6, 27);
-    const dynamicEvents: CalendarDocEvent[] = loadedUserDocs.map((doc: any) => {
-      let expStr = doc.expiry_date || doc.created_at || '2026-07-28';
-      let dateObj = new Date(expStr);
-      if (isNaN(dateObj.getTime())) dateObj = new Date(2026, 6, 28);
-      const diffDays = Math.ceil((dateObj.getTime() - todayDate.getTime()) / (1000 * 60 * 60 * 24));
-      let status: 'valid' | 'expiring_soon' | 'expired' = 'valid';
-      if (diffDays <= 0) status = 'expired';
-      else if (diffDays <= 30) status = 'expiring_soon';
-      return { id: doc.id, title: doc.title, category: doc.category_name || 'General', expiryDate: expStr.split('T')[0], year: dateObj.getFullYear(), month: dateObj.getMonth(), dayOfMonth: dateObj.getDate(), daysRemaining: diffDays, status };
-    });
-    const combined = [...dynamicEvents];
-    INITIAL_EVENTS.forEach(ie => {
-      if (!combined.some(e => String(e.id) === String(ie.id) || e.title.toLowerCase() === ie.title.toLowerCase())) combined.push(ie);
-    });
-    setEvents(combined);
   };
 
-  const handleRenewSubmit = (e: React.FormEvent) => {
+  const handleRenewSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!renewModalDoc || !renewDateInput) return;
     const newDateObj = new Date(renewDateInput);
     if (isNaN(newDateObj.getTime())) { showToast('Please select a valid date.', 'error'); return; }
-    const todayDate = new Date(2026, 6, 27);
-    const diffDays = Math.ceil((newDateObj.getTime() - todayDate.getTime()) / (1000 * 60 * 60 * 24));
-    let status: 'valid' | 'expiring_soon' | 'expired' = 'valid';
-    if (diffDays <= 0) status = 'expired';
-    else if (diffDays <= 30) status = 'expiring_soon';
-    setEvents(prev => prev.map(evt => String(evt.id) === String(renewModalDoc.id) ? { ...evt, expiryDate: renewDateInput, year: newDateObj.getFullYear(), month: newDateObj.getMonth(), dayOfMonth: newDateObj.getDate(), daysRemaining: diffDays, status } : evt));
-    setSelectedEvent(null);
-    setRenewModalDoc(null);
-    showToast(`Renewed "${renewModalDoc.title}" to ${formatDate(renewDateInput)}!`);
+    
+    try {
+      const res = await api.put(`/documents/${renewModalDoc.id}`, {
+        expiry_date: renewDateInput
+      });
+      if (res.data?.success) {
+        const todayDate = new Date();
+        const diffDays = Math.ceil((newDateObj.getTime() - todayDate.getTime()) / (1000 * 60 * 60 * 24));
+        let status: 'valid' | 'expiring_soon' | 'expired' = 'valid';
+        if (diffDays <= 0) status = 'expired';
+        else if (diffDays <= 30) status = 'expiring_soon';
+        
+        setEvents(prev => prev.map(evt => String(evt.id) === String(renewModalDoc.id) ? { ...evt, expiryDate: renewDateInput, year: newDateObj.getFullYear(), month: newDateObj.getMonth(), dayOfMonth: newDateObj.getDate(), daysRemaining: diffDays, status } : evt));
+        setSelectedEvent(null);
+        setRenewModalDoc(null);
+        showToast(`Renewed "${renewModalDoc.title}" to ${formatDate(renewDateInput)}!`);
+      }
+    } catch (err) {
+      console.error('Failed to update event:', err);
+      showToast('Failed to update expiry date.', 'error');
+    }
   };
 
   const categoryOptions = useMemo(() => {
