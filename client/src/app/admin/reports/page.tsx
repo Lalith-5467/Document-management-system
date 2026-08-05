@@ -93,8 +93,8 @@ export default function AdminReportsPage() {
 
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
         <div>
-          <h1 className="text-2xl font-black text-slate-900 flex items-center gap-2 font-auth-heading">
-            <BarChart3 className="w-6 h-6 text-themePrimary" /> Reports & Analytics
+          <h1 className="text-2xl font-black text-slate-900 font-auth-heading">
+            Reports & Analytics
           </h1>
           <p className="text-xs text-slate-500 font-medium mt-1">System-wide statistics, trends, and usage analytics</p>
         </div>

@@ -3,49 +3,68 @@ export interface AutoCategoryResult {
   confidence: 'high' | 'medium';
 }
 
-export function detectCategoryFromFilename(filename: string): AutoCategoryResult {
+/**
+ * Detects the best category for a given filename.
+ * Category names MUST match the seeded DB categories exactly:
+ * 1=Personal Documents, 2=Academic Documents, 3=Project Documents,
+ * 4=Certificates, 5=Resume, 6=Client Requirement Documents, 7=Bills, 8=Others
+ */
+export function detectCategoryFromFilename(filename: string): AutoCategoryResult | null {
   const name = filename.toLowerCase();
 
-  // Career & Employment
-  if (/resume|cv|biodata|offer_?letter|experience|employment|recommendation|joining|relieving/i.test(name)) {
-    return { categoryName: 'Career Documents', confidence: 'high' };
+  // Resume / CV → category "Resume" (id: 5)
+  if (/resume|cv|biodata|cover.?letter|portfolio|curriculum.?vitae/i.test(name)) {
+    return { categoryName: 'Resume', confidence: 'high' };
   }
 
-  // Academic Records
-  if (/marksheet|degree|diploma|transcript|semester|grade|result|certificate|school|college|university|exam/i.test(name)) {
-    return { categoryName: 'Academic Records', confidence: 'high' };
+  // Academic → category "Academic Documents" (id: 2)
+  if (/marksheet|degree|diploma|transcript|semester|grade|result|school|college|university|exam|academic/i.test(name)) {
+    return { categoryName: 'Academic Documents', confidence: 'high' };
   }
 
-  // Personal Documents / Identity
-  if (/passport|driving_?license|dl|aadhaar|pan_?card|voter|national_?id|citizenship|birth_?certificate/i.test(name)) {
+  // Certificates → category "Certificates" (id: 4)
+  if (/certificate|certification|award|badge|completion|license|accreditation/i.test(name)) {
+    return { categoryName: 'Certificates', confidence: 'high' };
+  }
+
+  // Personal Identity → category "Personal Documents" (id: 1)
+  if (/passport|driving.?license|aadhaar|pan.?card|voter|national.?id|citizenship|birth.?cert|identity|id.?proof/i.test(name)) {
     return { categoryName: 'Personal Documents', confidence: 'high' };
   }
 
-  // Insurance
-  if (/insurance|policy|health_?claim|vehicle_?insurance|term_?life|coverage|premium/i.test(name)) {
-    return { categoryName: 'Insurance', confidence: 'high' };
+  // Bills & Finance → category "Bills" (id: 7)
+  if (/invoice|bill|receipt|tax|gst|statement|bank.?statement|form16|itr|utility|subscription|payment/i.test(name)) {
+    return { categoryName: 'Bills', confidence: 'high' };
   }
 
-  // Finance & Taxes
-  if (/invoice|tax_?report|tax|gst|bill|receipt|statement|bank_?statement|form16|audit|itr/i.test(name)) {
-    return { categoryName: 'Finance', confidence: 'high' };
+  // Client / Business Docs → category "Client Requirement Documents" (id: 6)
+  if (/brd|contract|agreement|nda|scope|sow|proposal|requirement|client|business|arch|specs/i.test(name)) {
+    return { categoryName: 'Client Requirement Documents', confidence: 'high' };
   }
 
-  // Payroll
-  if (/salary|payslip|pay_?stub|compensation|bonus|reimbursement/i.test(name)) {
-    return { categoryName: 'Payroll', confidence: 'high' };
+  // Project / Technical → category "Project Documents" (id: 3)
+  if (/project|technical|architecture|design|diagram|report|specs|roadmap|presentation|deck|pitch/i.test(name)) {
+    return { categoryName: 'Project Documents', confidence: 'high' };
   }
 
-  // Business
-  if (/proposal|business|presentation|deck|pitch|strategy|roadmap|specs|architecture/i.test(name)) {
-    return { categoryName: 'Business', confidence: 'high' };
-  }
+  // No match → return null so the upload page keeps its current category
+  return null;
+}
 
-  // Legal
-  if (/contract|agreement|nda|deed|lease|rent|terms|legal|affidavit|notary/i.test(name)) {
-    return { categoryName: 'Legal', confidence: 'high' };
-  }
+/**
+ * Suggests a category name based on a folder name.
+ * Used when user picks a folder in the upload form to auto-fill category.
+ */
+export function detectCategoryFromFolderName(folderName: string): AutoCategoryResult | null {
+  const name = folderName.toLowerCase();
 
-  // Fallback default
-  return { categoryName: 'General Documents', confidence: 'medium' };
+  if (/resume|cv|curriculum/i.test(name)) return { categoryName: 'Resume', confidence: 'high' };
+  if (/academic|degree|transcript|university|college|school|marksheet/i.test(name)) return { categoryName: 'Academic Documents', confidence: 'high' };
+  if (/certificate|award|badge|certif/i.test(name)) return { categoryName: 'Certificates', confidence: 'high' };
+  if (/passport|identity|id.?proof|personal/i.test(name)) return { categoryName: 'Personal Documents', confidence: 'high' };
+  if (/bill|invoice|tax|finance|receipt|payment/i.test(name)) return { categoryName: 'Bills', confidence: 'high' };
+  if (/client|contract|brd|requirement|scope/i.test(name)) return { categoryName: 'Client Requirement Documents', confidence: 'high' };
+  if (/project|technical|architecture/i.test(name)) return { categoryName: 'Project Documents', confidence: 'high' };
+
+  return null;
 }

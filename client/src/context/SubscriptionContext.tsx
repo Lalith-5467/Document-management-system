@@ -70,7 +70,7 @@ const DEFAULT_PROMOS: PromoCode[] = [
 const DEFAULT_TRIAL_CONFIG: TrialConfig = {
   defaultTrialDays: 7,
   extensionBonusDays: 3,
-  bannerTitle: 'First 7 Days Free of Cost ($0.00 / ₹0)',
+  bannerTitle: 'First 7 Days Free of Cost (₹0)',
   bannerSubtitle: 'Enjoy full unrestricted access to DocVault for 7 days. No payment required during your trial. Subscription auto-activates after Day 7.',
   isEnabled: true
 };
@@ -110,7 +110,7 @@ const DEFAULT_PLANS: SubscriptionPlan[] = [
     storageLimitGb: 5,
     docLimit: 50,
     features: [
-      '7 Days 100% Free of Cost ($0.00)',
+      '7 Days 100% Free of Cost (₹0)',
       'Upload up to 50 Documents',
       '5 GB High-Speed Vault Storage',
       'Full OCR Keyword & Text Search',

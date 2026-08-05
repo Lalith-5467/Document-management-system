@@ -15,6 +15,13 @@ let nextDocId = 200;
 
 class DocumentModel {
     /**
+     * Expose in-memory documents array for cross-model live counting (e.g. folder doc counts)
+     */
+    static getMemoryDocuments() {
+        return memoryDocuments;
+    }
+
+    /**
      * Get categories list for selection
      */
     static async getCategories(userId = 1) {

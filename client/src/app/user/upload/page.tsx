@@ -5,13 +5,13 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { 
   Upload, ArrowLeft, FileUp, CheckCircle2, AlertCircle, Loader2, 
-  FileText, FolderClosed, X, Star, Plus, Search, ChevronDown, 
+  FileText, FolderClosed, X, Star, Plus, Search, ChevronDown, ChevronRight,
   FolderPlus, Eye, Sparkles, Check, FileCheck, HardDrive, Clock, Lock
 } from 'lucide-react';
 import api from '@/lib/api';
-import { detectCategoryFromFilename } from '@/lib/autoCategorize';
+import { detectCategoryFromFilename, detectCategoryFromFolderName } from '@/lib/autoCategorize';
 import { logActivity } from '@/lib/activityLogger';
-import { addNotification } from '@/lib/notificationStore';
+import { addNotification, syncExpiryNotifications } from '@/lib/notificationStore';
 import {
   validateDocumentFile,
   validateDocumentTitle,
@@ -108,6 +108,13 @@ export default function UploadPage() {
 
   useEffect(() => {
     fetchOptions();
+    const handleUpdate = () => fetchOptions();
+    window.addEventListener('dms_categories_updated', handleUpdate);
+    window.addEventListener('dms_folders_updated', handleUpdate);
+    return () => {
+      window.removeEventListener('dms_categories_updated', handleUpdate);
+      window.removeEventListener('dms_folders_updated', handleUpdate);
+    };
   }, []);
 
   const fetchOptions = async () => {
@@ -118,16 +125,50 @@ export default function UploadPage() {
         api.get('/folders').catch(() => null)
       ]);
 
-      if (catRes?.data?.categories && catRes.data.categories.length > 0) {
-        setCategories(catRes.data.categories);
-        setCategoryId(String(catRes.data.categories[0].id));
-        setCategoryName(catRes.data.categories[0].category_name);
+      let loadedCats = catRes?.data?.categories;
+      if (!loadedCats || loadedCats.length === 0) {
+        if (typeof window !== 'undefined') {
+          const saved = localStorage.getItem('dms_admin_categories');
+          if (saved) {
+            try { loadedCats = JSON.parse(saved); } catch {}
+          }
+        }
       }
 
-      if (foldRes?.data?.folders) {
-        setFolders(foldRes.data.folders);
+      if (loadedCats && loadedCats.length > 0) {
+        setCategories(loadedCats);
+        // Only set default if no category was pre-selected from URL
+        const urlCatId = searchParams.get('category_id');
+        const urlCatName = searchParams.get('category_name');
+        if (urlCatId) {
+          const matched = loadedCats.find((c: any) => String(c.id) === String(urlCatId));
+          if (matched) {
+            setCategoryId(String(matched.id));
+            setCategoryName(matched.category_name || matched.name || urlCatName || '');
+          } else {
+            setCategoryId(urlCatId);
+            setCategoryName(urlCatName || '');
+          }
+        } else if (!categoryId) {
+          setCategoryId(String(loadedCats[0].id));
+          setCategoryName(loadedCats[0].category_name || loadedCats[0].name);
+        }
+      }
+
+      let loadedFolders = foldRes?.data?.folders;
+      if (!loadedFolders || loadedFolders.length === 0) {
+        if (typeof window !== 'undefined') {
+          const saved = localStorage.getItem('dms_admin_folders');
+          if (saved) {
+            try { loadedFolders = JSON.parse(saved); } catch {}
+          }
+        }
+      }
+
+      if (loadedFolders && loadedFolders.length > 0) {
+        setFolders(loadedFolders);
         if (folderId) {
-          const matched = foldRes.data.folders.find((f: any) => String(f.id) === String(folderId));
+          const matched = loadedFolders.find((f: any) => String(f.id) === String(folderId));
           if (matched) setFolderName(matched.folder_name);
         }
       }
@@ -176,19 +217,19 @@ export default function UploadPage() {
       }
     }
 
-    // Auto Categorization
+    // Auto Categorization — only if a confident match is found
     const autoCat = detectCategoryFromFilename(file.name);
     if (autoCat) {
       setSuggestedCategory(autoCat.categoryName);
-      const matched = categories.find(c =>
-        (c.category_name || c.name || '').toLowerCase().includes(autoCat.categoryName.toLowerCase()) ||
-        autoCat.categoryName.toLowerCase().includes((c.category_name || c.name || '').toLowerCase())
+      // Exact match first, then partial
+      const matched = categories.find((c: any) =>
+        (c.category_name || c.name || '').toLowerCase() === autoCat.categoryName.toLowerCase()
+      ) || categories.find((c: any) =>
+        (c.category_name || c.name || '').toLowerCase().includes(autoCat.categoryName.toLowerCase())
       );
       if (matched) {
         setCategoryId(String(matched.id));
         setCategoryName(matched.category_name || matched.name);
-      } else {
-        setCategoryName(autoCat.categoryName);
       }
     }
 
@@ -515,6 +556,10 @@ export default function UploadPage() {
         // Log real-time audit activity & notification
         logActivity('UPLOAD', createdDoc.title, `Uploaded document "${createdDoc.title}" (${formatFileSize(createdDoc.file_size)}) to category ${createdDoc.category_name}`);
         addNotification('Document Uploaded Successfully', `"${createdDoc.title}" was vaulted into category ${createdDoc.category_name}.`, 'success', `/user/documents?q=${encodeURIComponent(createdDoc.title)}`);
+        const docWithExpiry = { ...createdDoc, expiry_date: (createdDoc as any).expiry_date || expiryDate || null };
+        if (docWithExpiry.expiry_date) {
+          syncExpiryNotifications([docWithExpiry]);
+        }
       }
 
       setUploadProgress(100);
@@ -548,15 +593,15 @@ export default function UploadPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800/80 pb-5">
         <div>
-          <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-1 font-medium font-auth-body">
-            <Link href="/user" className="hover:text-themePrimary dark:hover:text-orange-400 transition flex items-center gap-1">
-              <ArrowLeft className="w-3.5 h-3.5" /> Workspace
+          <div className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-500 dark:text-slate-400 mb-1.5 font-medium font-auth-body">
+            <Link href="/user" className="hover:text-themePrimary dark:hover:text-orange-400 transition-colors font-medium">
+              Workspace
             </Link>
-            <span>/</span>
+            <ChevronRight className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 shrink-0" />
             <span className="text-slate-900 dark:text-white font-semibold font-auth-body">Upload Document</span>
           </div>
-          <h1 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-2.5 font-auth-heading">
-            <Upload className="w-6 h-6 text-themePrimary dark:text-orange-400" /> Upload New Document
+          <h1 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight font-auth-heading">
+            Upload New Document
           </h1>
           <p className="text-sm text-slate-600 dark:text-slate-400 font-medium font-auth-body">
             Store and organize your important files securely for future reference.
@@ -845,6 +890,18 @@ export default function UploadPage() {
                           setFolderId(fIdStr);
                           setFolderName(f.folder_name);
                           setFolderOpen(false);
+                          // Auto-suggest category from folder name
+                          const folderCatSuggestion = detectCategoryFromFolderName(f.folder_name);
+                          if (folderCatSuggestion) {
+                            const matchedCat = categories.find((c: any) =>
+                              (c.category_name || c.name || '').toLowerCase() === folderCatSuggestion.categoryName.toLowerCase()
+                            );
+                            if (matchedCat) {
+                              setCategoryId(String(matchedCat.id));
+                              setCategoryName(matchedCat.category_name || matchedCat.name);
+                              setSuggestedCategory(matchedCat.category_name || matchedCat.name);
+                            }
+                          }
                         }}
                         className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm font-semibold transition font-auth-body ${
                           isSelected ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-auth-heading' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'

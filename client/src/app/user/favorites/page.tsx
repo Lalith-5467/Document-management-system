@@ -549,13 +549,19 @@ export default function FavoritesPage() {
         </div>
       )}
 
+      {/* Navigation Breadcrumb */}
+      <div className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium">
+        <Link href="/user" className="hover:text-themePrimary dark:hover:text-orange-400 transition-colors font-medium">
+          Vault Collections
+        </Link>
+        <ChevronRight className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 shrink-0" />
+        <span className="font-semibold text-slate-900 dark:text-white">Favorites</span>
+      </div>
+
       {/* PAGE HEADER */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-black text-[#1E1235] dark:text-white tracking-tight flex items-center gap-3">
-            <span className="w-9 h-9 rounded-2xl bg-amber-100 text-amber-500 flex items-center justify-center shadow-xs border border-amber-200 shrink-0">
-              <Star className="w-5 h-5 fill-amber-400 text-amber-500" />
-            </span>
+          <h1 className="text-2xl sm:text-3xl font-black text-[#1E1235] dark:text-white tracking-tight">
             {t('favoriteDocuments', 'Favorite Documents')}
           </h1>
           <p className="text-sm text-[#7B7393] dark:text-[#A39BB8] mt-1 font-medium">
@@ -1142,30 +1148,7 @@ export default function FavoritesPage() {
             </div>
           </div>
 
-          {/* 3. Need More Storage Banner Card */}
-          <div className="bg-gradient-to-br from-themePrimary via-[#F97316] to-[#EA580C] p-6 rounded-3xl text-white shadow-xl shadow-orange-500/20 relative overflow-hidden flex flex-col justify-between space-y-4">
-            <div className="space-y-2 relative z-10">
-              <span className="inline-block px-3 py-1 rounded-full bg-white/20 text-white text-xs font-black tracking-wider uppercase backdrop-blur-md">
-                Pro Plan Feature
-              </span>
-              <h4 className="text-lg font-black tracking-tight leading-snug">Need More Storage?</h4>
-              <p className="text-sm text-orange-100 leading-relaxed font-medium">
-                Upgrade your plan to store more documents securely with 100ms lightning retrieval.
-              </p>
-            </div>
 
-            <div className="relative z-10 pt-2 flex items-center justify-between gap-3">
-              <button className="px-5 py-2.5 rounded-2xl bg-white text-themePrimary hover:bg-orange-50 text-sm font-black shadow-md hover:scale-105 transition">
-                Upgrade Now
-              </button>
-              <div className="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white shrink-0">
-                <Package className="w-6 h-6" />
-              </div>
-            </div>
-
-            {/* Subtle background glow */}
-            <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-orange-400/20 rounded-full blur-2xl pointer-events-none"></div>
-          </div>
         </div>
       </div>
 

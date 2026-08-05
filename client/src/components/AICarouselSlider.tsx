@@ -56,7 +56,7 @@ export default function FloatingArrowHeroCarousel() {
   const btnBg = `bg-gradient-to-r ${accentGradient} hover:brightness-110 shadow-orange-500/30`;
 
   return (
-    <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 overflow-hidden">
+    <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 overflow-hidden font-poppins">
       {/* Background Glow Effect */}
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[450px] rounded-full blur-[150px] pointer-events-none transition-all duration-700 opacity-20"

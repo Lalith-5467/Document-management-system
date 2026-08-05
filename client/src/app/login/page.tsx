@@ -3,7 +3,7 @@
 import React, { useState, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ShieldCheck, Mail, Lock, Eye, EyeOff, ArrowRight, AlertCircle, Loader2, CheckCircle2, Check } from 'lucide-react';
+import { ShieldCheck, Mail, Lock, Eye, EyeOff, ArrowRight, AlertCircle, Loader2, CheckCircle2, Check, ArrowLeft } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import {
   validateEmail,
@@ -116,6 +116,17 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen w-full bg-[#F4F6F9] flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 font-sans relative overflow-hidden animate-fade-up">
+      {/* Professional Top Left Back Button */}
+      <div className="absolute top-6 left-6 z-20">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white hover:bg-slate-50 border border-slate-200/90 text-slate-700 hover:text-slate-900 text-xs font-black shadow-xs hover:shadow-md transition-all duration-200 group cursor-pointer"
+        >
+          <ArrowLeft className="w-4 h-4 text-[#FF6B00] group-hover:-translate-x-1 transition-transform" />
+          <span>Back to Home Page</span>
+        </Link>
+      </div>
+
       {/* Centered White Card Box */}
       <div className="w-full max-w-[460px] bg-white rounded-[32px] p-8 sm:p-10 shadow-[0_20px_60px_rgba(0,0,0,0.04)] space-y-8 relative z-10 my-auto">
         {/* Header */}
@@ -261,13 +272,6 @@ export default function LoginPage() {
             </Link>
           </p>
         </div>
-      </div>
-
-      {/* Back to Home Page Link */}
-      <div className="text-center mt-8 relative z-10">
-        <Link href="/" className="text-[14px] font-bold text-[#64748B] hover:text-[#1A1A1A] transition-colors inline-flex items-center gap-2">
-          ← Back to Home Page
-        </Link>
       </div>
     </div>
   );

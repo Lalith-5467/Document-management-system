@@ -6,7 +6,7 @@ import {
   ArrowLeft, Search, Plus, LayoutGrid, List, Edit2, Trash2, 
   UserCheck, GraduationCap, FolderGit2, FileText, Award, Briefcase, 
   Receipt, Layers, Folder, FolderClosed, Bookmark, ShieldCheck, Archive, FileCheck, 
-  X, AlertTriangle, AlertCircle, CheckCircle2, Loader2, Calendar, FileStack, RefreshCw, FolderPlus, Upload
+  X, AlertTriangle, AlertCircle, CheckCircle2, Loader2, Calendar, FileStack, RefreshCw, FolderPlus, Upload, ChevronRight
 } from 'lucide-react';
 import api from '@/lib/api';
 import { useLanguage } from '@/context/LanguageContext';
@@ -95,6 +95,19 @@ export default function CategoriesPage() {
 
   useEffect(() => {
     fetchCategories();
+    const handleUpdate = () => fetchCategories();
+    window.addEventListener('dms_categories_updated', handleUpdate);
+
+    // Refresh category counts when navigating back from upload
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') fetchCategories();
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+
+    return () => {
+      window.removeEventListener('dms_categories_updated', handleUpdate);
+      document.removeEventListener('visibilitychange', handleVisibility);
+    };
   }, []);
 
   const showToast = (message: string, type: 'success' | 'error' = 'success') => {
@@ -104,22 +117,53 @@ export default function CategoriesPage() {
     }, 4000);
   };
 
+  // Merge API category list with live localStorage document counts
+  const mergeCategoryCounts = (apiCats: Category[]): Category[] => {
+    if (typeof window === 'undefined') return apiCats;
+    try {
+      const stored = localStorage.getItem('dms_user_documents');
+      if (!stored) return apiCats;
+      const localDocs: any[] = JSON.parse(stored);
+      return apiCats.map(cat => {
+        const localCount = localDocs.filter(
+          (d: any) => String(d.category_id) === String(cat.id) && !d.is_archived
+        ).length;
+        return { ...cat, document_count: Math.max(cat.document_count || 0, localCount) };
+      });
+    } catch {
+      return apiCats;
+    }
+  };
+
   const fetchCategories = async () => {
     setLoading(true);
     setError(null);
     try {
       const res = await api.get('/categories');
-      if (res.data && res.data.categories) {
-        setCategories(res.data.categories);
-      } else {
-        setCategories([]);
+      if (res.data && res.data.categories && res.data.categories.length > 0) {
+        setCategories(mergeCategoryCounts(res.data.categories));
+        setLoading(false);
+        return;
       }
     } catch (err: any) {
       console.error('Failed to fetch categories:', err);
-      setCategories([]);
-    } finally {
-      setLoading(false);
     }
+
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('dms_admin_categories');
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (parsed && parsed.length > 0) {
+            setCategories(mergeCategoryCounts(parsed));
+            setLoading(false);
+            return;
+          }
+        } catch {}
+      }
+    }
+
+    setLoading(false);
   };
 
   // Search Filter
@@ -335,12 +379,12 @@ export default function CategoriesPage() {
 
       {/* Navigation Breadcrumb */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Link href="/user" className="text-sm font-bold text-[#7B7393] hover:text-[#6C5CE7] transition-colors flex items-center gap-1">
-            <ArrowLeft className="w-3.5 h-3.5" /> {t('nav.myWorkspace', 'My Workspace')}
+        <div className="flex items-center gap-1.5 text-xs sm:text-sm text-[#7B7393]">
+          <Link href="/user" className="font-medium hover:text-[#6C5CE7] transition-colors">
+            {t('nav.myWorkspace', 'Workspace')}
           </Link>
-          <span className="text-[#7B7393] text-sm">/</span>
-          <span className="text-sm font-bold text-[#1E1235]">{t('categories.title', 'Category Management')}</span>
+          <ChevronRight className="w-3.5 h-3.5 text-[#7B7393]/60 shrink-0" />
+          <span className="font-semibold text-[#1E1235]">{t('categories.title', 'Category Management')}</span>
         </div>
 
         <button 

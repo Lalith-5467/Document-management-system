@@ -103,8 +103,8 @@ export default function AdminActivityPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
         <div>
-          <h1 className="text-2xl font-black text-slate-900 flex items-center gap-2 font-auth-heading">
-            <Activity className="w-6 h-6 text-themePrimary" /> Activity Audit Logs
+          <h1 className="text-2xl font-black text-slate-900 font-auth-heading">
+            Activity Audit Logs
           </h1>
           <p className="text-xs text-slate-500 font-medium mt-1">{totalCount} total activities tracked system-wide</p>
         </div>

@@ -24,7 +24,7 @@ class SettingModel {
                 );
 
                 return {
-                    user: user || { id: numUserId, full_name: 'User', email: 'user@example.com', theme: 'light', language: 'en' },
+                    user: user || null,
                     stats: {
                         documentsUploaded: docStats?.docCount || 0,
                         storageUsedBytes: Number(docStats?.totalBytes || 0),
@@ -37,10 +37,10 @@ class SettingModel {
         }
 
         return {
-            user: { id: numUserId, full_name: 'User Profile', email: 'user@example.com', theme: 'light', language: 'en' },
+            user: null,
             stats: {
-                documentsUploaded: 12,
-                storageUsedBytes: 18450000,
+                documentsUploaded: 0,
+                storageUsedBytes: 0,
                 storageLimitBytes: 15 * 1024 * 1024 * 1024
             }
         };

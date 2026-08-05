@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { 
   Trash2, RotateCcw, Search, ArrowLeft, RefreshCw, 
-  AlertCircle, CheckCircle2, Loader2, Info, FileText, AlertTriangle, Trash, X 
+  AlertCircle, CheckCircle2, Loader2, Info, FileText, AlertTriangle, Trash, X, ChevronRight
 } from 'lucide-react';
 import api from '@/lib/api';
 import { logActivity } from '@/lib/activityLogger';
@@ -222,15 +222,15 @@ export default function TrashPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800/80 pb-5">
         <div>
-          <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-1 font-medium">
-            <Link href="/user" className="hover:text-rose-600 dark:hover:text-rose-400 transition flex items-center gap-1">
-              <ArrowLeft className="w-3.5 h-3.5" /> Workspace
+          <div className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-500 dark:text-slate-400 mb-1.5 font-medium">
+            <Link href="/user" className="hover:text-rose-600 dark:hover:text-rose-400 transition-colors font-medium">
+              Vault Collections
             </Link>
-            <span>/</span>
+            <ChevronRight className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 shrink-0" />
             <span className="text-slate-900 dark:text-white font-semibold">Recycle Bin</span>
           </div>
-          <h1 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-2.5">
-            <Trash2 className="w-6 h-6 text-rose-500 dark:text-rose-400" /> Recycle Bin
+          <h1 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight">
+            Recycle Bin
           </h1>
           <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">
             Temporarily holds soft-deleted documents. Restore files to your workspace or permanently purge them.

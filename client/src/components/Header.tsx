@@ -13,6 +13,8 @@ import {
   getNotifications, 
   getUnreadNotificationCount, 
   markAllNotificationsAsRead, 
+  toggleNotificationRead,
+  checkAndSyncExpiryNotifications,
   NotificationItem 
 } from '@/lib/notificationStore';
 
@@ -28,6 +30,7 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [greeting, setGreeting] = useState('Good Morning');
   const [notificationsList, setNotificationsList] = useState<NotificationItem[]>([]);
+  const [notifTab, setNotifTab] = useState<'all' | 'unread' | 'read'>('all');
 
   const isAdmin = user
     ? user.user_type === 'admin' || (user as any).role === 'admin' || user.email?.toLowerCase().includes('admin')
@@ -40,14 +43,38 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
     else setGreeting('Good Evening');
 
     setNotificationsList(getNotifications());
+
+    const handleUpdate = () => {
+      setNotificationsList(getNotifications());
+    };
+    window.addEventListener('dms_notifications_updated', handleUpdate);
+
+    checkAndSyncExpiryNotifications().then(list => {
+      if (list) setNotificationsList(list);
+    });
+
+    return () => {
+      window.removeEventListener('dms_notifications_updated', handleUpdate);
+    };
   }, []);
+
+  const handleMarkAllReadHeader = () => {
+    markAllNotificationsAsRead();
+    setNotificationsList(getNotifications());
+  };
+
+  const handleToggleReadHeader = (id: number | string) => {
+    toggleNotificationRead(id);
+    setNotificationsList(getNotifications());
+  };
 
   const unreadCount = notificationsList.filter(n => !n.is_read).length;
 
-  const handleMarkAllReadHeader = () => {
-    const updated = markAllNotificationsAsRead();
-    setNotificationsList(updated);
-  };
+  const filteredNotifs = notificationsList.filter(n => {
+    if (notifTab === 'unread') return !n.is_read;
+    if (notifTab === 'read') return n.is_read;
+    return true;
+  });
 
   const userName = user?.full_name || 'Kalpana';
 
@@ -145,47 +172,98 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
           </button>
 
           {showNotifications && (
-            <div className="absolute right-0 mt-2 w-[340px] sm:w-[420px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl z-50 p-4 space-y-3 backdrop-blur-xl animate-pop-in text-slate-900 dark:text-white">
+            <div className="absolute right-0 mt-2 w-[340px] sm:w-[420px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl z-50 p-4 space-y-3 backdrop-blur-xl animate-pop-in text-slate-900 dark:text-white">
               <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2.5">
-                <span className="text-xs font-black flex items-center gap-1.5">
+                <span className="text-xs font-black flex items-center gap-1.5 font-auth-heading">
                   <Bell className="w-4 h-4 text-themePrimary" /> Notifications
                 </span>
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 border border-orange-200 dark:border-orange-900/60">
-                    {unreadCount} Unread
-                  </span>
                   {unreadCount > 0 && (
                     <button
                       onClick={handleMarkAllReadHeader}
-                      className="text-[10px] text-slate-400 hover:text-slate-900 dark:hover:text-white underline"
+                      className="text-[10px] font-extrabold text-themePrimary hover:underline cursor-pointer"
                     >
-                      Read all
+                      Mark all read
                     </button>
                   )}
                 </div>
               </div>
 
+              {/* Filter Tabs Bar (All / Unread / Read) */}
+              <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-2xl text-[11px] font-bold">
+                <button
+                  onClick={() => setNotifTab('all')}
+                  className={`flex-1 py-1 rounded-xl transition cursor-pointer text-center ${
+                    notifTab === 'all'
+                      ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-2xs font-extrabold'
+                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-900'
+                  }`}
+                >
+                  All ({notificationsList.length})
+                </button>
+                <button
+                  onClick={() => setNotifTab('unread')}
+                  className={`flex-1 py-1 rounded-xl transition cursor-pointer text-center flex items-center justify-center gap-1 ${
+                    notifTab === 'unread'
+                      ? 'bg-white dark:bg-slate-700 text-themePrimary dark:text-orange-400 shadow-2xs font-extrabold'
+                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-900'
+                  }`}
+                >
+                  Unread {unreadCount > 0 && <span className="px-1.5 py-0.2 rounded-full bg-themePrimary text-white text-[9px] font-black">{unreadCount}</span>}
+                </button>
+                <button
+                  onClick={() => setNotifTab('read')}
+                  className={`flex-1 py-1 rounded-xl transition cursor-pointer text-center ${
+                    notifTab === 'read'
+                      ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-2xs font-extrabold'
+                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-900'
+                  }`}
+                >
+                  Read ({notificationsList.length - unreadCount})
+                </button>
+              </div>
+
               <div className="space-y-2 max-h-64 overflow-y-auto">
-                {notificationsList.length === 0 ? (
-                  <p className="text-xs text-slate-400 text-center py-4 italic">No notifications</p>
+                {filteredNotifs.length === 0 ? (
+                  <p className="text-xs text-slate-400 text-center py-6 italic font-medium">No {notifTab !== 'all' ? notifTab : ''} notifications</p>
                 ) : (
-                  notificationsList.slice(0, 5).map((notif) => (
-                    <Link
+                  filteredNotifs.slice(0, 8).map((notif) => (
+                    <div
                       key={notif.id}
-                      href={notif.link || '/user/notifications'}
-                      onClick={() => setShowNotifications(false)}
-                      className={`block p-3 rounded-xl border transition-all text-xs space-y-1 ${
+                      className={`p-3 rounded-2xl border transition-all text-xs space-y-1 flex items-start justify-between gap-2.5 ${
                         !notif.is_read
-                          ? 'bg-orange-50/50 dark:bg-orange-950/20 border-orange-200 dark:border-orange-900/50 font-semibold'
+                          ? 'bg-orange-50/60 dark:bg-orange-950/20 border-orange-200 dark:border-orange-900/50 font-semibold'
                           : 'bg-slate-50 dark:bg-slate-800/40 border-slate-100 dark:border-slate-800'
                       }`}
                     >
-                      <div className="flex items-center justify-between">
-                        <span className="font-extrabold text-slate-900 dark:text-white truncate max-w-[180px]">{notif.title}</span>
-                        {!notif.is_read && <span className="w-2 h-2 rounded-full bg-themePrimary" />}
-                      </div>
-                      <p className="text-[11px] text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed">{notif.message}</p>
-                    </Link>
+                      <Link
+                        href={notif.link || '/user/notifications'}
+                        onClick={() => setShowNotifications(false)}
+                        className="flex-1 min-w-0 space-y-1"
+                      >
+                        <div className="flex items-center gap-2">
+                          <span className="font-extrabold text-slate-900 dark:text-white truncate max-w-[200px] font-auth-heading">{notif.title}</span>
+                          {!notif.is_read ? (
+                            <span className="px-1.5 py-0.2 rounded-md bg-orange-100 text-themePrimary text-[9px] font-black uppercase shrink-0 border border-orange-200">Unread</span>
+                          ) : (
+                            <span className="px-1.5 py-0.2 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-500 text-[9px] font-extrabold uppercase shrink-0">Read</span>
+                          )}
+                        </div>
+                        <p className="text-[11px] text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed font-medium">{notif.message}</p>
+                      </Link>
+
+                      <button
+                        onClick={() => handleToggleReadHeader(notif.id)}
+                        title={notif.is_read ? "Mark as unread" : "Mark as read"}
+                        className={`p-1 rounded-lg border transition shrink-0 mt-0.5 cursor-pointer ${
+                          notif.is_read
+                            ? 'text-slate-400 border-slate-200 dark:border-slate-700 hover:text-themePrimary'
+                            : 'text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100'
+                        }`}
+                      >
+                        ✓
+                      </button>
+                    </div>
                   ))
                 )}
               </div>
@@ -194,7 +272,7 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
                 <Link
                   href="/user/notifications"
                   onClick={() => setShowNotifications(false)}
-                  className="text-xs font-black text-themePrimary dark:text-orange-400 hover:underline inline-flex items-center gap-1"
+                  className="text-xs font-black text-themePrimary dark:text-orange-400 hover:underline inline-flex items-center gap-1 font-auth-heading"
                 >
                   View All Notifications Center →
                 </Link>

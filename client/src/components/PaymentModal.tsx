@@ -121,7 +121,7 @@ export default function PaymentModal() {
 
               <div className="flex justify-between font-extrabold text-emerald-600 dark:text-emerald-400">
                 <span>First 7 Days Promo</span>
-                <span>FREE ($0.00 / ₹0)</span>
+                <span>FREE (₹0)</span>
               </div>
 
               {promoApplied && (

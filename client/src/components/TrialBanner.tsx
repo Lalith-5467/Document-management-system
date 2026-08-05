@@ -2,11 +2,13 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Sparkles, Clock, AlertTriangle, ShieldAlert, ArrowRight, Zap, X, LogOut, Lock, Crown } from 'lucide-react';
 import { useSubscription } from '@/context/SubscriptionContext';
 import { useAuth } from '@/context/AuthContext';
 
 export default function TrialBanner() {
+  const pathname = usePathname();
   const { subscription, daysRemaining, isExpired, isTrial, openUpgradeModal } = useSubscription();
   const { logout } = useAuth();
   const [dismissed, setDismissed] = useState(false);
@@ -68,6 +70,11 @@ export default function TrialBanner() {
     );
   }
 
+  // 2. PREMIUM MARQUEE TRIAL BANNER (ONLY SHOW ON MAIN USER DASHBOARD PAGE '/user')
+  if (pathname !== '/user') {
+    return null;
+  }
+
   // 2. PREMIUM MARQUEE TRIAL BANNER
   const isUrgent = daysRemaining <= 1;
   const isWarning = daysRemaining <= 3;
@@ -92,7 +99,7 @@ export default function TrialBanner() {
             </span>
             <span className="text-themePrimary font-bold">•</span>
             <span className="text-slate-600 dark:text-slate-300">
-              <strong className="text-themePrimary font-black underline decoration-orange-400 decoration-2">{daysRemaining} {daysRemaining === 1 ? 'Day' : 'Days'} Remaining</strong> ($0.00 / ₹0 Billed)
+              <strong className="text-themePrimary font-black underline decoration-orange-400 decoration-2">{daysRemaining} {daysRemaining === 1 ? 'Day' : 'Days'} Remaining</strong> (₹0 Billed)
             </span>
             <span className="text-themePrimary font-bold">•</span>
             <span className="px-2 py-0.5 rounded bg-white dark:bg-slate-800 border border-orange-200 dark:border-orange-900/60 text-themePrimary dark:text-orange-300 text-[10px] font-black shadow-2xs">
@@ -107,7 +114,7 @@ export default function TrialBanner() {
             </span>
             <span className="text-themePrimary font-bold">•</span>
             <span className="text-slate-600 dark:text-slate-300">
-              <strong className="text-themePrimary font-black underline decoration-orange-400 decoration-2">{daysRemaining} {daysRemaining === 1 ? 'Day' : 'Days'} Remaining</strong> ($0.00 / ₹0 Billed)
+              <strong className="text-themePrimary font-black underline decoration-orange-400 decoration-2">{daysRemaining} {daysRemaining === 1 ? 'Day' : 'Days'} Remaining</strong> (₹0 Billed)
             </span>
             <span className="text-themePrimary font-bold">•</span>
             <span className="px-2 py-0.5 rounded bg-white dark:bg-slate-800 border border-orange-200 dark:border-orange-900/60 text-themePrimary dark:text-orange-300 text-[10px] font-black shadow-2xs">

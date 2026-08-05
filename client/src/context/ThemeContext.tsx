@@ -84,6 +84,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       clearThemeVariables();
       localStorage.removeItem('dms_custom_theme');
     }
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('dms_theme_updated'));
+    }
   };
 
   const resetToDefault = () => {
@@ -103,16 +106,30 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   };
 
   const fetchUserTheme = async () => {
-    const token = localStorage.getItem('dms_token');
-    if (!token) return;
+    const token = typeof window !== 'undefined' ? localStorage.getItem('dms_token') : null;
 
     try {
-      const res = await api.get('/themes/preference');
-      if (res.data?.success && res.data?.theme) {
-        setCustomTheme(res.data.theme);
-      } else if (res.data?.preference?.is_custom) {
-        const pref = res.data.preference;
-        applyThemeVariables(pref);
+      if (token) {
+        const res = await api.get('/themes/preference');
+        if (res.data?.success && res.data?.theme) {
+          setCustomTheme(res.data.theme);
+          return;
+        } else if (res.data?.preference?.is_custom) {
+          const pref = res.data.preference;
+          applyThemeVariables(pref);
+          return;
+        }
+      }
+
+      // If no custom preference, load the Admin's default theme from backend DB
+      const themesRes = await api.get('/themes');
+      if (themesRes.data?.success && Array.isArray(themesRes.data.themes)) {
+        const activeThemes = themesRes.data.themes;
+        const defaultTheme = activeThemes.find((t: any) => t.is_default === 1) || activeThemes[0];
+        if (defaultTheme) {
+          setCustomThemeState(defaultTheme);
+          applyThemeVariables(defaultTheme);
+        }
       }
     } catch (error) {
       console.error('Error fetching theme preference', error);

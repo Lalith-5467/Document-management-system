@@ -51,7 +51,9 @@ export default function MyDocumentsPage() {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [debouncedSearch, setDebouncedSearch] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string>(() => searchParams.get('category_id') || searchParams.get('category') || '');
-  const [selectedFolder, setSelectedFolder] = useState<string>(() => searchParams.get('folder_id') || searchParams.get('folder') || '');
+  // folder_id: numeric ID for filtering; folderName: display label from URL param
+  const [selectedFolder, setSelectedFolder] = useState<string>(() => searchParams.get('folder_id') || '');
+  const [folderName, setFolderName] = useState<string>(() => searchParams.get('folder') || '');
   const [selectedFileType, setSelectedFileType] = useState<string>('');
   const [selectedDateRange, setSelectedDateRange] = useState<string>(() => isRecentMode ? '7days' : '');
   const [sortBy, setSortBy] = useState<string>('date_desc');
@@ -89,9 +91,14 @@ export default function MyDocumentsPage() {
       if (catParam) {
         setSelectedCategory(catParam);
       }
-      const foldParam = urlParams.get('folder_id') || urlParams.get('folder');
-      if (foldParam) {
-        setSelectedFolder(foldParam);
+      // Only set folder from folder_id param (numeric), not from folder name
+      const foldIdParam = urlParams.get('folder_id');
+      if (foldIdParam) {
+        setSelectedFolder(foldIdParam);
+      }
+      const foldNameParam = urlParams.get('folder');
+      if (foldNameParam) {
+        setFolderName(decodeURIComponent(foldNameParam));
       }
       if (urlParams.get('favorite') === 'true' || urlParams.get('starred') === 'true') {
         setOnlyFavorites(true);
@@ -225,11 +232,8 @@ export default function MyDocumentsPage() {
       );
     }
     if (selectedFolder) {
-      const folderLower = selectedFolder.toLowerCase();
       filtered = filtered.filter(d => 
-        String(d.folder_id) === String(selectedFolder) ||
-        (d.folder_name && d.folder_name.toLowerCase().includes(folderLower)) ||
-        (d.folder_name && folderLower.includes(d.folder_name.toLowerCase()))
+        String(d.folder_id) === String(selectedFolder)
       );
     }
     if (onlyFavorites) {
@@ -407,6 +411,7 @@ export default function MyDocumentsPage() {
     setDebouncedSearch('');
     setSelectedCategory('');
     setSelectedFolder('');
+    setFolderName('');
     setSelectedFileType('');
     setSelectedDateRange('');
     setSortBy('date_desc');
@@ -452,24 +457,30 @@ export default function MyDocumentsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800/80 pb-5">
         <div>
-          <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-1">
-            <Link href="/user" className="hover:text-themePrimary dark:hover:text-orange-400 transition flex items-center gap-1 font-semibold">
-              <ArrowLeft className="w-3.5 h-3.5" /> {t('dashboard', 'Workspace')}
+          <div className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-500 dark:text-slate-400 mb-1.5 font-medium">
+            <Link href="/user" className="hover:text-themePrimary dark:hover:text-orange-400 transition-colors font-medium">
+              {t('dashboard', 'Workspace')}
             </Link>
-            <span>/</span>
-            <span className="text-slate-900 dark:text-white font-semibold">
-              {isRecentMode ? t('recentDocuments', 'Recent Documents') : t('myDocuments', 'My Documents')}
-            </span>
-          </div>
-          <h1 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-2.5">
-            {isRecentMode ? (
+            <ChevronRight className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 shrink-0" />
+            {folderName ? (
               <>
-                <Clock className="w-6 h-6 text-themePrimary dark:text-orange-400" /> {t('recentDocuments', 'Recent Documents')}
+                <Link href="/user/folders" className="hover:text-themePrimary dark:hover:text-orange-400 transition-colors font-medium">
+                  {t('myFolders', 'My Folders')}
+                </Link>
+                <ChevronRight className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 shrink-0" />
+                <span className="text-slate-900 dark:text-white font-semibold">{folderName}</span>
               </>
             ) : (
-              <>
-                <FileText className="w-6 h-6 text-themePrimary dark:text-orange-400" /> {t('myDocuments', 'My Documents')}
-              </>
+              <span className="text-slate-900 dark:text-white font-semibold">
+                {isRecentMode ? t('recentDocuments', 'Recent Documents') : t('myDocuments', 'My Documents')}
+              </span>
+            )}
+          </div>
+          <h1 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-2.5">
+            {folderName ? folderName : isRecentMode ? (
+              t('recentDocuments', 'Recent Documents')
+            ) : (
+              t('myDocuments', 'My Documents')
             )}
           </h1>
           <p className="text-sm text-slate-600 dark:text-slate-400">
@@ -554,7 +565,12 @@ export default function MyDocumentsPage() {
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">{t('folder', 'Folder')}</label>
             <select
               value={selectedFolder}
-              onChange={(e) => { setSelectedFolder(e.target.value); setCurrentPage(1); }}
+              onChange={(e) => {
+                setSelectedFolder(e.target.value);
+                const chosen = folders.find((f: any) => String(f.id) === String(e.target.value));
+                setFolderName(chosen ? chosen.folder_name : '');
+                setCurrentPage(1);
+              }}
               className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white font-medium focus:outline-none focus:border-themePrimary"
             >
               <option value="">{t('allFolders', 'All Folders')}</option>

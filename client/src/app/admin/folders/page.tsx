@@ -43,6 +43,7 @@ export default function AdminFoldersPage() {
     setFolders(updated);
     if (typeof window !== 'undefined') {
       localStorage.setItem('dms_admin_folders', JSON.stringify(updated));
+      window.dispatchEvent(new Event('dms_folders_updated'));
     }
   };
 
@@ -167,8 +168,8 @@ export default function AdminFoldersPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
         <div>
-          <h1 className="text-2xl font-black text-slate-900 flex items-center gap-2 font-auth-heading">
-            <FolderOpen className="w-6 h-6 text-themePrimary" /> Folder Management
+          <h1 className="text-2xl font-black text-slate-900 font-auth-heading">
+            Folder Management
           </h1>
           <p className="text-xs text-slate-500 font-medium mt-1">{folders.length} folders · Create, edit, move documents, and delete folders system-wide</p>
         </div>

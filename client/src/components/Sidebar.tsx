@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
+  Home,
   LayoutDashboard,
   FileText,
   FolderClosed,
@@ -39,13 +40,22 @@ export default function Sidebar({ mobileOpen = false, setMobileOpen }: SidebarPr
 
   React.useEffect(() => {
     setUnreadCount(getUnreadNotificationCount());
+
+    const handleUpdate = () => {
+      setUnreadCount(getUnreadNotificationCount());
+    };
+    window.addEventListener('dms_notifications_updated', handleUpdate);
+    return () => {
+      window.removeEventListener('dms_notifications_updated', handleUpdate);
+    };
   }, [pathname]);
 
   const mainNavItems = [
-    { name: t('dashboard', 'My Workspace'), href: '/user', icon: LayoutDashboard },
+    { name: t('home', 'Home'), href: '/', icon: Home },
+    { name: t('dashboard', 'Dashboard'), href: '/user', icon: LayoutDashboard },
     { name: t('myDocuments', 'My Documents'), href: '/user/documents', icon: FileText },
     { name: t('upload', 'Upload Document'), href: '/user/upload', icon: Upload },
-    { name: t('folders', 'Folders'), href: '/user/folders', icon: FolderClosed },
+    { name: t('folders', 'Workspace Folders'), href: '/user/folders', icon: FolderClosed },
     { name: t('categories', 'Categories'), href: '/user/categories', icon: Tags },
   ];
 
@@ -91,7 +101,7 @@ export default function Sidebar({ mobileOpen = false, setMobileOpen }: SidebarPr
       <div className="flex-1 overflow-y-auto px-3.5 py-5 space-y-6 scrollbar-none">
         {/* MY WORKSPACE */}
         <div>
-          <div className="px-3 mb-2 text-xs font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">
+          <div className="px-3 mb-2 text-xs font-black uppercase tracking-wider text-slate-700 dark:text-slate-300">
             {t('nav.myWorkspace', 'MY WORKSPACE')}
           </div>
           <div className="space-y-1">
@@ -105,11 +115,11 @@ export default function Sidebar({ mobileOpen = false, setMobileOpen }: SidebarPr
                   onClick={() => setMobileOpen && setMobileOpen(false)}
                   className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition-all duration-150 group active-press ${
                     isActive
-                      ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/20 font-bold border border-orange-400/30'
-                      : 'text-slate-600 dark:text-slate-300 hover:bg-orange-50/80 dark:hover:bg-slate-800/80 hover:text-themePrimary dark:hover:text-white font-semibold'
+                      ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/20 font-black border border-orange-400/30'
+                      : 'text-slate-800 dark:text-slate-200 hover:bg-orange-50/80 dark:hover:bg-slate-800/80 hover:text-themePrimary dark:hover:text-white font-extrabold'
                   }`}
                 >
-                  <Icon className={`w-4 h-4 shrink-0 transition-transform duration-150 ${isActive ? 'text-white scale-105' : 'text-slate-400 dark:text-slate-400 group-hover:scale-105 group-hover:text-themePrimary dark:group-hover:text-white'}`} />
+                  <Icon className={`w-4 h-4 shrink-0 transition-transform duration-150 ${isActive ? 'text-white scale-105' : 'text-slate-500 dark:text-slate-400 group-hover:scale-105 group-hover:text-themePrimary dark:group-hover:text-white'}`} />
                   <span className="truncate">{item.name}</span>
                 </Link>
               );
@@ -119,7 +129,7 @@ export default function Sidebar({ mobileOpen = false, setMobileOpen }: SidebarPr
 
         {/* VAULT COLLECTIONS */}
         <div>
-          <div className="px-3 mb-2 text-xs font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">
+          <div className="px-3 mb-2 text-xs font-black uppercase tracking-wider text-slate-700 dark:text-slate-300">
             {t('nav.vaultCollections', 'VAULT COLLECTIONS')}
           </div>
           <div className="space-y-1">
@@ -133,11 +143,11 @@ export default function Sidebar({ mobileOpen = false, setMobileOpen }: SidebarPr
                   onClick={() => setMobileOpen && setMobileOpen(false)}
                   className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition-all duration-150 group active-press ${
                     isActive
-                      ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/20 font-bold border border-orange-400/30'
-                      : 'text-slate-600 dark:text-slate-300 hover:bg-orange-50/80 dark:hover:bg-slate-800/80 hover:text-themePrimary dark:hover:text-white font-semibold'
+                      ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/20 font-black border border-orange-400/30'
+                      : 'text-slate-800 dark:text-slate-200 hover:bg-orange-50/80 dark:hover:bg-slate-800/80 hover:text-themePrimary dark:hover:text-white font-extrabold'
                   }`}
                 >
-                  <Icon className={`w-4 h-4 shrink-0 transition-transform duration-150 ${isActive ? 'text-white scale-105' : 'text-slate-400 dark:text-slate-400 group-hover:scale-105 group-hover:text-themePrimary dark:group-hover:text-white'}`} />
+                  <Icon className={`w-4 h-4 shrink-0 transition-transform duration-150 ${isActive ? 'text-white scale-105' : 'text-slate-500 dark:text-slate-400 group-hover:scale-105 group-hover:text-themePrimary dark:group-hover:text-white'}`} />
                   <span className="truncate">{item.name}</span>
                   {item.href === '/user/notifications' && unreadCount > 0 && (
                     <span className="ml-auto flex h-2 w-2 relative shrink-0">
@@ -153,7 +163,7 @@ export default function Sidebar({ mobileOpen = false, setMobileOpen }: SidebarPr
 
         {/* USER ACCOUNT */}
         <div>
-          <div className="px-3 mb-2 text-xs font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">
+          <div className="px-3 mb-2 text-xs font-black uppercase tracking-wider text-slate-700 dark:text-slate-300">
             {t('nav.userAccount', 'USER ACCOUNT')}
           </div>
           <div className="space-y-1">
@@ -167,11 +177,11 @@ export default function Sidebar({ mobileOpen = false, setMobileOpen }: SidebarPr
                   onClick={() => setMobileOpen && setMobileOpen(false)}
                   className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition-all duration-150 group active-press ${
                     isActive
-                      ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/20 font-bold border border-orange-400/30'
-                      : 'text-slate-600 dark:text-slate-300 hover:bg-orange-50/80 dark:hover:bg-slate-800/80 hover:text-themePrimary dark:hover:text-white font-semibold'
+                      ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/20 font-black border border-orange-400/30'
+                      : 'text-slate-800 dark:text-slate-200 hover:bg-orange-50/80 dark:hover:bg-slate-800/80 hover:text-themePrimary dark:hover:text-white font-extrabold'
                   }`}
                 >
-                  <Icon className={`w-4 h-4 shrink-0 transition-transform duration-150 ${isActive ? 'text-white scale-105' : 'text-slate-400 dark:text-slate-400 group-hover:scale-105 group-hover:text-themePrimary dark:group-hover:text-white'}`} />
+                  <Icon className={`w-4 h-4 shrink-0 transition-transform duration-150 ${isActive ? 'text-white scale-105' : 'text-slate-500 dark:text-slate-400 group-hover:scale-105 group-hover:text-themePrimary dark:group-hover:text-white'}`} />
                   <span className="truncate">{item.name}</span>
                 </Link>
               );

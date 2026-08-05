@@ -444,6 +444,7 @@ class CMSStoreManager {
     if (typeof window !== 'undefined') {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(this.data));
+        window.dispatchEvent(new Event('dms_cms_updated'));
       } catch (e) {}
     }
     this.notify();

@@ -17,7 +17,7 @@ export default function ProfilePage() {
   const [jobTitle, setJobTitle] = useState<string>(user?.job_title || user?.designation || user?.department || user?.occupation || '');
   const [organization, setOrganization] = useState<string>(user?.organization || user?.company_name || user?.college_name || '');
   const [phone, setPhone] = useState<string>(user?.phone || user?.mobile_number || '');
-  const [location, setLocation] = useState<string>(user?.location || user?.city ? (user?.city + (user?.state ? `, ${user.state}` : '') + (user?.country ? `, ${user.country}` : '')) : '');
+  const [location, setLocation] = useState<string>(user?.location || (user?.city ? `${user.city}${user.state ? `, ${user.state}` : ''}${user.country ? `, ${user.country}` : ''}` : ''));
 
   const [saving, setSaving] = useState<boolean>(false);
   const [message, setMessage] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
@@ -31,8 +31,8 @@ export default function ProfilePage() {
         const res = await api.get('/users/profile');
         if (res.data && res.data.user) {
           const u = res.data.user;
-          setFullName(u.full_name || '');
-          setUserType(u.user_type || 'individual');
+          setFullName(u.full_name || user?.full_name || '');
+          setUserType(u.user_type || user?.user_type || 'individual');
           setJobTitle(u.job_title || u.designation || u.department || u.occupation || '');
           setOrganization(u.organization || u.company_name || u.college_name || '');
           setPhone(u.phone || u.mobile_number || '');
@@ -176,10 +176,10 @@ export default function ProfilePage() {
       <div>
         <div className="flex items-center gap-2 mb-3">
           <Link href="/user" className="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors">
-            Workspace
+            User Account
           </Link>
           <ChevronRight className="w-4 h-4 text-slate-400" />
-          <span className="text-sm font-medium text-slate-900">Account Settings</span>
+          <span className="text-sm font-medium text-slate-900">Profile & Preferences</span>
         </div>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>

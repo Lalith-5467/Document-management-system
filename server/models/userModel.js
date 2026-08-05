@@ -101,6 +101,17 @@ class UserModel {
             };
         }
     }
+
+    static async updatePassword(id, hashedPassword) {
+        try {
+            await pool.execute('UPDATE users SET password = ? WHERE id = ?', [hashedPassword, id]);
+            return true;
+        } catch (err) {
+            const user = memoryUsers.find(u => u.id === Number(id));
+            if (user) user.password = hashedPassword;
+            return true;
+        }
+    }
 }
 
 module.exports = UserModel;

@@ -4,7 +4,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import {
   Layout, ShieldCheck, Sparkles, Plus, Edit2, Trash2, Eye, EyeOff, Search,
-  ArrowUpRight, CheckCircle2, AlertCircle, X, Save, RefreshCw, Upload, Image as ImageIcon,
+  ArrowUpRight, CheckCircle2, AlertCircle, AlertTriangle, X, Save, RefreshCw, Upload, Image as ImageIcon,
   Star, HelpCircle, Building2, Phone, Mail, MapPin, Globe, ChevronRight, ChevronLeft,
   Lock, Zap, RotateCcw, Award, Briefcase, GraduationCap, UserCheck, Layers, FileText, Play
 } from 'lucide-react';
@@ -26,6 +26,7 @@ export default function AdminCmsPage() {
   const [cms, setCms] = useState<CMSData>(cmsStore.getData());
   const [activeTab, setActiveTab] = useState<string>('hero');
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  const [popupNotif, setPopupNotif] = useState<{ title: string; message: string; type: 'success' | 'error' } | null>(null);
 
   // Sub-module modal state
   const [modal, setModal] = useState<{ type: 'create' | 'edit' | 'view' | 'delete'; module: string; data?: any } | null>(null);
@@ -54,6 +55,11 @@ export default function AdminCmsPage() {
     setTimeout(() => setToast(null), 3500);
   };
 
+  const showPopupNotif = (title: string, message: string, type: 'success' | 'error' = 'success') => {
+    setPopupNotif({ title, message, type });
+    setTimeout(() => setPopupNotif(null), 3500);
+  };
+
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, fieldName: string) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -73,7 +79,7 @@ export default function AdminCmsPage() {
     e.preventDefault();
     setSubmitting(true);
     cmsStore.updateModule('hero', cms.hero);
-    showToast('Hero section updated successfully!');
+    showPopupNotif('Hero Section Saved!', 'Hero section headline, subtitle, and CTA controls updated successfully.');
     setSubmitting(false);
   };
 
@@ -84,7 +90,7 @@ export default function AdminCmsPage() {
     e.preventDefault();
     setSubmitting(true);
     cmsStore.updateModule('stats', cms.stats);
-    showToast('Statistics metrics updated successfully!');
+    showPopupNotif('Statistics Metrics Saved!', 'Statistics metrics and telemetry numbers updated successfully.');
     setSubmitting(false);
   };
 
@@ -95,7 +101,7 @@ export default function AdminCmsPage() {
     e.preventDefault();
     setSubmitting(true);
     cmsStore.updateModule('cta', cms.cta);
-    showToast('CTA section updated successfully!');
+    showPopupNotif('CTA Section Saved!', 'Call To Action section controls, descriptions, and button links updated successfully.');
     setSubmitting(false);
   };
 
@@ -106,7 +112,7 @@ export default function AdminCmsPage() {
     e.preventDefault();
     setSubmitting(true);
     cmsStore.updateModule('footer', cms.footer);
-    showToast('Footer information updated successfully!');
+    showPopupNotif('Footer Information Saved!', 'Footer branding, contact details, and copyright information updated successfully.');
     setSubmitting(false);
   };
 
@@ -190,6 +196,36 @@ export default function AdminCmsPage() {
 
   return (
     <div className="space-y-6 pb-20 max-w-[1600px] mx-auto text-slate-900 font-sans">
+      {/* Popup Notification Modal */}
+      {popupNotif && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md animate-pop-in">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-2xl max-w-sm w-full text-center space-y-4 relative">
+            <button
+              onClick={() => setPopupNotif(null)}
+              className="absolute top-4 right-4 p-2 rounded-xl text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 text-white flex items-center justify-center mx-auto shadow-lg shadow-emerald-500/30">
+              <CheckCircle2 className="w-8 h-8" />
+            </div>
+
+            <div>
+              <h3 className="text-lg font-black text-slate-900 dark:text-white">{popupNotif.title}</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium leading-relaxed">{popupNotif.message}</p>
+            </div>
+
+            <button
+              onClick={() => setPopupNotif(null)}
+              className="w-full py-2.5 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-black text-xs shadow-md shadow-orange-500/25 hover:scale-105 transition cursor-pointer"
+            >
+              Got it!
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Toast Feedback */}
       {toast && (
         <div className={`fixed bottom-6 right-6 z-[100] flex items-center gap-3 px-5 py-3.5 rounded-2xl shadow-2xl text-xs font-semibold border ${

@@ -48,7 +48,9 @@ const defaultTheme: Omit<CustomTheme, 'id'> = {
   is_default: 0
 };
 
-const PRESETS: Record<string, Omit<CustomTheme, 'id' | 'theme_name'>> = {
+type ThemeColors = Omit<CustomTheme, 'id' | 'theme_name' | 'is_active' | 'is_default'>;
+
+const PRESETS: Record<string, ThemeColors> = {
   'Corporate Slate': {
     primary_color: '#475569', secondary_color: '#64748b', background_color: '#f8fafc',
     sidebar_color: '#ffffff', header_color: '#ffffff', card_color: '#ffffff',
@@ -172,11 +174,11 @@ export default function AdminThemesPage() {
     }
   };
 
-  const handleColorChange = (key: keyof Omit<CustomTheme, 'id' | 'theme_name'>, value: string) => {
+  const handleColorChange = (key: keyof ThemeColors, value: string) => {
     setFormData({ ...formData, [key]: value });
   };
 
-  const colorFields: { key: keyof Omit<CustomTheme, 'id' | 'theme_name'>, label: string }[] = [
+  const colorFields: { key: keyof ThemeColors, label: string }[] = [
     { key: 'primary_color', label: 'Primary Color' },
     { key: 'secondary_color', label: 'Secondary Color' },
     { key: 'background_color', label: 'Background' },

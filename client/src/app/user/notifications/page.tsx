@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { 
   Bell, CheckCircle2, AlertTriangle, Info, Clock, Trash2, Check, Search, 
-  ArrowLeft, RefreshCw, ExternalLink, Filter, ShieldAlert, Sparkles, X, FileText
+  ArrowLeft, RefreshCw, ExternalLink, Filter, ShieldAlert, Sparkles, X, FileText, ChevronRight
 } from 'lucide-react';
 import { 
   getNotifications, 
@@ -13,6 +13,7 @@ import {
   markNotificationAsRead, 
   markAllNotificationsAsRead, 
   clearNotifications,
+  checkAndSyncExpiryNotifications,
   NotificationItem 
 } from '@/lib/notificationStore';
 
@@ -25,6 +26,19 @@ export default function NotificationsCenterPage() {
 
   useEffect(() => {
     loadNotifications();
+
+    const handleUpdate = () => {
+      loadNotifications();
+    };
+    window.addEventListener('dms_notifications_updated', handleUpdate);
+
+    checkAndSyncExpiryNotifications().then(list => {
+      if (list) setNotifications(list);
+    });
+
+    return () => {
+      window.removeEventListener('dms_notifications_updated', handleUpdate);
+    };
   }, []);
 
   const showToast = (message: string, type: 'success' | 'error' = 'success') => {
@@ -129,17 +143,14 @@ export default function NotificationsCenterPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800/80 pb-5">
         <div>
-          <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-1 font-medium">
-            <Link href="/user" className="hover:text-themePrimary dark:hover:text-orange-400 transition flex items-center gap-1">
-              <ArrowLeft className="w-3.5 h-3.5" /> Workspace
+          <div className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-500 dark:text-slate-400 mb-1.5 font-medium">
+            <Link href="/user" className="hover:text-themePrimary dark:hover:text-orange-400 transition-colors font-medium">
+              Vault Collections
             </Link>
-            <span>/</span>
-            <span className="text-slate-900 dark:text-white font-semibold">Notifications Center</span>
+            <ChevronRight className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 shrink-0" />
+            <span className="text-slate-900 dark:text-white font-semibold">Notifications</span>
           </div>
-          <h1 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-2.5">
-            <span className="w-8 h-8 rounded-2xl bg-orange-100 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 border border-orange-200 dark:border-orange-900/60 flex items-center justify-center shrink-0">
-              <Bell className="w-4 h-4" />
-            </span>
+          <h1 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight">
             Notifications Center
           </h1>
           <p className="text-sm text-slate-600 dark:text-slate-400 mt-1 font-medium">

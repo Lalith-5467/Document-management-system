@@ -7,8 +7,20 @@ let memoryFolders = [
     { id: 3, user_id: 1, folder_name: 'System Architecture Diagrams', description: 'Client project specs, diagrams and scope documents', color: '#8B5CF6', icon_name: 'FolderGit2', created_at: new Date('2026-01-15').toISOString(), updated_at: new Date('2026-01-15').toISOString() },
     { id: 4, user_id: 1, folder_name: 'Passport & Identity Verification', description: 'National passport, driver license and identity proofs', color: '#3B82F6', icon_name: 'UserCheck', created_at: new Date('2026-01-18').toISOString(), updated_at: new Date('2026-01-18').toISOString() }
 ];
-let memoryDocCounts = { 1: 3, 2: 4, 3: 2, 4: 1 };
+// No longer use a static hardcoded memoryDocCounts.
+// Counts are computed live from DocumentModel's memory store.
 let nextFolderId = 10;
+
+// Helper: live count of non-archived documents for a folder from memory store
+function getLiveDocCount(folderId, userId) {
+    try {
+        const DocumentModel = require('./documentModel');
+        const docs = DocumentModel.getMemoryDocuments ? DocumentModel.getMemoryDocuments() : [];
+        return docs.filter(d => d.folder_id === Number(folderId) && d.user_id === Number(userId) && !d.is_archived).length;
+    } catch (e) {
+        return 0;
+    }
+}
 
 class FolderModel {
     /**
@@ -44,7 +56,7 @@ class FolderModel {
                 .filter(f => f.user_id === Number(userId))
                 .map(f => ({
                     ...f,
-                    document_count: memoryDocCounts[f.id] || 0
+                    document_count: getLiveDocCount(f.id, userId)
                 }));
         }
     }
@@ -72,7 +84,7 @@ class FolderModel {
             if (!folder) return null;
             return {
                 ...folder,
-                document_count: memoryDocCounts[folder.id] || 0
+                document_count: getLiveDocCount(folder.id, userId)
             };
         }
     }
@@ -161,7 +173,7 @@ class FolderModel {
             memoryFolders[idx].updated_at = new Date().toISOString();
             return {
                 ...memoryFolders[idx],
-                document_count: memoryDocCounts[memoryFolders[idx].id] || 0
+                document_count: getLiveDocCount(memoryFolders[idx].id, numUserId)
             };
         }
 

@@ -4,7 +4,7 @@ import React, { useState, useEffect, useMemo, useRef } from 'react';
 import Link from 'next/link';
 import { 
   FolderClosed, FolderPlus, ArrowLeft, Search, Edit2, Trash2, 
-  X, AlertCircle, CheckCircle2, Loader2, RefreshCw, FolderGit2, GraduationCap, UserCheck, Folder, Upload, FileText
+  X, AlertCircle, CheckCircle2, Loader2, RefreshCw, FolderGit2, GraduationCap, UserCheck, Folder, Upload, FileText, ChevronRight, Tag, ChevronDown, Check
 } from 'lucide-react';
 import api from '@/lib/api';
 
@@ -50,12 +50,19 @@ export default function FoldersPage() {
   const [formInitialFile, setFormInitialFile] = useState<File | null>(null);
   const [formSubmitting, setFormSubmitting] = useState<boolean>(false);
   const [formError, setFormError] = useState<string | null>(null);
+  // Category selection for new folder
+  const [formCategory, setFormCategory] = useState<string>('');
+  const [formCustomCategory, setFormCustomCategory] = useState<string>('');
+  const [availableCategories, setAvailableCategories] = useState<any[]>([]);
+  const [catDropdownOpen, setCatDropdownOpen] = useState<boolean>(false);
+  const catDropdownRef = useRef<HTMLDivElement>(null);
 
   // Toast
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
   useEffect(() => {
     fetchFolders();
+    fetchAvailableCategories();
     if (typeof window !== 'undefined') {
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get('create') === 'true' || urlParams.get('new') === 'true') {
@@ -66,7 +73,57 @@ export default function FoldersPage() {
         setIsCreateOpen(true);
       }
     }
+
+    const handleUpdate = () => fetchFolders();
+    window.addEventListener('dms_folders_updated', handleUpdate);
+
+    // Refresh folder counts when user navigates back from upload page
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        fetchFolders();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+
+    return () => {
+      window.removeEventListener('dms_folders_updated', handleUpdate);
+      document.removeEventListener('visibilitychange', handleVisibility);
+    };
   }, []);
+
+  // Close category dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (catDropdownRef.current && !catDropdownRef.current.contains(e.target as Node)) {
+        setCatDropdownOpen(false);
+      }
+    };
+    if (catDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [catDropdownOpen]);
+
+  const fetchAvailableCategories = async () => {
+    try {
+      const res = await api.get('/categories').catch(() => null);
+      if (res && res.data?.categories?.length > 0) {
+        setAvailableCategories(res.data.categories);
+        return;
+      }
+    } catch {}
+    // Fallback: static default categories
+    setAvailableCategories([
+      { id: 1, category_name: 'Personal Documents', color: '#3B82F6' },
+      { id: 2, category_name: 'Academic Documents', color: '#10B981' },
+      { id: 3, category_name: 'Project Documents', color: '#8B5CF6' },
+      { id: 4, category_name: 'Certificates', color: '#EC4899' },
+      { id: 5, category_name: 'Resume', color: '#F59E0B' },
+      { id: 6, category_name: 'Client Requirement Documents', color: '#06B6D4' },
+      { id: 7, category_name: 'Bills', color: '#EF4444' },
+      { id: 8, category_name: 'Others', color: '#64748B' },
+    ]);
+  };
 
   const showToast = (message: string, type: 'success' | 'error' = 'success') => {
     setToast({ message, type });
@@ -77,20 +134,51 @@ export default function FoldersPage() {
     setFolders(updated);
   };
 
+  // Helper: merge API folder list with live localStorage document counts
+  const mergeFolderCounts = (apiFolders: FolderItem[]): FolderItem[] => {
+    if (typeof window === 'undefined') return apiFolders;
+    try {
+      const stored = localStorage.getItem('dms_user_documents');
+      if (!stored) return apiFolders;
+      const localDocs: any[] = JSON.parse(stored);
+      return apiFolders.map(f => {
+        const localCount = localDocs.filter(
+          (d: any) => String(d.folder_id) === String(f.id) && !d.is_archived
+        ).length;
+        // Use whichever count is higher (API count vs local count)
+        return { ...f, document_count: Math.max(f.document_count || 0, localCount) };
+      });
+    } catch {
+      return apiFolders;
+    }
+  };
+
   const fetchFolders = async () => {
     setLoading(true);
     try {
       const res = await api.get('/folders');
-      if (res.data && res.data.folders) {
-        setFolders(res.data.folders);
-      } else {
-        setFolders([]);
+      if (res.data && res.data.folders && res.data.folders.length > 0) {
+        setFolders(mergeFolderCounts(res.data.folders));
+        setLoading(false);
+        return;
       }
-    } catch {
-      setFolders([]);
-    } finally {
-      setLoading(false);
+    } catch {}
+
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('dms_admin_folders');
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (parsed && parsed.length > 0) {
+            setFolders(mergeFolderCounts(parsed));
+            setLoading(false);
+            return;
+          }
+        } catch {}
+      }
     }
+
+    setLoading(false);
   };
 
   const filteredFolders = useMemo(() => {
@@ -108,6 +196,8 @@ export default function FoldersPage() {
     setFormColor('var(--theme-primary, #FF6B00)');
     setFormInitialFile(null);
     setFormError(null);
+    setFormCategory('');
+    setFormCustomCategory('');
     setIsCreateOpen(true);
   };
 
@@ -120,11 +210,15 @@ export default function FoldersPage() {
     setFormSubmitting(true);
     setFormError(null);
 
+    const selectedCategoryName = formCategory === '__others__'
+      ? formCustomCategory.trim()
+      : formCategory;
+
     const newF: FolderItem = {
       id: Date.now(),
       user_id: 1,
       folder_name: formName.trim(),
-      description: formDescription.trim(),
+      description: formDescription.trim() || (selectedCategoryName ? `${selectedCategoryName} documents` : ''),
       color: formColor,
       icon_name: 'Folder',
       document_count: formInitialFile ? 1 : 0,
@@ -134,8 +228,9 @@ export default function FoldersPage() {
     try {
       await api.post('/folders', {
         folder_name: formName.trim(),
-        description: formDescription.trim(),
-        color: formColor
+        description: formDescription.trim() || (selectedCategoryName ? `${selectedCategoryName} documents` : ''),
+        color: formColor,
+        category_name: selectedCategoryName || undefined
       }).catch(() => null);
     } catch {}
 
@@ -222,15 +317,15 @@ export default function FoldersPage() {
       {/* Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800/80 pb-5">
         <div>
-          <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-1">
-            <Link href="/user" className="hover:text-themePrimary dark:hover:text-orange-400 flex items-center gap-1">
-              <ArrowLeft className="w-3.5 h-3.5" /> Workspace
+          <div className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-500 dark:text-slate-400 mb-1.5 font-medium">
+            <Link href="/user" className="hover:text-themePrimary dark:hover:text-orange-400 transition-colors font-medium">
+              Workspace
             </Link>
-            <span>/</span>
+            <ChevronRight className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 shrink-0" />
             <span className="text-slate-900 dark:text-white font-semibold">Workspace Folders</span>
           </div>
-          <h1 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-2.5">
-            <FolderClosed className="w-6 h-6 text-themePrimary dark:text-orange-400" /> Workspace Folders
+          <h1 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight">
+            Workspace Folders
           </h1>
           <p className="text-sm text-slate-600 dark:text-slate-400">Organize and group your documents inside custom folders.</p>
         </div>
@@ -341,7 +436,7 @@ export default function FoldersPage() {
       {/* CREATE MODAL WITH FILE ATTACHMENT */}
       {isCreateOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
-          <div className="bg-white dark:bg-[#111827] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-5 animate-pop-in text-slate-900 dark:text-white">
+          <div className="bg-white dark:bg-[#111827] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-5 animate-pop-in text-slate-900 dark:text-white max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
               <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
                 <FolderPlus className="w-4 h-4 text-indigo-600 dark:text-indigo-400" /> Create Workspace Folder
@@ -382,7 +477,101 @@ export default function FoldersPage() {
                 />
               </div>
 
-              {/* Add Initial File Section */}
+              {/* Category Selection — Custom Dropdown (always opens downward) */}
+              <div ref={catDropdownRef} className="relative">
+                <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1 flex items-center gap-1.5">
+                  <Tag className="w-3.5 h-3.5 text-themePrimary" /> Document Category <span className="text-slate-400 font-normal">(Optional)</span>
+                </label>
+                {/* Trigger button */}
+                <button
+                  type="button"
+                  onClick={() => setCatDropdownOpen(!catDropdownOpen)}
+                  className={`w-full flex items-center justify-between px-3.5 py-2.5 bg-slate-50 dark:bg-[#0b1120] border rounded-xl text-sm font-medium transition-all ${
+                    catDropdownOpen
+                      ? 'border-themePrimary ring-1 ring-themePrimary/20'
+                      : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
+                  }`}
+                >
+                  <span className={formCategory && formCategory !== '__others__' ? 'text-slate-900 dark:text-white' : 'text-slate-400 dark:text-slate-500'}>
+                    {formCategory && formCategory !== '__others__' ? formCategory : '— Select a category —'}
+                  </span>
+                  <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${catDropdownOpen ? 'rotate-180' : ''}`} />
+                </button>
+
+                {/* Dropdown list — always below */}
+                {catDropdownOpen && (
+                  <div className="absolute left-0 right-0 top-full mt-1 z-50 bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl max-h-52 overflow-y-auto">
+                    {/* No category option */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setFormCategory('');
+                        setFormCustomCategory('');
+                        setCatDropdownOpen(false);
+                      }}
+                      className={`w-full flex items-center justify-between px-3.5 py-2.5 text-sm transition hover:bg-slate-50 dark:hover:bg-slate-800 ${
+                        !formCategory ? 'text-themePrimary font-bold' : 'text-slate-500 dark:text-slate-400'
+                      }`}
+                    >
+                      <span>— None —</span>
+                      {!formCategory && <Check className="w-3.5 h-3.5 text-themePrimary" />}
+                    </button>
+
+                    {availableCategories.map((cat) => (
+                      <button
+                        key={cat.id}
+                        type="button"
+                        onClick={() => {
+                          setFormCategory(cat.category_name);
+                          setFormCustomCategory('');
+                          if (cat.color) setFormColor(cat.color);
+                          setCatDropdownOpen(false);
+                        }}
+                        className={`w-full flex items-center justify-between px-3.5 py-2.5 text-sm transition hover:bg-slate-50 dark:hover:bg-slate-800 ${
+                          formCategory === cat.category_name ? 'text-themePrimary font-bold bg-orange-50 dark:bg-orange-950/20' : 'text-slate-700 dark:text-slate-300'
+                        }`}
+                      >
+                        <span className="flex items-center gap-2">
+                          <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: cat.color || '#6C5CE7' }} />
+                          {cat.category_name}
+                        </span>
+                        {formCategory === cat.category_name && <Check className="w-3.5 h-3.5 text-themePrimary" />}
+                      </button>
+                    ))}
+
+                    {/* Others option */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setFormCategory('__others__');
+                        setCatDropdownOpen(false);
+                      }}
+                      className={`w-full flex items-center justify-between px-3.5 py-2.5 text-sm border-t border-slate-100 dark:border-slate-800 transition hover:bg-slate-50 dark:hover:bg-slate-800 ${
+                        formCategory === '__others__' ? 'text-themePrimary font-bold' : 'text-slate-500 dark:text-slate-400'
+                      }`}
+                    >
+                      <span>+ Others (type manually)</span>
+                      {formCategory === '__others__' && <Check className="w-3.5 h-3.5 text-themePrimary" />}
+                    </button>
+                  </div>
+                )}
+
+                {formCategory === '__others__' && (
+                  <input
+                    type="text"
+                    value={formCustomCategory}
+                    onChange={(e) => setFormCustomCategory(e.target.value)}
+                    placeholder="Type your custom category name..."
+                    className="mt-2 w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-themePrimary text-sm"
+                    autoFocus
+                  />
+                )}
+                {formCategory && formCategory !== '__others__' && (
+                  <p className="mt-1.5 text-xs text-slate-500 dark:text-slate-400">
+                    ✓ Documents in this folder will default to <span className="font-semibold text-themePrimary">{formCategory}</span> category
+                  </p>
+                )}
+              </div>
               <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 space-y-2">
                 <label className="block font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
                   <Upload className="w-3.5 h-3.5 text-indigo-400" /> Attach Initial Document (Optional)

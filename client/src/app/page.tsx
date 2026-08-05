@@ -33,7 +33,16 @@ export default function HomePage() {
     const unsub = cmsStore.subscribe((data) => {
       setCms(data);
     });
-    return unsub;
+
+    const handleCmsUpdate = () => {
+      setCms(cmsStore.getData());
+    };
+    window.addEventListener('dms_cms_updated', handleCmsUpdate);
+
+    return () => {
+      unsub();
+      window.removeEventListener('dms_cms_updated', handleCmsUpdate);
+    };
   }, []);
 
   const activeFeatures = (cms.features || [])
@@ -382,7 +391,10 @@ export default function HomePage() {
       {cms.cta?.enabled !== false && (
         <section className="py-20 bg-white relative z-10">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="bg-gradient-to-r from-themePrimary via-[#F97316] to-themePrimary rounded-[24px] p-8 sm:p-12 text-center text-white space-y-6 shadow-2xl shadow-orange-500/25 relative overflow-hidden">
+            <div className="relative rounded-[24px] p-8 sm:p-12 text-center text-white space-y-6 shadow-2xl shadow-orange-500/25 overflow-hidden bg-gradient-to-r from-themePrimary via-[#F97316] to-themePrimary">
+              {cms.cta?.bgImage && (
+                <img src={cms.cta.bgImage} alt="CTA Background" className="absolute inset-0 w-full h-full object-cover opacity-25 mix-blend-overlay" />
+              )}
               <div className="absolute top-0 right-0 -mt-8 -mr-8 w-40 h-40 rounded-full bg-white/10 blur-2xl pointer-events-none" />
               <div className="absolute bottom-0 left-0 -mb-8 -ml-8 w-40 h-40 rounded-full bg-black/10 blur-2xl pointer-events-none" />
 

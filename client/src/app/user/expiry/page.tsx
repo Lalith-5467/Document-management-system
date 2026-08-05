@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
+import Link from 'next/link';
 import {
   Clock, AlertTriangle, CheckCircle2, Search, Filter, Calendar,
-  Download, Eye, ShieldAlert, ArrowUpRight, RefreshCw, X, FileText, Check, Star, ExternalLink
+  Download, Eye, ShieldAlert, ArrowUpRight, RefreshCw, X, FileText, Check, Star, ExternalLink, ChevronRight
 } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 
@@ -20,6 +21,7 @@ export interface ExpiryDocumentItem {
 import api from '@/lib/api';
 import { logActivity } from '@/lib/activityLogger';
 import DocumentPreviewModal from '@/components/dashboard/DocumentPreviewModal';
+import { addNotification, syncExpiryNotifications } from '@/lib/notificationStore';
 
 const formatFileSize = (bytes: number): string => {
   if (bytes === 0) return '0 Bytes';
@@ -64,6 +66,7 @@ export default function ExpiryRemindersPage() {
       try {
         const res = await api.get('/documents?limit=1000');
         if (res.data?.success && Array.isArray(res.data.documents)) {
+          syncExpiryNotifications(res.data.documents);
           const items = res.data.documents
             .filter((d: any) => d.expiry_date != null)
             .map((d: any) => {
@@ -144,6 +147,13 @@ export default function ExpiryRemindersPage() {
           return item;
         }));
 
+        addNotification(
+          'Document Expiry Renewed',
+          `Expiry date for "${renewModalDoc.title}" was renewed to ${newExpiryDate}.`,
+          'success',
+          '/user/expiry'
+        );
+
         showToast(`Expiry date updated for ${renewModalDoc.title}`);
         setRenewModalDoc(null);
       }
@@ -163,13 +173,19 @@ export default function ExpiryRemindersPage() {
         </div>
       )}
 
+      {/* Navigation Breadcrumb */}
+      <div className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium">
+        <Link href="/user" className="hover:text-themePrimary dark:hover:text-orange-400 transition-colors font-medium">
+          Vault Collections
+        </Link>
+        <ChevronRight className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 shrink-0" />
+        <span className="font-semibold text-slate-900 dark:text-white">Expiry Reminders</span>
+      </div>
+
       {/* PAGE HEADER */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-black text-[#1E1235] dark:text-white tracking-tight flex items-center gap-3">
-            <span className="w-9 h-9 rounded-2xl bg-amber-100 dark:bg-amber-950/60 text-amber-500 border border-amber-200 dark:border-amber-800 flex items-center justify-center shrink-0">
-              <Clock className="w-5 h-5" />
-            </span>
+          <h1 className="text-2xl sm:text-3xl font-black text-[#1E1235] dark:text-white tracking-tight">
             Expiry Reminders
           </h1>
           <p className="text-sm text-[#7B7393] dark:text-[#A39BB8] mt-1 font-medium">

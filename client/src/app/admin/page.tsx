@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import api from '@/lib/api';
 import AdminCmsPage from './cms/page';
+import AdminNotificationsPage from './notifications/page';
 
 // ─── Utility ─────────────────────────────────────────
 const fmtBytes = (b: number) => {
@@ -56,14 +57,9 @@ function Skeleton({ className }: { className?: string }) {
 function SectionTitle({ icon: Icon, title, subtitle, color = 'text-themePrimary', action }: any) {
   return (
     <div className="flex items-center justify-between mb-5">
-      <div className="flex items-center gap-3">
-        <div className={`w-8 h-8 rounded-xl bg-orange-50 border border-orange-200/60 flex items-center justify-center`}>
-          <Icon className={`w-4 h-4 ${color}`} />
-        </div>
-        <div>
-          <h2 className="text-sm font-bold text-slate-900 font-auth-heading">{title}</h2>
-          {subtitle && <p className="text-2xs text-slate-500">{subtitle}</p>}
-        </div>
+      <div>
+        <h2 className="text-sm font-bold text-slate-900 font-auth-heading">{title}</h2>
+        {subtitle && <p className="text-2xs text-slate-500">{subtitle}</p>}
       </div>
       {action}
     </div>
@@ -102,7 +98,7 @@ function StatCard({ title, value, icon: Icon, gradient, badge, href, onClick, lo
         </div>
 
         <div>
-          <p className="text-[10px] font-extrabold uppercase tracking-widest text-slate-400 font-mono mb-1">{title}</p>
+          <p className="text-[11px] font-black uppercase tracking-wider text-slate-700 dark:text-slate-300 font-sans mb-1">{title}</p>
           {loading ? (
             <Skeleton className="h-8 w-24 rounded-lg bg-slate-100" />
           ) : (
@@ -139,6 +135,7 @@ const SECTIONS = [
   { id: 'categories', label: '🏷️ Categories', icon: Tags },
   { id: 'folders', label: '📁 Folders', icon: FolderOpen },
   { id: 'activity', label: '⚡ Activity', icon: Activity },
+  { id: 'notifications', label: '🔔 Notifications', icon: Activity },
   { id: 'reports', label: '📈 Reports', icon: TrendingUp },
   { id: 'cms', label: '🌐 Landing Page', icon: Globe },
   { id: 'system', label: '🖥️ System', icon: Server },
@@ -197,7 +194,7 @@ export default function AdminDashboardPage() {
             <div className="w-7 h-7 rounded-xl bg-gradient-to-tr from-themePrimary to-[#F97316] flex items-center justify-center shadow-md shadow-orange-500/25">
               <Zap className="w-4 h-4 text-white animate-pulse" />
             </div>
-            <span className="text-[10px] font-black uppercase tracking-widest text-themePrimary font-mono">
+            <span className="text-xs font-black uppercase tracking-wider text-themePrimary font-sans">
               ENTERPRISE CONTROL CENTER
             </span>
           </div>
@@ -261,6 +258,7 @@ export default function AdminDashboardPage() {
         {activeSection === 'categories' && <CategoriesSection showToast={showToast} />}
         {activeSection === 'folders' && <FoldersSection showToast={showToast} />}
         {activeSection === 'activity' && <ActivitySection showToast={showToast} />}
+        {activeSection === 'notifications' && <AdminNotificationsPage />}
         {activeSection === 'reports' && <ReportsSection />}
         {activeSection === 'cms' && <CmsSection showToast={showToast} />}
         {activeSection === 'system' && <SystemSection />}

@@ -108,7 +108,7 @@ export default function UpgradeModal() {
                       </span>
                     </div>
                     <div className="mt-1.5 inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[9px] font-extrabold bg-white/20 text-white dark:bg-orange-950/60 dark:text-orange-300">
-                      🎁 7 Days 100% Free ($0)
+                      🎁 7 Days 100% Free (₹0)
                     </div>
                     {billingCycle === 'yearly' && plan.priceMonthly > 0 && (
                       <p className={`text-[10px] font-bold mt-0.5 ${isPro ? 'text-orange-100' : 'text-emerald-600'}`}>

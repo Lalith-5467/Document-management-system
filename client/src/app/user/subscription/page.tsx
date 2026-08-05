@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { createPortal } from 'react-dom';
 import {
   Zap, ShieldCheck, Sparkles, CreditCard, Download, Check, X,
@@ -71,7 +72,7 @@ Customer Email  : user@docvault.io
 ITEM DETAILS & SUBSCRIPTION BREAKDOWN
 --------------------------------------------------------------------------------
 Plan Selected   : ${planName}
-Billing Terms   : First 7 Days Free of Cost ($0.00 / ₹0)
+Billing Terms   : First 7 Days Free of Cost (₹0)
 Billing Cycle   : ${subscription.billingCycle.toUpperCase()}
 Amount Charged  : ₹${amount.toFixed(2)} (Tax Included)
 Payment Method  : ${subscription.status === 'trial' ? 'Free 7-Day Trial Promo' : savedCard.cardNumber}
@@ -111,6 +112,15 @@ Thank you for choosing DocVault! For billing inquiries, contact billing@docvault
 
   return (
     <div className="space-y-8 pb-16" style={{ fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif" }}>
+      {/* Navigation Breadcrumb */}
+      <div className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium">
+        <Link href="/user" className="hover:text-themePrimary dark:hover:text-orange-400 transition-colors font-medium">
+          User Account
+        </Link>
+        <ChevronRight className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 shrink-0" />
+        <span className="font-semibold text-slate-900 dark:text-white">Subscription & Billing</span>
+      </div>
+
       {/* PAGE HEADER */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200 dark:border-slate-800">
         <div>
@@ -159,7 +169,7 @@ Thank you for choosing DocVault! For billing inquiries, contact billing@docvault
                 <Gift className="w-3.5 h-3.5" /> 7-Day Free Trial Active
               </div>
               <h2 className="text-2xl sm:text-3xl font-black tracking-tight">
-                First 7 Days Free of Cost ($0.00 / ₹0)
+                First 7 Days Free of Cost (₹0)
               </h2>
               <p className="text-sm text-orange-100 font-medium max-w-xl">
                 Enjoy full unrestricted access to DocVault for 7 days. No payment required during your trial. Subscription auto-activates after Day 7.
@@ -445,7 +455,7 @@ Thank you for choosing DocVault! For billing inquiries, contact billing@docvault
               onClick={() => setFilterTab('trial')}
               className={`px-3 py-1.5 rounded-xl transition ${filterTab === 'trial' ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm' : 'text-slate-500'}`}
             >
-              Free Trial Bills ($0)
+              Free Trial Bills (₹0)
             </button>
           </div>
         </div>
@@ -475,7 +485,7 @@ Thank you for choosing DocVault! For billing inquiries, contact billing@docvault
                     {item.paymentMethod}
                   </td>
                   <td className="py-4 px-6 font-semibold text-slate-900 dark:text-white">
-                    {item.amount === 0 ? 'Free ($0.00)' : `₹${item.amount.toFixed(2)}`}
+                    {item.amount === 0 ? 'Free (₹0)' : `₹${item.amount.toFixed(2)}`}
                   </td>
                   <td className="py-4 px-6">
                     <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium border ${

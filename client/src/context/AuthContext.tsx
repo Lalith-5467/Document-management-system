@@ -8,6 +8,20 @@ interface User {
   full_name: string;
   email: string;
   user_type: 'individual' | 'student' | 'professional' | 'admin';
+  // Profile fields
+  job_title?: string;
+  designation?: string;
+  department?: string;
+  occupation?: string;
+  organization?: string;
+  company_name?: string;
+  college_name?: string;
+  phone?: string;
+  mobile_number?: string;
+  location?: string;
+  city?: string;
+  state?: string;
+  country?: string;
 }
 
 interface AuthContextType {
@@ -34,9 +48,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (storedToken && storedUser) {
       setToken(storedToken);
       try {
-        setUser(JSON.parse(storedUser));
+        const parsed = JSON.parse(storedUser);
+        setUser(parsed);
       } catch (e) {
         localStorage.removeItem('dms_user');
+        setUser(null);
+      }
+    } else if (storedUser) {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (e) {
+        setUser(null);
       }
     }
     setLoading(false);

@@ -70,8 +70,7 @@ export default function AdminSettingsDashboard() {
   return (
     <div className="space-y-8 pb-12 font-sans animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div>
-        <h1 className="text-2xl font-black text-slate-900 flex items-center gap-2 font-auth-heading mb-2">
-          <Settings className="w-6 h-6 text-themePrimary" />
+        <h1 className="text-2xl font-black text-slate-900 font-auth-heading mb-2">
           Admin Settings Dashboard
         </h1>
         <p className="text-sm text-slate-500 font-medium">
