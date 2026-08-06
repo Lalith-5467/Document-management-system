@@ -255,13 +255,7 @@ export default function ActivityHistoryPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800/80 pb-5">
         <div>
-          <div className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-500 dark:text-slate-400 mb-1.5 font-medium">
-            <Link href="/user" className="hover:text-slate-900 dark:hover:text-white transition-colors font-medium">
-              Vault Collections
-            </Link>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 shrink-0" />
-            <span className="text-slate-900 dark:text-white font-semibold">Activity History</span>
-          </div>
+
           <h1 className="text-2xl font-black text-slate-900 dark:text-white">
             Activity History
           </h1>

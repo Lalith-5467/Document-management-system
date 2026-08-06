@@ -112,7 +112,12 @@ export default function Sidebar({ mobileOpen = false, setMobileOpen }: SidebarPr
                 <Link
                   key={item.href + item.name}
                   href={item.href}
-                  onClick={() => setMobileOpen && setMobileOpen(false)}
+                  onClick={() => {
+                    if (setMobileOpen) setMobileOpen(false);
+                    if (typeof window !== 'undefined') {
+                      window.dispatchEvent(new CustomEvent('dms_navigation_click', { detail: { href: item.href } }));
+                    }
+                  }}
                   className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition-all duration-150 group active-press ${
                     isActive
                       ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/20 font-black border border-orange-400/30'

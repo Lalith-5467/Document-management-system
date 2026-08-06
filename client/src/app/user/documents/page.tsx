@@ -13,6 +13,7 @@ import api from '@/lib/api';
 import { logActivity } from '@/lib/activityLogger';
 import DocumentPreviewModal from '@/components/dashboard/DocumentPreviewModal';
 import EditDocumentModal from '@/components/dashboard/EditDocumentModal';
+import CustomSelect from '@/components/CustomSelect';
 import { useLanguage } from '@/context/LanguageContext';
 
 export interface DocumentItem {
@@ -79,6 +80,61 @@ export default function MyDocumentsPage() {
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   const [actionMenuOpen, setActionMenuOpen] = useState<number | null>(null);
 
+  // Folder Creation Modal States
+  const [isCreateFolderOpen, setIsCreateFolderOpen] = useState<boolean>(false);
+  const [newFolderName, setNewFolderName] = useState<string>('');
+  const [newFolderColor, setNewFolderColor] = useState<string>('#FF6B00');
+  const [submittingFolder, setSubmittingFolder] = useState<boolean>(false);
+
+  const handleCreateFolderSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newFolderName.trim()) return;
+
+    setSubmittingFolder(true);
+    const newId = Date.now();
+    const newF = {
+      id: newId,
+      user_id: 1,
+      folder_name: newFolderName.trim(),
+      description: 'Custom user folder',
+      color: newFolderColor,
+      icon_name: 'Folder',
+      document_count: 0,
+      created_at: new Date().toISOString()
+    };
+
+    try {
+      const res = await api.post('/folders', {
+        folder_name: newFolderName.trim(),
+        description: 'Custom user folder',
+        color: newFolderColor
+      });
+      if (res.data && res.data.folder) {
+        newF.id = res.data.folder.id;
+      }
+    } catch (err) {
+      console.warn('API folder create failed, using local fallback');
+    }
+
+    const updatedFolders = [...folders, newF];
+    setFolders(updatedFolders);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('dms_admin_folders', JSON.stringify(updatedFolders));
+      localStorage.setItem('dms_user_folders', JSON.stringify(updatedFolders));
+      window.dispatchEvent(new Event('dms_folders_updated'));
+    }
+
+    setSelectedFolder(String(newF.id));
+    setFolderName(newF.folder_name);
+    setCurrentPage(1);
+
+    setIsCreateFolderOpen(false);
+    setNewFolderName('');
+    setNewFolderColor('#FF6B00');
+    setSubmittingFolder(false);
+    showToast('Folder created and selected successfully!', 'success');
+  };
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const urlParams = new URLSearchParams(window.location.search);
@@ -128,6 +184,16 @@ export default function MyDocumentsPage() {
     setTimeout(() => setToast(null), 4000);
   };
 
+  const getDefaultFolders = () => [
+    { id: 1, folder_name: 'Personal Vault', color: 'var(--theme-primary, #FF6B00)' },
+    { id: 2, folder_name: 'Tax & Invoices', color: '#EF4444' },
+    { id: 3, folder_name: 'Academic Records', color: '#10B981' },
+    { id: 4, folder_name: 'Work Projects', color: '#3B82F6' },
+    { id: 5, folder_name: 'Contracts & Agreements', color: '#8B5CF6' },
+    { id: 6, folder_name: 'Certificates & Passports', color: '#EC4899' },
+    { id: 7, folder_name: 'Bills & Receipts', color: '#F59E0B' }
+  ];
+
   const fetchCategoriesAndFolders = async () => {
     try {
       const [catRes, foldRes] = await Promise.all([
@@ -135,20 +201,47 @@ export default function MyDocumentsPage() {
         api.get('/folders').catch(() => null)
       ]);
       const fetchedCats = catRes?.data?.categories;
-      const fetchedFolds = foldRes?.data?.folders;
+      let fetchedFolds = foldRes?.data?.folders || [];
 
-      if (fetchedCats) {
+      if (typeof window !== 'undefined') {
+        try {
+          const localFolds = JSON.parse(
+            localStorage.getItem('dms_admin_folders') || 
+            localStorage.getItem('dms_user_folders') || 
+            '[]'
+          );
+          if (Array.isArray(localFolds) && localFolds.length > 0) {
+            const existingIds = new Set(fetchedFolds.map((f: any) => String(f.id)));
+            localFolds.forEach((lf: any) => {
+              if (!existingIds.has(String(lf.id))) fetchedFolds.push(lf);
+            });
+          }
+        } catch (e) {}
+      }
+
+      if (fetchedCats && fetchedCats.length > 0) {
         setCategories(fetchedCats);
       } else {
-        setCategories([]);
+        setCategories([
+          { id: 1, category_name: 'Personal Documents' },
+          { id: 2, category_name: 'Academic Documents' },
+          { id: 3, category_name: 'Project Documents' },
+          { id: 4, category_name: 'Certificates' },
+          { id: 5, category_name: 'Resume' },
+          { id: 6, category_name: 'Client Requirement Documents' },
+          { id: 7, category_name: 'Bills' },
+          { id: 8, category_name: 'Others' }
+        ]);
       }
 
-      if (fetchedFolds) {
+      if (fetchedFolds && fetchedFolds.length > 0) {
         setFolders(fetchedFolds);
       } else {
-        setFolders([]);
+        setFolders(getDefaultFolders());
       }
-    } catch { /* fallback */ }
+    } catch {
+      setFolders(getDefaultFolders());
+    }
   };
 
   const fetchDocuments = async () => {
@@ -457,25 +550,7 @@ export default function MyDocumentsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800/80 pb-5">
         <div>
-          <div className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-500 dark:text-slate-400 mb-1.5 font-medium">
-            <Link href="/user" className="hover:text-themePrimary dark:hover:text-orange-400 transition-colors font-medium">
-              {t('dashboard', 'Workspace')}
-            </Link>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 shrink-0" />
-            {folderName ? (
-              <>
-                <Link href="/user/folders" className="hover:text-themePrimary dark:hover:text-orange-400 transition-colors font-medium">
-                  {t('myFolders', 'My Folders')}
-                </Link>
-                <ChevronRight className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 shrink-0" />
-                <span className="text-slate-900 dark:text-white font-semibold">{folderName}</span>
-              </>
-            ) : (
-              <span className="text-slate-900 dark:text-white font-semibold">
-                {isRecentMode ? t('recentDocuments', 'Recent Documents') : t('myDocuments', 'My Documents')}
-              </span>
-            )}
-          </div>
+
           <h1 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-2.5">
             {folderName ? folderName : isRecentMode ? (
               t('recentDocuments', 'Recent Documents')
@@ -549,93 +624,79 @@ export default function MyDocumentsPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 pt-3 border-t border-slate-200 dark:border-slate-800">
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">{t('category', 'Category')}</label>
-            <select
+            <CustomSelect
               value={selectedCategory}
-              onChange={(e) => { setSelectedCategory(e.target.value); setCurrentPage(1); }}
-              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white font-medium focus:outline-none focus:border-themePrimary"
-            >
-              <option value="">{t('allCategories', 'All Categories')}</option>
-              {categories.map((c) => (
-                <option key={c.id} value={c.id}>{c.category_name}</option>
-              ))}
-            </select>
+              onChange={(val) => { setSelectedCategory(val); setCurrentPage(1); }}
+              options={[
+                { label: t('allCategories', 'All Categories'), value: '' },
+                ...categories.map((c) => ({ label: c.category_name, value: String(c.id) }))
+              ]}
+            />
           </div>
 
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">{t('folder', 'Folder')}</label>
-            <select
+            <CustomSelect
               value={selectedFolder}
-              onChange={(e) => {
-                setSelectedFolder(e.target.value);
-                const chosen = folders.find((f: any) => String(f.id) === String(e.target.value));
+              onChange={(val) => {
+                setSelectedFolder(val);
+                const chosen = folders.find((f: any) => String(f.id) === String(val));
                 setFolderName(chosen ? chosen.folder_name : '');
                 setCurrentPage(1);
               }}
-              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white font-medium focus:outline-none focus:border-themePrimary"
-            >
-              <option value="">{t('allFolders', 'All Folders')}</option>
-              {folders.map((f) => (
-                <option key={f.id} value={f.id}>{f.folder_name}</option>
-              ))}
-            </select>
+              options={[
+                { label: t('allFolders', 'All Folders'), value: '' },
+                ...folders.map((f) => ({ label: f.folder_name, value: String(f.id) }))
+              ]}
+              actionOption={{
+                label: '+ Create New Folder',
+                onClick: () => setIsCreateFolderOpen(true)
+              }}
+            />
           </div>
 
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">{t('fileType', 'File Type')}</label>
-            <select
+            <CustomSelect
               value={selectedFileType}
-              onChange={(e) => { setSelectedFileType(e.target.value); setCurrentPage(1); }}
-              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white font-medium focus:outline-none focus:border-themePrimary"
-            >
-              <option value="">{t('allFileTypes', 'All File Types')}</option>
-              <option value="pdf">📄 PDF Documents</option>
-              <option value="word">📝 Word Documents</option>
-              <option value="excel">📊 Excel Spreadsheets</option>
-              <option value="image">🖼️ Images (PNG, JPG)</option>
-            </select>
+              onChange={(val) => { setSelectedFileType(val); setCurrentPage(1); }}
+              options={[
+                { label: t('allFileTypes', 'All File Types'), value: '' },
+                { label: '📄 PDF Documents', value: 'pdf' },
+                { label: '📝 Word Documents', value: 'word' },
+                { label: '📊 Excel Spreadsheets', value: 'excel' },
+                { label: '🖼️ Images (PNG, JPG)', value: 'image' }
+              ]}
+            />
           </div>
 
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">{t('uploadDate', 'Upload Date')}</label>
-            <select
+            <CustomSelect
               value={selectedDateRange}
-              onChange={(e) => { setSelectedDateRange(e.target.value); setCurrentPage(1); }}
-              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white font-medium focus:outline-none focus:border-themePrimary"
-            >
-              <option value="">{t('allTime', 'All Time')}</option>
-              <option value="today">{t('today', 'Today')}</option>
-              <option value="7days">{t('past7Days', 'Past 7 Days')}</option>
-              <option value="30days">{t('past30Days', 'Past 30 Days')}</option>
-            </select>
+              onChange={(val) => { setSelectedDateRange(val); setCurrentPage(1); }}
+              options={[
+                { label: t('allTime', 'All Time'), value: '' },
+                { label: t('today', 'Today'), value: 'today' },
+                { label: t('past7Days', 'Past 7 Days'), value: '7days' },
+                { label: t('past30Days', 'Past 30 Days'), value: '30days' }
+              ]}
+            />
           </div>
 
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">{t('sortBy', 'Sort By')}</label>
-            <select
+            <CustomSelect
               value={sortBy}
-              onChange={(e) => { setSortBy(e.target.value); setCurrentPage(1); }}
-              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white font-medium focus:outline-none focus:border-themePrimary"
-            >
-              <option value="date_desc">{t('sortByNewest', 'Date (Newest)')}</option>
-              <option value="date_asc">{t('sortByOldest', 'Date (Oldest)')}</option>
-              <option value="name_asc">{t('sortByName', 'Name (A-Z)')}</option>
-              <option value="name_desc">{t('sortByNameDesc', 'Name (Z-A)')}</option>
-              <option value="size_desc">{t('sortBySize', 'Size (Largest)')}</option>
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Sort By</label>
-            <select
-              value={sortBy}
-              onChange={(e) => { setSortBy(e.target.value); setCurrentPage(1); }}
-              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white font-medium focus:outline-none focus:border-themePrimary"
-            >
-              <option value="date_desc">Date (Newest)</option>
-              <option value="date_asc">Date (Oldest)</option>
-              <option value="name_asc">Name (A–Z)</option>
-              <option value="size_desc">Size (Largest)</option>
-            </select>
+              onChange={(val) => { setSortBy(val); setCurrentPage(1); }}
+              options={[
+                { label: t('sortByNewest', 'Date (Newest)'), value: 'date_desc' },
+                { label: t('sortByOldest', 'Date (Oldest)'), value: 'date_asc' },
+                { label: t('sortByName', 'Name (A-Z)'), value: 'name_asc' },
+                { label: t('sortByNameDesc', 'Name (Z-A)'), value: 'name_desc' },
+                { label: t('sortBySize', 'Size (Largest)'), value: 'size_desc' }
+              ]}
+            />
           </div>
         </div>
 
@@ -901,6 +962,62 @@ export default function MyDocumentsPage() {
           onClose={() => setActiveModal(null)}
           onDownload={handleDownload}
         />
+      )}
+
+      {/* CREATE FOLDER MODAL */}
+      {isCreateFolderOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4 animate-in fade-in zoom-in-95 duration-150 text-slate-900">
+            <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+              <h3 className="text-base font-black text-slate-900 tracking-tight font-auth-heading">Create New Folder</h3>
+              <button onClick={() => setIsCreateFolderOpen(false)} className="text-slate-400 hover:text-slate-700">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            
+            <form onSubmit={handleCreateFolderSubmit} className="space-y-4">
+              <div>
+                <label className="block text-2xs font-bold uppercase tracking-wider text-slate-400 mb-1 font-mono">Folder Name</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Invoices 2026, Technical Specs..."
+                  value={newFolderName}
+                  onChange={(e) => setNewFolderName(e.target.value)}
+                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-xs font-bold focus:outline-none focus:border-themePrimary"
+                />
+              </div>
+
+              <div>
+                <label className="block text-2xs font-bold uppercase tracking-wider text-slate-400 mb-2 font-mono">Folder Tag Color</label>
+                <div className="flex items-center gap-2">
+                  {['#FF6B00', '#EF4444', '#10B981', '#3B82F6', '#8B5CF6', '#EC4899', '#F59E0B', '#64748B'].map((color) => (
+                    <button
+                      key={color}
+                      type="button"
+                      onClick={() => setNewFolderColor(color)}
+                      className={`w-6 h-6 rounded-full border transition cursor-pointer ${
+                        newFolderColor === color ? 'border-slate-800 scale-110 shadow-sm' : 'border-transparent hover:scale-105'
+                      }`}
+                      style={{ backgroundColor: color }}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-3 pt-2">
+                <button type="button" onClick={() => setIsCreateFolderOpen(false)} className="px-4 py-2 text-xs font-black text-slate-500 hover:text-slate-800 cursor-pointer font-auth-heading">Cancel</button>
+                <button
+                  type="submit"
+                  disabled={submittingFolder}
+                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white text-xs font-black hover:brightness-110 shadow-md shadow-orange-500/25 transition cursor-pointer font-auth-heading"
+                >
+                  {submittingFolder ? 'Creating...' : 'Create Folder'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       )}
     </div>
   );

@@ -467,9 +467,19 @@ export default function UploadPage() {
       formData.append('password', password);
     }
 
+    let loggedUser: any = null;
+    if (typeof window !== 'undefined') {
+      try {
+        const stored = localStorage.getItem('dms_user');
+        if (stored) loggedUser = JSON.parse(stored);
+      } catch (e) {}
+    }
+
     const newDocItem = {
       id: Date.now(),
-      user_id: 1,
+      user_id: loggedUser?.id || 1,
+      owner_name: loggedUser?.full_name || 'User',
+      owner_email: loggedUser?.email || '',
       category_id: categoryId ? (isNaN(Number(categoryId)) ? 1 : Number(categoryId)) : 1,
       folder_id: folderId ? (isNaN(Number(folderId)) ? null : Number(folderId)) : null,
       title: title.trim(),
@@ -593,13 +603,7 @@ export default function UploadPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800/80 pb-5">
         <div>
-          <div className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-500 dark:text-slate-400 mb-1.5 font-medium font-auth-body">
-            <Link href="/user" className="hover:text-themePrimary dark:hover:text-orange-400 transition-colors font-medium">
-              Workspace
-            </Link>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 shrink-0" />
-            <span className="text-slate-900 dark:text-white font-semibold font-auth-body">Upload Document</span>
-          </div>
+
           <h1 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight font-auth-heading">
             Upload New Document
           </h1>

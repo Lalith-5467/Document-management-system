@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { X, ShieldCheck, Lock, CreditCard, CheckCircle2, Loader2, Zap, Tag } from 'lucide-react';
 import { useSubscription, SubscriptionPlan } from '@/context/SubscriptionContext';
+import { useAuth } from '@/context/AuthContext';
 
 export default function PaymentModal() {
   const {
@@ -12,7 +13,10 @@ export default function PaymentModal() {
     activateSubscription
   } = useSubscription();
 
-  const [cardName, setCardName] = useState('Joe Developer');
+  const { user } = useAuth();
+  const realName = user?.full_name || user?.email?.split('@')[0] || '';
+
+  const [cardName, setCardName] = useState('');
   const [cardNumber, setCardNumber] = useState('4532 8921 7842 9012');
   const [expiry, setExpiry] = useState('08/28');
   const [cvv, setCvv] = useState('892');
@@ -147,10 +151,10 @@ export default function PaymentModal() {
                 <input
                   type="text"
                   required
-                  value={cardName}
+                  value={cardName || realName}
                   onChange={(e) => setCardName(e.target.value)}
                   className="w-full px-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl text-xs font-semibold focus:outline-none focus:border-themePrimary"
-                  placeholder="e.g. Joe Developer"
+                  placeholder={realName || 'Your full name'}
                 />
               </div>
 

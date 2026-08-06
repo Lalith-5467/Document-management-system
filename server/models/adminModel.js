@@ -285,7 +285,7 @@ class AdminModel {
                        COALESCE(c.color, '#3B82F6') as category_color,
                        COALESCE(f.folder_name, '') as folder_name
                 FROM documents d
-                LEFT JOIN users u ON d.user_id = u.id
+                LEFT JOIN users u ON (d.user_id = u.id OR d.user_id = u.email)
                 LEFT JOIN categories c ON d.category_id = c.id
                 LEFT JOIN folders f ON d.folder_id = f.id
                 WHERE d.is_archived = 0

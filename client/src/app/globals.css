@@ -73,6 +73,29 @@ input, textarea, button, select {
   font-family: var(--font-poppins), 'Poppins', sans-serif;
 }
 
+/* Custom Dropdown Option Hover & Checked Orange Theme Styling */
+select option {
+  background-color: var(--select-bg, #ffffff);
+  color: var(--select-text, #0f172a);
+  padding: 8px 12px;
+}
+
+select option:hover,
+select option:focus,
+select option:active,
+select option:checked {
+  background-color: #FF6B00 !important;
+  background: #FF6B00 !important;
+  color: #ffffff !important;
+}
+
+/* Chromium / Webkit select option focus & highlight overrides */
+select:focus option:checked,
+select option:checked {
+  box-shadow: 0 0 10px 100px #FF6B00 inset !important;
+  color: #ffffff !important;
+}
+
 /* Form & Authentication Typography System */
 .font-auth-heading {
   font-family: var(--font-poppins), 'Poppins', sans-serif !important;

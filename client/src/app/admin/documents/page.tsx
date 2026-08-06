@@ -6,8 +6,10 @@ import {
   AlertCircle, Loader2, RefreshCw, Edit2, RotateCcw, Archive,
   ChevronLeft, ChevronRight, Layers, User
 } from 'lucide-react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import api from '@/lib/api';
 import DocumentPreviewModal from '@/components/dashboard/DocumentPreviewModal';
+import CustomSelect from '@/components/CustomSelect';
 
 function Toast({ toast, onClose }: { toast: any; onClose: () => void }) {
   if (!toast) return null;
@@ -23,6 +25,10 @@ function Toast({ toast, onClose }: { toast: any; onClose: () => void }) {
 }
 
 export default function AdminDocumentsPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const tabParam = searchParams ? searchParams.get('tab') : null;
+
   const [documents, setDocuments] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
   const [folders, setFolders] = useState<any[]>([]);
@@ -30,6 +36,30 @@ export default function AdminDocumentsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [viewMode, setViewMode] = useState<'active' | 'archived'>('active');
+
+  useEffect(() => {
+    if (tabParam === 'trash' || tabParam === 'archived') {
+      setViewMode('archived');
+    } else {
+      setViewMode('active');
+    }
+  }, [tabParam]);
+
+  useEffect(() => {
+    const handleNavClick = (e: any) => {
+      if (e.detail?.href === '/admin/documents' || e.detail?.href === '/admin') {
+        setViewMode('active');
+        setPage(1);
+        setSelectedCategory('');
+        setSearchQuery('');
+        if (typeof window !== 'undefined') {
+          window.history.replaceState(null, '', '/admin/documents');
+        }
+      }
+    };
+    window.addEventListener('dms_navigation_click', handleNavClick);
+    return () => window.removeEventListener('dms_navigation_click', handleNavClick);
+  }, []);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
@@ -126,6 +156,33 @@ export default function AdminDocumentsPage() {
 
   const fetchDocuments = useCallback(async () => {
     setLoading(true);
+
+    // 1. Try Backend API First to get real documents with real owner names from DB
+    try {
+      if (viewMode === 'active') {
+        const res = await api.get('/admin/documents', { params: { search: searchQuery, category_id: selectedCategory, page, limit: 15 } });
+        if (res.data?.success && res.data.documents && res.data.documents.length > 0) {
+          setDocuments(res.data.documents);
+          setTotalPages(res.data.totalPages || 1);
+          setTotalCount(res.data.totalCount || res.data.documents.length);
+          setLoading(false);
+          return;
+        }
+      } else {
+        const res = await api.get('/admin/documents/archived');
+        if (res.data?.success && res.data.documents) {
+          setDocuments(res.data.documents);
+          setTotalPages(1);
+          setTotalCount(res.data.documents.length);
+          setLoading(false);
+          return;
+        }
+      }
+    } catch (err) {
+      console.warn('API fetch failed, checking local storage & fallback samples', err);
+    }
+
+    // 2. Fallback to Local Storage / Samples if API fails
     let savedDocs = null;
     if (typeof window !== 'undefined') {
       savedDocs = localStorage.getItem('dms_user_documents');
@@ -150,31 +207,18 @@ export default function AdminDocumentsPage() {
       } catch {}
     }
 
-    try {
-      if (viewMode === 'active') {
-        const res = await api.get('/admin/documents', { params: { search: searchQuery, category_id: selectedCategory, page, limit: 15 } });
-        if (res.data?.success && res.data.documents?.length > 0) {
-          setDocuments(res.data.documents);
-          setTotalPages(res.data.totalPages || 1);
-          setTotalCount(res.data.totalCount || res.data.documents.length);
-          setLoading(false);
-          return;
-        }
-      }
-    } catch {}
-
     const samples = [
-      { id: 101, user_id: 1, category_id: 4, folder_id: 4, title: 'Frontendtech Architecture & BRD Specs.pdf', file_name: 'Frontendtech_Architecture_Proposal_v2.pdf', owner_name: 'John Doe', description: 'System BRD briefs and frontend module specifications.', file_path: '/uploads/proposal.pdf', file_size: 2516582, mime_type: 'application/pdf', created_at: '2026-07-29T10:00:00Z', category_name: 'Projects & Technical Specs', color: '#8B5CF6', folder_name: 'Project Architecture' },
-      { id: 102, user_id: 1, category_id: 5, folder_id: null, title: 'AWS_Solutions_Architect_Certificate.pdf', file_name: 'AWS_Solutions_Architect_Certificate.pdf', owner_name: 'Sarah Connor', description: 'AWS Certified Solutions Architect certificate badge.', file_path: '/uploads/aws_cert.pdf', file_size: 1258291, mime_type: 'application/pdf', created_at: '2026-07-20T09:20:00Z', category_name: 'Certificates & Achievements', color: '#EC4899', folder_name: 'Unassigned' },
-      { id: 103, user_id: 1, category_id: 6, folder_id: 2, title: 'Tax_Returns_Assessment_2026.pdf', file_name: 'Tax_Returns_Assessment_2026.pdf', owner_name: 'Michael Scott', description: 'Annual tax return assessment and income tax audit statements.', file_path: '/uploads/tax_2026.pdf', file_size: 943718, mime_type: 'application/pdf', created_at: '2026-07-19T16:00:00Z', category_name: 'Client Requirements & Contracts', color: '#06B6D4', folder_name: 'Tax Filings 2026' },
-      { id: 104, user_id: 1, category_id: 3, folder_id: null, title: 'Lalith Velarasi. S CV & Credentials.pdf', file_name: 'Lalith Velarasi. S.pdf', owner_name: 'Kalpana', description: 'Professional resume CV and technical profile credentials.', file_path: '/uploads/cv.pdf', file_size: 4865392, mime_type: 'application/pdf', created_at: '2026-07-27T14:10:00Z', category_name: 'Career & Employment Assets', color: '#F59E0B', folder_name: 'Unassigned' },
-      { id: 105, user_id: 1, category_id: 2, folder_id: 1, title: 'University_Degree_Certificate_2026.pdf', file_name: 'University_Degree_Certificate.pdf', owner_name: 'Alex Johnson', description: 'Bachelor of Technology official degree transcript.', file_path: '/uploads/degree.pdf', file_size: 2454159, mime_type: 'application/pdf', created_at: '2026-07-28T11:45:00Z', category_name: 'Academic Records & Diplomas', color: '#10B981', folder_name: 'Academic Transcripts' },
-      { id: 106, user_id: 1, category_id: 1, folder_id: 3, title: 'Senior_Software_Engineer_Identity_Card.png', file_name: 'Senior_Software_Engineer_ID.png', owner_name: 'Kalpana', description: 'High resolution digital identity passport card.', file_path: '/uploads/id.png', file_size: 1672313, mime_type: 'image/png', created_at: '2026-07-29T08:00:00Z', category_name: 'Personal Identity & Passports', color: 'var(--theme-primary, #FF6B00)', folder_name: 'Passport & Identity' }
+      { id: 101, user_id: 1, category_id: 4, folder_id: 4, title: 'Frontendtech Architecture & BRD Specs.pdf', file_name: 'Frontendtech_Architecture_Proposal_v2.pdf', owner_name: 'Bharathi', description: 'System BRD briefs and frontend module specifications.', file_path: '/uploads/proposal.pdf', file_size: 2516582, mime_type: 'application/pdf', created_at: '2026-07-29T10:00:00Z', category_name: 'Projects & Technical Specs', color: '#8B5CF6', folder_name: 'Project Architecture' },
+      { id: 102, user_id: 2, category_id: 5, folder_id: null, title: 'AWS_Solutions_Architect_Certificate.pdf', file_name: 'AWS_Solutions_Architect_Certificate.pdf', owner_name: 'Harini', description: 'AWS Certified Solutions Architect certificate badge.', file_path: '/uploads/aws_cert.pdf', file_size: 1258291, mime_type: 'application/pdf', created_at: '2026-07-20T09:20:00Z', category_name: 'Certificates & Achievements', color: '#EC4899', folder_name: 'Unassigned' },
+      { id: 103, user_id: 3, category_id: 6, folder_id: 2, title: 'Tax_Returns_Assessment_2026.pdf', file_name: 'Tax_Returns_Assessment_2026.pdf', owner_name: 'Nisha Begum', description: 'Annual tax return assessment and income tax audit statements.', file_path: '/uploads/tax_2026.pdf', file_size: 943718, mime_type: 'application/pdf', created_at: '2026-07-19T16:00:00Z', category_name: 'Client Requirements & Contracts', color: '#06B6D4', folder_name: 'Tax Filings 2026' },
+      { id: 104, user_id: 4, category_id: 3, folder_id: null, title: 'Lalith Velarasi. S CV & Credentials.pdf', file_name: 'Lalith Velarasi. S.pdf', owner_name: 'Lalith Velarasi', description: 'Professional resume CV and technical profile credentials.', file_path: '/uploads/cv.pdf', file_size: 4865392, mime_type: 'application/pdf', created_at: '2026-07-27T14:10:00Z', category_name: 'Career & Employment Assets', color: '#F59E0B', folder_name: 'Unassigned' },
+      { id: 105, user_id: 5, category_id: 2, folder_id: 1, title: 'University_Degree_Certificate_2026.pdf', file_name: 'University_Degree_Certificate.pdf', owner_name: 'Alex Johnson', description: 'Bachelor of Technology official degree transcript.', file_path: '/uploads/degree.pdf', file_size: 2454159, mime_type: 'application/pdf', created_at: '2026-07-28T11:45:00Z', category_name: 'Academic Records & Diplomas', color: '#10B981', folder_name: 'Academic Transcripts' },
+      { id: 106, user_id: 6, category_id: 1, folder_id: 3, title: 'Senior_Software_Engineer_Identity_Card.png', file_name: 'Senior_Software_Engineer_ID.png', owner_name: 'Kalpana', description: 'High resolution digital identity passport card.', file_path: '/uploads/id.png', file_size: 1672313, mime_type: 'image/png', created_at: '2026-07-29T08:00:00Z', category_name: 'Personal Identity & Passports', color: 'var(--theme-primary, #FF6B00)', folder_name: 'Passport & Identity' }
     ];
 
     let filtered = [...samples];
     if (searchQuery) {
-      filtered = filtered.filter(d => d.title.toLowerCase().includes(searchQuery.toLowerCase()) || d.owner_name.toLowerCase().includes(searchQuery.toLowerCase()));
+      filtered = filtered.filter(d => d.title.toLowerCase().includes(searchQuery.toLowerCase()) || (d.owner_name && d.owner_name.toLowerCase().includes(searchQuery.toLowerCase())));
     }
     if (selectedCategory) {
       filtered = filtered.filter(d => String(d.category_id) === String(selectedCategory));
@@ -183,9 +227,6 @@ export default function AdminDocumentsPage() {
     setDocuments(filtered);
     setTotalPages(1);
     setTotalCount(filtered.length);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('dms_user_documents', JSON.stringify(samples));
-    }
     setLoading(false);
   }, [searchQuery, selectedCategory, page, viewMode]);
 
@@ -343,8 +384,8 @@ export default function AdminDocumentsPage() {
         </div>
         <div className="flex items-center gap-3">
           <div className="flex rounded-2xl p-1 bg-slate-100 border border-slate-200">
-            <button onClick={() => { setViewMode('active'); setPage(1); }} className={`px-4 py-2 text-xs font-black rounded-xl transition-all cursor-pointer ${viewMode === 'active' ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/20' : 'text-slate-600 hover:text-slate-900'}`}>Active</button>
-            <button onClick={() => { setViewMode('archived'); setPage(1); }} className={`px-4 py-2 text-xs font-black rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${viewMode === 'archived' ? 'bg-rose-600 text-white shadow-md shadow-rose-600/20' : 'text-slate-600 hover:text-slate-900'}`}>
+            <button onClick={() => { setViewMode('active'); setPage(1); if (typeof window !== 'undefined') window.history.replaceState(null, '', '/admin/documents'); }} className={`px-4 py-2 text-xs font-black rounded-xl transition-all cursor-pointer ${viewMode === 'active' ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/20' : 'text-slate-600 hover:text-slate-900'}`}>Active</button>
+            <button onClick={() => { setViewMode('archived'); setPage(1); if (typeof window !== 'undefined') window.history.replaceState(null, '', '/admin/documents?tab=trash'); }} className={`px-4 py-2 text-xs font-black rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${viewMode === 'archived' ? 'bg-rose-600 text-white shadow-md shadow-rose-600/20' : 'text-slate-600 hover:text-slate-900'}`}>
               <Archive className="w-3.5 h-3.5" /> Trash
             </button>
           </div>
@@ -367,14 +408,14 @@ export default function AdminDocumentsPage() {
               className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-themePrimary"
             />
           </div>
-          <select
+          <CustomSelect
             value={selectedCategory}
-            onChange={e => { setSelectedCategory(e.target.value); setPage(1); }}
-            className="px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:border-themePrimary cursor-pointer"
-          >
-            <option value="">All Categories</option>
-            {categories.map(c => <option key={c.id} value={c.id}>{c.category_name}</option>)}
-          </select>
+            onChange={val => { setSelectedCategory(val); setPage(1); }}
+            options={[
+              { label: 'All Categories', value: '' },
+              ...categories.map(c => ({ label: c.category_name, value: String(c.id) }))
+            ]}
+          />
         </div>
       )}
 
@@ -418,7 +459,7 @@ export default function AdminDocumentsPage() {
                     <td className="py-3.5 px-5">
                       <div className="flex items-center gap-1.5">
                         <User className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                        <span className="text-slate-800 font-bold">{doc.owner_name || 'Kalpana'}</span>
+                        <span className="text-slate-800 font-bold">{doc.owner_name || doc.owner_email || 'User'}</span>
                       </div>
                     </td>
                     <td className="py-3.5 px-5">

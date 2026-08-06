@@ -7,6 +7,7 @@ import Header from '@/components/Header';
 import TrialBanner from '@/components/TrialBanner';
 import UpgradeModal from '@/components/UpgradeModal';
 import PaymentModal from '@/components/PaymentModal';
+import Breadcrumbs from '@/components/Breadcrumbs';
 import { useAuth } from '@/context/AuthContext';
 import { Loader2 } from 'lucide-react';
 
@@ -67,6 +68,7 @@ export default function DashboardLayout({
       <div className="flex-1 flex flex-col lg:pl-64 min-w-0 bg-transparent transition-colors duration-200">
         <Header onMobileMenuToggle={() => setMobileSidebarOpen(!mobileSidebarOpen)} />
         <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto bg-transparent transition-colors duration-200 animate-page-fade">
+          <Breadcrumbs className="mb-4 sm:mb-6" />
           <TrialBanner />
           {children}
           <UpgradeModal />

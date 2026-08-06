@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { useSubscription, SubscriptionPlan } from '@/context/SubscriptionContext';
 import { useLanguage } from '@/context/LanguageContext';
+import { useAuth } from '@/context/AuthContext';
 
 export default function UserSubscriptionPage() {
   const {
@@ -28,11 +29,15 @@ export default function UserSubscriptionPage() {
   } = useSubscription();
 
   const { t } = useLanguage();
+  const { user } = useAuth();
+  const realName = user?.full_name || user?.email?.split('@')[0] || 'Account Holder';
+  const realEmail = user?.email || 'user@docvault.io';
+
   const [downloadingInv, setDownloadingInv] = useState<string | null>(null);
   const [filterTab, setFilterTab] = useState<'all' | 'paid' | 'trial'>('all');
   const [showPaymentMethodModal, setShowPaymentMethodModal] = useState(false);
   const [savedCard, setSavedCard] = useState({
-    cardName: 'Joe Developer',
+    cardName: '',
     cardNumber: '4532 •••• •••• 4242',
     expiry: '08/28',
     brand: 'Visa'
@@ -65,8 +70,8 @@ export default function UserSubscriptionPage() {
 Invoice Number  : ${invoiceNo}
 Invoice Date    : ${date}
 Billing Status  : PAID / AUTHORIZED
-Customer Name   : Joe Developer
-Customer Email  : user@docvault.io
+Customer Name   : ${realName}
+Customer Email  : ${realEmail}
 
 --------------------------------------------------------------------------------
 ITEM DETAILS & SUBSCRIPTION BREAKDOWN

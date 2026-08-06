@@ -522,13 +522,7 @@ export default function UserSettingsPage() {
 
       {/* Header */}
       <div>
-        <div className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-500 dark:text-slate-400 mb-1.5 font-medium">
-          <Link href="/user" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors font-medium">
-            User Account
-          </Link>
-          <ChevronRight className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 shrink-0" />
-          <span className="text-slate-900 dark:text-white font-semibold">{t('settings.title', 'Settings & Preferences')}</span>
-        </div>
+
         <h1 className="text-2xl font-extrabold text-slate-900 dark:text-white">
           {t('settings.title', 'Settings & Preferences')}
         </h1>

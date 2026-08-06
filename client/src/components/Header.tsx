@@ -313,7 +313,7 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
               <Link
                 href="/user/profile"
                 onClick={() => setShowProfileMenu(false)}
-                className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-themePrimary dark:hover:text-themePrimary transition-colors font-medium"
+                className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-slate-700 dark:text-slate-300 hover:bg-orange-50 dark:hover:bg-orange-950/40 hover:text-themePrimary dark:hover:text-themePrimary transition-colors font-medium"
               >
                 <User className="w-4 h-4 text-themePrimary" />
                 <span>{t('nav.userProfile', 'My Profile')}</span>
@@ -322,7 +322,7 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
               <Link
                 href="/user/settings"
                 onClick={() => setShowProfileMenu(false)}
-                className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-themePrimary dark:hover:text-themePrimary transition-colors font-medium"
+                className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-slate-700 dark:text-slate-300 hover:bg-orange-50 dark:hover:bg-orange-950/40 hover:text-themePrimary dark:hover:text-themePrimary transition-colors font-medium"
               >
                 <Settings className="w-4 h-4 text-themePrimary" />
                 <span>{t('nav.settings', 'Account Settings')}</span>
@@ -332,9 +332,9 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
                 <Link
                   href="/admin"
                   onClick={() => setShowProfileMenu(false)}
-                  className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-indigo-600 hover:bg-indigo-50 transition-colors font-bold"
+                  className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-themePrimary hover:bg-orange-50 dark:hover:bg-orange-950/40 transition-colors font-bold"
                 >
-                  <ShieldCheck className="w-4 h-4 text-indigo-600" />
+                  <ShieldCheck className="w-4 h-4 text-themePrimary" />
                   <span>Admin Portal</span>
                 </Link>
               )}
