@@ -63,23 +63,12 @@ export default function AdminUsersPage() {
 
   const fetchUsers = useCallback(async () => {
     setLoading(true);
-    let localDocsCount = 0;
-    if (typeof window !== 'undefined') {
-      try {
-        const stored = localStorage.getItem('dms_documents');
-        if (stored) {
-          const parsed = JSON.parse(stored);
-          localDocsCount = Array.isArray(parsed) ? parsed.length : 0;
-        }
-      } catch (e) {}
-    }
-
     try {
       const res = await api.get('/admin/users', { params: { search: searchQuery.trim(), page, limit: 15 } });
-      if (res.data?.success && Array.isArray(res.data.users) && res.data.users.length > 0) {
+      if (res.data?.success && Array.isArray(res.data.users)) {
         const updatedList = res.data.users.map((u: any) => ({
           ...u,
-          total_documents: Math.max(Number(u.total_documents || 0), (u.email?.includes('bharathi') ? Math.max(5, localDocsCount) : (u.email?.includes('harini') ? 7 : (u.email?.includes('nisha') && u.email?.includes('26') ? 2 : Number(u.total_documents || 3)))))
+          total_documents: Number(u.total_documents || u.db_doc_count || 0)
         }));
         setUsers(updatedList);
         setTotalPages(res.data.totalPages || 1);
@@ -90,7 +79,7 @@ export default function AdminUsersPage() {
     } catch {
       let filtered = DEFAULT_USERS.map(u => ({
         ...u,
-        total_documents: u.email?.includes('bharathi') ? Math.max(5, localDocsCount) : u.total_documents
+        total_documents: Number(u.total_documents || 0)
       }));
 
       if (searchQuery.trim()) {
@@ -110,17 +99,14 @@ export default function AdminUsersPage() {
   const openDetails = async (user: any) => {
     setSelectedUser(user);
     setActiveModal('details');
-    setUserDocs([
-      { id: 1, title: `${user.full_name.split(' ')[0]}_Identity_Doc.pdf` },
-      { id: 2, title: 'Subscription_Receipt_2026.pdf' }
-    ]);
+    setUserDocs([]);
     setLoginHistory([
       { id: 1, created_at: new Date().toISOString(), details: 'Web Portal Authentication Successful' }
     ]);
     try {
       const res = await api.get(`/admin/users/${user.id}`);
       if (res.data?.success) {
-        if (res.data.documents?.length > 0) setUserDocs(res.data.documents);
+        setUserDocs(Array.isArray(res.data.documents) ? res.data.documents : []);
         if (res.data.loginHistory?.length > 0) setLoginHistory(res.data.loginHistory);
       }
     } catch {}
@@ -250,77 +236,80 @@ export default function AdminUsersPage() {
       <Toast toast={toast} onClose={() => setToast(null)} />
 
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-200/80">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight font-auth-heading">
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight font-auth-heading flex items-center gap-2.5">
             User Management
+            <span className="px-2.5 py-0.5 rounded-full bg-orange-100 text-themePrimary text-xs font-extrabold font-mono border border-orange-200/80">
+              {totalCount} Total
+            </span>
           </h1>
-          <p className="text-xs text-slate-500 font-medium mt-1">
-            {totalCount} registered users · Full admin control — create, edit, activate/deactivate, block, reset passwords, delete accounts
+          <p className="text-xs text-slate-500 font-medium mt-1 leading-relaxed">
+            Full administrative control — create user accounts, modify permissions, toggle access statuses, reset passwords & audit vault files
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <button onClick={fetchUsers} className="text-xs font-extrabold px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-100 hover:bg-slate-200 text-slate-800 flex items-center gap-2 shadow-2xs transition cursor-pointer">
-            <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} /> Refresh
+          <button onClick={fetchUsers} className="text-xs font-extrabold px-4 py-2.5 rounded-2xl border border-slate-200/90 bg-white hover:bg-slate-50 text-slate-700 flex items-center gap-2 shadow-2xs transition-all duration-200 active:scale-95 cursor-pointer">
+            <RefreshCw className={`w-4 h-4 text-slate-500 ${loading ? 'animate-spin' : ''}`} /> Refresh
           </button>
-          <button onClick={openCreate} className="flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-black text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:opacity-90 shadow-md shadow-orange-500/20 hover:scale-105 transition cursor-pointer">
-            <Plus className="w-4 h-4" /> Add User
+          <button onClick={openCreate} className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-black text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:opacity-90 shadow-md shadow-orange-500/20 active:scale-95 transition-all duration-200 cursor-pointer">
+            <Plus className="w-4 h-4" /> Add New User
           </button>
         </div>
       </div>
 
-      {/* Search */}
-      <div className="bg-white p-4 rounded-3xl border border-slate-200 shadow-2xs">
+      {/* Search & Filter Toolbar */}
+      <div className="bg-white p-4 rounded-3xl border border-slate-200/90 shadow-xs">
         <div className="relative">
-          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+          <Search className="w-4.5 h-4.5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
             type="text"
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            placeholder="Search by full name or email address..."
-            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-themePrimary"
+            placeholder="Search registered users by full name or email address..."
+            className="w-full pl-11 pr-4 py-3 bg-slate-50/80 border border-slate-200/80 rounded-2xl text-xs font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-themePrimary focus:bg-white transition-all shadow-2xs"
           />
         </div>
       </div>
 
-      {/* Table */}
-      <div className="bg-white rounded-3xl border border-slate-200 shadow-2xs overflow-hidden">
+      {/* Table Card Container */}
+      <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm overflow-hidden">
         {loading ? (
-          <div className="p-12 text-center text-xs text-slate-500 flex items-center justify-center gap-2 font-medium">
-            <Loader2 className="w-5 h-5 animate-spin text-themePrimary" /> Loading users...
+          <div className="p-16 text-center text-xs text-slate-500 flex flex-col items-center justify-center gap-3 font-medium">
+            <Loader2 className="w-6 h-6 animate-spin text-themePrimary" /> Loading user registry...
           </div>
         ) : users.length === 0 ? (
-          <div className="p-12 text-center text-xs text-slate-500 font-medium">No users found matching query.</div>
+          <div className="p-16 text-center text-xs text-slate-500 font-medium">No users found matching query.</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs">
               <thead>
-                <tr className="border-b border-slate-200 text-slate-700 text-xs font-black uppercase tracking-wider bg-slate-50">
-                  <th className="py-4 px-5">User</th>
-                  <th className="py-4 px-5">Role</th>
-                  <th className="py-4 px-5">Docs</th>
-                  <th className="py-4 px-5">Status</th>
-                  <th className="py-4 px-5">Registered</th>
-                  <th className="py-4 px-5 text-right">Actions</th>
+                <tr className="border-b border-slate-200/80 text-slate-500 text-[11px] font-extrabold uppercase tracking-wider bg-slate-50/90 font-auth-heading">
+                  <th className="py-4 px-6">User Profile</th>
+                  <th className="py-4 px-6">Account Role</th>
+                  <th className="py-4 px-6">Vault Files</th>
+                  <th className="py-4 px-6">Status</th>
+                  <th className="py-4 px-6">Registered Date</th>
+                  <th className="py-4 px-6 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {users.map(user => (
-                  <tr key={user.id} className={`group hover:bg-orange-50/20 transition-all duration-200 ${user.is_blocked ? 'opacity-60 bg-rose-50/10' : ''}`}>
-                    <td className="py-3.5 px-5">
-                      <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-xl font-black flex items-center justify-center text-xs text-white bg-gradient-to-tr from-themePrimary to-[#F97316] shadow-md group-hover:scale-105 transition-transform">
+                  <tr key={user.id} className={`group hover:bg-orange-50/30 transition-all duration-200 ${user.is_blocked ? 'opacity-70 bg-rose-50/20' : ''}`}>
+                    <td className="py-4 px-6 align-middle">
+                      <div className="flex items-center gap-3.5">
+                        <div className="w-10 h-10 rounded-2xl font-black flex items-center justify-center text-xs text-white bg-gradient-to-tr from-themePrimary to-[#F97316] shadow-sm group-hover:scale-105 transition-transform duration-200">
                           {(user.full_name || 'U').charAt(0).toUpperCase()}
                         </div>
-                        <div>
-                          <span className="font-black text-slate-900 text-xs font-auth-heading block group-hover:text-themePrimary transition-colors">{user.full_name}</span>
-                          <span className="text-[11px] text-slate-500 font-mono">{user.email}</span>
-                          {user.is_blocked ? <span className="text-[10px] text-rose-600 font-extrabold block">⛔ Blocked</span> : null}
+                        <div className="min-w-0">
+                          <span className="font-black text-slate-900 text-xs font-auth-heading block truncate group-hover:text-themePrimary transition-colors tracking-tight">{user.full_name}</span>
+                          <span className="text-[11px] text-slate-500 font-mono block truncate mt-0.5">{user.email}</span>
+                          {user.is_blocked ? <span className="text-[10px] text-rose-600 font-extrabold block mt-0.5">⛔ Blocked Account</span> : null}
                         </div>
                       </div>
                     </td>
-                    <td className="py-3.5 px-5">
-                      <span className={`px-2.5 py-1 rounded-full text-[10px] font-black uppercase border ${
+                    <td className="py-4 px-6 align-middle">
+                      <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border shadow-2xs ${
                         user.user_type === 'admin' ? 'bg-purple-50 text-purple-700 border-purple-200' :
                         user.user_type === 'professional' ? 'bg-blue-50 text-blue-700 border-blue-200' :
                         user.user_type === 'student' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
@@ -329,36 +318,36 @@ export default function AdminUsersPage() {
                         {user.user_type || 'individual'}
                       </span>
                     </td>
-                    <td className="py-3.5 px-5">
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-orange-50 text-orange-600 font-black font-mono text-xs border border-orange-200/80 shadow-2xs">
-                        <FileText className="w-3.5 h-3.5 text-orange-500" />
+                    <td className="py-4 px-6 align-middle">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-orange-50/80 text-orange-700 font-black font-mono text-xs border border-orange-200/80 shadow-2xs">
+                        <FileText className="w-3.5 h-3.5 text-themePrimary" />
                         <span>{user.total_documents || 0}</span>
                       </span>
                     </td>
-                    <td className="py-3.5 px-5">
+                    <td className="py-4 px-6 align-middle">
                       {user.is_active !== 0 ? (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-black uppercase">
-                          <UserCheck className="w-3.5 h-3.5" /> Active
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-black uppercase tracking-wider shadow-2xs">
+                          <UserCheck className="w-3.5 h-3.5 text-emerald-600" /> Active
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 border border-rose-200 text-[10px] font-black uppercase">
-                          <UserX className="w-3.5 h-3.5" /> Inactive
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-50 text-rose-700 border border-rose-200 text-[10px] font-black uppercase tracking-wider shadow-2xs">
+                          <UserX className="w-3.5 h-3.5 text-rose-600" /> Inactive
                         </span>
                       )}
                     </td>
-                    <td className="py-3.5 px-5 text-slate-500 font-medium">{fmt(user.created_at)}</td>
-                    <td className="py-3.5 px-5 text-right">
-                      <div className="flex items-center justify-end gap-1 bg-slate-50 p-1 rounded-xl border border-slate-200/80 inline-flex">
-                        <button onClick={() => openDetails(user)} className="p-1.5 rounded-lg text-slate-500 hover:text-themePrimary hover:bg-white transition cursor-pointer" title="View Details"><Eye className="w-3.5 h-3.5" /></button>
-                        <button onClick={() => openEdit(user)} className="p-1.5 rounded-lg text-slate-500 hover:text-themePrimary hover:bg-white transition cursor-pointer" title="Edit User"><Edit2 className="w-3.5 h-3.5" /></button>
-                        <button onClick={() => { setSelectedUser(user); setNewPassword(''); setActiveModal('reset-password'); }} className="p-1.5 rounded-lg text-slate-500 hover:text-themePrimary hover:bg-white transition cursor-pointer" title="Reset Password"><KeyRound className="w-3.5 h-3.5" /></button>
-                        <button onClick={() => handleToggleActive(user)} className={`p-1.5 rounded-lg transition cursor-pointer ${user.is_active !== 0 ? 'text-amber-600 hover:bg-white' : 'text-emerald-600 hover:bg-white'}`} title={user.is_active !== 0 ? 'Deactivate' : 'Activate'}>
+                    <td className="py-4 px-6 align-middle text-slate-500 font-semibold font-mono text-xs">{fmt(user.created_at)}</td>
+                    <td className="py-4 px-6 align-middle text-right">
+                      <div className="flex items-center justify-end gap-1 bg-slate-100/70 p-1.5 rounded-2xl border border-slate-200/80 inline-flex shadow-2xs">
+                        <button onClick={() => openDetails(user)} className="w-7 h-7 rounded-xl text-slate-500 hover:text-themePrimary hover:bg-white flex items-center justify-center transition cursor-pointer" title="View Details"><Eye className="w-3.5 h-3.5" /></button>
+                        <button onClick={() => openEdit(user)} className="w-7 h-7 rounded-xl text-slate-500 hover:text-themePrimary hover:bg-white flex items-center justify-center transition cursor-pointer" title="Edit User"><Edit2 className="w-3.5 h-3.5" /></button>
+                        <button onClick={() => { setSelectedUser(user); setNewPassword(''); setActiveModal('reset-password'); }} className="w-7 h-7 rounded-xl text-slate-500 hover:text-themePrimary hover:bg-white flex items-center justify-center transition cursor-pointer" title="Reset Password"><KeyRound className="w-3.5 h-3.5" /></button>
+                        <button onClick={() => handleToggleActive(user)} className={`w-7 h-7 rounded-xl flex items-center justify-center transition cursor-pointer ${user.is_active !== 0 ? 'text-amber-600 hover:bg-white' : 'text-emerald-600 hover:bg-white'}`} title={user.is_active !== 0 ? 'Deactivate' : 'Activate'}>
                           {user.is_active !== 0 ? <UserX className="w-3.5 h-3.5" /> : <UserCheck className="w-3.5 h-3.5" />}
                         </button>
-                        <button onClick={() => handleToggleBlock(user)} className={`p-1.5 rounded-lg transition cursor-pointer ${user.is_blocked ? 'text-emerald-600 hover:bg-white' : 'text-orange-600 hover:bg-white'}`} title={user.is_blocked ? 'Unblock' : 'Block'}>
+                        <button onClick={() => handleToggleBlock(user)} className={`w-7 h-7 rounded-xl flex items-center justify-center transition cursor-pointer ${user.is_blocked ? 'text-emerald-600 hover:bg-white' : 'text-orange-600 hover:bg-white'}`} title={user.is_blocked ? 'Unblock' : 'Block'}>
                           {user.is_blocked ? <Shield className="w-3.5 h-3.5" /> : <ShieldOff className="w-3.5 h-3.5" />}
                         </button>
-                        <button onClick={() => { setSelectedUser(user); setActiveModal('delete'); }} className="p-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-white transition cursor-pointer" title="Delete User"><Trash2 className="w-3.5 h-3.5" /></button>
+                        <button onClick={() => { setSelectedUser(user); setActiveModal('delete'); }} className="w-7 h-7 rounded-xl text-slate-500 hover:text-rose-600 hover:bg-white flex items-center justify-center transition cursor-pointer" title="Delete User"><Trash2 className="w-3.5 h-3.5" /></button>
                       </div>
                     </td>
                   </tr>
@@ -368,16 +357,16 @@ export default function AdminUsersPage() {
           </div>
         )}
 
-        {/* Pagination */}
+        {/* Pagination Footer */}
         {totalPages > 1 && (
-          <div className="flex items-center justify-between px-5 py-3 border-t border-slate-200 bg-slate-50/80">
-            <span className="text-xs font-bold text-slate-600">{totalCount} total registered users</span>
-            <div className="flex items-center gap-1.5">
-              <button disabled={page <= 1} onClick={() => setPage(p => p - 1)} className="p-1.5 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-100 disabled:opacity-40 cursor-pointer transition">
+          <div className="flex items-center justify-between px-6 py-4 border-t border-slate-200/80 bg-slate-50/80">
+            <span className="text-xs font-bold text-slate-600">{totalCount} total registered accounts</span>
+            <div className="flex items-center gap-2">
+              <button disabled={page <= 1} onClick={() => setPage(p => p - 1)} className="p-2 rounded-xl border border-slate-200/80 bg-white text-slate-700 hover:bg-slate-100 disabled:opacity-40 cursor-pointer transition shadow-2xs">
                 <ChevronLeft className="w-4 h-4" />
               </button>
-              <span className="text-xs font-mono font-bold text-slate-700 px-2">Page {page} of {totalPages}</span>
-              <button disabled={page >= totalPages} onClick={() => setPage(p => p + 1)} className="p-1.5 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-100 disabled:opacity-40 cursor-pointer transition">
+              <span className="text-xs font-mono font-extrabold text-slate-700 px-3">Page {page} of {totalPages}</span>
+              <button disabled={page >= totalPages} onClick={() => setPage(p => p + 1)} className="p-2 rounded-xl border border-slate-200/80 bg-white text-slate-700 hover:bg-slate-100 disabled:opacity-40 cursor-pointer transition shadow-2xs">
                 <ChevronRight className="w-4 h-4" />
               </button>
             </div>

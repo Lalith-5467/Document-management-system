@@ -52,17 +52,10 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               try {
-                // Handle dark mode
-                const isUserRoute = window.location.pathname.startsWith('/user');
-                if (isUserRoute) {
-                  const savedTheme = localStorage.getItem('dms_theme');
-                  if (savedTheme === 'dark' || savedTheme === 'light') {
-                    if (savedTheme === 'dark') document.documentElement.classList.add('dark');
-                    else document.documentElement.classList.remove('dark');
-                  } else {
-                    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                    if (systemDark) document.documentElement.classList.add('dark');
-                  }
+                // Handle dark mode (defaults to light mode unless dark is explicitly saved)
+                const savedTheme = localStorage.getItem('dms_theme_mode') || localStorage.getItem('dms_theme');
+                if (savedTheme === 'dark') {
+                  document.documentElement.classList.add('dark');
                 } else {
                   document.documentElement.classList.remove('dark');
                 }

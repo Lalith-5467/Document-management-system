@@ -80,17 +80,21 @@ export default function TrialBanner() {
   const isWarning = daysRemaining <= 3;
 
   return (
-    <div className="w-full py-3 px-4 sm:px-6 rounded-2xl mb-6 shadow-sm relative overflow-hidden flex items-center justify-between gap-4 text-xs bg-gradient-to-r from-orange-50 via-amber-50/70 to-orange-50 dark:from-slate-900 dark:via-orange-950/40 dark:to-slate-900 border border-orange-200 dark:border-orange-900/60 shadow-[0_8px_25px_rgba(255,107,0,0.06)]">
-      {/* Left Active Badge */}
-      <div className="flex items-center gap-2 shrink-0 z-10">
-        <span className="px-3 py-1 rounded-full bg-orange-100 dark:bg-orange-950/80 text-themePrimary dark:text-orange-300 text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5 border border-orange-200 dark:border-orange-900/60 shadow-sm">
+    <div className="w-full py-3 px-4 sm:px-6 rounded-2xl mb-6 relative overflow-hidden flex items-center justify-between gap-4 text-xs bg-gradient-to-r from-orange-50 via-amber-50/70 to-orange-50 dark:from-slate-900 dark:via-orange-950/40 dark:to-slate-900 border border-orange-200/90 dark:border-orange-900/60 shadow-2xs">
+      {/* Left Active Badge (Solid z-20 container to prevent text bleed) */}
+      <div className="flex items-center gap-2 shrink-0 z-20 bg-orange-50/90 dark:bg-slate-900/90 pr-2 py-0.5 rounded-full">
+        <span className="px-3 py-1 rounded-full bg-orange-100 dark:bg-orange-950/80 text-themePrimary dark:text-orange-300 text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5 border border-orange-200 dark:border-orange-900/60 shadow-2xs">
           <span className="w-2 h-2 rounded-full bg-themePrimary animate-ping" />
           Trial Active
         </span>
       </div>
 
-      {/* CONTINUOUS PROFESSIONAL MARQUEE TICKER WITH GRADIENT MASK */}
-      <div className="flex-1 overflow-hidden relative mx-2 [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
+      {/* CONTINUOUS PROFESSIONAL MARQUEE TICKER WITH SOLID FADE MASKS */}
+      <div className="relative flex-1 overflow-hidden mx-2">
+        {/* Side Fade Gradient Masks */}
+        <div className="absolute left-0 top-0 bottom-0 w-10 bg-gradient-to-r from-orange-50 via-orange-50/80 to-transparent dark:from-slate-900 dark:via-slate-900/80 dark:to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-orange-50 via-orange-50/80 to-transparent dark:from-slate-900 dark:via-slate-900/80 dark:to-transparent z-10 pointer-events-none" />
+
         <div className="animate-marquee flex items-center whitespace-nowrap gap-16 font-semibold text-slate-700 dark:text-slate-200">
           {/* Item 1 */}
           <div className="flex items-center gap-3">
@@ -98,7 +102,7 @@ export default function TrialBanner() {
               <Crown className="w-4 h-4 text-themePrimary fill-themePrimary/20" /> 7-Day Free Trial Mode
             </span>
             <span className="text-themePrimary font-bold">•</span>
-            <span className="text-slate-600 dark:text-slate-300">
+            <span className="text-slate-600 dark:text-slate-300 font-medium">
               <strong className="text-themePrimary font-black underline decoration-orange-400 decoration-2">{daysRemaining} {daysRemaining === 1 ? 'Day' : 'Days'} Remaining</strong> (₹0 Billed)
             </span>
             <span className="text-themePrimary font-bold">•</span>
@@ -113,7 +117,7 @@ export default function TrialBanner() {
               <Crown className="w-4 h-4 text-themePrimary fill-themePrimary/20" /> 7-Day Free Trial Mode
             </span>
             <span className="text-themePrimary font-bold">•</span>
-            <span className="text-slate-600 dark:text-slate-300">
+            <span className="text-slate-600 dark:text-slate-300 font-medium">
               <strong className="text-themePrimary font-black underline decoration-orange-400 decoration-2">{daysRemaining} {daysRemaining === 1 ? 'Day' : 'Days'} Remaining</strong> (₹0 Billed)
             </span>
             <span className="text-themePrimary font-bold">•</span>
@@ -124,17 +128,17 @@ export default function TrialBanner() {
         </div>
       </div>
 
-      {/* Right Controls */}
-      <div className="flex items-center gap-2 shrink-0 z-10">
+      {/* Right Controls (Solid z-20 container to prevent text bleed) */}
+      <div className="flex items-center gap-2 shrink-0 z-20 bg-orange-50/90 dark:bg-slate-900/90 pl-2 py-0.5 rounded-full">
         <button
           onClick={() => openUpgradeModal()}
-          className="px-4 py-2 rounded-xl bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] text-white font-black text-xs shadow-md shadow-orange-500/20 hover:scale-105 active:scale-95 transition flex items-center gap-1.5"
+          className="px-4 py-2 rounded-xl bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] text-white font-bold text-xs shadow-md shadow-orange-500/20 hover:scale-105 active:scale-95 transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
         >
           <Zap className="w-3.5 h-3.5 fill-white" /> Upgrade Plan
         </button>
         <button
           onClick={() => setDismissed(true)}
-          className="p-1.5 rounded-xl hover:bg-orange-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-white transition"
+          className="p-1.5 rounded-xl hover:bg-orange-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-white transition cursor-pointer"
           title="Dismiss Banner"
         >
           <X className="w-3.5 h-3.5" />

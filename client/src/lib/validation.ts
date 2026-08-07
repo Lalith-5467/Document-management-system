@@ -242,21 +242,25 @@ export function getFieldStatusClasses(isTouched: boolean, isValid: boolean, erro
   return 'border-red-500 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 bg-red-50/10 dark:bg-red-950/10';
 }
 
-// ─── 4. Document Upload Validation Functions ───────────────────
-
-export const ALLOWED_FILE_EXTENSIONS = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'png', 'jpg', 'jpeg', 'zip'];
-export const MAX_FILE_SIZE_BYTES = 25 * 1024 * 1024; // 25 MB
+export const ALLOWED_FILE_EXTENSIONS = [
+  'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pps', 'ppsx',
+  'txt', 'csv', 'rtf', 'md', 'json', 'xml', 'yaml', 'yml',
+  'png', 'jpg', 'jpeg', 'webp', 'gif', 'svg', 'bmp', 'ico', 'tiff', 'heic',
+  'zip', 'rar', '7z', 'tar', 'gz'
+];
+export const MAX_FILE_SIZE_BYTES = 50 * 1024 * 1024; // 50 MB
 
 export function validateDocumentFile(file: File | null): ValidationResult {
   if (!file) {
     return { isValid: false, error: 'Please select or drag a document file to upload.' };
   }
   if (file.size > MAX_FILE_SIZE_BYTES) {
-    return { isValid: false, error: 'File size exceeds the maximum allowed limit of 25 MB.' };
+    return { isValid: false, error: 'File size exceeds the maximum allowed limit of 50 MB.' };
   }
   const ext = file.name.split('.').pop()?.toLowerCase() || '';
-  if (!ALLOWED_FILE_EXTENSIONS.includes(ext)) {
-    return { isValid: false, error: 'Unsupported file format. Please upload PDF, Word, Excel, PowerPoint, Image, or ZIP.' };
+  const dangerousExts = ['exe', 'bat', 'cmd', 'sh', 'vbs', 'js', 'scr', 'msi', 'dll', 'jar'];
+  if (dangerousExts.includes(ext)) {
+    return { isValid: false, error: 'Executable script files (.exe, .bat, .sh) are not allowed for security reasons.' };
   }
   return { isValid: true, error: '' };
 }

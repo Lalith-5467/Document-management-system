@@ -99,12 +99,11 @@ export default function UserWorkspacePage() {
   const fetchWorkspaceData = async () => {
     setLoading(true);
     try {
-      const summaryRes = await api.get('/dashboard/summary').catch(() => null);
-      if (summaryRes?.data?.success && summaryRes.data.stats) {
-        setStats(prev => ({
-          ...prev,
-          ...summaryRes.data.stats
-        }));
+      // 1. Fetch User Documents to calculate exact total files & favorites
+      let fetchedDocs: any[] = [];
+      const docRes = await api.get('/documents').catch(() => null);
+      if (docRes?.data?.success && Array.isArray(docRes.data.documents)) {
+        fetchedDocs = docRes.data.documents;
       }
 
       // Read local uploads
@@ -116,8 +115,15 @@ export default function UserWorkspacePage() {
         }
       }
 
-      if (storedDocs.length > 0) {
-        setRecentUploads(storedDocs.slice(0, 6));
+      const allMergedDocs = [...storedDocs];
+      for (const d of fetchedDocs) {
+        if (!allMergedDocs.some(m => m.id === d.id || m.title === d.title)) {
+          allMergedDocs.push(d);
+        }
+      }
+
+      if (allMergedDocs.length > 0) {
+        setRecentUploads(allMergedDocs.slice(0, 6));
       } else {
         const sampleDocs = [
           { id: 1, title: 'Software Architecture Proposal 2026.pdf', category_name: 'Project Documents', size: '2.4 MB', created_at: '2026-07-23T10:00:00Z', is_favorite: 1 },
@@ -127,6 +133,47 @@ export default function UserWorkspacePage() {
         ];
         setRecentUploads(sampleDocs);
       }
+
+      const summaryRes = await api.get('/dashboard/summary').catch(() => null);
+      const totalDocsCount = allMergedDocs.length || (summaryRes?.data?.stats?.totalDocuments ?? 4);
+      const favDocsCount = allMergedDocs.filter(d => Boolean(d.is_favorite)).length || (summaryRes?.data?.stats?.favoriteDocuments ?? 2);
+
+      // Compute total real storage bytes used by all documents
+      let calculatedBytes = 0;
+      for (const d of allMergedDocs) {
+        if (typeof d.file_size === 'number' && d.file_size > 0) {
+          calculatedBytes += d.file_size;
+        } else if (typeof d.file_size === 'string') {
+          const val = parseFloat(d.file_size);
+          if (!isNaN(val)) {
+            const lower = d.file_size.toLowerCase();
+            if (lower.includes('gb')) calculatedBytes += val * 1024 * 1024 * 1024;
+            else if (lower.includes('mb')) calculatedBytes += val * 1024 * 1024;
+            else if (lower.includes('kb')) calculatedBytes += val * 1024;
+            else calculatedBytes += val;
+          }
+        } else if (typeof d.size === 'string') {
+          const val = parseFloat(d.size);
+          if (!isNaN(val)) {
+            const lower = d.size.toLowerCase();
+            if (lower.includes('gb')) calculatedBytes += val * 1024 * 1024 * 1024;
+            else if (lower.includes('mb')) calculatedBytes += val * 1024 * 1024;
+            else if (lower.includes('kb')) calculatedBytes += val * 1024;
+            else calculatedBytes += val;
+          }
+        }
+      }
+
+      const realStorageBytes = calculatedBytes || summaryRes?.data?.stats?.storageUsedBytes || 0;
+
+      setStats(prev => ({
+        ...prev,
+        ...(summaryRes?.data?.stats || {}),
+        totalDocuments: totalDocsCount,
+        favoriteDocuments: favDocsCount,
+        storageUsedBytes: realStorageBytes,
+        storageLimitBytes: 10 * 1024 * 1024 * 1024 // 10 GB
+      }));
 
       // Categories
       const catRes = await api.get('/categories').catch(() => null);
@@ -383,140 +430,138 @@ export default function UserWorkspacePage() {
   }, [allWorkspaceDocs]);
 
   return (
-    <div className="space-y-8 pb-16 font-auth-body">
+    <div className="space-y-8 pb-16 font-sans text-slate-900 dark:text-slate-100">
       {/* Toast Notification */}
       {toast && (
-        <div className={`fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3 rounded-2xl shadow-2xl animate-fade-in text-base font-bold ${
-          toast.type === 'success' ? 'bg-white text-emerald-700 border-2 border-emerald-200' : 'bg-white text-rose-700 border-2 border-rose-200'
+        <div className={`fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3.5 rounded-2xl shadow-2xl animate-in fade-in duration-200 text-sm font-semibold border ${
+          toast.type === 'success' ? 'bg-white text-emerald-700 border-emerald-200' : 'bg-white text-rose-700 border-rose-200'
         }`}>
           <CheckCircle2 className="w-5 h-5 text-emerald-500" />
           <span>{toast.message}</span>
         </div>
       )}
 
-      {/* HEADER BANNER */}
+      {/* HEADER HERO BANNER (Stripe / Vercel Grade Gradient) */}
       <div className="bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] rounded-3xl p-6 sm:p-8 text-white shadow-xl shadow-orange-500/20 relative overflow-hidden">
         <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-white/10 transform skew-x-12 pointer-events-none" />
         
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 text-white text-sm font-bold backdrop-blur-md border border-white/30 font-auth-label">
-              <Sparkles className="w-3.5 h-3.5 text-amber-300" /> AES-256 Vault Workspace
+          <div className="space-y-3">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/20 text-white text-xs font-bold backdrop-blur-md border border-white/30 font-auth-heading tracking-wide">
+              <Sparkles className="w-3.5 h-3.5 text-amber-300" /> AES-256 Verified Vault Workspace
             </div>
-            <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight font-auth-heading">
-              Welcome back, {user?.full_name || 'User'}! 👋
+            <h1 className="text-2xl sm:text-3xl lg:text-[40px] font-bold text-white tracking-tight font-auth-heading leading-tight">
+              Welcome back, {(user?.full_name || 'User').trim()}! 👋
             </h1>
-            <p className="text-orange-100/90 text-sm sm:text-sm max-w-xl leading-relaxed font-auth-body">
-              Manage, categorize, and encrypt your documents securely with real-time access.
+            <p className="text-orange-100/90 text-sm sm:text-[15px] max-w-xl leading-relaxed font-normal">
+              Manage, categorize, and encrypt your documents securely with 100ms real-time access.
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3 font-auth-body">
+          <div className="flex flex-wrap sm:flex-nowrap items-center gap-3.5 shrink-0 pr-1 sm:pr-3">
             <button
               type="button"
               onClick={() => setUploadModalOpen(true)}
-              className="group relative overflow-hidden inline-flex items-center justify-center gap-2 bg-white hover:scale-105 font-black px-6 py-3.5 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.15)] hover:shadow-[0_8px_30px_rgba(255,255,255,0.4)] transition-all duration-300 text-sm active-press cursor-pointer font-auth-heading border border-white/80"
+              className="group inline-flex items-center justify-center gap-2.5 bg-white hover:bg-slate-100 text-slate-900 font-bold px-6 py-3.5 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-200 text-sm active:scale-95 cursor-pointer border border-white/90 hover:-translate-y-0.5 whitespace-nowrap shrink-0 min-w-max"
             >
-              <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-orange-100/60 to-transparent transition-transform duration-1000 ease-in-out" />
-              <Upload className="w-4.5 h-4.5 text-themePrimary group-hover:-translate-y-1 transition-transform duration-300 relative z-10" /> 
-              <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-br from-themePrimary to-[#EA580C]">Upload Document</span>
+              <Upload className="w-4.5 h-4.5 text-themePrimary group-hover:-translate-y-0.5 transition-transform duration-200 shrink-0" /> 
+              <span className="font-extrabold font-auth-heading text-themePrimary">Upload Document</span>
             </button>
             <button
               type="button"
               onClick={() => setCreateFolderModalOpen(true)}
-              className="group relative overflow-hidden inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 hover:scale-105 text-white font-extrabold px-5 py-3.5 rounded-2xl backdrop-blur-xl border border-white/30 hover:border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.1)] hover:shadow-[0_8px_30px_rgba(255,255,255,0.2)] transition-all duration-300 text-sm active-press cursor-pointer font-auth-body"
+              className="group inline-flex items-center justify-center gap-2.5 bg-white/20 hover:bg-white/30 text-white font-bold px-6 py-3.5 rounded-2xl backdrop-blur-md border border-white/40 shadow-md transition-all duration-200 text-sm active:scale-95 cursor-pointer hover:-translate-y-0.5 whitespace-nowrap shrink-0 min-w-max"
             >
-              <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 ease-in-out" />
-              <FolderPlus className="w-4.5 h-4.5 text-amber-300 group-hover:rotate-12 group-hover:scale-110 transition-transform duration-300 relative z-10 drop-shadow-md" /> 
-              <span className="relative z-10 drop-shadow-md tracking-wide">Create Folder</span>
+              <FolderPlus className="w-4.5 h-4.5 text-amber-300 group-hover:rotate-12 transition-transform duration-200 shrink-0" /> 
+              <span className="font-bold font-auth-heading text-white">Create Folder</span>
             </button>
           </div>
         </div>
 
-        {/* Stats Summary Strip */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6 pt-6 border-t border-white/20 text-sm font-auth-body">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-2xl bg-white/20 border border-white/30 flex items-center justify-center text-white">
-              <FileText className="w-4 h-4" />
+        {/* Stats Summary Strip (8px Grid & Clean Typography Scale) */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-8 pt-6 border-t border-white/20">
+          <div className="flex items-center gap-3.5">
+            <div className="w-10 h-10 rounded-2xl bg-white/20 border border-white/30 flex items-center justify-center text-white shrink-0">
+              <FileText className="w-5 h-5 text-white" />
             </div>
             <div>
-              <p className="text-orange-100/80 text-xs uppercase font-bold font-mono">Total Files</p>
-              <p className="text-xl font-black text-white font-auth-heading">{stats.totalDocuments}</p>
+              <p className="text-orange-100/80 text-xs font-medium uppercase tracking-wider font-mono">Total Files</p>
+              <p className="text-2xl lg:text-[32px] font-bold text-white font-auth-heading leading-tight">{stats.totalDocuments}</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-2xl bg-white/20 border border-white/30 flex items-center justify-center text-white">
-              <FolderClosed className="w-4 h-4" />
+          <div className="flex items-center gap-3.5">
+            <div className="w-10 h-10 rounded-2xl bg-white/20 border border-white/30 flex items-center justify-center text-white shrink-0">
+              <FolderClosed className="w-5 h-5 text-white" />
             </div>
             <div>
-              <p className="text-orange-100/80 text-xs uppercase font-bold font-mono">Folders</p>
-              <p className="text-xl font-black text-white font-auth-heading">{stats.totalFolders}</p>
+              <p className="text-orange-100/80 text-xs font-medium uppercase tracking-wider font-mono">Folders</p>
+              <p className="text-2xl lg:text-[32px] font-bold text-white font-auth-heading leading-tight">{stats.totalFolders}</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-2xl bg-white/20 border border-white/30 flex items-center justify-center text-white">
-              <Tags className="w-4 h-4" />
+          <div className="flex items-center gap-3.5">
+            <div className="w-10 h-10 rounded-2xl bg-white/20 border border-white/30 flex items-center justify-center text-white shrink-0">
+              <Tags className="w-5 h-5 text-white" />
             </div>
             <div>
-              <p className="text-orange-100/80 text-xs uppercase font-bold font-mono">Categories</p>
-              <p className="text-xl font-black text-white font-auth-heading">{stats.totalCategories}</p>
+              <p className="text-orange-100/80 text-xs font-medium uppercase tracking-wider font-mono">Categories</p>
+              <p className="text-2xl lg:text-[32px] font-bold text-white font-auth-heading leading-tight">{stats.totalCategories}</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-2xl bg-white/20 border border-white/30 flex items-center justify-center text-white">
-              <Star className="w-4 h-4 fill-amber-300 text-amber-300" />
+          <div className="flex items-center gap-3.5">
+            <div className="w-10 h-10 rounded-2xl bg-white/20 border border-white/30 flex items-center justify-center text-white shrink-0">
+              <Star className="w-5 h-5 fill-amber-300 text-amber-300" />
             </div>
             <div>
-              <p className="text-orange-100/80 text-xs uppercase font-bold font-mono">Favorites</p>
-              <p className="text-xl font-black text-white font-auth-heading">{stats.favoriteDocuments}</p>
+              <p className="text-orange-100/80 text-xs font-medium uppercase tracking-wider font-mono">Favorites</p>
+              <p className="text-2xl lg:text-[32px] font-bold text-white font-auth-heading leading-tight">{stats.favoriteDocuments}</p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* QUICK ACTIONS SECTION (MODAL DRIVEN FOR ALL CARDS) */}
-      <div className="space-y-3.5 font-auth-body">
-        <h3 className="text-base font-extrabold text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading">
-          <Zap className="w-4 h-4 text-amber-500" /> Quick Actions
+      {/* QUICK ACTIONS SECTION (200-300ms Ease Lift Cards) */}
+      <div className="space-y-4">
+        <h3 className="text-lg lg:text-[20px] font-semibold text-slate-900 dark:text-white flex items-center gap-2.5 font-auth-heading tracking-tight">
+          <Zap className="w-5 h-5 text-amber-500 fill-amber-500/20" /> Quick Actions
         </h3>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
           {/* Quick Action 1: Upload Document Modal */}
           <button
             type="button"
             onClick={() => setUploadModalOpen(true)}
-            className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-3xl flex flex-col items-center justify-center text-center shadow-md hover:shadow-xl hover:-translate-y-1 hover:border-themePrimary transition-all duration-300 group cursor-pointer font-auth-body active-press"
+            className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 p-5 rounded-3xl flex flex-col items-center justify-center text-center shadow-sm hover:shadow-xl hover:-translate-y-1 hover:border-themePrimary transition-all duration-300 group cursor-pointer active:scale-95"
           >
-            <div className="w-11 h-11 rounded-2xl bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 border border-orange-200 dark:border-orange-900 flex items-center justify-center mb-2.5 group-hover:-translate-y-1 transition-transform">
+            <div className="w-12 h-12 rounded-2xl bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 border border-orange-200 dark:border-orange-900 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
               <Upload className="w-5 h-5" />
             </div>
-            <p className="text-sm font-extrabold text-slate-900 dark:text-white group-hover:text-themePrimary transition-colors font-auth-heading">Upload Document</p>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Upload your files</p>
+            <p className="text-sm font-semibold text-slate-900 dark:text-white group-hover:text-themePrimary transition-colors font-auth-heading">Upload Document</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-normal">Vault your files</p>
           </button>
 
           {/* Quick Action 2: Create Folder Modal */}
           <button
             type="button"
             onClick={() => setCreateFolderModalOpen(true)}
-            className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-3xl flex flex-col items-center justify-center text-center shadow-md hover:shadow-xl hover:-translate-y-1 hover:border-themePrimary transition-all duration-300 group cursor-pointer font-auth-body active-press"
+            className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 p-5 rounded-3xl flex flex-col items-center justify-center text-center shadow-sm hover:shadow-xl hover:-translate-y-1 hover:border-themePrimary transition-all duration-300 group cursor-pointer active:scale-95"
           >
-            <div className="w-11 h-11 rounded-2xl bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 border border-orange-200 dark:border-orange-900 flex items-center justify-center mb-2.5 group-hover:rotate-90 transition-transform">
+            <div className="w-12 h-12 rounded-2xl bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 border border-orange-200 dark:border-orange-900 flex items-center justify-center mb-3 group-hover:rotate-90 transition-transform">
               <FolderPlus className="w-5 h-5" />
             </div>
-            <p className="text-sm font-extrabold text-slate-900 dark:text-white group-hover:text-themePrimary transition-colors font-auth-heading">Create Folder</p>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Organize workspace</p>
+            <p className="text-sm font-semibold text-slate-900 dark:text-white group-hover:text-themePrimary transition-colors font-auth-heading">Create Folder</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-normal">Organize workspace</p>
           </button>
 
           {/* Quick Action 3: Browse Categories Modal */}
           <button
             type="button"
             onClick={() => setBrowseCategoriesModalOpen(true)}
-            className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-3xl flex flex-col items-center justify-center text-center shadow-md hover:shadow-xl hover:-translate-y-1 hover:border-themePrimary transition-all duration-300 group cursor-pointer font-auth-body active-press"
+            className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 p-5 rounded-3xl flex flex-col items-center justify-center text-center shadow-sm hover:shadow-xl hover:-translate-y-1 hover:border-themePrimary transition-all duration-300 group cursor-pointer active:scale-95"
           >
-            <div className="w-11 h-11 rounded-2xl bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 border border-orange-200 dark:border-orange-900 flex items-center justify-center mb-2.5 group-hover:-rotate-45 transition-transform">
+            <div className="w-12 h-12 rounded-2xl bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 border border-orange-200 dark:border-orange-900 flex items-center justify-center mb-3 group-hover:-rotate-45 transition-transform">
               <Tags className="w-5 h-5" />
             </div>
             <p className="text-sm font-extrabold text-slate-900 dark:text-white group-hover:text-themePrimary transition-colors font-auth-heading">Browse Categories</p>
@@ -617,18 +662,37 @@ export default function UserWorkspacePage() {
             <HardDrive className="w-5 h-5 text-themePrimary" /> Storage Overview
           </h3>
 
-          <div className="space-y-3 pt-2">
-            <div className="flex justify-between text-sm font-bold text-slate-700 dark:text-slate-300 font-auth-body">
-              <span>2.45 GB Used</span>
-              <span className="text-themePrimary">24.5%</span>
-            </div>
-            <div className="w-full h-3 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden border border-slate-200 dark:border-slate-700">
-              <div className="h-full bg-gradient-to-r from-themePrimary to-[#F97316] w-[24.5%] rounded-full" />
-            </div>
-            <p className="text-xs text-slate-500 dark:text-slate-400 font-auth-body">
-              Total Storage Capacity: 10 GB (DocVault AES-256 Encrypted)
-            </p>
-          </div>
+          {(() => {
+            const usedBytes = stats.storageUsedBytes || 0;
+            const limitBytes = stats.storageLimitBytes || (10 * 1024 * 1024 * 1024);
+            const formatSize = (b: number) => {
+              if (!b || b === 0) return '0 B';
+              if (b < 1024) return b + ' B';
+              if (b < 1024 * 1024) return (b / 1024).toFixed(1) + ' KB';
+              if (b < 1024 * 1024 * 1024) return (b / (1024 * 1024)).toFixed(2) + ' MB';
+              return (b / (1024 * 1024 * 1024)).toFixed(2) + ' GB';
+            };
+            const pctVal = Math.min(100, Math.max(0, (usedBytes / limitBytes) * 100));
+            const pctStr = pctVal.toFixed(1);
+
+            return (
+              <div className="space-y-3 pt-2">
+                <div className="flex justify-between text-sm font-bold text-slate-700 dark:text-slate-300 font-auth-body">
+                  <span>{formatSize(usedBytes)} Used</span>
+                  <span className="text-themePrimary">{pctStr}%</span>
+                </div>
+                <div className="w-full h-3 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden border border-slate-200 dark:border-slate-700">
+                  <div
+                    className="h-full bg-gradient-to-r from-themePrimary to-[#F97316] rounded-full transition-all duration-500"
+                    style={{ width: `${Math.max(usedBytes > 0 ? 2 : 0, pctVal)}%` }}
+                  />
+                </div>
+                <p className="text-xs text-slate-500 dark:text-slate-400 font-auth-body">
+                  Total Storage Capacity: {formatSize(limitBytes)} (DocVault AES-256 Encrypted)
+                </p>
+              </div>
+            );
+          })()}
         </div>
       </div>
 

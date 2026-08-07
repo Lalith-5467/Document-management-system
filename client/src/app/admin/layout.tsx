@@ -8,15 +8,42 @@ import {
   ShieldCheck, Menu, X, Sun, Moon, KeyRound, Loader2, FolderOpen,
   Search, Command, Bell, Zap, ChevronRight, CreditCard, MessageSquare,
   CheckCheck, Trash2, AlertTriangle, Info, CheckCircle2, Clock, BellOff,
-  User, ChevronDown
+  User, ChevronDown, Sparkles, Plus
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
+import { useTheme } from '@/context/ThemeContext';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import {
   getNotifications, getUnreadNotificationCount, markNotificationAsRead,
   markAllNotificationsAsRead, toggleNotificationRead, deleteNotification, clearNotifications,
   addNotification, NotificationItem
 } from '@/lib/notificationStore';
+
+// ==============================
+// Admin Theme Toggle Component
+// ==============================
+function AdminThemeToggle() {
+  const { theme, toggleTheme } = useTheme();
+  return (
+    <button
+      onClick={toggleTheme}
+      className="flex items-center gap-2 px-3.5 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200/80 dark:hover:bg-slate-700 border border-slate-200/80 dark:border-slate-700/80 text-slate-700 dark:text-slate-200 transition-all duration-200 active:scale-95 shrink-0 cursor-pointer shadow-2xs group"
+      title={theme === 'dark' ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
+    >
+      {theme === 'dark' ? (
+        <>
+          <Moon className="w-4 h-4 text-orange-400 fill-orange-400/20 group-hover:rotate-12 transition-transform duration-300" />
+          <span className="hidden sm:inline text-xs font-extrabold text-orange-300 font-auth-heading tracking-tight">Dark</span>
+        </>
+      ) : (
+        <>
+          <Sun className="w-4 h-4 text-amber-500 fill-amber-500/20 group-hover:rotate-45 transition-transform duration-300" />
+          <span className="hidden sm:inline text-xs font-extrabold text-amber-600 font-auth-heading tracking-tight">Light</span>
+        </>
+      )}
+    </button>
+  );
+}
 
 // ==============================
 // Notification Panel Component
@@ -108,10 +135,10 @@ function NotificationPanel() {
   };
 
   const typeConfig = {
-    expiry:  { icon: AlertTriangle, color: 'text-amber-600',  bg: 'bg-amber-50',  border: 'border-amber-200'  },
-    warning: { icon: AlertTriangle, color: 'text-orange-600', bg: 'bg-orange-50', border: 'border-orange-200' },
-    success: { icon: CheckCircle2,  color: 'text-emerald-600',bg: 'bg-emerald-50',border: 'border-emerald-200'},
-    info:    { icon: Info,          color: 'text-blue-600',   bg: 'bg-blue-50',   border: 'border-blue-200'   },
+    expiry:  { icon: AlertTriangle, color: 'text-amber-600 dark:text-amber-400', bg: 'bg-amber-50 dark:bg-amber-950/40', border: 'border-amber-200 dark:border-amber-800'  },
+    warning: { icon: AlertTriangle, color: 'text-orange-600 dark:text-orange-400', bg: 'bg-orange-50 dark:bg-orange-950/40', border: 'border-orange-200 dark:border-orange-800' },
+    success: { icon: CheckCircle2,  color: 'text-emerald-600 dark:text-emerald-400', bg: 'bg-emerald-50 dark:bg-emerald-950/40', border: 'border-emerald-200 dark:border-emerald-800'},
+    info:    { icon: Info,          color: 'text-blue-600 dark:text-blue-400', bg: 'bg-blue-50 dark:bg-blue-950/40', border: 'border-blue-200 dark:border-blue-800'   },
   };
 
   const filteredNotifications = notifications.filter(n => {
@@ -125,13 +152,13 @@ function NotificationPanel() {
       {/* Bell Button */}
       <button
         onClick={() => { setOpen(p => !p); refresh(); setIsComposing(false); }}
-        className="relative w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-900 border border-slate-200 flex items-center justify-center transition shadow-2xs cursor-pointer"
+        className="relative w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200/80 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white border border-slate-200/80 dark:border-slate-700/80 flex items-center justify-center transition-all duration-200 active:scale-95 shadow-2xs cursor-pointer group"
         title="System Notifications"
       >
-        <Bell className="w-4 h-4 text-slate-700" />
+        <Bell className="w-4 h-4 text-slate-700 dark:text-slate-200 group-hover:rotate-12 transition-transform duration-300" />
         {unreadCount > 0 && (
           <>
-            <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-themePrimary text-white text-[9px] font-black flex items-center justify-center z-10 border border-white">
+            <span className="absolute -top-1 -right-1 px-1.5 min-w-[18px] h-4.5 rounded-full bg-gradient-to-r from-themePrimary to-[#F97316] text-white text-[10px] font-black flex items-center justify-center z-10 border-2 border-white dark:border-slate-900 shadow-sm">
               {unreadCount > 9 ? '9+' : unreadCount}
             </span>
             <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-themePrimary rounded-full animate-ping opacity-75" />
@@ -141,122 +168,130 @@ function NotificationPanel() {
 
       {/* Dropdown Panel */}
       {open && (
-        <div className="absolute right-0 top-12 w-[390px] bg-white border border-slate-200 rounded-3xl shadow-2xl shadow-slate-900/15 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-150 text-slate-900">
+        <div className="absolute right-0 top-12 w-[390px] sm:w-[420px] bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-3xl shadow-2xl shadow-slate-900/15 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200 text-slate-900 dark:text-slate-100 font-sans">
           {/* Header */}
-          <div className="flex items-center justify-between px-4 py-3.5 border-b border-slate-100 bg-slate-50/80">
-            <div className="flex items-center gap-2">
-              <span className="w-7 h-7 rounded-xl bg-orange-50 text-themePrimary border border-orange-200 flex items-center justify-center">
-                <Bell className="w-3.5 h-3.5 text-themePrimary" />
+          <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-800/80 backdrop-blur-md">
+            <div className="flex items-center gap-2.5">
+              <span className="w-8 h-8 rounded-xl bg-orange-50 dark:bg-orange-950/50 text-themePrimary border border-orange-200/80 dark:border-orange-900/50 flex items-center justify-center shadow-2xs">
+                <Bell className="w-4 h-4 text-themePrimary" />
               </span>
-              <span className="text-xs font-black text-slate-900 font-auth-heading">Notifications</span>
-              {unreadCount > 0 && (
-                <span className="px-2 py-0.5 rounded-full bg-gradient-to-r from-themePrimary to-[#F97316] text-white text-[9px] font-black">{unreadCount} new</span>
-              )}
+              <div>
+                <h3 className="text-xs font-black text-slate-900 dark:text-white font-auth-heading tracking-tight flex items-center gap-2">
+                  System Notifications
+                  {unreadCount > 0 && (
+                    <span className="px-2 py-0.5 rounded-full bg-gradient-to-r from-themePrimary to-[#F97316] text-white text-[9px] font-black uppercase tracking-wide">
+                      {unreadCount} new
+                    </span>
+                  )}
+                </h3>
+              </div>
             </div>
             <div className="flex items-center gap-1.5">
               <button
                 onClick={() => setIsComposing(p => !p)}
-                className={`px-2.5 py-1 rounded-xl text-[11px] font-black transition cursor-pointer flex items-center gap-1 border ${
-                  isComposing ? 'bg-orange-100 text-themePrimary border-orange-300' : 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white border-transparent shadow-2xs'
+                className={`px-3 py-1.5 rounded-xl text-[11px] font-extrabold transition-all cursor-pointer flex items-center gap-1 border shadow-2xs ${
+                  isComposing ? 'bg-orange-100 text-themePrimary border-orange-300' : 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white border-transparent hover:opacity-90 active:scale-95'
                 }`}
                 title="Send Broadcast Notification"
               >
-                + Broadcast
+                <Plus className="w-3.5 h-3.5" /> Broadcast
               </button>
               {unreadCount > 0 && (
                 <button
                   onClick={handleMarkAll}
                   title="Mark all as read"
-                  className="p-1.5 rounded-xl text-slate-500 hover:text-emerald-600 hover:bg-slate-100 transition cursor-pointer"
+                  className="p-1.5 rounded-xl text-slate-500 hover:text-emerald-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
                 >
-                  <CheckCheck className="w-3.5 h-3.5" />
+                  <CheckCheck className="w-4 h-4" />
                 </button>
               )}
               {notifications.length > 0 && (
                 <button
                   onClick={handleClear}
                   title="Clear all notifications"
-                  className="p-1.5 rounded-xl text-slate-500 hover:text-rose-600 hover:bg-slate-100 transition cursor-pointer"
+                  className="p-1.5 rounded-xl text-slate-500 hover:text-rose-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
                 >
-                  <Trash2 className="w-3.5 h-3.5" />
+                  <Trash2 className="w-4 h-4" />
                 </button>
               )}
               <button
                 onClick={() => setOpen(false)}
-                className="p-1.5 rounded-xl text-slate-400 hover:text-slate-900 hover:bg-slate-100 transition cursor-pointer"
+                className="p-1.5 rounded-xl text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
               >
-                <X className="w-3.5 h-3.5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
           </div>
 
-          {/* CREATE ANNOUNCEMENT FORM (ADMIN CRUD) */}
+          {/* CREATE ANNOUNCEMENT FORM (ADMIN BROADCAST) */}
           {isComposing && (
-            <form onSubmit={handleCreateNotification} className="p-4 bg-orange-50/50 border-b border-orange-200/70 space-y-2.5 text-xs">
+            <form onSubmit={handleCreateNotification} className="p-4 bg-gradient-to-br from-orange-50/80 via-white to-amber-50/50 dark:from-orange-950/30 dark:via-slate-900 dark:to-slate-900 border-b border-orange-200/80 dark:border-orange-900/60 space-y-3 text-xs animate-in fade-in duration-200">
               <div className="flex items-center justify-between">
-                <span className="font-black text-themePrimary uppercase tracking-wider text-[10px]">Create System Notification</span>
-                <button type="button" onClick={() => setIsComposing(false)} className="text-slate-400 hover:text-slate-900"><X className="w-3.5 h-3.5" /></button>
+                <span className="font-extrabold text-themePrimary uppercase tracking-wider text-[10px] font-auth-heading flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-themePrimary" /> Create System Notification
+                </span>
+                <button type="button" onClick={() => setIsComposing(false)} className="text-slate-400 hover:text-slate-900 dark:hover:text-white"><X className="w-3.5 h-3.5" /></button>
               </div>
               <input
                 required
                 type="text"
                 value={newTitle}
                 onChange={e => setNewTitle(e.target.value)}
-                placeholder="Notification Title (e.g. System Maintenance)"
-                className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-themePrimary"
+                placeholder="Notification Title (e.g. Scheduled System Maintenance)"
+                className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-themePrimary"
               />
               <textarea
                 required
                 rows={2}
                 value={newMessage}
                 onChange={e => setNewMessage(e.target.value)}
-                placeholder="Notification message body for users..."
-                className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-themePrimary resize-none"
+                placeholder="Write message details for system users..."
+                className="w-full px-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-medium text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-themePrimary resize-none"
               />
               <div className="flex items-center justify-between gap-2 pt-1">
                 <select
                   value={newType}
                   onChange={e => setNewType(e.target.value as any)}
-                  className="px-2.5 py-1.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-800 cursor-pointer"
+                  className="px-3 py-1.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-extrabold text-slate-800 dark:text-slate-200 cursor-pointer focus:outline-none focus:border-themePrimary"
                 >
                   <option value="info">Info Alert</option>
-                  <option value="warning">Warning</option>
-                  <option value="success">Success</option>
-                  <option value="expiry">Expiry Notice</option>
+                  <option value="warning">Warning Notice</option>
+                  <option value="success">Success Brief</option>
+                  <option value="expiry">Expiry Reminder</option>
                 </select>
                 <button
                   type="submit"
-                  className="px-4 py-1.5 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-extrabold text-xs shadow-md shadow-orange-500/20 cursor-pointer"
+                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-extrabold text-xs shadow-md shadow-orange-500/20 hover:opacity-90 active:scale-95 transition cursor-pointer"
                 >
-                  Send Alert
+                  Send Alert Broadcast
                 </button>
               </div>
             </form>
           )}
 
           {/* Filter Tabs Bar (All / Unread / Read) */}
-          <div className="px-4 py-2 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
-            <div className="flex items-center gap-1 bg-slate-200/70 p-1 rounded-2xl text-[11px] font-bold w-full">
+          <div className="px-4 py-2.5 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/40">
+            <div className="flex items-center gap-1 bg-slate-200/60 dark:bg-slate-800 p-1 rounded-2xl text-[11px] font-bold w-full">
               <button
                 onClick={() => setActiveTab('all')}
-                className={`flex-1 py-1 rounded-xl transition cursor-pointer text-center ${
-                  activeTab === 'all' ? 'bg-white text-slate-900 shadow-2xs font-extrabold' : 'text-slate-600 hover:text-slate-900'
+                className={`flex-1 py-1.5 rounded-xl transition-all cursor-pointer text-center ${
+                  activeTab === 'all' ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-2xs font-extrabold' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
                 }`}
               >
                 All ({notifications.length})
               </button>
               <button
                 onClick={() => setActiveTab('unread')}
-                className={`flex-1 py-1 rounded-xl transition cursor-pointer text-center flex items-center justify-center gap-1 ${
-                  activeTab === 'unread' ? 'bg-white text-themePrimary shadow-2xs font-extrabold' : 'text-slate-600 hover:text-slate-900'
+                className={`flex-1 py-1.5 rounded-xl transition-all cursor-pointer text-center flex items-center justify-center gap-1 ${
+                  activeTab === 'unread' ? 'bg-white dark:bg-slate-700 text-themePrimary dark:text-orange-400 shadow-2xs font-extrabold' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
                 }`}
               >
                 Unread {unreadCount > 0 && <span className="px-1.5 py-0.2 rounded-full bg-themePrimary text-white text-[9px] font-black">{unreadCount}</span>}
               </button>
               <button
                 onClick={() => setActiveTab('read')}
-                className={`flex-1 py-1 rounded-xl transition cursor-pointer text-center ${
-                  activeTab === 'read' ? 'bg-white text-slate-900 shadow-2xs font-extrabold' : 'text-slate-600 hover:text-slate-900'
+                className={`flex-1 py-1.5 rounded-xl transition-all cursor-pointer text-center ${
+                  activeTab === 'read' ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-2xs font-extrabold' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
                 }`}
               >
                 Read ({notifications.length - unreadCount})
@@ -265,12 +300,12 @@ function NotificationPanel() {
           </div>
 
           {/* Notification List */}
-          <div className="max-h-[400px] overflow-y-auto divide-y divide-slate-100">
+          <div className="max-h-[380px] overflow-y-auto divide-y divide-slate-100 dark:divide-slate-800/60 font-sans">
             {filteredNotifications.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
-                <BellOff className="w-8 h-8 text-slate-300 mb-3" />
-                <p className="text-xs font-black text-slate-700">No {activeTab !== 'all' ? activeTab : ''} notifications</p>
-                <p className="text-[10px] text-slate-500 mt-1 font-medium">You&apos;re all caught up!</p>
+                <BellOff className="w-8 h-8 text-slate-300 dark:text-slate-600 mb-3" />
+                <p className="text-xs font-black text-slate-700 dark:text-slate-300 font-auth-heading">No {activeTab !== 'all' ? activeTab : ''} notifications</p>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 font-medium">You&apos;re all caught up!</p>
               </div>
             ) : (
               filteredNotifications.map(notif => {
@@ -279,43 +314,43 @@ function NotificationPanel() {
                 return (
                   <div
                     key={notif.id}
-                    className={`relative flex items-start gap-3 px-4 py-3.5 cursor-pointer transition group ${
-                      notif.is_read ? 'hover:bg-slate-50/80 bg-white' : 'bg-orange-50/40 hover:bg-orange-50/70'
+                    className={`relative flex items-start gap-3.5 px-4 py-3.5 cursor-pointer transition-all duration-200 group ${
+                      notif.is_read ? 'hover:bg-slate-50/90 dark:hover:bg-slate-800/50 bg-white dark:bg-slate-900' : 'bg-orange-50/40 dark:bg-orange-950/20 hover:bg-orange-50/70 dark:hover:bg-orange-950/40'
                     }`}
                     onClick={() => handleClickNotif(notif)}
                   >
-                    {/* Status accent indicator */}
+                    {/* Status accent border line */}
                     {!notif.is_read ? (
-                      <span className="absolute left-1.5 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-themePrimary shadow-sm shadow-orange-500/50" />
+                      <span className="absolute left-0 top-0 bottom-0 w-1 bg-themePrimary rounded-r-full shadow-sm" />
                     ) : null}
 
                     {/* Type Icon */}
-                    <div className={`mt-0.5 w-7 h-7 rounded-xl ${cfg.bg} border ${cfg.border} flex items-center justify-center shrink-0 shadow-2xs`}>
-                      <Icon className={`w-3.5 h-3.5 ${cfg.color}`} />
+                    <div className={`mt-0.5 w-8 h-8 rounded-xl ${cfg.bg} border ${cfg.border} flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform`}>
+                      <Icon className={`w-4 h-4 ${cfg.color}`} />
                     </div>
 
                     {/* Content */}
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <p className={`text-xs font-black leading-snug font-auth-heading truncate ${notif.is_read ? 'text-slate-700' : 'text-slate-900'}`}>
+                      <div className="flex items-center justify-between gap-2">
+                        <p className={`text-xs font-extrabold leading-snug font-auth-heading truncate ${notif.is_read ? 'text-slate-700 dark:text-slate-300' : 'text-slate-900 dark:text-white'}`}>
                           {notif.title}
                         </p>
                         {!notif.is_read ? (
-                          <span className="px-1.5 py-0.2 rounded-md bg-orange-100 text-themePrimary text-[9px] font-black uppercase shrink-0 border border-orange-200">
+                          <span className="px-2 py-0.5 rounded-full bg-orange-100 dark:bg-orange-950/60 text-themePrimary dark:text-orange-300 text-[9px] font-black uppercase tracking-wider shrink-0 border border-orange-200/80 dark:border-orange-800">
                             Unread
                           </span>
                         ) : (
-                          <span className="px-1.5 py-0.2 rounded-md bg-slate-100 text-slate-500 text-[9px] font-extrabold uppercase shrink-0">
+                          <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-[9px] font-bold uppercase tracking-wider shrink-0">
                             Read
                           </span>
                         )}
                       </div>
-                      <p className="text-[11px] text-slate-600 leading-relaxed mt-0.5 line-clamp-2 font-medium">
+                      <p className="text-[11px] text-slate-600 dark:text-slate-300 leading-relaxed mt-1 line-clamp-2 font-medium">
                         {notif.message}
                       </p>
-                      <div className="flex items-center gap-1.5 mt-1.5">
-                        <Clock className="w-2.5 h-2.5 text-slate-400" />
-                        <span className="text-[9px] text-slate-500 font-mono font-bold">{timeAgo(notif.created_at)}</span>
+                      <div className="flex items-center gap-1.5 mt-2">
+                        <Clock className="w-3 h-3 text-slate-400" />
+                        <span className="text-[10px] text-slate-400 font-mono font-bold">{timeAgo(notif.created_at)}</span>
                       </div>
                     </div>
 
@@ -324,21 +359,21 @@ function NotificationPanel() {
                       <button
                         onClick={e => { e.stopPropagation(); handleToggleRead(notif.id); }}
                         title={notif.is_read ? "Mark as unread" : "Mark as read"}
-                        className={`p-1.5 rounded-xl border transition cursor-pointer ${
+                        className={`p-1.5 rounded-xl border transition-all cursor-pointer ${
                           notif.is_read
-                            ? 'text-slate-400 hover:text-themePrimary hover:bg-orange-50 border-slate-200'
-                            : 'text-emerald-600 bg-emerald-50 border-emerald-200 hover:bg-emerald-100'
+                            ? 'text-slate-400 hover:text-themePrimary hover:bg-orange-50 border-slate-200 dark:border-slate-700'
+                            : 'text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100'
                         }`}
                       >
-                        <CheckCircle2 className="w-3.5 h-3.5" />
+                        <CheckCircle2 className="w-4 h-4" />
                       </button>
 
                       <button
                         onClick={e => { e.stopPropagation(); handleDeleteItem(notif.id); }}
                         title="Delete notification"
-                        className="opacity-0 group-hover:opacity-100 p-1.5 rounded-xl text-slate-400 hover:text-rose-600 hover:bg-slate-100 border border-transparent transition cursor-pointer"
+                        className="opacity-0 group-hover:opacity-100 p-1.5 rounded-xl text-slate-400 hover:text-rose-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all cursor-pointer"
                       >
-                        <Trash2 className="w-3.5 h-3.5" />
+                        <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
                   </div>
@@ -349,14 +384,14 @@ function NotificationPanel() {
 
           {/* Footer */}
           {notifications.length > 0 && (
-            <div className="px-4 py-3 border-t border-slate-100 bg-slate-50/80">
+            <div className="px-5 py-3 border-t border-slate-100 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-800/80">
               <Link
                 href="/admin/activity"
                 onClick={() => setOpen(false)}
-                className="flex items-center justify-center gap-1.5 text-xs font-black text-slate-700 hover:text-themePrimary transition"
+                className="flex items-center justify-center gap-1.5 text-xs font-black text-slate-700 dark:text-slate-200 hover:text-themePrimary dark:hover:text-orange-400 transition"
               >
-                View all activity logs
-                <ChevronRight className="w-3.5 h-3.5 text-themePrimary" />
+                View all system activity logs
+                <ChevronRight className="w-4 h-4 text-themePrimary" />
               </Link>
             </div>
           )}
@@ -375,17 +410,19 @@ function CommandPalette({ open, onClose, router }: { open: boolean; onClose: () 
   const inputRef = useRef<HTMLInputElement>(null);
 
   const commands = [
-    { label: 'Go to Dashboard', icon: LayoutDashboard, action: () => router.push('/admin'), category: 'Navigation' },
-    { label: 'Manage Subscriptions', icon: Zap, action: () => router.push('/admin/subscriptions'), category: 'Navigation' },
-    { label: 'Subscription Bills & CRM', icon: CreditCard, action: () => router.push('/admin/billing'), category: 'Navigation' },
-    { label: 'Manage Users', icon: Users, action: () => router.push('/admin/users'), category: 'Navigation' },
-    { label: 'Manage Documents', icon: FileText, action: () => router.push('/admin/documents'), category: 'Navigation' },
-    { label: 'Manage Folders', icon: FolderOpen, action: () => router.push('/admin/folders'), category: 'Navigation' },
-    { label: 'Manage Categories', icon: Tags, action: () => router.push('/admin/categories'), category: 'Navigation' },
-    { label: 'Activity Logs', icon: History, action: () => router.push('/admin/activity'), category: 'Navigation' },
+    { label: 'Go to Dashboard Overview', icon: LayoutDashboard, action: () => router.push('/admin'), category: 'Navigation' },
+    { label: 'User Account Management', icon: Users, action: () => router.push('/admin/users'), category: 'Navigation' },
+    { label: 'System Document Vault', icon: FileText, action: () => router.push('/admin/documents'), category: 'Navigation' },
+    { label: 'Folder Management', icon: FolderOpen, action: () => router.push('/admin/folders'), category: 'Navigation' },
+    { label: 'Categories & Tagging', icon: Tags, action: () => router.push('/admin/categories'), category: 'Navigation' },
+    { label: 'System Activity Logs', icon: History, action: () => router.push('/admin/activity'), category: 'Navigation' },
+    { label: 'Broadcast Notifications', icon: Bell, action: () => router.push('/admin/notifications'), category: 'Navigation' },
     { label: 'Reports & Analytics', icon: BarChart3, action: () => router.push('/admin/reports'), category: 'Navigation' },
-    { label: 'System Settings', icon: Settings, action: () => router.push('/admin/settings'), category: 'Navigation' },
-    { label: 'User Portal', icon: Zap, action: () => router.push('/user'), category: 'Quick Actions' },
+    { label: 'SaaS Subscriptions', icon: Zap, action: () => router.push('/admin/subscriptions'), category: 'Navigation' },
+    { label: 'Billing & Invoicing CRM', icon: CreditCard, action: () => router.push('/admin/billing'), category: 'Navigation' },
+    { label: 'Support Desk Tickets', icon: MessageSquare, action: () => router.push('/admin/support'), category: 'Navigation' },
+    { label: 'Global Admin Settings', icon: Settings, action: () => router.push('/admin/settings'), category: 'Navigation' },
+    { label: 'Switch to User Vault Portal', icon: Zap, action: () => router.push('/user'), category: 'Quick Action' },
   ];
 
   const filtered = commands.filter(c => c.label.toLowerCase().includes(query.toLowerCase()));
@@ -406,23 +443,23 @@ function CommandPalette({ open, onClose, router }: { open: boolean; onClose: () 
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[10vh] p-4 bg-slate-900/40 backdrop-blur-md" onClick={onClose}>
-      <div className="bg-white border border-slate-200 rounded-3xl w-full max-w-xl shadow-2xl shadow-slate-900/20 overflow-hidden animate-pop-in" onClick={e => e.stopPropagation()}>
-        <div className="p-4 border-b border-slate-100 flex items-center gap-3 bg-slate-50/50">
+    <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[12vh] p-4 bg-slate-900/50 dark:bg-slate-950/80 backdrop-blur-md" onClick={onClose}>
+      <div className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-3xl w-full max-w-xl shadow-2xl shadow-slate-900/20 overflow-hidden animate-in fade-in duration-200 font-sans" onClick={e => e.stopPropagation()}>
+        <div className="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center gap-3 bg-slate-50/80 dark:bg-slate-800/80">
           <Search className="w-4 h-4 text-themePrimary shrink-0" />
           <input
             ref={inputRef}
             type="text"
-            placeholder="Type a command or search..."
+            placeholder="Type a command or search section..."
             value={query}
             onChange={e => setQuery(e.target.value)}
-            className="bg-transparent text-sm text-slate-900 placeholder-slate-400 focus:outline-none w-full font-bold font-auth-body"
+            className="bg-transparent text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none w-full font-bold font-auth-body"
           />
-          <kbd className="px-2 py-0.5 text-[10px] font-mono font-bold bg-white text-slate-500 rounded-lg border border-slate-200 shadow-2xs">ESC</kbd>
+          <kbd className="px-2 py-0.5 text-[10px] font-mono font-bold bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 rounded-lg border border-slate-200 dark:border-slate-700 shadow-2xs">ESC</kbd>
         </div>
         <div className="max-h-80 overflow-y-auto p-3 space-y-1">
           {filtered.length === 0 ? (
-            <div className="p-6 text-center text-xs text-slate-500 font-medium">No commands found</div>
+            <div className="p-6 text-center text-xs text-slate-500 font-medium">No matching commands found</div>
           ) : (
             filtered.map((cmd, idx) => {
               const Icon = cmd.icon;
@@ -430,15 +467,15 @@ function CommandPalette({ open, onClose, router }: { open: boolean; onClose: () 
                 <button
                   key={idx}
                   onClick={() => { cmd.action(); onClose(); }}
-                  className="w-full flex items-center justify-between p-3 rounded-2xl hover:bg-orange-50/60 hover:border-orange-200 border border-transparent text-slate-700 hover:text-themePrimary transition-all duration-200 group cursor-pointer"
+                  className="w-full flex items-center justify-between p-3 rounded-2xl hover:bg-orange-50/80 dark:hover:bg-slate-800 hover:border-orange-200 dark:hover:border-slate-700 border border-transparent text-slate-700 dark:text-slate-200 hover:text-themePrimary transition-all duration-200 group cursor-pointer"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-xl bg-orange-50 text-themePrimary flex items-center justify-center border border-orange-200/60 group-hover:scale-105 transition-transform">
+                    <div className="w-8 h-8 rounded-xl bg-orange-50 dark:bg-orange-950/40 text-themePrimary flex items-center justify-center border border-orange-200/60 dark:border-orange-900/60 group-hover:scale-105 transition-transform">
                       <Icon className="w-4 h-4 text-themePrimary" />
                     </div>
-                    <span className="text-xs font-black font-auth-heading tracking-tight text-slate-900 group-hover:text-themePrimary">{cmd.label}</span>
+                    <span className="text-xs font-black font-auth-heading tracking-tight text-slate-900 dark:text-white group-hover:text-themePrimary">{cmd.label}</span>
                   </div>
-                  <span className="text-[10px] font-mono font-extrabold text-slate-400 group-hover:text-themePrimary uppercase bg-slate-100 group-hover:bg-orange-100/60 px-2 py-0.5 rounded-md border border-slate-200/60 transition-colors">
+                  <span className="text-[10px] font-mono font-extrabold text-slate-400 group-hover:text-themePrimary uppercase bg-slate-100 dark:bg-slate-800 group-hover:bg-orange-100/60 px-2 py-0.5 rounded-md border border-slate-200/60 dark:border-slate-700 transition-colors">
                     {cmd.category}
                   </span>
                 </button>
@@ -487,62 +524,62 @@ function AdminUserDropdown({ user, logout }: { user: any; logout: () => void }) 
   };
 
   return (
-    <div className="relative font-poppins" ref={dropdownRef}>
+    <div className="relative font-sans" ref={dropdownRef}>
       <button
         onClick={() => setOpen(p => !p)}
-        className="flex items-center gap-2.5 p-1.5 pr-3 rounded-2xl bg-white border border-slate-200 shadow-2xs hover:bg-orange-50/60 hover:border-orange-200 transition-all cursor-pointer group"
+        className="flex items-center gap-2.5 p-1.5 pr-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700/80 shadow-2xs hover:bg-orange-50/60 dark:hover:bg-slate-700 hover:border-orange-200 dark:hover:border-orange-500/50 transition-all duration-200 cursor-pointer group"
       >
         <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-themePrimary to-[#F97316] text-white flex items-center justify-center font-black shadow-sm group-hover:scale-105 transition-transform">
           <User className="w-4 h-4 text-white" />
         </div>
         <div className="text-left hidden sm:block">
-          <p className="text-xs font-black text-slate-900 leading-none truncate max-w-[130px]">{adminName}</p>
-          <span className="text-[10px] font-bold text-themePrimary tracking-tight">Super Admin</span>
+          <p className="text-xs font-black text-slate-900 dark:text-white leading-none truncate max-w-[130px] font-auth-heading">{adminName}</p>
+          <span className="text-[10px] font-extrabold text-themePrimary tracking-tight">Super Admin</span>
         </div>
         <ChevronDown className={`w-3.5 h-3.5 text-slate-400 group-hover:text-themePrimary transition-transform duration-200 ${open ? 'rotate-180 text-themePrimary' : ''}`} />
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border border-slate-200/90 py-2 z-50 animate-fadeIn text-xs">
+        <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200/90 dark:border-slate-800 py-2 z-50 animate-in fade-in duration-150 text-xs text-slate-900 dark:text-slate-100 font-sans">
           {/* Header */}
-          <div className="px-4 py-3 border-b border-slate-100 bg-slate-50/60 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-themePrimary to-[#F97316] text-white flex items-center justify-center font-black shadow-md shrink-0">
+          <div className="px-4 py-3 border-b border-slate-100 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800/70 flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-themePrimary to-[#F97316] text-white flex items-center justify-center font-black shadow-md shrink-0">
               <User className="w-5 h-5 text-white" />
             </div>
             <div className="min-w-0 flex-1">
-              <p className="font-black text-slate-900 truncate text-xs">{adminName}</p>
-              <p className="text-[11px] font-medium text-slate-500 truncate">{adminEmail}</p>
-              <span className="inline-flex items-center gap-1 text-[9px] font-extrabold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full mt-1 border border-emerald-200">
+              <p className="font-black text-slate-900 dark:text-white truncate text-xs font-auth-heading">{adminName}</p>
+              <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400 truncate font-mono">{adminEmail}</p>
+              <span className="inline-flex items-center gap-1 text-[9px] font-extrabold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded-full mt-1 border border-emerald-200 dark:border-emerald-800">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                Active Admin Session
+                Verified Admin Session
               </span>
             </div>
           </div>
 
           {/* Menu Links */}
-          <div className="p-1 space-y-0.5">
+          <div className="p-1.5 space-y-0.5">
             <Link
               href="/admin/profile"
               onClick={() => setOpen(false)}
-              className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-slate-700 font-bold hover:bg-orange-50 hover:text-themePrimary transition"
+              className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-slate-700 dark:text-slate-200 font-bold hover:bg-orange-50 dark:hover:bg-slate-800 hover:text-themePrimary transition-all duration-200"
             >
-              <User className="w-4 h-4 text-slate-400 group-hover:text-themePrimary" />
+              <User className="w-4 h-4 text-slate-400" />
               <span>Admin Profile</span>
             </Link>
 
             <Link
               href="/admin/settings"
               onClick={() => setOpen(false)}
-              className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-slate-700 font-bold hover:bg-orange-50 hover:text-themePrimary transition"
+              className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-slate-700 dark:text-slate-200 font-bold hover:bg-orange-50 dark:hover:bg-slate-800 hover:text-themePrimary transition-all duration-200"
             >
-              <Settings className="w-4 h-4 text-slate-400 group-hover:text-themePrimary" />
+              <Settings className="w-4 h-4 text-slate-400" />
               <span>System Settings</span>
             </Link>
 
             <Link
               href="/user"
               onClick={() => setOpen(false)}
-              className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-slate-700 font-bold hover:bg-orange-50 hover:text-themePrimary transition"
+              className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-slate-700 dark:text-slate-200 font-bold hover:bg-orange-50 dark:hover:bg-slate-800 hover:text-themePrimary transition-all duration-200"
             >
               <Zap className="w-4 h-4 text-themePrimary" />
               <span>User Vault Portal</span>
@@ -550,13 +587,13 @@ function AdminUserDropdown({ user, logout }: { user: any; logout: () => void }) 
           </div>
 
           {/* Logout Section */}
-          <div className="p-1 border-t border-slate-100">
+          <div className="p-1.5 border-t border-slate-100 dark:border-slate-800">
             <button
               onClick={handleAdminLogout}
-              className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-rose-600 font-extrabold hover:bg-rose-50 transition cursor-pointer text-left"
+              className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-rose-600 dark:text-rose-400 font-extrabold hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-all cursor-pointer text-left"
             >
               <LogOut className="w-4 h-4 text-rose-500" />
-              <span>Logout</span>
+              <span>Logout Account</span>
             </button>
           </div>
         </div>
@@ -566,12 +603,12 @@ function AdminUserDropdown({ user, logout }: { user: any; logout: () => void }) 
 }
 
 // ==============================
-// Main Admin Layout - Sealed Hook Architecture
+// Main Admin Layout Architecture
 // ==============================
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { user, token, loading, logout } = useAuth();
+  const { user, logout } = useAuth();
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
@@ -616,9 +653,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   if (isAdminAuth === null || !isAdminAuth) {
     return (
-      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-6 text-center space-y-4">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col items-center justify-center p-6 text-center space-y-4">
         <Loader2 className="w-10 h-10 text-themePrimary animate-spin" />
-        <p className="text-sm font-bold text-slate-400">Verifying Admin Access Credentials...</p>
+        <p className="text-xs font-bold text-slate-500 dark:text-slate-400 font-auth-body">Verifying Admin Access Credentials...</p>
       </div>
     );
   }
@@ -640,48 +677,46 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   ];
 
   return (
-    <div className="min-h-screen flex bg-slate-50 text-slate-900">
+    <div className="min-h-screen flex bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans">
       <CommandPalette open={commandOpen} onClose={() => setCommandOpen(false)} router={router} />
 
       {/* Mobile Overlay */}
       {mobileOpen && (
-        <div className="fixed inset-0 z-30 bg-slate-900/40 backdrop-blur-sm lg:hidden" onClick={() => setMobileOpen(false)} />
+        <div className="fixed inset-0 z-30 bg-slate-900/40 backdrop-blur-sm lg:hidden transition-opacity" onClick={() => setMobileOpen(false)} />
       )}
 
       {/* ===== SIDEBAR ===== */}
-      <aside className={`fixed inset-y-0 left-0 z-40 w-64 flex flex-col border-r border-slate-200/80 bg-white text-slate-800 shadow-xs transform transition-transform duration-200 ease-in-out lg:translate-x-0 ${mobileOpen ? 'translate-x-0' : '-translate-x-full'}`}
+      <aside className={`fixed inset-y-0 left-0 z-40 w-64 flex flex-col border-r border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 shadow-sm transform transition-transform duration-200 ease-in-out lg:translate-x-0 ${mobileOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
-        {/* Brand */}
-        <div className="h-14 flex items-center px-5 border-b border-slate-100 justify-between bg-white">
+        {/* Brand Header */}
+        <div className="h-16 flex items-center px-6 border-b border-slate-100 dark:border-slate-800 justify-between bg-white dark:bg-slate-900">
           <Link href="/admin" className="flex items-center gap-3 group">
-            <div className="w-8 h-8 rounded-[10px] bg-gradient-to-tr from-themePrimary to-[#F97316] flex items-center justify-center shadow-md shadow-orange-500/20 group-hover:scale-105 transition-transform duration-300">
-              <ShieldCheck className="w-4 h-4 text-white" />
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-themePrimary to-[#F97316] flex items-center justify-center shadow-md shadow-orange-500/20 group-hover:scale-105 transition-transform duration-300">
+              <ShieldCheck className="w-5 h-5 text-white" />
             </div>
             <div className="flex flex-col justify-center">
-              <span className="font-black text-sm text-slate-900 tracking-tight leading-none mb-0.5">DocVault</span>
-              <span className="text-[9px] font-extrabold uppercase tracking-widest text-themePrimary leading-none">Admin Center</span>
+              <span className="font-black text-base text-slate-900 dark:text-white tracking-tight leading-none mb-0.5 font-auth-heading">DocVault</span>
+              <span className="text-[9px] font-extrabold uppercase tracking-widest text-themePrimary leading-none font-mono">Admin Center</span>
             </div>
           </Link>
-          <button onClick={() => setMobileOpen(false)} className="lg:hidden text-slate-400 hover:text-slate-700 p-1 rounded-lg"><X className="w-4 h-4" /></button>
+          <button onClick={() => setMobileOpen(false)} className="lg:hidden text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 p-1.5 rounded-lg"><X className="w-4 h-4" /></button>
         </div>
 
-        {/* Search / Command Trigger */}
-        <div className="px-3.5 pt-4 pb-2">
+        {/* Quick Search Trigger */}
+        <div className="px-4 pt-4 pb-2">
           <button
             onClick={() => setCommandOpen(true)}
-            className="w-full flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-slate-100/80 hover:bg-slate-200/70 border border-slate-200 text-slate-800 font-bold transition text-xs shadow-2xs"
+            className="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-2xl bg-slate-100/80 dark:bg-slate-800/80 hover:bg-slate-200/70 dark:hover:bg-slate-700/80 border border-slate-200/80 dark:border-slate-700/80 text-slate-700 dark:text-slate-200 font-bold transition-all text-xs shadow-2xs group cursor-pointer"
           >
-            <Search className="w-4 h-4 text-themePrimary" />
-            <span className="flex-1 text-left text-slate-700 font-bold">Search menu...</span>
-            <div className="flex items-center gap-0.5">
-              <kbd className="px-1.5 py-0.5 rounded bg-white font-mono text-[10px] font-black text-slate-600 border border-slate-300 shadow-2xs">⌘K</kbd>
-            </div>
+            <Search className="w-4 h-4 text-themePrimary group-hover:scale-110 transition-transform" />
+            <span className="flex-1 text-left text-slate-600 dark:text-slate-300 font-bold">Search menu...</span>
+            <kbd className="px-1.5 py-0.5 rounded-md bg-white dark:bg-slate-700 font-mono text-[10px] font-black text-slate-500 dark:text-slate-300 border border-slate-300 dark:border-slate-600 shadow-2xs">⌘K</kbd>
           </button>
         </div>
 
-        {/* Nav */}
-        <nav className="flex-1 overflow-y-auto px-3 py-3 space-y-1">
-          <p className="text-[11px] font-black uppercase tracking-wider text-slate-700 dark:text-slate-300 px-3 pb-2 pt-1">Main Menu</p>
+        {/* Sidebar Navigation items */}
+        <nav className="flex-1 overflow-y-auto px-3.5 py-3 space-y-1 font-sans">
+          <p className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500 px-3 pb-2 pt-1 font-auth-heading">Main Navigation</p>
           {navItems.map(item => {
             const Icon = item.icon;
             let isActive = false;
@@ -702,41 +737,41 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     window.dispatchEvent(new CustomEvent('dms_navigation_click', { detail: { href: item.href } }));
                   }
                 }}
-                className={`group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition-all relative ${
+                className={`group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-extrabold transition-all duration-200 relative ${
                   isActive
                     ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/25 font-black'
-                    : 'text-slate-800 dark:text-slate-200 font-extrabold hover:text-themePrimary hover:bg-orange-50/80 dark:hover:bg-slate-800'
+                    : 'text-slate-700 dark:text-slate-200 hover:text-themePrimary hover:bg-orange-50/80 dark:hover:bg-slate-800'
                 }`}
               >
-                {isActive && <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-5 bg-white rounded-r-full -ml-3" />}
-                <Icon className={`w-4 h-4 shrink-0 transition-transform ${isActive ? 'text-white scale-105' : 'text-slate-500 dark:text-slate-400 group-hover:text-themePrimary group-hover:scale-105'}`} />
-                <span className="flex-1 truncate">{item.name}</span>
+                {isActive && <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-white rounded-r-full -ml-3.5" />}
+                <Icon className={`w-4 h-4 shrink-0 transition-transform duration-200 ${isActive ? 'text-white scale-105' : 'text-slate-400 dark:text-slate-400 group-hover:text-themePrimary group-hover:scale-105'}`} />
+                <span className="flex-1 truncate tracking-tight">{item.name}</span>
                 {item.badge && (
-                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-black ${isActive ? 'bg-white/25 text-white' : 'bg-orange-100 text-orange-800 border border-orange-200/80'}`}>{item.badge}</span>
+                  <span className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider ${isActive ? 'bg-white/25 text-white' : 'bg-orange-100 dark:bg-orange-950/60 text-orange-800 dark:text-orange-300 border border-orange-200/80 dark:border-orange-800/80'}`}>{item.badge}</span>
                 )}
               </Link>
             );
           })}
 
           <div className="pt-4">
-            <p className="text-[11px] font-black uppercase tracking-wider text-slate-700 dark:text-slate-300 px-3 pb-2">Quick Access</p>
-            <a href="/user" target="_blank" className="group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-extrabold text-slate-800 hover:text-themePrimary hover:bg-orange-50/80 transition">
-              <Zap className="w-4 h-4 text-themePrimary shrink-0" />
-              <span>User Portal</span>
+            <p className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500 px-3 pb-2 font-auth-heading">Quick Access</p>
+            <a href="/user" target="_blank" className="group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-extrabold text-slate-700 dark:text-slate-200 hover:text-themePrimary hover:bg-orange-50/80 dark:hover:bg-slate-800 transition-all duration-200">
+              <Zap className="w-4 h-4 text-themePrimary shrink-0 group-hover:scale-110 transition-transform" />
+              <span>User Vault Portal</span>
               <ChevronRight className="w-3.5 h-3.5 ml-auto text-slate-400 group-hover:text-themePrimary transition-transform group-hover:translate-x-0.5" />
             </a>
           </div>
         </nav>
 
-        {/* Admin Footer */}
-        <div className="p-3 border-t border-slate-200/80 bg-slate-50">
-          <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs hover:bg-orange-50/50 transition cursor-pointer group">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-themePrimary to-[#F97316] text-white font-black text-xs flex items-center justify-center shrink-0 shadow-sm">
+        {/* Sidebar Footer */}
+        <div className="p-3 border-t border-slate-200/80 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-900/60">
+          <div className="flex items-center gap-2.5 p-2.5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700/80 shadow-2xs hover:bg-orange-50/50 dark:hover:bg-slate-700/60 transition cursor-pointer group">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-themePrimary to-[#F97316] text-white font-black text-xs flex items-center justify-center shrink-0 shadow-sm">
               A
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-black text-slate-900 truncate">System Administrator</p>
-              <p className="text-[10px] text-themePrimary font-extrabold uppercase tracking-wider">DocVault Admin</p>
+              <p className="text-xs font-black text-slate-900 dark:text-white truncate font-auth-heading">System Administrator</p>
+              <p className="text-[9px] text-themePrimary font-extrabold uppercase tracking-wider font-mono">DocVault Admin</p>
             </div>
             <button
               onClick={() => {
@@ -748,8 +783,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 if (logout) logout();
                 router.replace('/admin/login');
               }}
-              className="p-1.5 text-slate-500 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition cursor-pointer"
-              title="Logout"
+              className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-xl transition cursor-pointer"
+              title="Logout Account"
             >
               <LogOut className="w-4 h-4" />
             </button>
@@ -757,58 +792,61 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
       </aside>
 
-      {/* ===== MAIN CONTENT ===== */}
-      <div className="flex-1 flex flex-col lg:pl-64 min-w-0 bg-slate-50">
-        {/* Top Bar */}
-        <header className="sticky top-0 z-30 h-16 bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-8 flex items-center justify-between transition-all text-slate-900 shadow-2xs">
+      {/* ===== MAIN CONTENT WRAPPER ===== */}
+      <div className="flex-1 flex flex-col lg:pl-64 min-w-0 bg-slate-50 dark:bg-slate-950">
+        {/* Top Header */}
+        <header className="sticky top-0 z-30 h-16 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 px-4 sm:px-8 flex items-center justify-between transition-all text-slate-900 dark:text-white shadow-2xs">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setMobileOpen(true)}
-              className="lg:hidden p-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+              className="lg:hidden p-2 rounded-xl text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
               aria-label="Open Admin Menu"
             >
               <Menu className="w-5 h-5" />
             </button>
 
-            <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-themePrimary to-[#F97316] flex items-center justify-center text-white shadow-md shadow-orange-500/25">
-                <ShieldCheck className="w-5 h-5" />
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-themePrimary to-[#F97316] flex items-center justify-center text-white shadow-md shadow-orange-500/20">
+                <ShieldCheck className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h1 className="text-sm sm:text-base font-black text-slate-900 tracking-tight leading-none flex items-center gap-2 font-auth-heading">
+                <h1 className="text-sm sm:text-base font-black text-slate-900 dark:text-white tracking-tight leading-none flex items-center gap-2 font-auth-heading">
                   Admin Control Center
-                  <span className="px-2 py-0.5 rounded-full bg-themePrimary text-white text-[10px] font-extrabold uppercase font-mono tracking-wider shadow-2xs">
-                    v2.4
+                  <span className="px-2 py-0.5 rounded-full bg-themePrimary text-white text-[9px] font-extrabold uppercase font-mono tracking-wider shadow-2xs">
+                    v2.4 Enterprise
                   </span>
                 </h1>
-                <p className="text-[11px] text-slate-500 font-medium leading-tight mt-0.5">
-                  System management, subscriptions, audit logs & user vaults
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium leading-tight mt-0.5">
+                  System management, SaaS subscriptions, audit logs & user vaults
                 </p>
               </div>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
-            {/* Command Palette Btn */}
+            {/* Theme Toggle */}
+            <AdminThemeToggle />
+
+            {/* Quick Search */}
             <button
               onClick={() => setCommandOpen(true)}
-              className="hidden sm:flex items-center gap-2 px-3.5 h-9 rounded-xl bg-slate-100 hover:bg-slate-200/80 border border-slate-200 text-slate-600 hover:text-slate-900 transition text-xs font-semibold shadow-2xs cursor-pointer"
+              className="hidden sm:flex items-center gap-2 px-3.5 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200/80 dark:hover:bg-slate-700 border border-slate-200/80 dark:border-slate-700/80 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all duration-200 text-xs font-semibold shadow-2xs cursor-pointer"
             >
               <Command className="w-3.5 h-3.5 text-themePrimary" />
-              <span>Quick Search</span>
-              <kbd className="px-1.5 py-0.5 rounded bg-white font-mono text-[10px] text-slate-500 border border-slate-200 shadow-2xs">⌘K</kbd>
+              <span className="font-extrabold">Quick Search</span>
+              <kbd className="px-1.5 py-0.5 rounded-md bg-white dark:bg-slate-700 font-mono text-[10px] text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-600 shadow-2xs">⌘K</kbd>
             </button>
 
             {/* Notification Bell */}
             <NotificationPanel />
 
-            {/* Admin User Profile Dropdown */}
+            {/* Admin User Dropdown */}
             <AdminUserDropdown user={user} logout={logout} />
           </div>
         </header>
 
-        {/* Content */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-[1600px] w-full mx-auto bg-slate-50">
+        {/* Main Workspace Body */}
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-[1600px] w-full mx-auto bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans">
           <Breadcrumbs className="mb-4 sm:mb-6" />
           {children}
         </main>

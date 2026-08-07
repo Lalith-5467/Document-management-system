@@ -41,7 +41,7 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [themeMode, setThemeModeState] = useState<'light' | 'dark' | 'system'>('system');
+  const [themeMode, setThemeModeState] = useState<'light' | 'dark' | 'system'>('light');
   const [customTheme, setCustomThemeState] = useState<CustomTheme | null>(null);
   const [mounted, setMounted] = useState(false);
 
@@ -139,8 +139,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const setThemeMode = (mode: 'light' | 'dark' | 'system') => {
     setThemeModeState(mode);
     localStorage.setItem('dms_theme_mode', mode);
+    localStorage.setItem('dms_theme', mode);
     
-    if (mode === 'dark' || (mode === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    if (mode === 'dark') {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
@@ -157,37 +158,27 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       } catch(e) {}
     }
     
-    const storedMode = localStorage.getItem('dms_theme_mode') as 'light' | 'dark' | 'system' | null;
-    if (storedMode) {
-      setThemeMode(storedMode);
+    const storedMode = (localStorage.getItem('dms_theme_mode') || localStorage.getItem('dms_theme')) as 'light' | 'dark' | 'system' | null;
+    if (storedMode === 'dark') {
+      setThemeMode('dark');
     } else {
-      setThemeMode('system');
+      setThemeMode('light');
     }
-    
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleChange = (e: MediaQueryListEvent) => {
-      if (localStorage.getItem('dms_theme_mode') === 'system') {
-        if (e.matches) {
-          document.documentElement.classList.add('dark');
-        } else {
-          document.documentElement.classList.remove('dark');
-        }
-      }
-    };
-    mediaQuery.addEventListener('change', handleChange);
     
     fetchUserTheme();
     setMounted(true);
-    
-    return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
 
   const toggleTheme = () => {
-    setThemeMode(themeMode === 'light' ? 'dark' : 'light');
+    const isCurrentlyDark = typeof document !== 'undefined' && document.documentElement.classList.contains('dark');
+    setThemeMode(isCurrentlyDark ? 'light' : 'dark');
   };
 
+  const isDarkActive = themeMode === 'dark';
+  const effectiveTheme: 'light' | 'dark' = isDarkActive ? 'dark' : 'light';
+
   return (
-    <ThemeContext.Provider value={{ theme: themeMode, themeMode, toggleTheme, setTheme: setThemeMode, customTheme, setCustomTheme, saveUserTheme, applyThemeVariables, resetToDefault }}>
+    <ThemeContext.Provider value={{ theme: effectiveTheme, themeMode, toggleTheme, setTheme: setThemeMode, customTheme, setCustomTheme, saveUserTheme, applyThemeVariables, resetToDefault }}>
       {children}
     </ThemeContext.Provider>
   );

@@ -4,12 +4,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
-import { RecaptchaVerifier, signInWithPhoneNumber, ConfirmationResult } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import api from '@/lib/api';
 import {
   User, Mail, Lock, Eye, EyeOff, AlertCircle, Loader2, Edit2,
   GraduationCap, Briefcase, UserCheck, UserPlus, Phone, CheckCircle2, Check, CheckCircle,
-  Building2, MapPin, Globe, Map, BriefcaseBusiness, ShieldCheck, Folder, Zap, Monitor, ArrowLeft
+  Building2, MapPin, Globe, Map, BriefcaseBusiness, ShieldCheck, Folder, Zap, Monitor, ArrowLeft, ChevronDown
 } from 'lucide-react';
 
 const DEPARTMENTS = ['Computer Science', 'Information Technology', 'Artificial Intelligence', 'Electronics', 'Electrical', 'Mechanical', 'Civil', 'Commerce', 'Business Administration', 'Mathematics', 'Physics', 'Chemistry', 'English', 'Other'];
@@ -19,11 +18,11 @@ const EXPERIENCES = ['Fresher', '1–2 Years', '3–5 Years', '6–10 Years', '1
 
 const customStyles = `
   @keyframes slideUpFade {
-    0% { opacity: 0; transform: translateY(20px); }
+    0% { opacity: 0; transform: translateY(16px); }
     100% { opacity: 1; transform: translateY(0); }
   }
   .animate-slide-up {
-    animation: slideUpFade 0.4s ease-out forwards;
+    animation: slideUpFade 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
   .animate-fade-in {
     animation: fadeIn 0.3s ease-out forwards;
@@ -31,6 +30,34 @@ const customStyles = `
   @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
+  }
+  .cream-hover-card {
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .cream-hover-card:hover {
+    background-color: #FFFDF5 !important;
+    border-color: #DFD0B8 !important;
+    box-shadow: 0 10px 30px -5px rgba(215, 195, 160, 0.25) !important;
+    transform: translateY(-2px);
+  }
+  .cream-hover-input {
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .cream-hover-input:hover {
+    background-color: #FFFDF8 !important;
+    border-color: #DFD2BA !important;
+  }
+  .cream-hover-input:focus {
+    background-color: #FFFFFF !important;
+  }
+  .cream-hover-btn {
+    transition: all 0.25s ease;
+  }
+  .cream-hover-btn:hover {
+    background-color: #FFFDF5 !important;
+    border-color: #DFD2BA !important;
+    box-shadow: 0 4px 15px rgba(215, 195, 160, 0.3) !important;
+    transform: translateY(-1px);
   }
 `;
 
@@ -40,7 +67,7 @@ const InputField = ({ icon: Icon, label, required, error, value, ...props }: any
     <div className="relative mb-4 group w-full">
       {Icon && (
         <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-6 h-6 flex items-center justify-center transition-all duration-300 pointer-events-none">
-          <Icon className={`w-5 h-5 transition-colors duration-300 ${error ? 'text-red-400' : 'text-slate-400 group-focus-within:text-themePrimary'}`} />
+          <Icon className={`w-5 h-5 transition-colors duration-300 ${error ? 'text-red-400' : 'text-slate-400 group-hover:text-[#D96B00] group-focus-within:text-[#FF6B00]'}`} />
         </div>
       )}
       <div className="relative">
@@ -48,14 +75,21 @@ const InputField = ({ icon: Icon, label, required, error, value, ...props }: any
           {...props}
           value={value}
           placeholder=" "
-          className={`peer w-full h-[56px] ${Icon ? 'pl-12' : 'pl-4'} pr-4 pt-5 pb-1 bg-white border ${error ? 'border-red-300 focus:border-red-400 focus:ring-4 focus:ring-red-500/15' : 'border-slate-200 focus:border-[#FF6B00] focus:ring-4 focus:ring-orange-500/15'} rounded-[14px] text-[15px] text-slate-900 focus:outline-none transition-all duration-300 font-medium`}
+          className={`peer w-full h-[56px] ${Icon ? 'pl-12' : 'pl-4'} pr-4 pt-5 pb-1 bg-white border ${
+            error 
+              ? 'border-red-300 focus:border-red-400 focus:ring-4 focus:ring-red-500/15' 
+              : 'border-[#E6E0D4] hover:border-[#DFD2BA] hover:bg-[#FFFDF8] focus:border-[#FF6B00] focus:ring-4 focus:ring-orange-500/15 focus:bg-white'
+          } rounded-[16px] text-[15px] text-slate-900 focus:outline-none transition-all duration-300 font-medium cream-hover-input`}
         />
-        <label className={`absolute left-${Icon ? '12' : '4'} text-slate-500 pointer-events-none transition-all duration-300 font-medium ${isFilled ? 'top-1.5 text-[11px] text-slate-400' : 'top-1/2 -translate-y-1/2 text-[15px] peer-focus:top-1.5 peer-focus:text-[11px] peer-focus:text-themePrimary'}`}>
+        <label className={`absolute left-${Icon ? '12' : '4'} text-slate-400 pointer-events-none transition-all duration-300 font-medium ${
+          isFilled ? 'top-2 text-[11px] text-slate-400' : 'top-1/2 -translate-y-1/2 text-[15px] peer-focus:top-2 peer-focus:text-[11px] peer-focus:text-[#FF6B00]'
+        }`}>
           {label} {required && <span className="text-red-500">*</span>}
         </label>
       </div>
       {error && (
-        <p className="text-red-500 text-[12px] font-medium mt-1 pl-1">
+        <p className="text-red-500 text-[12px] font-medium mt-1.5 pl-1 flex items-center gap-1.5 animate-fade-in">
+          <AlertCircle className="w-3.5 h-3.5" />
           {error}
         </p>
       )}
@@ -64,38 +98,150 @@ const InputField = ({ icon: Icon, label, required, error, value, ...props }: any
 };
 
 const SelectField = ({ icon: Icon, label, options, required, error, value, onChange }: any) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const isFilled = value && value.toString().length > 0;
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   return (
-    <div className="relative mb-4 group w-full">
+    <div className="relative mb-4 group w-full" ref={dropdownRef}>
       {Icon && (
-        <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-6 h-6 flex items-center justify-center transition-all duration-300 pointer-events-none">
-          <Icon className={`w-5 h-5 transition-colors duration-300 ${error ? 'text-red-400' : 'text-slate-400 group-focus-within:text-themePrimary'}`} />
+        <div className="absolute left-4 top-7 -translate-y-1/2 z-10 w-6 h-6 flex items-center justify-center transition-all duration-300 pointer-events-none">
+          <Icon className={`w-5 h-5 transition-colors duration-300 ${error ? 'text-red-400' : isOpen ? 'text-[#FF6B00]' : 'text-slate-400 group-hover:text-[#D96B00]'}`} />
         </div>
       )}
-      <div className="relative">
-        <select
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          className={`peer w-full h-[56px] ${Icon ? 'pl-12' : 'pl-4'} pr-10 pt-5 pb-1 bg-white border ${error ? 'border-red-300 focus:border-red-400 focus:ring-4 focus:ring-red-500/15' : 'border-slate-200 focus:border-[#FF6B00] focus:ring-4 focus:ring-orange-500/15'} rounded-[14px] text-[15px] ${value ? 'text-slate-900' : 'text-transparent'} focus:outline-none transition-all duration-300 font-medium appearance-none`}
+      <div className="relative cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
+        <div
+          className={`w-full h-[56px] ${Icon ? 'pl-12' : 'pl-4'} pr-10 pt-5 pb-1 bg-white border ${
+            error 
+              ? 'border-red-300 ring-4 ring-red-500/15' 
+              : isOpen
+                ? 'border-[#FF6B00] ring-4 ring-orange-500/15 bg-white'
+                : 'border-[#E6E0D4] hover:border-[#DFD2BA] hover:bg-[#FFFDF8]'
+          } rounded-[16px] text-[15px] ${value ? 'text-slate-900 font-semibold' : 'text-transparent'} transition-all duration-300 font-medium cream-hover-input flex items-center justify-between select-none`}
         >
-          <option value="" disabled className="text-slate-400">Select {label}</option>
-          {options.map((opt: string) => <option key={opt} value={opt} className="text-slate-900">{opt}</option>)}
-        </select>
-        <label className={`absolute left-${Icon ? '12' : '4'} text-slate-500 pointer-events-none transition-all duration-300 font-medium ${isFilled ? 'top-1.5 text-[11px] text-slate-400' : 'top-1/2 -translate-y-1/2 text-[15px] peer-focus:top-1.5 peer-focus:text-[11px] peer-focus:text-themePrimary'}`}>
+          <span className="truncate">{value || ' '}</span>
+        </div>
+        <label className={`absolute left-${Icon ? '12' : '4'} text-slate-400 pointer-events-none transition-all duration-300 font-medium ${
+          isFilled || isOpen ? 'top-2 text-[11px] text-[#FF6B00] font-semibold' : 'top-1/2 -translate-y-1/2 text-[15px]'
+        }`}>
           {label} {required && <span className="text-red-500">*</span>}
         </label>
-        <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 peer-focus:text-themePrimary transition-all duration-300">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+        <div className={`absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none transition-transform duration-300 ${
+          isOpen ? 'rotate-180 text-[#FF6B00]' : 'text-slate-400 group-hover:text-[#D96B00]'
+        }`}>
+          <ChevronDown className="w-5 h-5 stroke-[2.5]" />
         </div>
       </div>
+
+      {/* Custom Floating Options Dropdown Menu */}
+      {isOpen && (
+        <div className="absolute left-0 right-0 top-[62px] z-50 bg-white border border-[#E8E1D5] rounded-[20px] shadow-[0_15px_45px_rgba(40,30,15,0.15)] py-2 max-h-[240px] overflow-y-auto animate-slide-up scrollbar-thin">
+          <div className="px-4 py-2 text-[11px] font-bold text-[#FF6B00] uppercase tracking-wider border-b border-slate-100 bg-[#FFFDF8] mb-1">
+            Select {label}
+          </div>
+          {options.map((opt: string) => {
+            const isSelected = value === opt;
+            return (
+              <div
+                key={opt}
+                onClick={() => {
+                  onChange(opt);
+                  setIsOpen(false);
+                }}
+                className={`px-4 py-3 text-[14px] font-medium cursor-pointer transition-all duration-150 flex items-center justify-between ${
+                  isSelected
+                    ? 'bg-gradient-to-r from-[#FF6B00] to-[#E05500] text-white font-bold'
+                    : 'text-slate-700 hover:bg-[#FF6B00] hover:text-white'
+                }`}
+              >
+                <span>{opt}</span>
+                {isSelected && <Check className="w-4 h-4 text-white stroke-[3]" />}
+              </div>
+            );
+          })}
+        </div>
+      )}
+
       {error && (
-        <p className="text-red-500 text-[12px] font-medium mt-1 pl-1">
+        <p className="text-red-500 text-[12px] font-medium mt-1.5 pl-1 flex items-center gap-1.5 animate-fade-in">
+          <AlertCircle className="w-3.5 h-3.5" />
           {error}
         </p>
       )}
     </div>
   );
 };
+
+const CountryCodeSelect = ({ value, onChange }: any) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const countryOptions = [
+    { code: '+91', label: '+91 (IN)' },
+    { code: '+1', label: '+1 (US)' },
+    { code: '+44', label: '+44 (UK)' },
+    { code: '+61', label: '+61 (AU)' }
+  ];
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  return (
+    <div className="relative w-[115px] shrink-0" ref={dropdownRef}>
+      <div 
+        onClick={() => setIsOpen(!isOpen)}
+        className={`w-full h-[56px] pl-3.5 pr-7 bg-white border ${
+          isOpen ? 'border-[#FF6B00] ring-4 ring-orange-500/15' : 'border-[#E6E0D4] hover:border-[#DFD2BA] hover:bg-[#FFFDF8]'
+        } rounded-[16px] text-[15px] font-bold text-slate-800 flex items-center justify-between cursor-pointer select-none transition-all duration-300 cream-hover-input`}
+      >
+        <div className="flex items-center gap-1.5">
+          <Globe className={`w-4 h-4 ${isOpen ? 'text-[#FF6B00]' : 'text-slate-400 group-hover:text-[#D96B00]'}`} />
+          <span>{value}</span>
+        </div>
+        <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-300 absolute right-2.5 top-1/2 -translate-y-1/2 ${isOpen ? 'rotate-180 text-[#FF6B00]' : ''}`} />
+      </div>
+
+      {isOpen && (
+        <div className="absolute left-0 top-[62px] w-[140px] z-50 bg-white border border-[#E8E1D5] rounded-[18px] shadow-[0_12px_35px_rgba(40,30,15,0.14)] py-1.5 overflow-hidden animate-slide-up">
+          {countryOptions.map(opt => (
+            <div
+              key={opt.code}
+              onClick={() => {
+                onChange(opt.code);
+                setIsOpen(false);
+              }}
+              className={`px-3.5 py-2.5 text-[13px] font-bold cursor-pointer transition-colors ${
+                value === opt.code
+                  ? 'bg-[#FF6B00] text-white'
+                  : 'text-slate-700 hover:bg-[#FF6B00] hover:text-white'
+              }`}
+            >
+              {opt.label}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -108,6 +254,16 @@ export default function RegisterPage() {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [mobileNumber, setMobileNumber] = useState('');
+
+  // Email OTP Verification State
+  const [emailOtp, setEmailOtp] = useState('');
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpSending, setOtpSending] = useState(false);
+  const [otpVerifying, setOtpVerifying] = useState(false);
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
+  const [otpTimer, setOtpTimer] = useState(0);
+  const [otpSuccessMsg, setOtpSuccessMsg] = useState('');
+  const [otpErrorMsg, setOtpErrorMsg] = useState('');
   
   // Role Specific (Student)
   const [collegeName, setCollegeName] = useState('');
@@ -139,39 +295,68 @@ export default function RegisterPage() {
   const [globalError, setGlobalError] = useState('');
   const [successMsg, setSuccessMsg] = useState(false);
   const [loading, setLoading] = useState(false);
-  
-  // OTP
   const [countryCode, setCountryCode] = useState('+91');
-  const [otpSent, setOtpSent] = useState(false);
-  const [otpTimer, setOtpTimer] = useState(0);
-  const [otpValues, setOtpValues] = useState(['', '', '', '', '', '']);
-  const [otpVerified, setOtpVerified] = useState(false);
-  const [otpAttempts, setOtpAttempts] = useState(0);
-  const [otpSending, setOtpSending] = useState(false);
-  const [otpVerifying, setOtpVerifying] = useState(false);
-  const [isDemoOtp, setIsDemoOtp] = useState(false);
-  const [otpNotice, setOtpNotice] = useState<string | null>(null);
-  const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null);
-  
-  const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
-  const setupRecaptcha = () => {
-    if (typeof window !== 'undefined' && !(window as any).recaptchaVerifier) {
-      (window as any).recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-        size: 'invisible'
-      });
+  // Resend timer effect
+  useEffect(() => {
+    let timer: any;
+    if (otpTimer > 0) {
+      timer = setInterval(() => {
+        setOtpTimer(prev => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [otpTimer]);
+
+  const handleSendOtp = async () => {
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setOtpErrorMsg("Please enter a valid email address first.");
+      return;
+    }
+    setOtpSending(true);
+    setOtpErrorMsg("");
+    setOtpSuccessMsg("");
+
+    try {
+      const res = await api.post('/auth/send-email-otp', { email });
+      setOtpSending(false);
+      if (res.data && res.data.success) {
+        setOtpSent(true);
+        setOtpSuccessMsg(res.data.message || `Verification code sent to ${email}`);
+        setOtpTimer(60);
+      } else {
+        setOtpErrorMsg(res.data?.message || "Failed to send OTP.");
+      }
+    } catch (err: any) {
+      setOtpSending(false);
+      setOtpErrorMsg(err.response?.data?.message || "Failed to send OTP email.");
     }
   };
 
-  useEffect(() => {
-    setupRecaptcha();
-  }, []);
+  const handleVerifyOtp = async () => {
+    if (!emailOtp || emailOtp.length < 4) {
+      setOtpErrorMsg("Please enter the 6-digit verification code.");
+      return;
+    }
+    setOtpVerifying(true);
+    setOtpErrorMsg("");
+    setOtpSuccessMsg("");
 
-  useEffect(() => {
-    let int: any;
-    if (otpTimer > 0) int = setInterval(() => setOtpTimer(p => p - 1), 1000);
-    return () => clearInterval(int);
-  }, [otpTimer]);
+    try {
+      const res = await api.post('/auth/verify-email-otp', { email, otp: emailOtp });
+      setOtpVerifying(false);
+      if (res.data && res.data.success) {
+        setIsEmailVerified(true);
+        setOtpSuccessMsg("Email verified successfully!");
+        setErrors((prev: any) => ({ ...prev, email: undefined }));
+      } else {
+        setOtpErrorMsg(res.data?.message || "Invalid or expired OTP code.");
+      }
+    } catch (err: any) {
+      setOtpVerifying(false);
+      setOtpErrorMsg(err.response?.data?.message || "Invalid verification code.");
+    }
+  };
 
   const validateStep = (step: number) => {
     let errs: any = { ...errors };
@@ -180,8 +365,8 @@ export default function RegisterPage() {
     if (step === 2) {
       if (!/^[a-zA-Z\s]{3,50}$/.test(fullName)) { errs.fullName = "Name should contain only letters (3-50 chars)."; isValid = false; } else { delete errs.fullName; }
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { errs.email = "Please enter a valid email address."; isValid = false; } else { delete errs.email; }
+      if (!isEmailVerified) { errs.email = "Please verify your email address via OTP first."; isValid = false; } else if (errs.email === "Please verify your email address via OTP first.") { delete errs.email; }
       if (!/^[6-9]\d{9}$/.test(mobileNumber)) { errs.mobileNumber = "Mobile number must contain exactly 10 digits starting with 6-9."; isValid = false; } else { delete errs.mobileNumber; }
-      if (!otpVerified) { errs.otp = "Please verify your mobile number with OTP."; isValid = false; } else { delete errs.otp; }
     } else if (step === 3) {
       if (userType === 'student') {
         if (!collegeName || collegeName.length < 5 || collegeName.length > 100) { errs.collegeName = "College Name must be 5-100 characters."; isValid = false; } else { delete errs.collegeName; }
@@ -232,7 +417,6 @@ export default function RegisterPage() {
     if (!/^[a-zA-Z\s]{3,50}$/.test(fullName)) errs.fullName = "Name should contain only letters (3-50 chars).";
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errs.email = "Please enter a valid email address.";
     if (!/^[6-9]\d{9}$/.test(mobileNumber)) errs.mobileNumber = "Mobile number must contain exactly 10 digits starting with 6-9.";
-    if (!otpVerified) errs.otp = "Please verify your mobile number with OTP.";
     
     // Role Validation
     if (userType === 'student') {
@@ -281,7 +465,8 @@ export default function RegisterPage() {
 
     const userData = {
       userType, fullName, email, mobileNumber, password,
-      phoneVerified: otpVerified,
+      phoneVerified: true,
+      emailVerified: true,
       collegeName, department, yearOfStudy, studentId,
       companyName, designation, industry, yearsOfExperience, employeeId,
       occupation, country, state, city
@@ -294,154 +479,6 @@ export default function RegisterPage() {
       setSuccessMsg(true);
     } else {
       setGlobalError(result.message);
-    }
-  };
-
-  const handleSendOtp = async () => {
-    if (!/^[6-9]\d{9}$/.test(mobileNumber)) {
-      setErrors({ ...errors, mobileNumber: "Mobile number must contain exactly 10 digits starting with 6-9." });
-      return;
-    }
-    setErrors({ ...errors, mobileNumber: null });
-    setOtpNotice(null);
-    setOtpSending(true);
-    
-    try {
-      setupRecaptcha();
-      const appVerifier = (window as any).recaptchaVerifier;
-      const formattedNumber = `${countryCode}${mobileNumber}`;
-      const result = await signInWithPhoneNumber(auth, formattedNumber, appVerifier);
-      setConfirmationResult(result);
-      setIsDemoOtp(false);
-      setOtpSending(false);
-      setOtpSent(true);
-      setOtpTimer(60);
-      setOtpAttempts(1);
-    } catch (error: any) {
-      console.warn('Firebase SMS OTP notice:', error);
-      setOtpSending(false);
-      // Fallback for dev / unbilled Firebase environments
-      setIsDemoOtp(true);
-      setOtpSent(true);
-      setOtpTimer(60);
-      setOtpAttempts(1);
-      setOtpNotice('Demo Mode: Firebase SMS API requires paid billing. Verification test OTP: 123456');
-    }
-  };
-
-  const handleResendOtp = async () => {
-    if (otpAttempts >= 3) return;
-    setOtpSending(true);
-    setErrors({ ...errors, otp: null });
-    
-    if (isDemoOtp) {
-      setTimeout(() => {
-        setOtpSending(false);
-        setOtpTimer(60);
-        setOtpAttempts(prev => prev + 1);
-        setOtpNotice('Demo OTP resent! Verification test code: 123456');
-      }, 500);
-      return;
-    }
-
-    try {
-      setupRecaptcha();
-      const appVerifier = (window as any).recaptchaVerifier;
-      const formattedNumber = `${countryCode}${mobileNumber}`;
-      const result = await signInWithPhoneNumber(auth, formattedNumber, appVerifier);
-      setConfirmationResult(result);
-      setOtpSending(false);
-      setOtpTimer(60);
-      setOtpAttempts(prev => prev + 1);
-    } catch (error: any) {
-      setOtpSending(false);
-      setIsDemoOtp(true);
-      setOtpTimer(60);
-      setOtpAttempts(prev => prev + 1);
-      setOtpNotice('Demo Mode: Verification test OTP: 123456');
-    }
-  };
-
-  const handleEditNumber = () => {
-    setOtpSent(false);
-    setOtpTimer(0);
-    setIsDemoOtp(false);
-    setOtpNotice(null);
-    setOtpValues(['', '', '', '', '', '']);
-    setErrors({ ...errors, otp: null });
-  };
-
-  const handleOtpChange = (index: number, value: string) => {
-    if (!/^\d*$/.test(value)) return;
-    
-    const newOtpValues = [...otpValues];
-    newOtpValues[index] = value;
-    setOtpValues(newOtpValues);
-
-    // Auto focus next
-    if (value !== '' && index < 5) {
-      otpInputRefs.current[index + 1]?.focus();
-    }
-  };
-
-  const handleOtpKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Backspace' && otpValues[index] === '' && index > 0) {
-      otpInputRefs.current[index - 1]?.focus();
-    }
-  };
-
-  const handleOtpPaste = (e: React.ClipboardEvent) => {
-    e.preventDefault();
-    const pastedData = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
-    if (pastedData) {
-      const newOtpValues = [...otpValues];
-      for (let i = 0; i < pastedData.length; i++) {
-        newOtpValues[i] = pastedData[i];
-      }
-      setOtpValues(newOtpValues);
-      
-      const focusIndex = pastedData.length < 6 ? pastedData.length : 5;
-      otpInputRefs.current[focusIndex]?.focus();
-    }
-  };
-
-  const handleVerifyOtp = async () => {
-    const currentOtp = otpValues.join('');
-    if (currentOtp.length !== 6) {
-      setErrors({ ...errors, otp: "Please enter the complete 6-digit OTP." });
-      return;
-    }
-
-    setOtpVerifying(true);
-    
-    if (isDemoOtp) {
-      setTimeout(() => {
-        setOtpVerifying(false);
-        if (currentOtp === '123456' || currentOtp.length === 6) {
-          setOtpVerified(true);
-          setOtpNotice(null);
-          setErrors({ ...errors, otp: null });
-        } else {
-          setErrors({ ...errors, otp: "Invalid OTP. Use test code 123456." });
-        }
-      }, 400);
-      return;
-    }
-    
-    if (!confirmationResult) {
-      setErrors({ ...errors, otp: "Please request an OTP first." });
-      setOtpVerifying(false);
-      return;
-    }
-    
-    try {
-      await confirmationResult.confirm(currentOtp);
-      setOtpVerifying(false);
-      setOtpVerified(true);
-      setErrors({ ...errors, otp: null });
-    } catch (error: any) {
-      setOtpVerifying(false);
-      setErrors({ ...errors, otp: "Invalid OTP. Please try again." });
     }
   };
 
@@ -460,14 +497,14 @@ export default function RegisterPage() {
 
   if (successMsg) {
     return (
-      <div className="min-h-screen w-full bg-[#FAFAFA] flex items-center justify-center p-4">
-        <div className="w-full max-w-md bg-white rounded-[24px] p-10 text-center shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100">
-          <div className="w-20 h-20 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6">
+      <div className="min-h-screen w-full bg-gradient-to-br from-[#FAF8F4] via-[#F4F1EA] to-[#ECE7DF] flex items-center justify-center p-4 font-sans">
+        <div className="w-full max-w-md bg-white/95 backdrop-blur-xl rounded-[32px] p-10 text-center shadow-[0_20px_60px_rgba(40,30,15,0.06)] border border-[#E8E1D5]">
+          <div className="w-20 h-20 bg-[#FAF4E6] text-[#D96B00] rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
             <CheckCircle2 className="w-10 h-10" />
           </div>
           <h2 className="text-3xl font-bold text-slate-900 mb-2">Welcome Aboard!</h2>
           <p className="text-slate-500 mb-8 font-medium">Your DocVault account has been created securely.</p>
-          <Link href="/login" className="block w-full py-4 rounded-[14px] text-white font-bold bg-themePrimary hover:brightness-110 shadow-lg shadow-orange-500/20 transition-all duration-300">
+          <Link href="/login" className="block w-full py-4 rounded-[16px] text-white font-bold bg-gradient-to-r from-[#FF6B00] via-[#F76400] to-[#E05500] hover:brightness-105 shadow-lg shadow-orange-500/25 transition-all duration-300">
             Access Your Vault →
           </Link>
         </div>
@@ -476,70 +513,87 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen w-full bg-[#F4F6F9] flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 font-sans relative overflow-hidden animate-fade-up">
+    <div className="min-h-screen w-full bg-gradient-to-br from-[#FAF8F4] via-[#F4F1EA] to-[#ECE7DF] flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 font-sans relative overflow-hidden animate-fade-up">
       <style dangerouslySetInnerHTML={{ __html: customStyles }} />
       
-      {/* Professional Top Left Back Button */}
+      {/* Professional Top Left Back Button with Cream Hover */}
       <div className="absolute top-6 left-6 z-20">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white hover:bg-slate-50 border border-slate-200/90 text-slate-700 hover:text-slate-900 text-xs font-black shadow-xs hover:shadow-md transition-all duration-200 group cursor-pointer font-auth-heading"
+          className="inline-flex items-center gap-2.5 px-4.5 py-2.5 rounded-full bg-white/90 backdrop-blur-md border border-[#E6E0D4] hover:border-[#DFD2BA] hover:bg-[#FFFDF5] text-slate-700 hover:text-slate-900 text-xs font-bold shadow-xs hover:shadow-md hover:shadow-[#DFD2BA]/30 transition-all duration-300 group cursor-pointer font-auth-heading hover:-translate-y-0.5"
         >
-          <ArrowLeft className="w-4 h-4 text-[#FF6B00] group-hover:-translate-x-1 transition-transform" />
+          <ArrowLeft className="w-4 h-4 text-[#FF6B00] group-hover:-translate-x-1 transition-transform duration-300" />
           <span>Back to Home Page</span>
         </Link>
       </div>
 
-      {/* Soft Ambient Background Glows */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-orange-500/8 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-orange-400/8 rounded-full blur-3xl pointer-events-none" />
+      {/* Ambient Warm Cream & Soft Glowing Spheres */}
+      <div className="absolute top-10 left-1/4 w-96 h-96 bg-[#F5EAD6]/60 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-10 right-1/4 w-[500px] h-[500px] bg-orange-500/6 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-[#FAF2E4]/40 rounded-full blur-3xl pointer-events-none" />
       
-      {/* Main Centered Card */}
-      <div className="w-full max-w-[460px] bg-white rounded-[32px] shadow-[0_20px_60px_rgba(0,0,0,0.04)] border border-slate-100 relative z-10 flex flex-col my-8">
+      {/* Main Centered Card Container */}
+      <div className="w-full max-w-[480px] bg-white/95 backdrop-blur-xl rounded-[32px] shadow-[0_25px_70px_rgba(40,30,15,0.06)] border border-[#E8E1D5] relative z-10 flex flex-col my-8">
         <div className="p-8 sm:p-10">
           
           {/* Header */}
-          <div className="text-center space-y-3 mb-10">
-            <Link href="/" className="inline-flex items-center justify-center mb-2">
-              <div className="w-12 h-12 rounded-[14px] bg-themePrimary flex items-center justify-center text-white shadow-lg shadow-orange-500/20">
-                <ShieldCheck className="w-6 h-6 stroke-[2.5]" />
+          <div className="text-center space-y-3 mb-8">
+            <Link href="/" className="inline-flex items-center justify-center mb-2 group">
+              <div className="w-14 h-14 rounded-[22px] bg-[#FF6500] flex items-center justify-center text-white shadow-[0_12px_30px_rgba(255,101,0,0.35)] group-hover:scale-105 transition-all duration-300">
+                <ShieldCheck className="w-7 h-7 stroke-[2.2]" />
               </div>
             </Link>
             <h2 className="text-[28px] sm:text-[32px] font-bold text-slate-900 tracking-tight leading-tight">
               Create your account
             </h2>
-            <p className="text-[15px] text-slate-500 font-medium">
+            <p className="text-[15px] text-slate-500 font-medium max-w-sm mx-auto">
               Store, organize and manage your documents securely.
             </p>
           </div>
 
-          {/* Step Indicator */}
-          <div className="flex items-center justify-center mb-10 max-w-sm mx-auto">
+          {/* Step Indicator with Cream & Orange Progress */}
+          <div className="flex items-center justify-center mb-9 max-w-sm mx-auto">
             <div className="flex items-center w-full">
-              {[1, 2, 3, 4].map((step, idx) => (
-                <React.Fragment key={step}>
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 z-10 ${
-                    currentStep === step 
-                      ? 'bg-themePrimary text-white shadow-md shadow-orange-500/20 ring-4 ring-orange-50' 
-                      : currentStep > step 
-                        ? 'bg-orange-100 text-themePrimary' 
-                        : 'bg-slate-100 text-slate-400'
-                  }`}>
-                    {currentStep > step ? <Check className="w-4 h-4" /> : step}
-                  </div>
-                  {idx < 3 && (
-                    <div className={`flex-1 h-1 transition-all duration-300 ${
-                      currentStep > step + 0 ? 'bg-orange-200' : 'bg-slate-100'
-                    }`} />
-                  )}
-                </React.Fragment>
-              ))}
+              {[
+                { step: 1, label: 'Role' },
+                { step: 2, label: 'Info' },
+                { step: 3, label: 'Details' },
+                { step: 4, label: 'Security' }
+              ].map((item, idx) => {
+                const isCurrent = currentStep === item.step;
+                const isDone = currentStep > item.step;
+                return (
+                  <React.Fragment key={item.step}>
+                    <div className="flex flex-col items-center relative z-10">
+                      <div className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 ${
+                        isCurrent 
+                          ? 'bg-gradient-to-br from-[#FF6B00] to-[#E05500] text-white shadow-md shadow-orange-500/25 ring-4 ring-[#FAF4E8]' 
+                          : isDone 
+                            ? 'bg-[#FAF4E6] text-[#D96B00] border border-[#EADECA]' 
+                            : 'bg-[#F5F2EC] text-slate-400 border border-[#EBE7DF]'
+                      }`}>
+                        {isDone ? <Check className="w-4 h-4 stroke-[3]" /> : item.step}
+                      </div>
+                      <span className={`text-[10px] font-semibold mt-1.5 transition-colors ${
+                        isCurrent ? 'text-[#FF6B00]' : isDone ? 'text-slate-700' : 'text-slate-400'
+                      }`}>
+                        {item.label}
+                      </span>
+                    </div>
+                    {idx < 3 && (
+                      <div className={`flex-1 h-0.5 mx-1 -mt-4 transition-all duration-300 ${
+                        currentStep > item.step ? 'bg-gradient-to-r from-[#FF6B00] to-[#EADECA]' : 'bg-[#EBE7DF]'
+                      }`} />
+                    )}
+                  </React.Fragment>
+                );
+              })}
             </div>
           </div>
           
           {/* Validation Banner (Compact Modern) */}
           {globalError && (
-            <div className="mb-8 p-3.5 rounded-[12px] bg-red-50 text-red-600 text-sm font-medium flex items-center gap-3 border border-red-100 animate-fade-in shadow-sm">
+            <div className="mb-6 p-4 rounded-[16px] bg-red-50 text-red-600 text-sm font-medium flex items-center gap-3 border border-red-100 animate-fade-in shadow-sm">
               <AlertCircle className="w-5 h-5 shrink-0" />
               <span>{globalError}</span>
             </div>
@@ -550,34 +604,228 @@ export default function RegisterPage() {
             {/* STEP 1: ROLE SELECTION */}
             {currentStep === 1 && (
               <div className="animate-slide-up">
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-3.5">
                   {[
-                    { id: 'student', icon: GraduationCap, title: 'Student', desc: 'Academic records' },
-                    { id: 'professional', icon: BriefcaseBusiness, title: 'Professional', desc: 'Company documents' },
-                    { id: 'individual', icon: User, title: 'Individual', desc: 'Personal documents' }
-                  ].map((role) => (
-                    <label 
-                      key={role.id}
-                      onClick={() => setUserType(role.id)}
-                      className={`relative p-4 rounded-[16px] border cursor-pointer transition-all duration-300 flex flex-row items-center gap-4 group ${
-                        userType === role.id 
-                          ? 'border-themePrimary bg-themePrimary text-white shadow-lg shadow-orange-500/20' 
-                          : 'border-slate-200 bg-white hover:border-themePrimary/40'
-                      }`}
-                    >
-                      <role.icon className={`w-6 h-6 transition-colors ${userType === role.id ? 'text-white' : 'text-slate-400 group-hover:text-themePrimary'}`} />
-                      <div className="flex-1">
-                        <h3 className={`text-[15px] font-bold ${userType === role.id ? 'text-white' : 'text-slate-900'}`}>{role.title}</h3>
-                        <p className={`text-[12px] mt-0.5 font-medium ${userType === role.id ? 'text-orange-100' : 'text-slate-500'}`}>{role.desc}</p>
+                    { id: 'student', icon: GraduationCap, title: 'Student', desc: 'Academic records & certificates' },
+                    { id: 'professional', icon: BriefcaseBusiness, title: 'Professional', desc: 'Company documents & contracts' },
+                    { id: 'individual', icon: User, title: 'Individual', desc: 'Personal documents & records' }
+                  ].map((role) => {
+                    const isSelected = userType === role.id;
+                    return (
+                      <label 
+                        key={role.id}
+                        onClick={() => setUserType(role.id)}
+                        className={`relative p-5 rounded-[20px] cursor-pointer transition-all duration-300 flex flex-row items-center gap-4 group ${
+                          isSelected 
+                            ? 'bg-gradient-to-r from-[#FF6B00] via-[#F76400] to-[#E05500] text-white border-transparent shadow-lg shadow-orange-500/25 scale-[1.01]' 
+                            : 'bg-white/90 border border-[#E6E0D4] hover:bg-[#FFFDF5] hover:border-[#DFD0B8] text-slate-900 shadow-xs hover:shadow-md hover:shadow-[#DFD0B8]/30 hover:-translate-y-0.5'
+                        }`}
+                      >
+                        <div className={`w-11 h-11 rounded-[14px] flex items-center justify-center transition-all duration-300 ${
+                          isSelected 
+                            ? 'bg-white/20 text-white' 
+                            : 'bg-[#FAF5EC] text-slate-600 group-hover:bg-[#F5EBD9] group-hover:text-[#D96B00]'
+                        }`}>
+                          <role.icon className="w-5 h-5 stroke-[2.2]" />
+                        </div>
+                        <div className="flex-1">
+                          <h3 className={`text-[15px] font-bold tracking-tight ${isSelected ? 'text-white' : 'text-slate-900 group-hover:text-slate-900'}`}>
+                            {role.title}
+                          </h3>
+                          <p className={`text-[12px] mt-0.5 font-medium ${isSelected ? 'text-orange-100' : 'text-slate-500 group-hover:text-slate-600'}`}>
+                            {role.desc}
+                          </p>
+                        </div>
+                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all shrink-0 ${
+                          isSelected 
+                            ? 'border-white bg-white' 
+                            : 'border-slate-300 group-hover:border-[#D96B00] group-hover:bg-[#FFFDF5]'
+                        }`}>
+                          {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-[#FF6B00]" />}
+                        </div>
+                        <input type="radio" name="accountType" className="hidden" checked={isSelected} readOnly />
+                      </label>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* STEP 2: PERSONAL INFORMATION & EMAIL VERIFICATION */}
+            {currentStep === 2 && (
+              <div className="animate-slide-up space-y-4">
+                <div className="flex flex-col gap-0">
+                  <InputField icon={User} label="Full Name" required value={fullName} onChange={(e: any) => setFullName(e.target.value)} error={errors.fullName} />
+                  
+                  <InputField 
+                    icon={Mail} 
+                    label="Email Address" 
+                    required 
+                    disabled={isEmailVerified}
+                    value={email} 
+                    onChange={(e: any) => {
+                      setEmail(e.target.value);
+                      if (isEmailVerified) setIsEmailVerified(false);
+                    }} 
+                    error={errors.email} 
+                  />
+
+                  {/* Email OTP Verification Section */}
+                  {isEmailVerified ? (
+                    <div className="-mt-2 mb-4 px-4 py-3 rounded-[16px] bg-[#ECFDF5] text-emerald-800 border border-emerald-200/80 text-xs font-bold flex items-center justify-between animate-fade-in shadow-2xs">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0">
+                          <Check className="w-3.5 h-3.5 stroke-[3]" />
+                        </div>
+                        <span className="text-[13px] font-bold text-emerald-900">Email Address Verified</span>
                       </div>
-                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors shrink-0 ${
-                        userType === role.id ? 'border-white' : 'border-slate-300'
-                      }`}>
-                        {userType === role.id && <div className="w-2.5 h-2.5 rounded-full bg-white" />}
+                      <button
+                        type="button"
+                        onClick={() => { setIsEmailVerified(false); setOtpSent(false); }}
+                        className="text-[11px] font-bold text-emerald-700 hover:text-emerald-900 bg-emerald-100/70 hover:bg-emerald-200/70 px-2.5 py-1 rounded-full transition-all duration-200 flex items-center gap-1 shrink-0"
+                      >
+                        <Edit2 className="w-3 h-3" /> Edit Email
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="-mt-2 mb-4">
+                      {!otpSent ? (
+                        <button
+                          type="button"
+                          onClick={handleSendOtp}
+                          disabled={otpSending || !email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)}
+                          className="w-full py-2.5 px-4 rounded-[14px] text-xs font-bold text-[#FF6B00] bg-[#FAF5EC] border border-[#EADECA] hover:bg-[#FF6B00] hover:text-white hover:border-[#FF6B00] transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-xs"
+                        >
+                          {otpSending ? <><Loader2 className="w-4 h-4 animate-spin" /> Sending OTP Email...</> : <><Mail className="w-4 h-4" /> Send Verification Code to Email</>}
+                        </button>
+                      ) : (
+                        <div className="p-5 rounded-[22px] bg-gradient-to-br from-[#FFFDF8] via-[#FAF6EE] to-[#F5EBD9] border border-[#E8DCC4] shadow-[0_10px_30px_rgba(215,195,160,0.2)] animate-slide-up space-y-4 relative overflow-hidden">
+                          {/* Ambient background glow accent */}
+                          <div className="absolute -top-12 -right-12 w-28 h-28 bg-[#FF6B00]/8 rounded-full blur-xl pointer-events-none" />
+
+                          {/* Header */}
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2.5">
+                              <div className="w-8 h-8 rounded-[12px] bg-gradient-to-br from-[#FF6B00] to-[#E05500] text-white flex items-center justify-center shadow-xs">
+                                <ShieldCheck className="w-4.5 h-4.5 stroke-[2.2]" />
+                              </div>
+                              <div>
+                                <h4 className="text-[13px] font-bold text-slate-900 tracking-tight leading-none">
+                                  Verification Code
+                                </h4>
+                                <span className="text-[11px] text-slate-500 font-medium mt-1 block truncate max-w-[190px]">
+                                  Sent to {email}
+                                </span>
+                              </div>
+                            </div>
+
+                            {/* Timer / Resend Badge */}
+                            <div>
+                              {otpTimer > 0 ? (
+                                <div className="px-2.5 py-1 rounded-full bg-[#FAF0E0] border border-[#E5D7BF] text-[#D96B00] text-[11px] font-bold flex items-center gap-1 shadow-2xs">
+                                  <span>Resend in</span>
+                                  <span className="font-extrabold text-[#FF6B00]">{otpTimer}s</span>
+                                </div>
+                              ) : (
+                                <button
+                                  type="button"
+                                  onClick={handleSendOtp}
+                                  disabled={otpSending}
+                                  className="px-3 py-1 rounded-full bg-white border border-[#DFD2BA] text-[#FF6B00] hover:bg-[#FF6B00] hover:text-white text-[11px] font-bold transition-all duration-200 shadow-2xs"
+                                >
+                                  {otpSending ? "Sending..." : "Resend Code"}
+                                </button>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Input & Verify Row */}
+                          <div className="flex gap-2.5 items-center">
+                            <div className="relative flex-1">
+                              <input
+                                type="text"
+                                maxLength={6}
+                                value={emailOtp}
+                                onChange={(e) => setEmailOtp(e.target.value.replace(/\D/g, ''))}
+                                placeholder="6-DIGIT CODE"
+                                className="w-full h-[50px] px-4 bg-white border border-[#DFD2BA] focus:border-[#FF6B00] focus:ring-4 focus:ring-orange-500/12 focus:bg-white rounded-[16px] text-center text-[18px] font-extrabold tracking-[8px] text-slate-900 placeholder:text-slate-300 placeholder:tracking-normal placeholder:text-[12px] placeholder:font-semibold focus:outline-none transition-all duration-300 shadow-inner"
+                              />
+                            </div>
+                            
+                            <button
+                              type="button"
+                              onClick={handleVerifyOtp}
+                              disabled={otpVerifying || emailOtp.length < 4}
+                              className="h-[50px] px-5 rounded-[16px] font-bold text-[13px] text-white bg-gradient-to-r from-[#FF6B00] via-[#F76400] to-[#E05500] hover:brightness-105 shadow-md shadow-orange-500/25 hover:shadow-lg hover:shadow-orange-500/35 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 flex items-center justify-center gap-1.5 shrink-0 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                            >
+                              {otpVerifying ? (
+                                <>
+                                  <Loader2 className="w-4 h-4 animate-spin" />
+                                  <span>Verifying...</span>
+                                </>
+                              ) : (
+                                <>
+                                  <span>Verify Code</span>
+                                  <Check className="w-4 h-4 stroke-[3]" />
+                                </>
+                              )}
+                            </button>
+                          </div>
+
+                          {/* Status Feedback Banners */}
+                          {otpSuccessMsg && (
+                            <div className="p-3 rounded-[14px] bg-emerald-50 text-emerald-700 border border-emerald-200/80 text-[12px] font-semibold flex items-center gap-2 animate-fade-in shadow-xs">
+                              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                              <span>{otpSuccessMsg}</span>
+                            </div>
+                          )}
+
+                          {otpErrorMsg && (
+                            <div className="p-3 rounded-[14px] bg-red-50 text-red-600 border border-red-200/80 text-[12px] font-semibold flex items-center gap-2 animate-fade-in shadow-xs">
+                              <AlertCircle className="w-4 h-4 text-red-500 shrink-0" />
+                              <span>{otpErrorMsg}</span>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Mobile Phone Field */}
+                  <div className="relative mb-4 group w-full">
+                    <div className="flex gap-2">
+                      <CountryCodeSelect value={countryCode} onChange={setCountryCode} />
+                      <div className="relative flex-1">
+                        <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-6 h-6 flex items-center justify-center transition-all duration-300 pointer-events-none">
+                          <Phone className={`w-5 h-5 transition-colors duration-300 ${errors.mobileNumber ? 'text-red-400' : 'text-slate-400 group-hover:text-[#D96B00] group-focus-within:text-[#FF6B00]'}`} />
+                        </div>
+                        <div className="relative">
+                          <input 
+                            type="text" 
+                            value={mobileNumber} 
+                            onChange={e => setMobileNumber(e.target.value)} 
+                            placeholder=" "
+                            className={`peer w-full h-[56px] pl-12 pr-4 pt-5 pb-1 bg-white border ${
+                              errors.mobileNumber 
+                                ? 'border-red-300 focus:border-red-400 focus:ring-4 focus:ring-red-500/15' 
+                                : 'border-[#E6E0D4] hover:border-[#DFD2BA] hover:bg-[#FFFDF8] focus:border-[#FF6B00] focus:ring-4 focus:ring-orange-500/15 focus:bg-white'
+                            } rounded-[16px] text-[15px] font-medium focus:outline-none transition-all duration-300 disabled:bg-slate-50 disabled:text-slate-400 cream-hover-input`} 
+                          />
+                          <label className={`absolute left-12 text-slate-400 pointer-events-none transition-all duration-300 font-medium ${
+                            mobileNumber.length > 0 ? 'top-2 text-[11px] text-slate-400' : 'top-1/2 -translate-y-1/2 text-[15px] peer-focus:top-2 peer-focus:text-[11px] peer-focus:text-[#FF6B00]'
+                          }`}>
+                            Mobile Number <span className="text-red-500">*</span>
+                          </label>
+                        </div>
                       </div>
-                      <input type="radio" name="accountType" className="hidden" checked={userType === role.id} readOnly />
-                    </label>
-                  ))}
+                    </div>
+                    {errors.mobileNumber && (
+                      <p className="text-red-500 text-[12px] font-medium mt-1.5 pl-1 flex items-center gap-1.5 animate-fade-in">
+                        <AlertCircle className="w-3.5 h-3.5" />
+                        {errors.mobileNumber}
+                      </p>
+                    )}
+                  </div>
                 </div>
               </div>
             )}
@@ -615,133 +863,13 @@ export default function RegisterPage() {
               </div>
             )}
 
-            {/* STEP 2: PERSONAL INFORMATION */}
-            {currentStep === 2 && (
-              <div className="animate-slide-up">
-                <div className="flex flex-col gap-0">
-                  <InputField icon={User} label="Full Name" required value={fullName} onChange={(e: any) => setFullName(e.target.value)} error={errors.fullName} />
-                  <InputField icon={Mail} label="Email Address" required value={email} onChange={(e: any) => setEmail(e.target.value)} error={errors.email} />
-                </div>
-                
-                <div className="relative group w-full">
-                  {!otpSent || otpVerified ? (
-                    <div className="flex flex-col gap-3 animate-fade-in">
-                      <div className="flex gap-2">
-                        <div className="relative w-[110px] shrink-0">
-                          <div className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-5 h-5 flex items-center justify-center pointer-events-none text-slate-400">
-                            <Globe className="w-4 h-4" />
-                          </div>
-                          <select 
-                            disabled={otpVerified || otpSending}
-                            value={countryCode}
-                            onChange={e => setCountryCode(e.target.value)}
-                            className="w-full h-[56px] pl-9 pr-2 bg-white border border-slate-200 focus:border-[#FF6B00] rounded-[14px] text-[15px] font-bold text-slate-700 focus:outline-none focus:ring-4 focus:ring-orange-500/15 transition-all duration-300 appearance-none disabled:bg-slate-50 disabled:text-slate-400"
-                          >
-                            <option value="+91">+91 (IN)</option>
-                            <option value="+1">+1 (US)</option>
-                            <option value="+44">+44 (UK)</option>
-                            <option value="+61">+61 (AU)</option>
-                          </select>
-                        </div>
-                        <div className="relative flex-1">
-                          <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-6 h-6 flex items-center justify-center transition-all duration-300 pointer-events-none">
-                            <Phone className={`w-5 h-5 transition-colors duration-300 ${errors.mobileNumber ? 'text-red-400' : 'text-slate-400 group-focus-within:text-themePrimary'}`} />
-                          </div>
-                          <div className="relative">
-                            <input 
-                              type="text" 
-                              disabled={otpVerified || otpSending} 
-                              value={mobileNumber} 
-                              onChange={e => setMobileNumber(e.target.value)} 
-                              placeholder=" "
-                              className={`peer w-full h-[56px] pl-12 pr-4 pt-5 pb-1 bg-white border ${errors.mobileNumber ? 'border-red-300 focus:border-red-400 focus:ring-4 focus:ring-red-500/15' : 'border-slate-200 focus:border-[#FF6B00] focus:ring-4 focus:ring-orange-500/15'} rounded-[14px] text-[15px] font-medium focus:outline-none transition-all duration-300 disabled:bg-slate-50 disabled:text-slate-400`} 
-                            />
-                            <label className={`absolute left-12 text-slate-500 pointer-events-none transition-all duration-300 font-medium ${mobileNumber.length > 0 ? 'top-1.5 text-[11px] text-slate-400' : 'top-1/2 -translate-y-1/2 text-[15px] peer-focus:top-1.5 peer-focus:text-[11px] peer-focus:text-[#FF6B00]'}`}>
-                              Mobile Number <span className="text-red-500">*</span>
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div className="flex justify-between items-start">
-                        <div className="flex-1">
-                          {errors.mobileNumber && <p className="text-red-500 text-[12px] font-medium pl-1 animate-fade-in">{errors.mobileNumber}</p>}
-                        </div>
-                        {!otpVerified && (
-                          <button type="button" onClick={handleSendOtp} disabled={otpSending || otpAttempts >= 3} className="md:w-[160px] shrink-0 px-6 py-0 bg-white hover:bg-[#FFF5ED] text-[#FF6B00] border border-[#FF6B00]/30 text-[15px] font-bold rounded-[14px] transition-all duration-300 shadow-sm disabled:opacity-50 h-[56px] flex items-center justify-center gap-2">
-                            {otpSending ? <><Loader2 className="w-4 h-4 animate-spin" /> Sending</> : 'Send OTP'}
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="flex flex-col gap-5 animate-slide-up p-5 rounded-[16px] border border-orange-100 bg-orange-50/50">
-                      {otpNotice && (
-                        <div className="p-3 bg-amber-50 border border-amber-200 text-amber-800 text-[12px] font-bold rounded-[12px] animate-fade-in flex items-center gap-2">
-                          <Zap className="w-4 h-4 text-amber-600 shrink-0" />
-                          <span>{otpNotice}</span>
-                        </div>
-                      )}
-                      <div className="flex items-center justify-between pb-4 border-b border-orange-100/60">
-                        <div className="flex flex-col">
-                          <span className="text-[11px] font-bold text-orange-400/80 uppercase tracking-wider mb-0.5">Verification Code Sent To</span>
-                          <span className="text-[15px] font-bold text-slate-800">{countryCode} {mobileNumber}</span>
-                        </div>
-                        <button type="button" onClick={handleEditNumber} className="w-9 h-9 rounded-full bg-white border border-slate-200 text-slate-500 hover:text-[#FF6B00] hover:border-[#FF6B00] flex items-center justify-center transition-all shadow-sm" title="Edit phone number">
-                          <Edit2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                      
-                      <div className="flex flex-col gap-2">
-                        <div className="flex gap-2 justify-between max-w-[340px] mx-auto w-full">
-                          {otpValues.map((digit, idx) => (
-                            <input
-                              key={idx}
-                              ref={(el) => { otpInputRefs.current[idx] = el; }}
-                              type="text"
-                              maxLength={1}
-                              value={digit}
-                              onChange={(e) => handleOtpChange(idx, e.target.value)}
-                              onKeyDown={(e) => handleOtpKeyDown(idx, e)}
-                              onPaste={handleOtpPaste}
-                              disabled={otpVerifying}
-                              className={`w-12 h-[56px] bg-white border ${errors.otp ? 'border-red-300 focus:border-red-400 focus:ring-red-500/15' : 'border-slate-200 focus:border-[#FF6B00] focus:ring-orange-500/15'} rounded-[12px] text-[20px] font-bold text-center focus:ring-4 focus:outline-none transition-all duration-300 shadow-sm disabled:opacity-50`}
-                            />
-                          ))}
-                        </div>
-                        {errors.otp && <p className="text-red-500 text-[12px] font-medium text-center animate-fade-in">{errors.otp}</p>}
-                      </div>
-                      
-                      <button type="button" onClick={handleVerifyOtp} disabled={otpVerifying || otpValues.join('').length !== 6} className="w-full h-[56px] bg-themePrimary hover:brightness-110 shadow-lg shadow-orange-500/20 text-white text-[15px] font-bold rounded-[14px] transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50">
-                        {otpVerifying ? <><Loader2 className="w-5 h-5 animate-spin" /> Verifying Code</> : 'Verify OTP'}
-                      </button>
-                      
-                      <div className="flex items-center justify-center mt-1">
-                        <button type="button" onClick={handleResendOtp} disabled={otpTimer > 0 || otpAttempts >= 3 || otpSending} className="text-[13px] font-bold text-slate-500 hover:text-[#FF6B00] disabled:opacity-50 disabled:hover:text-slate-500 transition-colors flex items-center gap-1.5">
-                          {otpTimer > 0 ? `Resend code in ${otpTimer}s` : otpAttempts >= 3 ? 'Maximum attempts reached' : 'Resend Code'}
-                          {otpSending && otpTimer === 0 && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                  
-                  {otpVerified && (
-                    <div className="mt-4 p-4 bg-emerald-50 border border-emerald-100 rounded-[14px] flex items-center gap-3 text-emerald-700 text-[14px] font-semibold animate-fade-in">
-                      <CheckCircle2 className="w-5 h-5" />
-                      Mobile Number Verified Successfully
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
             {/* STEP 4: ACCOUNT SECURITY */}
             {currentStep === 4 && (
               <div className="animate-slide-up">
                 <div className="flex flex-col gap-4">
                   <div className="relative group">
                     <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-6 h-6 flex items-center justify-center transition-all duration-300 pointer-events-none">
-                      <Lock className={`w-5 h-5 transition-colors duration-300 ${errors.password ? 'text-red-400' : 'text-slate-400 group-focus-within:text-themePrimary'}`} />
+                      <Lock className={`w-5 h-5 transition-colors duration-300 ${errors.password ? 'text-red-400' : 'text-slate-400 group-hover:text-[#D96B00] group-focus-within:text-[#FF6B00]'}`} />
                     </div>
                     <div className="relative">
                       <input 
@@ -749,21 +877,27 @@ export default function RegisterPage() {
                         value={password} 
                         onChange={e => setPassword(e.target.value)} 
                         placeholder=" "
-                        className={`peer w-full h-[56px] pl-12 pr-12 pt-5 pb-1 bg-white border ${errors.password ? 'border-red-300 focus:border-red-400 focus:ring-4 focus:ring-red-500/15' : 'border-slate-200 focus:border-[#FF6B00] focus:ring-4 focus:ring-orange-500/15'} rounded-[14px] text-[15px] font-medium focus:outline-none transition-all duration-300`} 
+                        className={`peer w-full h-[56px] pl-12 pr-12 pt-5 pb-1 bg-white border ${
+                          errors.password 
+                            ? 'border-red-300 focus:border-red-400 focus:ring-4 focus:ring-red-500/15' 
+                            : 'border-[#E6E0D4] hover:border-[#DFD2BA] hover:bg-[#FFFDF8] focus:border-[#FF6B00] focus:ring-4 focus:ring-orange-500/15 focus:bg-white'
+                        } rounded-[16px] text-[15px] font-medium focus:outline-none transition-all duration-300 cream-hover-input`} 
                       />
-                      <label className={`absolute left-12 text-slate-500 pointer-events-none transition-all duration-300 font-medium ${password.length > 0 ? 'top-1.5 text-[11px] text-slate-400' : 'top-1/2 -translate-y-1/2 text-[15px] peer-focus:top-1.5 peer-focus:text-[11px] peer-focus:text-[#FF6B00]'}`}>
+                      <label className={`absolute left-12 text-slate-400 pointer-events-none transition-all duration-300 font-medium ${
+                        password.length > 0 ? 'top-2 text-[11px] text-slate-400' : 'top-1/2 -translate-y-1/2 text-[15px] peer-focus:top-2 peer-focus:text-[11px] peer-focus:text-[#FF6B00]'
+                      }`}>
                         Password <span className="text-red-500">*</span>
                       </label>
                     </div>
-                    <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full hover:bg-slate-50 flex items-center justify-center text-slate-400 hover:text-slate-700 transition-colors">
+                    <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full hover:bg-[#FAF5EC] hover:text-[#D96B00] flex items-center justify-center text-slate-400 transition-colors">
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
-                    {errors.password && <p className="text-red-500 text-[12px] font-medium mt-1 pl-1">{errors.password}</p>}
+                    {errors.password && <p className="text-red-500 text-[12px] font-medium mt-1.5 pl-1 flex items-center gap-1.5 animate-fade-in"><AlertCircle className="w-3.5 h-3.5" />{errors.password}</p>}
                   </div>
 
                   <div className="relative group">
                     <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-6 h-6 flex items-center justify-center transition-all duration-300 pointer-events-none">
-                      <Lock className={`w-5 h-5 transition-colors duration-300 ${errors.confirmPassword ? 'text-red-400' : 'text-slate-400 group-focus-within:text-themePrimary'}`} />
+                      <Lock className={`w-5 h-5 transition-colors duration-300 ${errors.confirmPassword ? 'text-red-400' : 'text-slate-400 group-hover:text-[#D96B00] group-focus-within:text-[#FF6B00]'}`} />
                     </div>
                     <div className="relative">
                       <input 
@@ -771,35 +905,41 @@ export default function RegisterPage() {
                         value={confirmPassword} 
                         onChange={e => setConfirmPassword(e.target.value)} 
                         placeholder=" "
-                        className={`peer w-full h-[56px] pl-12 pr-12 pt-5 pb-1 bg-white border ${errors.confirmPassword ? 'border-red-300 focus:border-red-400 focus:ring-4 focus:ring-red-500/15' : 'border-slate-200 focus:border-[#FF6B00] focus:ring-4 focus:ring-orange-500/15'} rounded-[14px] text-[15px] font-medium focus:outline-none transition-all duration-300`} 
+                        className={`peer w-full h-[56px] pl-12 pr-12 pt-5 pb-1 bg-white border ${
+                          errors.confirmPassword 
+                            ? 'border-red-300 focus:border-red-400 focus:ring-4 focus:ring-red-500/15' 
+                            : 'border-[#E6E0D4] hover:border-[#DFD2BA] hover:bg-[#FFFDF8] focus:border-[#FF6B00] focus:ring-4 focus:ring-orange-500/15 focus:bg-white'
+                        } rounded-[16px] text-[15px] font-medium focus:outline-none transition-all duration-300 cream-hover-input`} 
                       />
-                      <label className={`absolute left-12 text-slate-500 pointer-events-none transition-all duration-300 font-medium ${confirmPassword.length > 0 ? 'top-1.5 text-[11px] text-slate-400' : 'top-1/2 -translate-y-1/2 text-[15px] peer-focus:top-1.5 peer-focus:text-[11px] peer-focus:text-[#FF6B00]'}`}>
+                      <label className={`absolute left-12 text-slate-400 pointer-events-none transition-all duration-300 font-medium ${
+                        confirmPassword.length > 0 ? 'top-2 text-[11px] text-slate-400' : 'top-1/2 -translate-y-1/2 text-[15px] peer-focus:top-2 peer-focus:text-[11px] peer-focus:text-[#FF6B00]'
+                      }`}>
                         Confirm Password <span className="text-red-500">*</span>
                       </label>
                     </div>
-                    <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full hover:bg-slate-50 flex items-center justify-center text-slate-400 hover:text-slate-700 transition-colors">
+                    <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full hover:bg-[#FAF5EC] hover:text-[#D96B00] flex items-center justify-center text-slate-400 transition-colors">
                       {showConfirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
-                    {errors.confirmPassword && <p className="text-red-500 text-[12px] font-medium mt-1 pl-1">{errors.confirmPassword}</p>}
+                    {errors.confirmPassword && <p className="text-red-500 text-[12px] font-medium mt-1.5 pl-1 flex items-center gap-1.5 animate-fade-in"><AlertCircle className="w-3.5 h-3.5" />{errors.confirmPassword}</p>}
                   </div>
                 </div>
 
                 {password.length > 0 && (
-                  <div className="mt-6 bg-slate-50 p-5 rounded-[16px] border border-slate-100 animate-slide-up">
+                  <div className="mt-6 bg-[#FAF6EE] p-5 rounded-[20px] border border-[#EAE2D2] animate-slide-up">
                     <div className="mb-3 text-[12px] font-bold flex justify-between">
-                      <span className="text-slate-500">Password Strength</span>
+                      <span className="text-slate-600">Password Strength</span>
                       <span className={getPasswordStrength().color}>{getPasswordStrength().label}</span>
                     </div>
-                    <div className="h-2 bg-slate-200 rounded-full overflow-hidden mb-4">
+                    <div className="h-2 bg-[#EFE9DC] rounded-full overflow-hidden mb-4">
                       <div className={`h-full ${getPasswordStrength().bg} transition-all duration-500 ease-out`} style={{ width: getPasswordStrength().w }} />
                     </div>
                     <div className="grid grid-cols-2 gap-y-2 text-[12px] font-medium text-slate-500">
-                      <div className={`flex items-center gap-2 ${password.length >= 8 ? 'text-emerald-500' : ''}`}><CheckCircle className="w-3.5 h-3.5" /> 8+ Characters</div>
-                      <div className={`flex items-center gap-2 ${/[A-Z]/.test(password) ? 'text-emerald-500' : ''}`}><CheckCircle className="w-3.5 h-3.5" /> 1 Uppercase</div>
-                      <div className={`flex items-center gap-2 ${/[a-z]/.test(password) ? 'text-emerald-500' : ''}`}><CheckCircle className="w-3.5 h-3.5" /> 1 Lowercase</div>
-                      <div className={`flex items-center gap-2 ${/[0-9]/.test(password) ? 'text-emerald-500' : ''}`}><CheckCircle className="w-3.5 h-3.5" /> 1 Number</div>
-                      <div className={`flex items-center gap-2 ${/[^A-Za-z0-9\s]/.test(password) ? 'text-emerald-500' : ''}`}><CheckCircle className="w-3.5 h-3.5" /> 1 Special Char</div>
-                      <div className={`flex items-center gap-2 ${!/\s/.test(password) && password.length > 0 ? 'text-emerald-500' : ''}`}><CheckCircle className="w-3.5 h-3.5" /> No Spaces</div>
+                      <div className={`flex items-center gap-2 ${password.length >= 8 ? 'text-emerald-600 font-semibold' : ''}`}><CheckCircle className="w-3.5 h-3.5" /> 8+ Characters</div>
+                      <div className={`flex items-center gap-2 ${/[A-Z]/.test(password) ? 'text-emerald-600 font-semibold' : ''}`}><CheckCircle className="w-3.5 h-3.5" /> 1 Uppercase</div>
+                      <div className={`flex items-center gap-2 ${/[a-z]/.test(password) ? 'text-emerald-600 font-semibold' : ''}`}><CheckCircle className="w-3.5 h-3.5" /> 1 Lowercase</div>
+                      <div className={`flex items-center gap-2 ${/[0-9]/.test(password) ? 'text-emerald-600 font-semibold' : ''}`}><CheckCircle className="w-3.5 h-3.5" /> 1 Number</div>
+                      <div className={`flex items-center gap-2 ${/[^A-Za-z0-9\s]/.test(password) ? 'text-emerald-600 font-semibold' : ''}`}><CheckCircle className="w-3.5 h-3.5" /> 1 Special Char</div>
+                      <div className={`flex items-center gap-2 ${!/\s/.test(password) && password.length > 0 ? 'text-emerald-600 font-semibold' : ''}`}><CheckCircle className="w-3.5 h-3.5" /> No Spaces</div>
                     </div>
                   </div>
                 )}
@@ -808,12 +948,12 @@ export default function RegisterPage() {
           </div>
 
           {/* Action Buttons */}
-          <div className="mt-10 flex gap-4">
+          <div className="mt-8 flex gap-3.5">
             {currentStep > 1 && (
               <button 
                 type="button" 
                 onClick={handleBack} 
-                className="h-[56px] px-8 rounded-[14px] font-bold text-[15px] text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 transition-all duration-300 flex items-center gap-2"
+                className="h-[54px] px-7 rounded-[16px] font-bold text-[15px] text-slate-700 bg-white border border-[#E6E0D4] hover:bg-[#FFFDF5] hover:border-[#DFD2BA] hover:shadow-xs transition-all duration-300 flex items-center gap-2 cream-hover-btn"
               >
                 <ArrowLeft className="w-4 h-4" /> Back
               </button>
@@ -823,8 +963,7 @@ export default function RegisterPage() {
               <button 
                 type="button" 
                 onClick={handleNext} 
-                disabled={currentStep === 2 && !otpVerified}
-                className="flex-1 h-[56px] rounded-[14px] font-bold text-[15px] text-white bg-themePrimary hover:brightness-110 shadow-lg shadow-orange-500/20 transition-all duration-300 flex justify-center items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 h-[54px] rounded-[16px] font-bold text-[15px] text-white bg-gradient-to-r from-[#FF6B00] via-[#F76400] to-[#E05500] hover:brightness-105 shadow-lg shadow-orange-500/25 hover:shadow-xl hover:shadow-orange-500/35 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 flex justify-center items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Continue <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
               </button>
@@ -833,7 +972,7 @@ export default function RegisterPage() {
                 type="button" 
                 onClick={handleSubmit} 
                 disabled={loading || !userType} 
-                className="flex-1 h-[56px] rounded-[14px] font-bold text-[15px] text-white bg-themePrimary hover:brightness-110 shadow-lg shadow-orange-500/20 transition-all duration-300 flex justify-center items-center gap-2 disabled:opacity-50"
+                className="flex-1 h-[54px] rounded-[16px] font-bold text-[15px] text-white bg-gradient-to-r from-[#FF6B00] via-[#F76400] to-[#E05500] hover:brightness-105 shadow-lg shadow-orange-500/25 hover:shadow-xl hover:shadow-orange-500/35 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 flex justify-center items-center gap-2 disabled:opacity-50"
               >
                 {loading ? <><Loader2 className="w-5 h-5 animate-spin" /> Creating...</> : <><UserPlus className="w-5 h-5" /> Create Account</>}
               </button>
@@ -841,9 +980,8 @@ export default function RegisterPage() {
           </div>
 
           <div className="mt-8 text-center text-[14px] text-slate-500 font-medium">
-            Already have an account? <Link href="/login" className="font-bold text-themePrimary hover:underline underline-offset-4 ml-1">Sign In</Link>
+            Already have an account? <Link href="/login" className="font-bold text-[#FF6B00] hover:text-[#D96000] hover:underline underline-offset-4 ml-1 transition-colors">Sign In</Link>
           </div>
-          <div id="recaptcha-container"></div>
         </div>
       </div>
     </div>

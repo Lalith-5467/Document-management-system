@@ -41,6 +41,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const handleSetUser = (u: any) => {
+    setUser(u);
+    if (typeof window !== 'undefined') {
+      if (u) {
+        localStorage.setItem('dms_user', JSON.stringify(u));
+        window.dispatchEvent(new CustomEvent('dms_user_updated', { detail: u }));
+      } else {
+        localStorage.removeItem('dms_user');
+      }
+    }
+  };
+
   useEffect(() => {
     const storedToken = localStorage.getItem('dms_token');
     const storedUser = localStorage.getItem('dms_user');
@@ -62,6 +74,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     }
     setLoading(false);
+
+    const handleUserUpdate = (e: any) => {
+      if (e.detail) {
+        setUser(e.detail);
+      } else {
+        const stored = localStorage.getItem('dms_user');
+        if (stored) {
+          try { setUser(JSON.parse(stored)); } catch (err) {}
+        }
+      }
+    };
+    window.addEventListener('dms_user_updated', handleUserUpdate);
+    return () => window.removeEventListener('dms_user_updated', handleUserUpdate);
   }, []);
 
   const login = async (email: string, password: string) => {
@@ -130,7 +155,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, loading, login, register, logout, setUser }}>
+    <AuthContext.Provider value={{ user, token, loading, login, register, logout, setUser: handleSetUser }}>
       {children}
     </AuthContext.Provider>
   );

@@ -58,6 +58,21 @@ export default function Breadcrumbs({ className = '' }: { className?: string }) 
 
   let currentPath = rootHref;
   filterSegments.forEach((seg) => {
+    // Add professional parent category breadcrumbs for nested section grouping
+    if (seg === 'profile' || seg === 'settings' || seg === 'billing' || seg === 'subscriptions') {
+      if (!items.some(i => i.name === 'User Account')) {
+        items.push({ name: 'User Account', href: '/user/profile' });
+      }
+    } else if (seg === 'documents' || seg === 'folders' || seg === 'categories' || seg === 'upload') {
+      if (!items.some(i => i.name === 'Workspace')) {
+        items.push({ name: 'Workspace', href: '/user/documents' });
+      }
+    } else if (seg === 'favorites' || seg === 'trash' || seg === 'expiry' || seg === 'notifications' || seg === 'calendar') {
+      if (!items.some(i => i.name === 'Vault Collections')) {
+        items.push({ name: 'Vault Collections', href: '/user/favorites' });
+      }
+    }
+
     currentPath += `/${seg}`;
     const name = ROUTE_LABELS[seg] || seg.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
     items.push({ name, href: currentPath });

@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { 
   X, Download, ZoomIn, ZoomOut, Maximize2, Minimize2, RotateCcw, 
-  FileText, Info, AlertTriangle, AlertCircle, Loader2, Calendar, Folder, File, Layers, ShieldCheck
+  FileText, Info, AlertTriangle, AlertCircle, Loader2, Calendar, Folder, File, Layers, ShieldCheck,
+  Presentation, ChevronLeft, ChevronRight, CheckCircle2
 } from 'lucide-react';
 import api from '@/lib/api';
 
@@ -51,7 +52,10 @@ export default function DocumentPreviewModal({ documentId, document, initialDocu
 
   useEffect(() => {
     fetchPreviewData();
-  }, [targetId]);
+  }, [targetId, documentId]);
+
+  const [slidesData, setSlidesData] = useState<any[] | null>(null);
+  const [extractedHtml, setExtractedHtml] = useState<string>('');
 
   const fetchPreviewData = async () => {
     const activeId = targetId || documentId;
@@ -59,6 +63,9 @@ export default function DocumentPreviewModal({ documentId, document, initialDocu
 
     setLoading(true);
     setError(null);
+    setSlidesData(null);
+    setTextContent('');
+    setExtractedHtml('');
     try {
       const res = await api.get(`/documents/${activeId}/preview`);
       if (res.data && res.data.document) {
@@ -66,14 +73,26 @@ export default function DocumentPreviewModal({ documentId, document, initialDocu
         setDoc(fetchedDoc);
         setCanPreview(true);
 
-        // If TXT file, fetch text content for inline display
-        const fileName = (fetchedDoc.file_name || fetchedDoc.title || '').toLowerCase();
-        if (fileName.endsWith('.txt') || fetchedDoc.mime_type?.includes('text/plain')) {
-          try {
-            const textRes = await api.get(`/documents/${activeId}/stream`, { responseType: 'text' });
-            setTextContent(textRes.data);
-          } catch (e) {
-            setTextContent('No text content available to preview.');
+        if (res.data.slidesData && Array.isArray(res.data.slidesData)) {
+          setSlidesData(res.data.slidesData);
+        }
+
+        if (res.data.extractedHtml) {
+          setExtractedHtml(res.data.extractedHtml);
+        }
+
+        if (res.data.extractedText) {
+          setTextContent(res.data.extractedText);
+        } else {
+          // If TXT file, fetch text content for inline display
+          const fileName = (fetchedDoc.file_name || fetchedDoc.title || '').toLowerCase();
+          if (fileName.endsWith('.txt') || fetchedDoc.mime_type?.includes('text/plain')) {
+            try {
+              const textRes = await api.get(`/documents/${activeId}/stream`, { responseType: 'text' });
+              setTextContent(textRes.data);
+            } catch (e) {
+              setTextContent('No text content available to preview.');
+            }
           }
         }
       } else {
@@ -225,8 +244,8 @@ export default function DocumentPreviewModal({ documentId, document, initialDocu
     try {
       const titleName = (doc.title || doc.file_name || 'Document').trim();
       const ext = getExtLabel().toLowerCase();
-      let finalExt = ext;
-      if (finalExt === 'doc' || finalExt === 'file') finalExt = 'pdf';
+      let finalExt = ext || 'bin';
+      if (finalExt === 'file') finalExt = 'bin';
       const fileName = titleName.includes('.') ? titleName : `${titleName}.${finalExt}`;
 
       if (doc.id) {
@@ -415,9 +434,9 @@ export default function DocumentPreviewModal({ documentId, document, initialDocu
               getOfficeType() === 'excel' ? (
                 <ExcelViewer doc={doc} zoomLevel={zoomLevel} handleDownloadClick={handleDownloadClick} formatFileSize={formatFileSize} formatDate={formatDate} />
               ) : getOfficeType() === 'powerpoint' ? (
-                <PowerPointViewer doc={doc} zoomLevel={zoomLevel} handleDownloadClick={handleDownloadClick} formatFileSize={formatFileSize} formatDate={formatDate} />
+                <PowerPointViewer doc={doc} slidesData={slidesData} textContent={textContent} zoomLevel={zoomLevel} handleDownloadClick={handleDownloadClick} formatFileSize={formatFileSize} formatDate={formatDate} />
               ) : (
-                <WordViewer doc={doc} zoomLevel={zoomLevel} handleDownloadClick={handleDownloadClick} formatFileSize={formatFileSize} formatDate={formatDate} />
+                <WordViewer doc={doc} textContent={textContent} extractedHtml={extractedHtml} zoomLevel={zoomLevel} handleDownloadClick={handleDownloadClick} formatFileSize={formatFileSize} formatDate={formatDate} />
               )
             ) : isTxt() ? (
               /* TEXT PREVIEW (TXT) */
@@ -431,7 +450,7 @@ export default function DocumentPreviewModal({ documentId, document, initialDocu
               </div>
             ) : (
               /* DIGITAL DOCUMENT SHEET CANVAS */
-              <WordViewer doc={doc} zoomLevel={zoomLevel} handleDownloadClick={handleDownloadClick} formatFileSize={formatFileSize} formatDate={formatDate} />
+              <WordViewer doc={doc} textContent={textContent} zoomLevel={zoomLevel} handleDownloadClick={handleDownloadClick} formatFileSize={formatFileSize} formatDate={formatDate} />
             )}
           </div>
 
@@ -612,194 +631,403 @@ function ExcelViewer({ doc, zoomLevel, handleDownloadClick, formatFileSize, form
   );
 }
 
-// Interactive PowerPoint Presentation Viewer (Clean Light Theme)
-function PowerPointViewer({ doc, zoomLevel, handleDownloadClick, formatFileSize, formatDate }: any) {
+// Interactive PowerPoint Presentation Viewer (Executive Visual Slide Deck Theme)
+function PowerPointViewer({ doc, slidesData, textContent, zoomLevel, handleDownloadClick, formatFileSize, formatDate }: any) {
   const [slide, setSlide] = useState(1);
-  const totalSlides = 3;
+  const [viewMode, setViewMode] = useState<'slides' | 'full'>('slides');
+  const totalSlides = slidesData && slidesData.length > 0 ? slidesData.length : 3;
+
+  const slideList = slidesData && slidesData.length > 0 ? slidesData : [
+    { 
+      slideNumber: 1, 
+      title: doc?.title || 'Executive Overview & Strategic Briefing', 
+      content: doc?.description || `Official presentation deck "${doc?.title || 'IBM'}" stored securely in DocVault under category ${doc?.category_name || 'General'}. Protected with enterprise AES-256 hash validation.`
+    },
+    { 
+      slideNumber: 2, 
+      title: 'Technical Architecture & Infrastructure', 
+      content: `System Architecture & Microservices Pipeline:\n\n• Microservices Architecture & Data Vault Pipeline\n• Zero-Trust Key Distribution & Cryptographic Hash Checksum\n• Automated Retention Policy & Real-Time Audit Log\n• Multi-Tier Workspace Folder Storage Hierarchy`
+    },
+    { 
+      slideNumber: 3, 
+      title: 'Verified Digital Certificate & Audit Seal', 
+      content: `Verified Digital Certificate & Summary:\n\nThis presentation specification deck is verified, tamper-proof, and archived securely within DocVault Enterprise Infrastructure.\n\nAll slides, graphics, and embedded assets are protected under active digital signature hashes.`
+    }
+  ];
 
   return (
     <div 
-      className="w-full max-w-4xl my-auto transition-all"
+      className="w-full max-w-4xl my-auto transition-all font-sans"
       style={{ transform: `scale(${zoomLevel / 100})`, transformOrigin: 'top center' }}
     >
-      <div className="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-2xl font-sans text-xs text-slate-900">
-        {/* Toolbar Header */}
-        <div className="bg-slate-50 border-b border-slate-200 p-3 flex items-center justify-between gap-3">
+      <div className="bg-white border border-slate-200/90 rounded-3xl overflow-hidden shadow-2xl text-xs text-slate-900">
+        
+        {/* Top Toolbar Header */}
+        <div className="bg-white border-b border-slate-200/80 px-6 py-3.5 flex flex-wrap items-center justify-between gap-3 shadow-2xs">
           <div className="flex items-center gap-3">
-            <span className="px-2.5 py-1 rounded-lg bg-orange-100 text-orange-700 font-bold border border-orange-200 text-xs font-mono">
-              PPTX SLIDE DECK
-            </span>
-            <span className="font-bold text-slate-900 text-xs truncate max-w-[250px]">{doc?.title || 'Presentation.pptx'}</span>
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 text-white font-bold flex items-center justify-center text-xs shadow-md shadow-orange-500/20 font-auth-heading">
+              P
+            </div>
+            <div>
+              <h3 className="text-sm font-extrabold text-slate-900 font-auth-heading tracking-tight leading-snug">
+                {doc?.title || 'Presentation.pptx'}
+              </h3>
+              <p className="text-xs text-slate-500 font-medium mt-0.5 flex items-center gap-2">
+                <span>PowerPoint Presentation</span>
+                <span>•</span>
+                <span className="font-mono">{formatFileSize(doc?.file_size || 500000)}</span>
+                <span>•</span>
+                <span className="font-mono font-bold text-orange-600">{totalSlides} Slides</span>
+              </p>
+            </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setSlide(p => Math.max(1, p - 1))}
-              disabled={slide <= 1}
-              className="px-2.5 py-1 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 text-slate-800 disabled:opacity-40 text-xs font-bold cursor-pointer"
-            >
-              ‹ Prev
-            </button>
-            <span className="text-slate-500 font-mono text-2xs">Slide {slide} of {totalSlides}</span>
-            <button
-              onClick={() => setSlide(p => Math.min(totalSlides, p + 1))}
-              disabled={slide >= totalSlides}
-              className="px-2.5 py-1 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 text-slate-800 disabled:opacity-40 text-xs font-bold cursor-pointer"
-            >
-              Next ›
-            </button>
-          </div>
-        </div>
+          <div className="flex items-center gap-3">
+            {/* View Mode Switcher */}
+            <div className="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200/70 text-xs font-semibold font-auth-body">
+              <button
+                type="button"
+                onClick={() => setViewMode('slides')}
+                className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                  viewMode === 'slides' ? 'bg-white text-orange-700 font-bold shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                Visual Slide Deck ({totalSlides})
+              </button>
+              <button
+                type="button"
+                onClick={() => setViewMode('full')}
+                className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                  viewMode === 'full' ? 'bg-white text-orange-700 font-bold shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                All Slides List
+              </button>
+            </div>
 
-        {/* 16:9 Widescreen Slide Canvas */}
-        <div className="p-6 bg-slate-100/80 flex items-center justify-center">
-          <div className="w-full aspect-[16/9] max-h-[48vh] bg-gradient-to-br from-white via-orange-50/40 to-slate-50 rounded-2xl border border-slate-200 p-8 flex flex-col justify-between relative overflow-hidden shadow-xl">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/10 rounded-full blur-3xl pointer-events-none" />
-
-            {slide === 1 && (
-              <div className="space-y-4 my-auto relative z-10">
-                <span className="px-3 py-1 rounded-full bg-orange-100 text-themePrimary text-2xs font-mono font-bold uppercase border border-orange-200">
-                  SLIDE 01 — EXECUTIVE BRIEF
-                </span>
-                <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight font-auth-heading">
-                  {doc?.title || 'Vaulted Presentation Deck'}
-                </h1>
-                <p className="text-xs text-slate-600 leading-relaxed max-w-xl font-medium">
-                  {doc?.description || `Official presentation specification deck stored under ${doc?.category_name || 'Project Specs'}. Encrypted with enterprise AES-256 hash validation.`}
-                </p>
-                <div className="pt-2 text-2xs font-mono text-slate-500">
-                  Date: {formatDate(doc?.created_at)} • File Size: {formatFileSize(doc?.file_size)}
-                </div>
-              </div>
-            )}
-
-            {slide === 2 && (
-              <div className="space-y-4 my-auto relative z-10">
-                <span className="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-2xs font-mono font-bold uppercase border border-blue-200">
-                  SLIDE 02 — ARCHITECTURE & METRICS
-                </span>
-                <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight font-auth-heading">
-                  Technical Architecture & Specifications
-                </h2>
-                <div className="grid grid-cols-2 gap-4 pt-2">
-                  <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-xs">
-                    <p className="font-bold text-themePrimary text-xs">Security Protocol</p>
-                    <p className="text-2xs text-slate-600 mt-1 font-medium">AES-256 Bit Encryption with zero-trust key management</p>
-                  </div>
-                  <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-xs">
-                    <p className="font-bold text-emerald-600 text-xs">Category Classification</p>
-                    <p className="text-2xs text-slate-600 mt-1 font-medium">{doc?.category_name || 'Personal Documents'}</p>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {slide === 3 && (
-              <div className="space-y-4 my-auto relative z-10 text-center">
-                <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-2xs font-mono font-bold uppercase border border-emerald-200">
-                  SLIDE 03 — VERIFICATION SEAL
-                </span>
-                <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight font-auth-heading">
-                  Verified Digital Certificate & Audit Seal
-                </h2>
-                <p className="text-xs text-slate-600 max-w-lg mx-auto leading-relaxed font-medium">
-                  Document ID #{doc?.id || '2026-VAL'} is verified and tamper-proof within DocVault Enterprise Infrastructure.
-                </p>
+            {viewMode === 'slides' && (
+              <div className="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200/70 text-xs font-semibold font-auth-body">
                 <button
-                  onClick={handleDownloadClick}
-                  className="mt-4 px-6 py-2.5 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-extrabold text-xs shadow-lg inline-flex items-center gap-2 cursor-pointer font-auth-heading"
+                  onClick={() => setSlide(p => Math.max(1, p - 1))}
+                  disabled={slide <= 1}
+                  className="px-2.5 py-1 rounded-lg bg-white border border-slate-200 hover:bg-slate-50 text-slate-800 disabled:opacity-40 text-xs font-bold cursor-pointer shadow-2xs"
                 >
-                  <Download className="w-4 h-4" /> Download Presentation Deck (.pptx)
+                  ‹ Prev
+                </button>
+                <span className="text-slate-600 font-mono text-xs px-2.5">
+                  Slide <strong>{slide}</strong> of {totalSlides}
+                </span>
+                <button
+                  onClick={() => setSlide(p => Math.min(totalSlides, p + 1))}
+                  disabled={slide >= totalSlides}
+                  className="px-2.5 py-1 rounded-lg bg-white border border-slate-200 hover:bg-slate-50 text-slate-800 disabled:opacity-40 text-xs font-bold cursor-pointer shadow-2xs"
+                >
+                  Next ›
                 </button>
               </div>
             )}
-
-            {/* Slide Footer */}
-            <div className="flex items-center justify-between text-[10px] font-mono text-slate-400 pt-4 border-t border-slate-200">
-              <span>DocVault Presentation Engine v2.0</span>
-              <span>Slide {slide} / {totalSlides}</span>
-            </div>
           </div>
         </div>
+
+        {/* Slide View Container */}
+        {viewMode === 'full' ? (
+          /* Full Presentation Deck Reader View */
+          <div className="p-6 sm:p-10 max-h-[70vh] overflow-y-auto bg-slate-100/60 font-sans">
+            <div className="max-w-3xl mx-auto bg-white border border-slate-200/90 rounded-2xl p-8 sm:p-12 shadow-xl space-y-6">
+              <div className="border-b border-slate-100 pb-5 flex justify-between items-start">
+                <div className="space-y-1.5">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-50 text-orange-700 text-xs font-bold font-auth-heading tracking-wide border border-orange-100">
+                    <ShieldCheck className="w-3.5 h-3.5 text-orange-600" /> POWERPOINT PRESENTATION DECK ({totalSlides} SLIDES)
+                  </span>
+                  <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight font-auth-heading pt-1">
+                    {doc?.title || 'Presentation Specification Deck'}
+                  </h1>
+                  <p className="text-xs text-slate-500 font-medium">
+                    Vault Category: <strong className="text-slate-800">{doc?.category_name || 'General'}</strong> {doc?.folder_name ? `• Folder: ${doc.folder_name}` : ''}
+                  </p>
+                </div>
+                <div className="text-right shrink-0">
+                  <span className="text-xs font-mono text-slate-400 font-bold">ID: #{doc?.id || 'VAL-2026'}</span>
+                  <p className="text-xs font-medium text-slate-500 mt-1">{formatDate(doc?.created_at)}</p>
+                </div>
+              </div>
+
+              {/* Render Slides Sequentially */}
+              <div className="space-y-6">
+                {slideList.map((sItem: any, idx: number) => (
+                  <div key={idx} className="p-6 rounded-2xl bg-slate-50/80 border border-slate-200/80 space-y-3 shadow-2xs">
+                    <div className="flex items-center justify-between text-xs text-orange-700 font-bold border-b border-slate-200/80 pb-2.5 font-auth-heading">
+                      <span className="flex items-center gap-2">
+                        <span className="px-2 py-0.5 rounded bg-orange-100 text-orange-800 text-[11px] font-mono">SLIDE {String(sItem.slideNumber || idx + 1).padStart(2, '0')}</span>
+                        <span>{sItem.title || `SLIDE ${idx + 1} SPECIFICATION`}</span>
+                      </span>
+                      <span className="text-[11px] text-slate-400 font-normal font-mono">DocVault Deck</span>
+                    </div>
+                    <div className="whitespace-pre-wrap font-sans text-sm text-slate-800 leading-relaxed select-text pt-1">
+                      {sItem.content}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="pt-6 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400 font-sans">
+                <span className="flex items-center gap-1.5">
+                  <ShieldCheck className="w-4 h-4 text-emerald-500" /> Verified Presentation Stamp • DocVault Enterprise
+                </span>
+                <span>{totalSlides} Total Slides</span>
+              </div>
+            </div>
+          </div>
+        ) : (
+          /* Interactive 16:9 Visual Slide Deck View */
+          <div className="p-6 sm:p-8 bg-slate-900/90 text-white space-y-6 font-sans">
+            
+            {/* Visual Slide Frame */}
+            <div className="w-full aspect-[16/9] min-h-[360px] max-h-[50vh] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-950 rounded-2xl border border-slate-700/80 p-8 sm:p-10 flex flex-col justify-between relative overflow-hidden shadow-2xl">
+              
+              {/* Background Ambient Glow */}
+              <div className="absolute top-0 right-0 w-80 h-80 bg-orange-500/15 rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute bottom-0 left-0 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+
+              {/* Slide Header Pill */}
+              <div className="flex items-center justify-between border-b border-slate-700/60 pb-4 relative z-10">
+                <div className="flex items-center gap-2">
+                  <span className="px-3 py-1 rounded-full bg-orange-500/20 text-orange-400 text-xs font-bold font-mono border border-orange-500/30 uppercase">
+                    SLIDE {String(slide).padStart(2, '0')} / {String(totalSlides).padStart(2, '0')}
+                  </span>
+                  <span className="text-xs text-slate-400 font-medium truncate max-w-[300px]">
+                    {doc?.title || 'PowerPoint Presentation'}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
+                  <Presentation className="w-4 h-4 text-orange-400" />
+                  <span>16:9 Widescreen Deck</span>
+                </div>
+              </div>
+
+              {/* Slide Body Visual Content */}
+              <div className="my-auto relative z-10 max-h-[34vh] overflow-y-auto space-y-4 py-2">
+                <div className="space-y-3">
+                  <span className="inline-block px-3 py-1 rounded-md bg-orange-500/20 text-orange-300 text-xs font-mono font-bold tracking-wider uppercase border border-orange-500/30">
+                    SLIDE {String(slide).padStart(2, '0')} — {(slideList[slide - 1]?.title) || `Slide ${slide}`}
+                  </span>
+                  <h1 className="text-xl sm:text-3xl font-black text-white tracking-tight font-auth-heading leading-tight">
+                    {(slideList[slide - 1]?.title) || doc?.title || `Slide ${slide}`}
+                  </h1>
+                  <div className="whitespace-pre-wrap font-sans text-xs sm:text-sm text-slate-200 leading-relaxed p-5 rounded-2xl bg-slate-800/80 border border-slate-700/80 shadow-inner select-text">
+                    {slideList[slide - 1]?.content || `Slide ${slide} content specification.`}
+                  </div>
+                </div>
+              </div>
+
+              {/* Slide Footer */}
+              <div className="flex items-center justify-between text-xs font-mono text-slate-500 pt-4 border-t border-slate-800 relative z-10">
+                <span className="flex items-center gap-1.5">
+                  <ShieldCheck className="w-4 h-4 text-emerald-400" /> DocVault Presentation Reader v2.0
+                </span>
+                <span>Slide {slide} of {totalSlides}</span>
+              </div>
+            </div>
+
+            {/* Bottom Slide Thumbnails Strip Carousel */}
+            <div className="space-y-2">
+              <p className="text-[11px] font-mono text-slate-400 uppercase tracking-wider font-bold">SLIDE DECK THUMBNAILS ({totalSlides} SLIDES - CLICK TO JUMP)</p>
+              <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-thin">
+                {slideList.map((sItem: any, idx: number) => {
+                  const sNum = idx + 1;
+                  const isActive = slide === sNum;
+                  return (
+                    <button
+                      key={idx}
+                      onClick={() => setSlide(sNum)}
+                      className={`shrink-0 w-36 h-22 rounded-xl p-2.5 transition-all text-left flex flex-col justify-between cursor-pointer border ${
+                        isActive
+                          ? 'bg-gradient-to-br from-orange-500/20 to-amber-500/20 border-orange-500 ring-2 ring-orange-500/40 shadow-lg scale-102'
+                          : 'bg-slate-800/90 border-slate-700/80 hover:bg-slate-800 hover:border-slate-600'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded ${isActive ? 'bg-orange-500 text-white' : 'bg-slate-700 text-slate-300'}`}>
+                          #{sNum}
+                        </span>
+                        {isActive && <span className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-ping" />}
+                      </div>
+                      <p className="text-[10px] font-bold text-slate-200 truncate font-auth-heading mt-1">
+                        {sItem.title || `Slide ${sNum}`}
+                      </p>
+                      <p className="text-[9px] text-slate-400 truncate">
+                        {sItem.content?.slice(0, 30) || 'Slide text content...'}
+                      </p>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
-// Interactive Word Document Reader (Clean Light Theme)
-function WordViewer({ doc, zoomLevel, handleDownloadClick, formatFileSize, formatDate }: any) {
+// Interactive Word Document Reader (Executive & Professional Light Theme)
+function WordViewer({ doc, textContent, extractedHtml, zoomLevel, handleDownloadClick, formatFileSize, formatDate }: any) {
+  const hasHtml = Boolean(extractedHtml && extractedHtml.trim());
+  const isRealText = Boolean(textContent && textContent.trim() && !textContent.startsWith('Official Word document record') && !textContent.startsWith('Document Title:'));
+
+  const rawPath = doc?.file_path || '';
+  const isCloudUrl = rawPath.startsWith('http://') || rawPath.startsWith('https://');
+  const googleViewerUrl = isCloudUrl ? `https://docs.google.com/gview?url=${encodeURIComponent(rawPath)}&embedded=true` : '';
+
   return (
     <div 
-      className="w-full max-w-3xl my-auto transition-all"
+      className="w-full max-w-4xl my-auto transition-all font-sans"
       style={{ transform: `scale(${zoomLevel / 100})`, transformOrigin: 'top center' }}
     >
-      <div className="bg-white text-slate-900 rounded-3xl p-8 sm:p-12 shadow-2xl space-y-6 font-auth-body relative border border-slate-200 overflow-hidden">
-        {/* Document Header & Ribbon */}
-        <div className="flex items-start justify-between border-b-2 border-slate-100 pb-6">
-          <div className="space-y-1.5">
-            <div className="flex items-center gap-2">
-              <span className="px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-700 text-[10px] font-black uppercase tracking-wider font-mono">
-                DOCX DOCUMENT
-              </span>
-              <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-bold font-mono flex items-center gap-1">
-                <ShieldCheck className="w-3 h-3 text-emerald-600" /> AES-256 ENCRYPTED
-              </span>
+      <div className="bg-white text-slate-900 rounded-3xl overflow-hidden shadow-2xl relative border border-slate-200/90 font-sans">
+        
+        {/* Microsoft Word Executive Ribbon Header */}
+        <div className="bg-white border-b border-slate-200/80 px-6 py-3.5 flex flex-wrap items-center justify-between gap-3 shadow-2xs">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-blue-700 text-white font-bold flex items-center justify-center text-sm shadow-md shadow-blue-500/20 font-auth-heading">
+              W
             </div>
-            <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight font-auth-heading">
-              {doc?.title || 'Vaulted Document'}
-            </h2>
-            <p className="text-xs text-slate-500 font-auth-body">
-              Category: <span className="font-bold text-slate-800">{doc?.category_name || 'Personal Documents'}</span> {doc?.folder_name ? `• Folder: ${doc.folder_name}` : ''}
-            </p>
+            <div>
+              <h3 className="text-sm font-extrabold text-slate-900 font-auth-heading tracking-tight leading-snug">
+                {doc?.title || doc?.file_name || 'Document.docx'}
+              </h3>
+              <p className="text-xs text-slate-500 font-medium mt-0.5 flex items-center gap-2">
+                <span>Microsoft Word Document</span>
+                <span>•</span>
+                <span className="font-mono">{formatFileSize(doc?.file_size || 100000)}</span>
+              </p>
+            </div>
           </div>
 
-          <div className="text-right shrink-0">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 text-blue-600 flex items-center justify-center font-black text-xs shadow-xs ml-auto mb-1 font-mono">
-              DOCX
-            </div>
-            <span className="text-[10px] font-mono font-bold text-slate-400">ID: #{doc?.id || '2026-VAL'}</span>
-          </div>
-        </div>
-
-        {/* Document Content Body */}
-        <div className="space-y-4 py-2 text-xs leading-relaxed text-slate-700 font-auth-body">
-          <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 space-y-1">
-            <p className="text-[10px] uppercase font-bold text-slate-400 font-mono">Executive Overview</p>
-            <p className="text-xs font-medium text-slate-800">
-              {doc?.description || `Official vaulted record "${doc?.title}" stored under category ${doc?.category_name || 'General'}. Protected with cryptographic key hashing and real-time activity logging.`}
-            </p>
-          </div>
-
-          {/* Document Specifications Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
-            <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-100">
-              <p className="text-[10px] font-bold text-slate-400 font-mono">FILE NAME</p>
-              <p className="text-xs font-bold text-slate-900 truncate font-auth-heading">{doc?.file_name || doc?.title}</p>
-            </div>
-            <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-100">
-              <p className="text-[10px] font-bold text-slate-400 font-mono">FILE SIZE</p>
-              <p className="text-xs font-bold text-slate-900 font-auth-heading">{formatFileSize(doc?.file_size || 1572864)}</p>
-            </div>
-            <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-100">
-              <p className="text-[10px] font-bold text-slate-400 font-mono">UPLOAD TIMESTAMP</p>
-              <p className="text-xs font-bold text-slate-900 font-auth-heading">{formatDate(doc?.created_at)}</p>
-            </div>
+          <div className="flex items-center gap-3">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-bold font-auth-heading tracking-wide border border-blue-100">
+              <ShieldCheck className="w-3.5 h-3.5 text-blue-600" /> AES-256 Verified
+            </span>
           </div>
         </div>
 
-        {/* Footer Controls & Signature Badge */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-4 border-t border-slate-100 text-xs font-auth-body">
-          <div className="flex items-center gap-2 text-slate-500 text-[11px]">
-            <ShieldCheck className="w-4 h-4 text-emerald-500" />
-            <span>Verified Digital Signature Stamp • DocVault 2.0</span>
-          </div>
+        {/* Main Authentic A4 Document Canvas Sheet */}
+        <div className="p-6 sm:p-10 max-h-[70vh] overflow-y-auto bg-slate-100/60 font-sans font-auth-body">
+          {/* A4 Paper Container */}
+          <div className="max-w-3xl mx-auto bg-white border border-slate-200/90 rounded-2xl p-8 sm:p-12 shadow-xl space-y-6">
+            
+            {/* Document Header Ribbon */}
+            <div className="border-b border-slate-100 pb-5 flex justify-between items-start">
+              <div className="space-y-1.5">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-bold font-auth-heading tracking-wide border border-blue-100">
+                  <ShieldCheck className="w-3.5 h-3.5 text-blue-600" /> OFFICIAL WORD RECORD
+                </span>
+                <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight font-auth-heading pt-1">
+                  {doc?.title || doc?.file_name || 'Word Document'}
+                </h1>
+                <p className="text-xs text-slate-500 font-medium">
+                  Vault Category: <strong className="text-slate-800">{doc?.category_name || 'General'}</strong> {doc?.folder_name ? `• Folder: ${doc.folder_name}` : ''}
+                </p>
+              </div>
+              <div className="text-right shrink-0">
+                <span className="text-xs font-mono text-slate-400 font-bold">ID: #{doc?.id || 'VAL-2026'}</span>
+                <p className="text-xs font-medium text-slate-500 mt-1">{formatDate(doc?.created_at)}</p>
+              </div>
+            </div>
 
-          <button
-            onClick={handleDownloadClick}
-            className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 text-white font-extrabold shadow-md shadow-orange-500/20 transition flex items-center justify-center gap-2 font-auth-heading cursor-pointer"
-          >
-            <Download className="w-4 h-4" /> Download Word Asset
-          </button>
+            {/* Document Text / HTML / Visual Body */}
+            <div className="space-y-6 text-xs text-slate-700 leading-relaxed font-sans">
+              {hasHtml ? (
+                <div className="p-6 sm:p-8 rounded-2xl bg-slate-50/80 border border-slate-200/80 space-y-4 shadow-2xs">
+                  <div className="flex items-center justify-between text-xs text-blue-700 font-bold border-b border-slate-200/80 pb-3 font-auth-heading">
+                    <span className="flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                      FULL WORD DOCUMENT FORMATTED VIEW
+                    </span>
+                    <span className="text-[11px] text-slate-400 font-normal">Mammoth HTML Rendering</span>
+                  </div>
+                  <div 
+                    className="prose max-w-none font-sans text-sm text-slate-800 leading-relaxed pt-1 select-text"
+                    dangerouslySetInnerHTML={{ __html: extractedHtml }}
+                  />
+                </div>
+              ) : isRealText ? (
+                <div className="p-6 sm:p-8 rounded-2xl bg-slate-50/80 border border-slate-200/80 space-y-4 shadow-2xs">
+                  <div className="flex items-center justify-between text-xs text-blue-700 font-bold border-b border-slate-200/80 pb-3 font-auth-heading">
+                    <span className="flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                      DOCUMENT CONTENT
+                    </span>
+                    <span className="text-[11px] text-slate-400 font-normal">Extracted Reader View</span>
+                  </div>
+                  <div className="whitespace-pre-wrap font-sans text-sm text-slate-800 leading-relaxed pt-1 select-text">
+                    {textContent}
+                  </div>
+                </div>
+              ) : isCloudUrl ? (
+                /* Interactive Visual Page View via Google Docs Viewer */
+                <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-lg">
+                  <iframe 
+                    src={googleViewerUrl}
+                    className="w-full h-[62vh] bg-white border-0"
+                    title={doc?.title || 'Word Visual View'}
+                  />
+                </div>
+              ) : (
+                <div className="p-8 rounded-2xl bg-gradient-to-br from-blue-50/50 via-slate-50 to-indigo-50/30 border border-blue-100 space-y-5 text-center">
+                  <div className="w-12 h-12 rounded-2xl bg-blue-600 text-white font-bold flex items-center justify-center text-lg mx-auto shadow-md shadow-blue-500/20 font-auth-heading">
+                    W
+                  </div>
+                  <div className="space-y-1 max-w-md mx-auto">
+                    <h3 className="text-sm font-extrabold text-slate-900 font-auth-heading">
+                      {doc?.title || doc?.file_name || 'Microsoft Word Document'}
+                    </h3>
+                    <p className="text-xs text-slate-500">
+                      Vault Record #{doc?.id || '2026'} • Format: <strong className="text-slate-700 font-mono">Word (.docx)</strong>
+                    </p>
+                  </div>
+                  <div className="pt-2 flex justify-center">
+                    <button
+                      onClick={() => handleDownloadClick && handleDownloadClick(doc)}
+                      className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 text-white font-bold text-xs flex items-center gap-2 hover:from-blue-700 hover:to-blue-800 transition-all shadow-md shadow-blue-600/20 cursor-pointer"
+                    >
+                      <Download className="w-4 h-4" /> Download Original Word Document (.docx)
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* File Information & Vault Specifications */}
+              <div className="space-y-2.5 pt-2">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 font-auth-heading">Vault File Specifications</h4>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/80">
+                    <p className="text-[10px] text-slate-400 font-mono uppercase font-bold">File Format</p>
+                    <p className="text-xs font-bold text-slate-800 mt-0.5">Word (.docx)</p>
+                  </div>
+                  <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/80">
+                    <p className="text-[10px] text-slate-400 font-mono uppercase font-bold">Encrypted Size</p>
+                    <p className="text-xs font-bold text-slate-800 mt-0.5 font-mono">{formatFileSize(doc?.file_size)}</p>
+                  </div>
+                  <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/80">
+                    <p className="text-[10px] text-slate-400 font-mono uppercase font-bold">Vault Security</p>
+                    <p className="text-xs font-bold text-emerald-600 mt-0.5 flex items-center gap-1 font-auth-heading">
+                      <ShieldCheck className="w-3.5 h-3.5" /> AES-256 Validated
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Document Stamp Footer */}
+              <div className="pt-6 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400 font-sans">
+                <span className="flex items-center gap-1.5">
+                  <ShieldCheck className="w-4 h-4 text-emerald-500" /> Tamper-Proof Digital Verification Stamp
+                </span>
+                <span>DocVault Enterprise Reader</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

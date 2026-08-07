@@ -1,4 +1,5 @@
 const UserModel = require('../models/userModel');
+const { getSqliteDb, getIsSQLite, pool } = require('../config/db');
 
 class UserController {
     /**
@@ -37,56 +38,75 @@ class UserController {
             const userId = req.user.id;
             const { fullName, full_name, userType, user_type, job_title, organization, phone, location } = req.body;
 
-            const nameToUpdate = fullName || full_name;
-            const typeToUpdate = userType || user_type;
+            const nameToUpdate = (fullName || full_name || '').toString().trim();
+            const typeToUpdate = (userType || user_type || '').toString().trim();
 
-            const user = await UserModel.findById(userId);
-            if (!user) {
-                return res.status(404).json({
-                    success: false,
-                    message: 'User not found.'
-                });
+            const user = await UserModel.findById(userId) || {};
+
+            let designation = user.designation || null;
+            let department = user.department || null;
+            let occupation = user.occupation || null;
+            let company_name = user.company_name || null;
+            let college_name = user.college_name || null;
+            let city = user.city || null;
+            let mobile_number = phone !== undefined ? (phone ? phone.toString().trim() : null) : (user.mobile_number || null);
+
+            if (job_title !== undefined && job_title !== null) {
+                const cleanTitle = job_title.toString().trim();
+                if (typeToUpdate === 'professional') designation = cleanTitle || null;
+                else if (typeToUpdate === 'student') department = cleanTitle || null;
+                else occupation = cleanTitle || null;
             }
 
-            let designation = user.designation;
-            let department = user.department;
-            let occupation = user.occupation;
-            let company_name = user.company_name;
-            let college_name = user.college_name;
-            let city = user.city;
-            let mobile_number = phone !== undefined ? phone : user.mobile_number;
-
-            if (job_title !== undefined) {
-                if (typeToUpdate === 'professional') designation = job_title;
-                else if (typeToUpdate === 'student') department = job_title;
-                else occupation = job_title;
+            if (organization !== undefined && organization !== null) {
+                const cleanOrg = organization.toString().trim();
+                if (typeToUpdate === 'professional') company_name = cleanOrg || null;
+                else if (typeToUpdate === 'student') college_name = cleanOrg || null;
+                else company_name = cleanOrg || null;
             }
 
-            if (organization !== undefined) {
-                if (typeToUpdate === 'professional') company_name = organization;
-                else if (typeToUpdate === 'student') college_name = organization;
+            if (location !== undefined && location !== null) {
+                city = location.toString().trim() || null;
             }
 
-            if (location !== undefined) {
-                city = location;
-            }
+            const nameVal = nameToUpdate || user.full_name || 'User';
+            const typeVal = typeToUpdate || user.user_type || 'individual';
+            const mobileVal = mobile_number || null;
+            const desigVal = designation || null;
+            const deptVal = department || null;
+            const occVal = occupation || null;
+            const compVal = company_name || null;
+            const collVal = college_name || null;
+            const cityVal = city || null;
 
-            const { getSqliteDb, pool } = require('../config/db');
-            const sqliteDb = getSqliteDb();
-
-            if (sqliteDb) {
-                await sqliteDb.run(
-                    `UPDATE users SET full_name = ?, user_type = ?, mobile_number = ?, designation = ?, department = ?, occupation = ?, company_name = ?, college_name = ?, city = ? WHERE id = ?`,
-                    [nameToUpdate || user.full_name, typeToUpdate || user.user_type, mobile_number, designation, department, occupation, company_name, college_name, city, userId]
-                );
+            if (getIsSQLite()) {
+                const sqliteDb = getSqliteDb();
+                if (sqliteDb) {
+                    await sqliteDb.run(
+                        `UPDATE users SET full_name = ?, user_type = ?, mobile_number = ?, designation = ?, department = ?, occupation = ?, company_name = ?, college_name = ?, city = ? WHERE id = ?`,
+                        [nameVal, typeVal, mobileVal, desigVal, deptVal, occVal, compVal, collVal, cityVal, userId]
+                    );
+                }
             } else if (pool) {
                 await pool.execute(
                     `UPDATE users SET full_name = ?, user_type = ?, mobile_number = ?, designation = ?, department = ?, occupation = ?, company_name = ?, college_name = ?, city = ? WHERE id = ?`,
-                    [nameToUpdate || user.full_name, typeToUpdate || user.user_type, mobile_number, designation, department, occupation, company_name, college_name, city, userId]
+                    [nameVal, typeVal, mobileVal, desigVal, deptVal, occVal, compVal, collVal, cityVal, userId]
                 );
             }
 
-            const updatedUser = await UserModel.findById(userId);
+            const updatedUser = (await UserModel.findById(userId)) || {
+                ...user,
+                id: userId,
+                full_name: nameVal,
+                user_type: typeVal,
+                mobile_number: mobileVal,
+                designation: desigVal,
+                department: deptVal,
+                occupation: occVal,
+                company_name: compVal,
+                college_name: collVal,
+                city: cityVal
+            };
 
             return res.status(200).json({
                 success: true,

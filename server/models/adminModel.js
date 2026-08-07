@@ -122,17 +122,10 @@ class AdminModel {
             const memDocs = DocumentModel.getMemoryDocuments() || [];
 
             const usersWithRealCounts = allRows.map(u => {
-                const memCount = memDocs.filter(d => (Number(d.user_id) === Number(u.id) || d.email === u.email) && !d.is_archived).length;
                 const dbCount = Number(u.db_doc_count || 0);
-                let defaultBase = 3;
-                if (u.email?.includes('harini')) defaultBase = 7;
-                else if (u.email?.includes('nisha') && u.email?.includes('26')) defaultBase = 2;
-                else if (u.email?.includes('bharathi')) defaultBase = 5;
-                else if (u.email?.includes('admin')) defaultBase = 12;
-
                 return {
                     ...u,
-                    total_documents: Math.max(dbCount, memCount, defaultBase)
+                    total_documents: dbCount
                 };
             });
 

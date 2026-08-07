@@ -1,23 +1,40 @@
-const { pool } = require('../config/db');
+const { pool, getIsSQLite, getSqliteDb } = require('../config/db');
 
-// In-memory fallback store for development environment if MySQL server is offline
+// In-memory fallback store for development environment if DB is offline
 const memoryUsers = [];
 
 class UserModel {
     static async findByEmail(email) {
         try {
-            const [rows] = await pool.execute('SELECT * FROM users WHERE email = ?', [email]);
-            return rows[0] || null;
+            if (getIsSQLite()) {
+                const db = getSqliteDb();
+                const user = await db.get('SELECT * FROM users WHERE LOWER(email) = LOWER(?)', [email]);
+                if (user) return user;
+            }
+
+            const [rows] = await pool.execute('SELECT * FROM users WHERE LOWER(email) = LOWER(?)', [email]);
+            if (rows && rows[0]) return rows[0];
+
+            return memoryUsers.find(u => u.email.toLowerCase() === email.toLowerCase()) || null;
         } catch (err) {
-            console.warn('[UserModel] Using fallback memory store (MySQL connection failed or offline)');
+            console.warn('[UserModel] Database query warning in findByEmail:', err.message);
             return memoryUsers.find(u => u.email.toLowerCase() === email.toLowerCase()) || null;
         }
     }
 
     static async findById(id) {
         try {
+            if (getIsSQLite()) {
+                const db = getSqliteDb();
+                const user = await db.get('SELECT * FROM users WHERE id = ?', [id]);
+                if (user) {
+                    const { password, ...userWithoutPassword } = user;
+                    return userWithoutPassword;
+                }
+            }
+
             const [rows] = await pool.execute('SELECT * FROM users WHERE id = ?', [id]);
-            if (rows[0]) {
+            if (rows && rows[0]) {
                 const { password, ...userWithoutPassword } = rows[0];
                 return userWithoutPassword;
             }
@@ -32,8 +49,16 @@ class UserModel {
 
     static async findByMobile(mobile) {
         try {
+            if (getIsSQLite()) {
+                const db = getSqliteDb();
+                const user = await db.get('SELECT * FROM users WHERE mobile_number = ?', [mobile]);
+                if (user) return user;
+            }
+
             const [rows] = await pool.execute('SELECT * FROM users WHERE mobile_number = ?', [mobile]);
-            return rows[0] || null;
+            if (rows && rows[0]) return rows[0];
+
+            return memoryUsers.find(u => u.mobile_number === mobile) || null;
         } catch (err) {
             return memoryUsers.find(u => u.mobile_number === mobile) || null;
         }
@@ -41,33 +66,66 @@ class UserModel {
 
     static async create(userData) {
         const {
-            fullName, email, password, userType, mobileNumber, phoneVerified,
+            fullName, email, password, userType, mobileNumber, phoneVerified, emailVerified,
             collegeName, department, yearOfStudy, studentId,
             companyName, designation, industry, yearsOfExperience, employeeId,
             occupation, country, state, city
         } = userData;
 
+        const isEmailVerified = emailVerified || phoneVerified ? 1 : 0;
+
         try {
+            if (getIsSQLite()) {
+                const db = getSqliteDb();
+                const res = await db.run(
+                    `INSERT INTO users (
+                        full_name, email, password, user_type, mobile_number, phone_verified, email_verified,
+                        college_name, department, year_of_study, student_id,
+                        company_name, designation, industry, years_of_experience, employee_id,
+                        occupation, country, state, city
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                    [
+                        fullName, email, password, userType || 'individual', mobileNumber || null, phoneVerified ? 1 : 0, isEmailVerified,
+                        collegeName || null, department || null, yearOfStudy || null, studentId || null,
+                        companyName || null, designation || null, industry || null, yearsOfExperience || null, employeeId || null,
+                        occupation || null, country || null, state || null, city || null
+                    ]
+                );
+                const newId = res.lastID;
+                const createdUser = {
+                    id: newId,
+                    full_name: fullName,
+                    email,
+                    user_type: userType || 'individual',
+                    mobile_number: mobileNumber || null
+                };
+                memoryUsers.push({ ...createdUser, password });
+                return createdUser;
+            }
+
             const [result] = await pool.execute(
                 `INSERT INTO users (
-                    full_name, email, password, user_type, mobile_number, phone_verified,
+                    full_name, email, password, user_type, mobile_number, phone_verified, email_verified,
                     college_name, department, year_of_study, student_id,
                     company_name, designation, industry, years_of_experience, employee_id,
                     occupation, country, state, city
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                 [
-                    fullName, email, password, userType || 'individual', mobileNumber || null, phoneVerified ? 1 : 0,
+                    fullName, email, password, userType || 'individual', mobileNumber || null, phoneVerified ? 1 : 0, isEmailVerified,
                     collegeName || null, department || null, yearOfStudy || null, studentId || null,
                     companyName || null, designation || null, industry || null, yearsOfExperience || null, employeeId || null,
                     occupation || null, country || null, state || null, city || null
                 ]
             );
-            return {
+            const createdUser = {
                 id: result.insertId,
                 full_name: fullName,
                 email,
-                user_type: userType || 'individual'
+                user_type: userType || 'individual',
+                mobile_number: mobileNumber || null
             };
+            memoryUsers.push({ ...createdUser, password });
+            return createdUser;
         } catch (err) {
             const newUser = {
                 id: memoryUsers.length + 1,
@@ -77,6 +135,7 @@ class UserModel {
                 user_type: userType || 'individual',
                 mobile_number: mobileNumber || null,
                 phone_verified: phoneVerified ? 1 : 0,
+                email_verified: isEmailVerified,
                 college_name: collegeName || null,
                 department: department || null,
                 year_of_study: yearOfStudy || null,
@@ -104,7 +163,14 @@ class UserModel {
 
     static async updatePassword(id, hashedPassword) {
         try {
-            await pool.execute('UPDATE users SET password = ? WHERE id = ?', [hashedPassword, id]);
+            if (getIsSQLite()) {
+                const db = getSqliteDb();
+                await db.run('UPDATE users SET password = ? WHERE id = ?', [hashedPassword, id]);
+            } else {
+                await pool.execute('UPDATE users SET password = ? WHERE id = ?', [hashedPassword, id]);
+            }
+            const user = memoryUsers.find(u => u.id === Number(id));
+            if (user) user.password = hashedPassword;
             return true;
         } catch (err) {
             const user = memoryUsers.find(u => u.id === Number(id));

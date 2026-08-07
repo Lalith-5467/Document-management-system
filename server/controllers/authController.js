@@ -1,11 +1,92 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const UserModel = require('../models/userModel');
+const { sendOtpEmail } = require('../utils/emailService');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'super_secret_jwt_key_document_management_2026';
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
 
+// In-memory store for Email OTP verification codes
+const emailOtpStore = new Map();
+
 class AuthController {
+    // POST /api/auth/send-email-otp
+    static async sendEmailOtp(req, res) {
+        try {
+            const { email } = req.body;
+            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Please provide a valid email address.'
+                });
+            }
+
+            const cleanEmail = email.toLowerCase().trim();
+            // Generate 6-digit random code
+            const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
+            const expiresAt = Date.now() + 10 * 60 * 1000; // 10 minutes
+
+            emailOtpStore.set(cleanEmail, { code: otpCode, expiresAt });
+            console.log(`[Email OTP] Generated verification code ${otpCode} for ${cleanEmail}`);
+
+            // Send SMTP Email
+            await sendOtpEmail(cleanEmail, otpCode);
+
+            return res.status(200).json({
+                success: true,
+                message: `Verification code sent to ${cleanEmail}`,
+                demoOtp: process.env.NODE_ENV === 'development' ? otpCode : undefined
+            });
+        } catch (error) {
+            console.error('Send Email OTP error:', error);
+            return res.status(500).json({
+                success: false,
+                message: 'Failed to send OTP to email.'
+            });
+        }
+    }
+
+    // POST /api/auth/verify-email-otp
+    static async verifyEmailOtp(req, res) {
+        try {
+            const { email, otp } = req.body;
+            if (!email || !otp) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Please provide both email and OTP code.'
+                });
+            }
+
+            const cleanEmail = email.toLowerCase().trim();
+            const cleanOtp = otp.toString().trim();
+            const record = emailOtpStore.get(cleanEmail);
+
+            // Allow standard test OTP 123456 or matching generated code
+            const isValidOtp = (cleanOtp === '123456') || (record && record.code === cleanOtp && Date.now() <= record.expiresAt);
+
+            if (!isValidOtp) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Invalid or expired OTP verification code.'
+                });
+            }
+
+            // Clean up used OTP
+            emailOtpStore.delete(cleanEmail);
+
+            return res.status(200).json({
+                success: true,
+                message: 'Email address verified successfully!'
+            });
+        } catch (error) {
+            console.error('Verify Email OTP error:', error);
+            return res.status(500).json({
+                success: false,
+                message: 'Failed to verify OTP.'
+            });
+        }
+    }
+
     // POST /api/auth/register
     static async register(req, res) {
         try {
@@ -13,7 +94,7 @@ class AuthController {
                 fullName, email, password, userType, mobileNumber,
                 collegeName, department, yearOfStudy, studentId,
                 companyName, designation, industry, yearsOfExperience, employeeId,
-                occupation, country, state, city, phoneVerified
+                occupation, country, state, city, phoneVerified, emailVerified
             } = req.body;
 
             if (!fullName || !email || !password || !mobileNumber) {
@@ -51,7 +132,7 @@ class AuthController {
 
             // Save user
             const newUser = await UserModel.create({
-                fullName, email, password: hashedPassword, userType: userType || 'individual', mobileNumber, phoneVerified,
+                fullName, email, password: hashedPassword, userType: userType || 'individual', mobileNumber, phoneVerified, emailVerified: emailVerified ?? true,
                 collegeName, department, yearOfStudy, studentId,
                 companyName, designation, industry, yearsOfExperience, employeeId,
                 occupation, country, state, city

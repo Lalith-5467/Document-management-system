@@ -739,11 +739,11 @@ export default function UploadPage() {
                     Drag & Drop your document here <span className="text-slate-500 dark:text-slate-400 font-normal">or</span> <span className="text-themePrimary dark:text-orange-400 underline">Browse Files</span>
                   </p>
                   <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium font-auth-body">
-                    Supported: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, PNG, JPG, JPEG, ZIP
+                    Supported: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, Images (PNG/JPG/WEBP/SVG/GIF), TXT, CSV, ZIP, RAR, Data Files
                   </p>
                 </div>
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-600 dark:text-slate-400 font-auth-label">
-                  <HardDrive className="w-3 h-3 text-themePrimary dark:text-orange-400" /> Maximum File Size: 25 MB
+                  <HardDrive className="w-3 h-3 text-themePrimary dark:text-orange-400" /> Maximum File Size: 50 MB
                 </div>
               </div>
             )}

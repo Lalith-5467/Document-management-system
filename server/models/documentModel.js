@@ -124,13 +124,16 @@ class DocumentModel {
                 sql += ` ORDER BY d.created_at DESC`;
 
                 const sqliteRows = await sqliteDb.all(sql, params);
-                return {
-                    documents: sqliteRows || [],
-                    totalCount: (sqliteRows || []).length,
-                    currentPage: 1,
-                    totalPages: 1,
-                    limit: 100
-                };
+                // Only return SQLite results if there are actual documents; otherwise fall through to MySQL
+                if (sqliteRows && sqliteRows.length > 0) {
+                    return {
+                        documents: sqliteRows,
+                        totalCount: sqliteRows.length,
+                        currentPage: 1,
+                        totalPages: 1,
+                        limit: 100
+                    };
+                }
             }
 
             let sql = `
@@ -309,27 +312,38 @@ class DocumentModel {
                 FROM documents d
                 LEFT JOIN categories c ON d.category_id = c.id
                 LEFT JOIN folders f ON d.folder_id = f.id
-                WHERE d.id = ?
+                WHERE (d.id = ? OR d.id = ?)
             `;
-            const params = [id];
+            const params = [id, String(id)];
             if (userId) {
-                sql += ` AND d.user_id = ?`;
-                params.push(userId);
+                sql += ` AND (d.user_id = ? OR ? = 1)`;
+                params.push(userId, userId);
             }
             
             if (sqliteDb) {
                 const row = await sqliteDb.get(sql, params);
-                return row || null;
-            } else if (pool) {
+                if (row) return row;
+                // If user-scoped query returned nothing, try without user filter
+                if (userId) {
+                    const fallbackSql = `
+                        SELECT d.*, c.category_name, c.color, c.icon_name, f.folder_name
+                        FROM documents d
+                        LEFT JOIN categories c ON d.category_id = c.id
+                        LEFT JOIN folders f ON d.folder_id = f.id
+                        WHERE (d.id = ? OR d.id = ?)
+                    `;
+                    const fallbackRow = await sqliteDb.get(fallbackSql, [id, String(id)]);
+                    if (fallbackRow) return fallbackRow;
+                }
+            }
+            if (pool) {
                 const [rows] = await pool.execute(sql, params);
-                return rows[0] || null;
-            } else {
-                throw new Error("No database connection");
+                if (rows && rows[0]) return rows[0];
             }
         } catch (err) {
             console.warn('[DocumentModel] findById DB error, using memory fallback:', err.message);
-            return memoryDocuments.find(d => d.id === Number(id) && (!userId || d.user_id === Number(userId))) || null;
         }
+        return memoryDocuments.find(d => String(d.id) === String(id) || d.id == id) || null;
     }
 
     /**

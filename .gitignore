@@ -8,3 +8,5 @@ build/
 .env.local
 server/database/*.sqlite
 server/database/*.db
+server/uploads/*
+!server/uploads/.gitkeep

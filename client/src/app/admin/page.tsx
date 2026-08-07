@@ -58,8 +58,8 @@ function SectionTitle({ icon: Icon, title, subtitle, color = 'text-themePrimary'
   return (
     <div className="flex items-center justify-between mb-5">
       <div>
-        <h2 className="text-sm font-bold text-slate-900 font-auth-heading">{title}</h2>
-        {subtitle && <p className="text-2xs text-slate-500">{subtitle}</p>}
+        <h2 className="text-sm font-bold text-slate-900 dark:text-white font-auth-heading">{title}</h2>
+        {subtitle && <p className="text-2xs text-slate-500 dark:text-slate-400">{subtitle}</p>}
       </div>
       {action}
     </div>
@@ -71,7 +71,7 @@ function StatCard({ title, value, icon: Icon, gradient, badge, href, onClick, lo
   return (
     <div
       onClick={onClick}
-      className="group relative p-5 rounded-2xl border border-slate-200/80 hover:border-orange-500/40 bg-white overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-orange-500/10 block text-left w-full active-press cursor-pointer select-none"
+      className="group relative p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 hover:border-orange-500/40 bg-white dark:bg-slate-900 overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-orange-500/10 block text-left w-full active-press cursor-pointer select-none"
     >
       {/* Dynamic ambient glow orb */}
       <div className={`absolute -top-6 -right-6 w-28 h-28 rounded-full opacity-10 blur-2xl transition-all duration-500 group-hover:opacity-25 group-hover:scale-125 bg-gradient-to-tr ${gradient}`} />
