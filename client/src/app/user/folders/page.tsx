@@ -443,8 +443,8 @@ export default function FoldersPage() {
 
       {/* CREATE MODAL WITH FILE ATTACHMENT */}
       {isCreateOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
-          <div className="bg-white dark:bg-[#111827] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-5 animate-pop-in text-slate-900 dark:text-white max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto">
+          <div className="bg-white dark:bg-[#111827] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-5 animate-pop-in my-auto text-slate-900 dark:text-white max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
               <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
                 <FolderPlus className="w-4 h-4 text-indigo-600 dark:text-indigo-400" /> Create Workspace Folder
@@ -651,8 +651,8 @@ export default function FoldersPage() {
 
       {/* EDIT MODAL */}
       {isEditOpen && selectedFolder && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
-          <div className="bg-white dark:bg-[#111827] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-5 animate-pop-in text-slate-900 dark:text-white">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto">
+          <div className="bg-white dark:bg-[#111827] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-5 animate-pop-in my-auto text-slate-900 dark:text-white">
             <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
               <h2 className="text-lg font-bold text-slate-900 dark:text-white">Edit Folder</h2>
               <button onClick={() => setIsEditOpen(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-white">
@@ -719,8 +719,8 @@ export default function FoldersPage() {
 
       {/* DELETE MODAL */}
       {isDeleteOpen && selectedFolder && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
-          <div className="bg-white dark:bg-[#111827] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-5 animate-pop-in text-slate-900 dark:text-white">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto">
+          <div className="bg-white dark:bg-[#111827] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-5 animate-pop-in my-auto text-slate-900 dark:text-white">
             <h2 className="text-lg font-bold text-slate-900 dark:text-white">Delete Folder</h2>
             <p className="text-sm text-slate-600 dark:text-slate-400">
               Are you sure you want to delete <strong className="text-slate-900 dark:text-white">&quot;{selectedFolder.folder_name}&quot;</strong>?

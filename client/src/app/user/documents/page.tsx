@@ -894,21 +894,36 @@ export default function MyDocumentsPage() {
 
       {/* RENAME MODAL */}
       {activeModal === 'rename' && selectedDoc && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
-          <div className="bg-[#111827] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-800 space-y-4">
-            <h3 className="text-lg font-bold text-white">Rename Document</h3>
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto">
+          <div className="bg-white dark:bg-[#111827] rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4 animate-in fade-in zoom-in-95 duration-150 my-auto text-slate-900 dark:text-white">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+              <h3 className="text-base font-black text-slate-900 dark:text-white font-auth-heading flex items-center gap-2">
+                <Edit2 className="w-4 h-4 text-themePrimary" /> Rename Document
+              </h3>
+              <button onClick={() => setActiveModal(null)} className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 p-1 rounded-lg transition cursor-pointer">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
             <form onSubmit={handleRenameSubmit} className="space-y-4">
-              <input
-                type="text"
-                required
-                value={editTitle}
-                onChange={(e) => setEditTitle(e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-[#0b1120] border border-slate-800 rounded-xl text-white text-sm focus:outline-none focus:border-themePrimary"
-              />
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1.5 font-auth-heading">
+                  Document Title <span className="text-rose-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={editTitle}
+                  onChange={(e) => setEditTitle(e.target.value)}
+                  className="w-full px-4 py-3 bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white text-xs font-bold focus:outline-none focus:border-themePrimary transition"
+                  placeholder="Enter document title..."
+                />
+              </div>
               <div className="flex justify-end gap-3 pt-2">
-                <button type="button" onClick={() => setActiveModal(null)} className="px-4 py-2 text-sm font-semibold text-slate-400">Cancel</button>
-                <button type="submit" disabled={submitting} className="px-4 py-2 text-sm font-bold text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 rounded-xl shadow-lg shadow-orange-500/25">
-                  Save
+                <button type="button" onClick={() => setActiveModal(null)} className="px-4 py-2 text-xs font-black text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white cursor-pointer font-auth-heading transition">
+                  Cancel
+                </button>
+                <button type="submit" disabled={submitting} className="px-5 py-2.5 text-xs font-black text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:opacity-90 rounded-xl shadow-md shadow-orange-500/25 cursor-pointer font-auth-heading transition disabled:opacity-50">
+                  {submitting ? 'Saving...' : 'Save Changes'}
                 </button>
               </div>
             </form>
@@ -918,24 +933,38 @@ export default function MyDocumentsPage() {
 
       {/* MOVE MODAL */}
       {activeModal === 'move' && selectedDoc && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
-          <div className="bg-[#111827] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-800 space-y-4">
-            <h3 className="text-lg font-bold text-white">Move Document to Folder</h3>
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto">
+          <div className="bg-white dark:bg-[#111827] rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4 animate-in fade-in zoom-in-95 duration-150 my-auto text-slate-900 dark:text-white">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+              <h3 className="text-base font-black text-slate-900 dark:text-white font-auth-heading flex items-center gap-2">
+                <FolderInput className="w-4 h-4 text-themePrimary" /> Move Document to Folder
+              </h3>
+              <button onClick={() => setActiveModal(null)} className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 p-1 rounded-lg transition cursor-pointer">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
             <form onSubmit={handleMoveSubmit} className="space-y-4">
-              <select
-                value={editFolderId}
-                onChange={(e) => setEditFolderId(e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-[#0b1120] border border-slate-800 rounded-xl text-white text-sm focus:outline-none focus:border-themePrimary"
-              >
-                <option value="">(No specific folder)</option>
-                {folders.map(f => (
-                  <option key={f.id} value={f.id}>{f.folder_name}</option>
-                ))}
-              </select>
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1.5 font-auth-heading">
+                  Target Destination Folder
+                </label>
+                <select
+                  value={editFolderId}
+                  onChange={(e) => setEditFolderId(e.target.value)}
+                  className="w-full px-4 py-3 bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white text-xs font-bold focus:outline-none focus:border-themePrimary transition"
+                >
+                  <option value="">(No specific folder / Unassigned)</option>
+                  {folders.map(f => (
+                    <option key={f.id} value={f.id}>{f.folder_name}</option>
+                  ))}
+                </select>
+              </div>
               <div className="flex justify-end gap-3 pt-2">
-                <button type="button" onClick={() => setActiveModal(null)} className="px-4 py-2 text-sm font-semibold text-slate-400">Cancel</button>
-                <button type="submit" disabled={submitting} className="px-4 py-2 text-sm font-bold text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 rounded-xl shadow-lg shadow-orange-500/25">
-                  Move Document
+                <button type="button" onClick={() => setActiveModal(null)} className="px-4 py-2 text-xs font-black text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white cursor-pointer font-auth-heading transition">
+                  Cancel
+                </button>
+                <button type="submit" disabled={submitting} className="px-5 py-2.5 text-xs font-black text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:opacity-90 rounded-xl shadow-md shadow-orange-500/25 cursor-pointer font-auth-heading transition disabled:opacity-50">
+                  {submitting ? 'Moving...' : 'Move Document'}
                 </button>
               </div>
             </form>
@@ -945,16 +974,25 @@ export default function MyDocumentsPage() {
 
       {/* DELETE CONFIRMATION MODAL */}
       {activeModal === 'delete' && selectedDoc && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
-          <div className="bg-[#111827] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-800 space-y-4">
-            <h3 className="text-lg font-bold text-white">Move to Recycle Bin?</h3>
-            <p className="text-sm text-slate-400">
-              Are you sure you want to move <strong className="text-white">&quot;{selectedDoc.title}&quot;</strong> to the Recycle Bin? You can restore it anytime.
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto">
+          <div className="bg-white dark:bg-[#111827] rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4 animate-in fade-in zoom-in-95 duration-150 my-auto text-slate-900 dark:text-white">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+              <h3 className="text-base font-black text-slate-900 dark:text-white font-auth-heading flex items-center gap-2">
+                <Trash2 className="w-4 h-4 text-rose-500" /> Move to Recycle Bin?
+              </h3>
+              <button onClick={() => setActiveModal(null)} className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 p-1 rounded-lg transition cursor-pointer">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <p className="text-xs text-slate-600 dark:text-slate-300 font-medium leading-relaxed">
+              Are you sure you want to move <strong className="text-slate-900 dark:text-white font-bold">&quot;{selectedDoc.title}&quot;</strong> to the Recycle Bin? You can restore it anytime.
             </p>
             <div className="flex justify-end gap-3 pt-2">
-              <button type="button" onClick={() => setActiveModal(null)} className="px-4 py-2 text-sm font-semibold text-slate-400">Cancel</button>
-              <button onClick={handleDeleteSubmit} disabled={submitting} className="px-4 py-2 text-sm font-bold text-white bg-rose-600 hover:bg-rose-500 rounded-xl shadow-lg shadow-rose-600/30">
-                Move to Bin
+              <button type="button" onClick={() => setActiveModal(null)} className="px-4 py-2 text-xs font-black text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white cursor-pointer font-auth-heading transition">
+                Cancel
+              </button>
+              <button onClick={handleDeleteSubmit} disabled={submitting} className="px-5 py-2.5 text-xs font-black text-white bg-rose-600 hover:bg-rose-500 rounded-xl shadow-md shadow-rose-600/30 cursor-pointer font-auth-heading transition disabled:opacity-50">
+                {submitting ? 'Moving...' : 'Move to Bin'}
               </button>
             </div>
           </div>
@@ -972,30 +1010,30 @@ export default function MyDocumentsPage() {
 
       {/* CREATE FOLDER MODAL */}
       {isCreateFolderOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4 animate-in fade-in zoom-in-95 duration-150 text-slate-900">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-              <h3 className="text-base font-black text-slate-900 tracking-tight font-auth-heading">Create New Folder</h3>
-              <button onClick={() => setIsCreateFolderOpen(false)} className="text-slate-400 hover:text-slate-700">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto">
+          <div className="bg-white dark:bg-[#111827] rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4 animate-in fade-in zoom-in-95 duration-150 my-auto text-slate-900 dark:text-white">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+              <h3 className="text-base font-black text-slate-900 dark:text-white tracking-tight font-auth-heading">Create New Folder</h3>
+              <button onClick={() => setIsCreateFolderOpen(false)} className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 p-1 rounded-lg transition cursor-pointer">
                 <X className="w-5 h-5" />
               </button>
             </div>
             
             <form onSubmit={handleCreateFolderSubmit} className="space-y-4">
               <div>
-                <label className="block text-2xs font-bold uppercase tracking-wider text-slate-400 mb-1 font-mono">Folder Name</label>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1.5 font-auth-heading">Folder Name</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Invoices 2026, Technical Specs..."
                   value={newFolderName}
                   onChange={(e) => setNewFolderName(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-xs font-bold focus:outline-none focus:border-themePrimary"
+                  className="w-full px-4 py-3 bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white text-xs font-bold focus:outline-none focus:border-themePrimary transition"
                 />
               </div>
 
               <div>
-                <label className="block text-2xs font-bold uppercase tracking-wider text-slate-400 mb-2 font-mono">Folder Tag Color</label>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-2 font-auth-heading">Folder Tag Color</label>
                 <div className="flex items-center gap-2">
                   {['#FF6B00', '#EF4444', '#10B981', '#3B82F6', '#8B5CF6', '#EC4899', '#F59E0B', '#64748B'].map((color) => (
                     <button
@@ -1003,7 +1041,7 @@ export default function MyDocumentsPage() {
                       type="button"
                       onClick={() => setNewFolderColor(color)}
                       className={`w-6 h-6 rounded-full border transition cursor-pointer ${
-                        newFolderColor === color ? 'border-slate-800 scale-110 shadow-sm' : 'border-transparent hover:scale-105'
+                        newFolderColor === color ? 'border-slate-800 dark:border-white scale-110 shadow-sm' : 'border-transparent hover:scale-105'
                       }`}
                       style={{ backgroundColor: color }}
                     />
@@ -1012,11 +1050,11 @@ export default function MyDocumentsPage() {
               </div>
 
               <div className="flex justify-end gap-3 pt-2">
-                <button type="button" onClick={() => setIsCreateFolderOpen(false)} className="px-4 py-2 text-xs font-black text-slate-500 hover:text-slate-800 cursor-pointer font-auth-heading">Cancel</button>
+                <button type="button" onClick={() => setIsCreateFolderOpen(false)} className="px-4 py-2 text-xs font-black text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white cursor-pointer font-auth-heading transition">Cancel</button>
                 <button
                   type="submit"
                   disabled={submittingFolder}
-                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white text-xs font-black hover:brightness-110 shadow-md shadow-orange-500/25 transition cursor-pointer font-auth-heading"
+                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white text-xs font-black hover:opacity-90 shadow-md shadow-orange-500/25 transition cursor-pointer font-auth-heading disabled:opacity-50"
                 >
                   {submittingFolder ? 'Creating...' : 'Create Folder'}
                 </button>
