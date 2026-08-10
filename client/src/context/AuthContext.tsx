@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import api from '@/lib/api';
+import { logActivity } from '@/lib/activityLogger';
 
 interface User {
   id: number;
@@ -102,6 +103,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         localStorage.setItem('dms_token', authToken);
         localStorage.setItem('dms_user', JSON.stringify(authUser));
 
+        try {
+          await logActivity('LOGIN', null, 'User signed in successfully');
+        } catch (e) {}
+
         return { success: true, message: 'Login successful!' };
       }
 
@@ -127,6 +132,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         localStorage.setItem('dms_token', authToken);
         localStorage.setItem('dms_user', JSON.stringify(authUser));
 
+        try {
+          await logActivity('LOGIN', null, 'User account registered and signed in');
+        } catch (e) {}
+
         return { success: true, message: 'Account registered successfully!' };
       }
       return { success: false, message: 'Invalid response from server' };
@@ -139,6 +148,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const logout = async () => {
+    try {
+      await logActivity('LOGOUT', null, 'User signed out of session');
+    } catch (e) {}
     try {
       await api.post('/auth/logout');
     } catch {

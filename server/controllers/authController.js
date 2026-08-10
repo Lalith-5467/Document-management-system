@@ -145,6 +145,17 @@ class AuthController {
                 { expiresIn: JWT_EXPIRES_IN }
             );
 
+            // Record registration activity in activity_logs database table
+            const ActivityModel = require('../models/activityModel');
+            try {
+                await ActivityModel.log({
+                    userId: newUser.id,
+                    action_type: 'LOGIN',
+                    document_name: null,
+                    details: 'User account registered and signed in'
+                });
+            } catch (e) {}
+
             return res.status(201).json({
                 success: true,
                 message: 'Registration successful!',
@@ -216,6 +227,31 @@ class AuthController {
                 JWT_SECRET,
                 { expiresIn: JWT_EXPIRES_IN }
             );
+
+            // Record login in activity_logs database table
+            const ActivityModel = require('../models/activityModel');
+            try {
+                await ActivityModel.log({
+                    userId: user.id,
+                    action_type: 'LOGIN',
+                    document_name: null,
+                    details: 'User signed in successfully'
+                });
+            } catch (actErr) {
+                console.warn('[Login Activity] Log note:', actErr.message);
+            }
+
+            // Update user's last_login_at in database
+            try {
+                const { getSqliteDb, pool } = require('../config/db');
+                const sqliteDb = getSqliteDb();
+                if (sqliteDb) {
+                    await sqliteDb.run("UPDATE users SET last_login_at = datetime('now') WHERE id = ?", [user.id]);
+                }
+                if (pool) {
+                    await pool.execute("UPDATE users SET last_login_at = NOW() WHERE id = ?", [user.id]);
+                }
+            } catch (uErr) {}
 
             const { password: userPassword, ...userWithoutPassword } = user;
 

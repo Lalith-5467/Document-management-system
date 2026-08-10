@@ -15,9 +15,20 @@ const STORAGE_KEY = 'dms_user_activities';
  * Log a user action to both local storage and the backend API
  */
 export async function logActivity(action_type: string, document_name: string | null = null, details: string = '') {
+  let activeUserId = 1;
+  if (typeof window !== 'undefined') {
+    try {
+      const uStr = localStorage.getItem('dms_user');
+      if (uStr) {
+        const u = JSON.parse(uStr);
+        if (u.id) activeUserId = u.id;
+      }
+    } catch (e) {}
+  }
+
   const newLog: ActivityItem = {
     id: Date.now(),
-    user_id: 1,
+    user_id: activeUserId,
     action_type: action_type.toUpperCase(),
     document_name: document_name || null,
     details: details || '',
