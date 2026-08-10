@@ -813,7 +813,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <h1 className="text-sm sm:text-base font-black text-slate-900 dark:text-white tracking-tight leading-none flex items-center gap-2 font-auth-heading">
                   Admin Control Center
                   <span className="px-2 py-0.5 rounded-full bg-themePrimary text-white text-[9px] font-extrabold uppercase font-mono tracking-wider shadow-2xs">
-                    v2.4 Enterprise
+                    Admin Portal
                   </span>
                 </h1>
                 <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium leading-tight mt-0.5">

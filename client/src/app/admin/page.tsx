@@ -195,7 +195,7 @@ export default function AdminDashboardPage() {
               <Zap className="w-4 h-4 text-white animate-pulse" />
             </div>
             <span className="text-xs font-black uppercase tracking-wider text-themePrimary font-sans">
-              ENTERPRISE CONTROL CENTER
+              ADMIN CONTROL CENTER
             </span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight font-auth-heading">
