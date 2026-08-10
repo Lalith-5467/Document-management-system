@@ -150,35 +150,35 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF7F0] text-slate-900 flex flex-col justify-between selection:bg-[#FF6B00] selection:text-white font-sans">
-      {/* Top Navbar */}
-      <header className="px-6 py-5 sm:px-12 flex items-center justify-between border-b border-[#EAE3D2] bg-white/70 backdrop-blur-md sticky top-0 z-20">
-        <Link href="/" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#FF6B00] to-[#FF8533] flex items-center justify-center text-white shadow-md shadow-orange-500/20 group-hover:scale-105 transition-transform duration-300">
-            <ShieldCheck className="w-6 h-6" />
-          </div>
-          <div>
-            <span className="font-extrabold text-lg text-slate-900 tracking-tight block leading-tight font-auth-heading">
-              Doc<span className="text-[#FF6B00]">Vault</span>
-            </span>
-            <span className="text-[10px] font-bold tracking-widest text-slate-400 uppercase font-mono">
-              Enterprise Suite
-            </span>
-          </div>
-        </Link>
-
+    <div className="min-h-screen w-full bg-gradient-to-br from-[#FAF8F4] via-[#F4F1EA] to-[#ECE7DF] flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 font-sans relative overflow-hidden selection:bg-[#FF6B00] selection:text-white">
+      
+      {/* Professional Top Left Back Button */}
+      <div className="absolute top-6 left-6 z-20">
         <Link
           href="/login"
-          className="inline-flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-[#FF6B00] px-4 py-2 rounded-xl border border-[#E6E0D4] bg-white hover:border-[#FF6B00]/40 transition-all shadow-2xs cursor-pointer"
+          className="inline-flex items-center gap-2.5 px-4.5 py-2.5 rounded-full bg-white/90 backdrop-blur-md border border-[#E6E0D4] hover:border-[#DFD2BA] hover:bg-[#FFFDF5] text-slate-700 hover:text-slate-900 text-xs font-bold shadow-xs hover:shadow-md hover:shadow-[#DFD2BA]/30 transition-all duration-300 group cursor-pointer font-auth-heading hover:-translate-y-0.5"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft className="w-4 h-4 text-[#FF6B00] group-hover:-translate-x-1 transition-transform duration-300" />
           <span>Back to Sign In</span>
         </Link>
-      </header>
+      </div>
 
-      {/* Main Form Center Card */}
-      <main className="flex-1 flex items-center justify-center p-4 sm:p-8">
-        <div className="w-full max-w-lg bg-white border border-[#E6E0D4] rounded-[28px] p-8 sm:p-12 shadow-xl shadow-amber-900/5 relative overflow-hidden">
+      {/* Ambient Warm Cream & Soft Glowing Spheres */}
+      <div className="absolute top-10 left-1/4 w-96 h-96 bg-[#F5EAD6]/60 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-10 right-1/4 w-[500px] h-[500px] bg-orange-500/6 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-[#FAF2E4]/40 rounded-full blur-3xl pointer-events-none" />
+
+      {/* Centered Card Container */}
+      <main className="w-full max-w-[500px] bg-white/95 backdrop-blur-xl rounded-[32px] p-8 sm:p-10 shadow-[0_25px_70px_rgba(40,30,15,0.06)] border border-[#E8E1D5] relative z-10 my-auto">
+        
+        {/* Top DocVault Logo */}
+        <div className="text-center mb-6">
+          <Link href="/" className="inline-flex items-center justify-center group">
+            <div className="w-13 h-13 rounded-[20px] bg-[#FF6500] flex items-center justify-center text-white shadow-[0_10px_25px_rgba(255,101,0,0.3)] group-hover:scale-105 transition-all duration-300">
+              <ShieldCheck className="w-6.5 h-6.5 stroke-[2.2]" />
+            </div>
+          </Link>
+        </div>
           
           {/* Subtle Ambient Background Accent */}
           <div className="absolute -right-16 -top-16 w-48 h-48 bg-orange-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -502,12 +502,11 @@ export default function ForgotPasswordPage() {
             </div>
           )}
 
-        </div>
-      </main>
+        </main>
 
       {/* Footer */}
-      <footer className="py-6 text-center text-xs text-slate-400 border-t border-[#EAE3D2] bg-white/40">
-        <p>© 2026 DocVault Enterprise Workspace. All rights reserved.</p>
+      <footer className="py-6 text-center text-xs text-slate-400">
+        <p>© 2026 DocVault Document Management System. All rights reserved.</p>
       </footer>
     </div>
   );
