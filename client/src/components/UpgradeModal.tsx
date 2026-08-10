@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { X, Check, Zap, Sparkles, ShieldCheck, Lock, Star, ChevronRight } from 'lucide-react';
 import { useSubscription, SubscriptionPlan } from '@/context/SubscriptionContext';
 
@@ -14,12 +15,17 @@ export default function UpgradeModal() {
   } = useSubscription();
 
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
+  const [mounted, setMounted] = useState(false);
 
-  if (!upgradeModalOpen) return null;
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-  return (
-    <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md animate-pop-in overflow-y-auto">
-      <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-4xl w-full p-6 sm:p-8 shadow-2xl shadow-orange-500/10 border border-slate-200 dark:border-slate-800 relative space-y-6 my-8">
+  if (!upgradeModalOpen || !mounted) return null;
+
+  return createPortal(
+    <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 sm:p-6 bg-slate-950/75 backdrop-blur-md overflow-y-auto">
+      <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-4xl w-full p-6 sm:p-8 shadow-2xl shadow-orange-500/10 border border-slate-200 dark:border-slate-800 relative space-y-6 m-auto max-h-[90vh] overflow-y-auto animate-pop-in">
         {/* Close Button */}
         <button
           onClick={closeUpgradeModal}
@@ -165,6 +171,7 @@ export default function UpgradeModal() {
           })}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

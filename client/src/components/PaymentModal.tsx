@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { X, ShieldCheck, Lock, CreditCard, CheckCircle2, Loader2, Zap, Tag } from 'lucide-react';
 import { useSubscription, SubscriptionPlan } from '@/context/SubscriptionContext';
 import { useAuth } from '@/context/AuthContext';
@@ -27,8 +28,13 @@ export default function PaymentModal() {
 
   const [processing, setProcessing] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  if (!paymentModalOpen || !selectedPlanForUpgrade) return null;
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!paymentModalOpen || !selectedPlanForUpgrade || !mounted) return null;
 
   const plan = selectedPlanForUpgrade;
   const basePrice = plan.priceMonthly;
@@ -69,9 +75,9 @@ export default function PaymentModal() {
     }, 1500);
   };
 
-  return (
-    <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md animate-pop-in overflow-y-auto">
-      <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl shadow-orange-500/10 border border-slate-200 dark:border-slate-800 relative space-y-6 my-6">
+  return createPortal(
+    <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 sm:p-6 bg-slate-950/75 backdrop-blur-md overflow-y-auto">
+      <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl shadow-orange-500/10 border border-slate-200 dark:border-slate-800 relative space-y-6 m-auto max-h-[90vh] overflow-y-auto animate-pop-in">
         {/* Close Button */}
         {!processing && !success && (
           <button
@@ -289,6 +295,7 @@ export default function PaymentModal() {
           </>
         )}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
