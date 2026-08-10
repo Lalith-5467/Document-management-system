@@ -236,17 +236,17 @@ export default function AdminNotificationsPage() {
       {/* KPI Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {[
-          { label: 'Total Notifications', count: notifications.length, bg: 'bg-white dark:bg-[#111827]', border: 'border-slate-200 dark:border-slate-800', text: 'text-slate-900 dark:text-white', icon: Bell, iconBg: 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300' },
-          { label: 'Unread Alerts', count: unreadCount, bg: 'bg-white dark:bg-[#111827]', border: 'border-slate-200 dark:border-slate-800', text: 'text-themePrimary dark:text-orange-400', icon: Zap, iconBg: 'bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 border border-orange-200 dark:border-orange-900/60' },
-          { label: 'Expiry Reminders', count: expiryCount, bg: 'bg-white dark:bg-[#111827]', border: 'border-slate-200 dark:border-slate-800', text: 'text-amber-600 dark:text-amber-400', icon: AlertTriangle, iconBg: 'bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-900/60' },
-          { label: 'System Warnings', count: warningCount, bg: 'bg-white dark:bg-[#111827]', border: 'border-slate-200 dark:border-slate-800', text: 'text-rose-600 dark:text-rose-400', icon: ShieldAlert, iconBg: 'bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-900/60' },
+          { label: 'Total Notifications', count: notifications.length, bg: 'bg-white dark:bg-[#111827]', border: 'border-slate-200 dark:border-slate-800', text: 'text-slate-900 dark:text-white', icon: Bell, iconBg: 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700' },
+          { label: 'Unread Alerts', count: unreadCount, bg: 'bg-white dark:bg-[#111827]', border: 'border-slate-200 dark:border-slate-800', text: 'text-themePrimary dark:text-orange-400', icon: Zap, iconBg: 'bg-orange-50 dark:bg-orange-950/80 text-themePrimary dark:text-orange-400 border border-orange-200 dark:border-orange-800/80' },
+          { label: 'Expiry Reminders', count: expiryCount, bg: 'bg-white dark:bg-[#111827]', border: 'border-slate-200 dark:border-slate-800', text: 'text-amber-600 dark:text-amber-400', icon: AlertTriangle, iconBg: 'bg-amber-50 dark:bg-amber-950/80 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-800/80' },
+          { label: 'System Warnings', count: warningCount, bg: 'bg-white dark:bg-[#111827]', border: 'border-slate-200 dark:border-slate-800', text: 'text-rose-600 dark:text-rose-400', icon: ShieldAlert, iconBg: 'bg-rose-50 dark:bg-rose-950/80 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800/80' },
         ].map((kpi, i) => (
-          <div key={i} className={`p-4.5 rounded-3xl border ${kpi.border} ${kpi.bg} shadow-2xs flex items-center justify-between`}>
+          <div key={i} className={`p-4.5 rounded-3xl border ${kpi.border} ${kpi.bg} shadow-2xs flex items-center justify-between transition-all duration-200 hover:border-themePrimary/40`}>
             <div>
-              <p className="text-[10px] font-extrabold uppercase text-slate-500 dark:text-slate-400 font-mono tracking-wider">{kpi.label}</p>
-              <p className={`text-2xl font-black ${kpi.text} font-auth-heading tracking-tight mt-0.5`}>{kpi.count}</p>
+              <p className="text-[11px] font-black uppercase text-slate-500 dark:text-slate-300 font-auth-heading tracking-wider">{kpi.label}</p>
+              <p className={`text-2xl font-black ${kpi.text} font-auth-heading tracking-tight mt-1`}>{kpi.count}</p>
             </div>
-            <div className={`w-10 h-10 rounded-2xl ${kpi.iconBg} flex items-center justify-center`}>
+            <div className={`w-11 h-11 rounded-2xl ${kpi.iconBg} flex items-center justify-center shadow-2xs`}>
               <kpi.icon className="w-5 h-5" />
             </div>
           </div>
@@ -256,18 +256,18 @@ export default function AdminNotificationsPage() {
       {/* Search & Filter Bar */}
       <div className="bg-white dark:bg-[#111827] p-4 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xs flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
         <div className="relative flex-1">
-          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
+          <Search className="w-4.5 h-4.5 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-400" />
           <input
             type="text"
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
             placeholder="Search notifications by title or body text..."
-            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-medium text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-themePrimary"
+            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-themePrimary shadow-2xs"
           />
         </div>
 
         {/* Filter Tabs */}
-        <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800/80 p-1 rounded-2xl border border-slate-200 dark:border-slate-700 text-xs font-bold self-start md:self-auto overflow-x-auto">
+        <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800/80 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-700 text-xs font-bold self-start md:self-auto overflow-x-auto">
           {[
             { key: 'all', label: `All (${notifications.length})` },
             { key: 'unread', label: `Unread (${unreadCount})` },
@@ -278,10 +278,10 @@ export default function AdminNotificationsPage() {
             <button
               key={tab.key}
               onClick={() => setActiveTab(tab.key as any)}
-              className={`px-3 py-1.5 rounded-xl transition cursor-pointer font-auth-heading ${
+              className={`px-3.5 py-1.5 rounded-xl transition-all duration-200 cursor-pointer font-auth-heading text-xs ${
                 activeTab === tab.key
-                  ? 'bg-white dark:bg-[#0B1120] text-themePrimary dark:text-orange-400 shadow-2xs font-black border border-orange-100 dark:border-orange-900/60'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                  ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/20 font-black'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-white/80 dark:hover:bg-slate-700/60 font-extrabold'
               }`}
             >
               {tab.label}
@@ -332,7 +332,7 @@ export default function AdminNotificationsPage() {
                           </div>
                           <div>
                             <p className="font-black text-slate-900 dark:text-white text-xs font-auth-heading tracking-tight group-hover:text-themePrimary transition-colors">{notif.title}</p>
-                            <p className="text-xs text-slate-600 dark:text-slate-400 font-medium line-clamp-2 leading-relaxed mt-0.5">{notif.message}</p>
+                            <p className="text-xs text-slate-600 dark:text-slate-300 font-medium line-clamp-2 leading-relaxed mt-0.5">{notif.message}</p>
                           </div>
                         </div>
                       </td>
@@ -349,13 +349,13 @@ export default function AdminNotificationsPage() {
                             🔴 Unread
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700 text-[10px] font-extrabold uppercase">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 text-[10px] font-extrabold uppercase">
                             ✓ Read
                           </span>
                         )}
                       </td>
 
-                      <td className="py-4 px-5 text-slate-500 dark:text-slate-400 font-mono font-medium whitespace-nowrap">
+                      <td className="py-4 px-5 text-slate-500 dark:text-slate-300 font-mono font-medium whitespace-nowrap">
                         {fmtDate(notif.created_at)}
                       </td>
 
