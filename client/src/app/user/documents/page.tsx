@@ -7,7 +7,7 @@ import {
   FileText, Plus, Search, ArrowLeft, Download, Trash2, Edit2, Star, 
   RefreshCw, X, AlertCircle, CheckCircle2, Loader2, Eye, LayoutGrid, 
   List, ChevronLeft, ChevronRight, FolderInput, Info, MoreVertical, SlidersHorizontal, RotateCcw,
-  Clock
+  Clock, Check, FolderPlus
 } from 'lucide-react';
 import api from '@/lib/api';
 import { logActivity } from '@/lib/activityLogger';
@@ -894,36 +894,73 @@ export default function MyDocumentsPage() {
 
       {/* RENAME MODAL */}
       {activeModal === 'rename' && selectedDoc && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto">
-          <div className="bg-white dark:bg-[#111827] rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4 animate-in fade-in zoom-in-95 duration-150 my-auto text-slate-900 dark:text-white">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
-              <h3 className="text-base font-black text-slate-900 dark:text-white font-auth-heading flex items-center gap-2">
-                <Edit2 className="w-4 h-4 text-themePrimary" /> Rename Document
-              </h3>
-              <button onClick={() => setActiveModal(null)} className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 p-1 rounded-lg transition cursor-pointer">
-                <X className="w-4 h-4" />
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-md overflow-y-auto">
+          <div className="bg-white dark:bg-[#111827] rounded-[28px] max-w-[480px] w-full p-6 sm:p-8 shadow-2xl border border-slate-200/90 dark:border-slate-800 space-y-6 animate-in fade-in zoom-in-95 duration-150 my-auto text-slate-900 dark:text-white">
+            
+            {/* Header with Icon Badge */}
+            <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800/80">
+              <div className="flex items-center gap-3.5">
+                <div className="w-11 h-11 rounded-2xl bg-orange-50 dark:bg-orange-950/60 text-themePrimary border border-orange-200/80 dark:border-orange-900/60 flex items-center justify-center shrink-0 shadow-xs">
+                  <Edit2 className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-black text-slate-900 dark:text-white font-auth-heading tracking-tight">
+                    Rename Document
+                  </h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                    Update the title of your vault document
+                  </p>
+                </div>
+              </div>
+              <button 
+                onClick={() => setActiveModal(null)} 
+                className="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition flex items-center justify-center cursor-pointer"
+              >
+                <X className="w-4.5 h-4.5" />
               </button>
             </div>
-            <form onSubmit={handleRenameSubmit} className="space-y-4">
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1.5 font-auth-heading">
-                  Document Title <span className="text-rose-500">*</span>
+
+            {/* Context File Pill */}
+            <div className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-2xl bg-slate-50 dark:bg-[#0B1120] border border-slate-200/80 dark:border-slate-800 text-xs">
+              <span className="text-[10px] font-mono uppercase font-bold text-slate-400 dark:text-slate-500 shrink-0">Original:</span>
+              <span className="font-semibold text-slate-700 dark:text-slate-300 truncate max-w-[240px] font-mono">{selectedDoc.file_name || selectedDoc.title}</span>
+              <span className="ml-auto px-2 py-0.5 rounded-full text-[10px] font-bold bg-orange-100 dark:bg-orange-950/60 text-themePrimary shrink-0">
+                {selectedDoc.category_name || 'Document'}
+              </span>
+            </div>
+
+            <form onSubmit={handleRenameSubmit} className="space-y-6">
+              <div className="space-y-2">
+                <label className="block text-xs font-extrabold uppercase tracking-wider text-slate-700 dark:text-slate-300 font-auth-heading">
+                  Document Title <span className="text-themePrimary">*</span>
                 </label>
                 <input
                   type="text"
                   required
                   value={editTitle}
                   onChange={(e) => setEditTitle(e.target.value)}
-                  className="w-full px-4 py-3 bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white text-xs font-bold focus:outline-none focus:border-themePrimary transition"
-                  placeholder="Enter document title..."
+                  className="w-full px-4 py-3 bg-white dark:bg-[#0B1120] border border-slate-300 dark:border-slate-700 rounded-2xl text-slate-900 dark:text-white text-sm font-semibold focus:outline-none focus:border-themePrimary focus:ring-4 focus:ring-orange-500/15 transition shadow-2xs"
+                  placeholder="Enter new title..."
+                  autoFocus
                 />
               </div>
-              <div className="flex justify-end gap-3 pt-2">
-                <button type="button" onClick={() => setActiveModal(null)} className="px-4 py-2 text-xs font-black text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white cursor-pointer font-auth-heading transition">
+
+              {/* Action Buttons */}
+              <div className="flex items-center justify-end gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setActiveModal(null)}
+                  className="px-5 py-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 font-bold text-xs shadow-2xs transition cursor-pointer font-auth-heading active:scale-95"
+                >
                   Cancel
                 </button>
-                <button type="submit" disabled={submitting} className="px-5 py-2.5 text-xs font-black text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:opacity-90 rounded-xl shadow-md shadow-orange-500/25 cursor-pointer font-auth-heading transition disabled:opacity-50">
-                  {submitting ? 'Saving...' : 'Save Changes'}
+                <button
+                  type="submit"
+                  disabled={submitting || !editTitle.trim()}
+                  className="px-6 py-2.5 rounded-2xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-bold text-xs shadow-md shadow-orange-500/25 hover:opacity-95 hover:shadow-lg transition cursor-pointer font-auth-heading active:scale-95 flex items-center gap-2 disabled:opacity-50"
+                >
+                  {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4 stroke-[3]" />}
+                  <span>{submitting ? 'Saving...' : 'Save Changes'}</span>
                 </button>
               </div>
             </form>
@@ -933,25 +970,39 @@ export default function MyDocumentsPage() {
 
       {/* MOVE MODAL */}
       {activeModal === 'move' && selectedDoc && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto">
-          <div className="bg-white dark:bg-[#111827] rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4 animate-in fade-in zoom-in-95 duration-150 my-auto text-slate-900 dark:text-white">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
-              <h3 className="text-base font-black text-slate-900 dark:text-white font-auth-heading flex items-center gap-2">
-                <FolderInput className="w-4 h-4 text-themePrimary" /> Move Document to Folder
-              </h3>
-              <button onClick={() => setActiveModal(null)} className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 p-1 rounded-lg transition cursor-pointer">
-                <X className="w-4 h-4" />
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-md overflow-y-auto">
+          <div className="bg-white dark:bg-[#111827] rounded-[28px] max-w-[480px] w-full p-6 sm:p-8 shadow-2xl border border-slate-200/90 dark:border-slate-800 space-y-6 animate-in fade-in zoom-in-95 duration-150 my-auto text-slate-900 dark:text-white">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800/80">
+              <div className="flex items-center gap-3.5">
+                <div className="w-11 h-11 rounded-2xl bg-orange-50 dark:bg-orange-950/60 text-themePrimary border border-orange-200/80 dark:border-orange-900/60 flex items-center justify-center shrink-0 shadow-xs">
+                  <FolderInput className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-black text-slate-900 dark:text-white font-auth-heading tracking-tight">
+                    Move Document
+                  </h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                    Relocate document to a specific folder
+                  </p>
+                </div>
+              </div>
+              <button 
+                onClick={() => setActiveModal(null)} 
+                className="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition flex items-center justify-center cursor-pointer"
+              >
+                <X className="w-4.5 h-4.5" />
               </button>
             </div>
-            <form onSubmit={handleMoveSubmit} className="space-y-4">
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1.5 font-auth-heading">
+
+            <form onSubmit={handleMoveSubmit} className="space-y-6">
+              <div className="space-y-2">
+                <label className="block text-xs font-extrabold uppercase tracking-wider text-slate-700 dark:text-slate-300 font-auth-heading">
                   Target Destination Folder
                 </label>
                 <select
                   value={editFolderId}
                   onChange={(e) => setEditFolderId(e.target.value)}
-                  className="w-full px-4 py-3 bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white text-xs font-bold focus:outline-none focus:border-themePrimary transition"
+                  className="w-full px-4 py-3 bg-white dark:bg-[#0B1120] border border-slate-300 dark:border-slate-700 rounded-2xl text-slate-900 dark:text-white text-sm font-semibold focus:outline-none focus:border-themePrimary focus:ring-4 focus:ring-orange-500/15 transition shadow-2xs"
                 >
                   <option value="">(No specific folder / Unassigned)</option>
                   {folders.map(f => (
@@ -959,12 +1010,22 @@ export default function MyDocumentsPage() {
                   ))}
                 </select>
               </div>
-              <div className="flex justify-end gap-3 pt-2">
-                <button type="button" onClick={() => setActiveModal(null)} className="px-4 py-2 text-xs font-black text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white cursor-pointer font-auth-heading transition">
+
+              <div className="flex items-center justify-end gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setActiveModal(null)}
+                  className="px-5 py-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 font-bold text-xs shadow-2xs transition cursor-pointer font-auth-heading active:scale-95"
+                >
                   Cancel
                 </button>
-                <button type="submit" disabled={submitting} className="px-5 py-2.5 text-xs font-black text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:opacity-90 rounded-xl shadow-md shadow-orange-500/25 cursor-pointer font-auth-heading transition disabled:opacity-50">
-                  {submitting ? 'Moving...' : 'Move Document'}
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="px-6 py-2.5 rounded-2xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-bold text-xs shadow-md shadow-orange-500/25 hover:opacity-95 transition cursor-pointer font-auth-heading active:scale-95 flex items-center gap-2 disabled:opacity-50"
+                >
+                  {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <FolderInput className="w-4 h-4" />}
+                  <span>{submitting ? 'Moving...' : 'Move Document'}</span>
                 </button>
               </div>
             </form>
@@ -974,25 +1035,49 @@ export default function MyDocumentsPage() {
 
       {/* DELETE CONFIRMATION MODAL */}
       {activeModal === 'delete' && selectedDoc && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto">
-          <div className="bg-white dark:bg-[#111827] rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4 animate-in fade-in zoom-in-95 duration-150 my-auto text-slate-900 dark:text-white">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
-              <h3 className="text-base font-black text-slate-900 dark:text-white font-auth-heading flex items-center gap-2">
-                <Trash2 className="w-4 h-4 text-rose-500" /> Move to Recycle Bin?
-              </h3>
-              <button onClick={() => setActiveModal(null)} className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 p-1 rounded-lg transition cursor-pointer">
-                <X className="w-4 h-4" />
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-md overflow-y-auto">
+          <div className="bg-white dark:bg-[#111827] rounded-[28px] max-w-[480px] w-full p-6 sm:p-8 shadow-2xl border border-slate-200/90 dark:border-slate-800 space-y-6 animate-in fade-in zoom-in-95 duration-150 my-auto text-slate-900 dark:text-white">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800/80">
+              <div className="flex items-center gap-3.5">
+                <div className="w-11 h-11 rounded-2xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 border border-rose-200/80 dark:border-rose-900/60 flex items-center justify-center shrink-0 shadow-xs">
+                  <Trash2 className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-black text-slate-900 dark:text-white font-auth-heading tracking-tight">
+                    Move to Recycle Bin?
+                  </h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                    This file can be restored anytime from Trash
+                  </p>
+                </div>
+              </div>
+              <button 
+                onClick={() => setActiveModal(null)} 
+                className="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition flex items-center justify-center cursor-pointer"
+              >
+                <X className="w-4.5 h-4.5" />
               </button>
             </div>
-            <p className="text-xs text-slate-600 dark:text-slate-300 font-medium leading-relaxed">
-              Are you sure you want to move <strong className="text-slate-900 dark:text-white font-bold">&quot;{selectedDoc.title}&quot;</strong> to the Recycle Bin? You can restore it anytime.
-            </p>
-            <div className="flex justify-end gap-3 pt-2">
-              <button type="button" onClick={() => setActiveModal(null)} className="px-4 py-2 text-xs font-black text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white cursor-pointer font-auth-heading transition">
+
+            <div className="p-4 rounded-2xl bg-rose-50/50 dark:bg-rose-950/30 border border-rose-200/60 dark:border-rose-900/40 text-xs leading-relaxed text-slate-700 dark:text-slate-300">
+              Are you sure you want to move <strong className="text-slate-900 dark:text-white font-black">&quot;{selectedDoc.title}&quot;</strong> to the Recycle Bin?
+            </div>
+
+            <div className="flex items-center justify-end gap-3 pt-2">
+              <button
+                type="button"
+                onClick={() => setActiveModal(null)}
+                className="px-5 py-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 font-bold text-xs shadow-2xs transition cursor-pointer font-auth-heading active:scale-95"
+              >
                 Cancel
               </button>
-              <button onClick={handleDeleteSubmit} disabled={submitting} className="px-5 py-2.5 text-xs font-black text-white bg-rose-600 hover:bg-rose-500 rounded-xl shadow-md shadow-rose-600/30 cursor-pointer font-auth-heading transition disabled:opacity-50">
-                {submitting ? 'Moving...' : 'Move to Bin'}
+              <button
+                onClick={handleDeleteSubmit}
+                disabled={submitting}
+                className="px-6 py-2.5 rounded-2xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs shadow-md shadow-rose-600/25 transition cursor-pointer font-auth-heading active:scale-95 flex items-center gap-2 disabled:opacity-50"
+              >
+                {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
+                <span>{submitting ? 'Moving...' : 'Move to Bin'}</span>
               </button>
             </div>
           </div>
@@ -1010,38 +1095,56 @@ export default function MyDocumentsPage() {
 
       {/* CREATE FOLDER MODAL */}
       {isCreateFolderOpen && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto">
-          <div className="bg-white dark:bg-[#111827] rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4 animate-in fade-in zoom-in-95 duration-150 my-auto text-slate-900 dark:text-white">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
-              <h3 className="text-base font-black text-slate-900 dark:text-white tracking-tight font-auth-heading">Create New Folder</h3>
-              <button onClick={() => setIsCreateFolderOpen(false)} className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 p-1 rounded-lg transition cursor-pointer">
-                <X className="w-5 h-5" />
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-md overflow-y-auto">
+          <div className="bg-white dark:bg-[#111827] rounded-[28px] max-w-[480px] w-full p-6 sm:p-8 shadow-2xl border border-slate-200/90 dark:border-slate-800 space-y-6 animate-in fade-in zoom-in-95 duration-150 my-auto text-slate-900 dark:text-white">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800/80">
+              <div className="flex items-center gap-3.5">
+                <div className="w-11 h-11 rounded-2xl bg-orange-50 dark:bg-orange-950/60 text-themePrimary border border-orange-200/80 dark:border-orange-900/60 flex items-center justify-center shrink-0 shadow-xs">
+                  <FolderPlus className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-black text-slate-900 dark:text-white font-auth-heading tracking-tight">
+                    Create New Folder
+                  </h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                    Organize your documents into folders
+                  </p>
+                </div>
+              </div>
+              <button 
+                onClick={() => setIsCreateFolderOpen(false)} 
+                className="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition flex items-center justify-center cursor-pointer"
+              >
+                <X className="w-4.5 h-4.5" />
               </button>
             </div>
             
-            <form onSubmit={handleCreateFolderSubmit} className="space-y-4">
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1.5 font-auth-heading">Folder Name</label>
+            <form onSubmit={handleCreateFolderSubmit} className="space-y-6">
+              <div className="space-y-2">
+                <label className="block text-xs font-extrabold uppercase tracking-wider text-slate-700 dark:text-slate-300 font-auth-heading">
+                  Folder Name <span className="text-themePrimary">*</span>
+                </label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Invoices 2026, Technical Specs..."
                   value={newFolderName}
                   onChange={(e) => setNewFolderName(e.target.value)}
-                  className="w-full px-4 py-3 bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white text-xs font-bold focus:outline-none focus:border-themePrimary transition"
+                  className="w-full px-4 py-3 bg-white dark:bg-[#0B1120] border border-slate-300 dark:border-slate-700 rounded-2xl text-slate-900 dark:text-white text-sm font-semibold focus:outline-none focus:border-themePrimary focus:ring-4 focus:ring-orange-500/15 transition shadow-2xs"
+                  autoFocus
                 />
               </div>
 
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-2 font-auth-heading">Folder Tag Color</label>
-                <div className="flex items-center gap-2">
+              <div className="space-y-2">
+                <label className="block text-xs font-extrabold uppercase tracking-wider text-slate-700 dark:text-slate-300 font-auth-heading">Folder Tag Color</label>
+                <div className="flex items-center gap-2.5 pt-1">
                   {['#FF6B00', '#EF4444', '#10B981', '#3B82F6', '#8B5CF6', '#EC4899', '#F59E0B', '#64748B'].map((color) => (
                     <button
                       key={color}
                       type="button"
                       onClick={() => setNewFolderColor(color)}
-                      className={`w-6 h-6 rounded-full border transition cursor-pointer ${
-                        newFolderColor === color ? 'border-slate-800 dark:border-white scale-110 shadow-sm' : 'border-transparent hover:scale-105'
+                      className={`w-7 h-7 rounded-full border-2 transition-all duration-200 cursor-pointer ${
+                        newFolderColor === color ? 'border-slate-900 dark:border-white scale-115 shadow-md' : 'border-transparent hover:scale-110'
                       }`}
                       style={{ backgroundColor: color }}
                     />
@@ -1049,14 +1152,21 @@ export default function MyDocumentsPage() {
                 </div>
               </div>
 
-              <div className="flex justify-end gap-3 pt-2">
-                <button type="button" onClick={() => setIsCreateFolderOpen(false)} className="px-4 py-2 text-xs font-black text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white cursor-pointer font-auth-heading transition">Cancel</button>
+              <div className="flex items-center justify-end gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setIsCreateFolderOpen(false)}
+                  className="px-5 py-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 font-bold text-xs shadow-2xs transition cursor-pointer font-auth-heading active:scale-95"
+                >
+                  Cancel
+                </button>
                 <button
                   type="submit"
-                  disabled={submittingFolder}
-                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white text-xs font-black hover:opacity-90 shadow-md shadow-orange-500/25 transition cursor-pointer font-auth-heading disabled:opacity-50"
+                  disabled={submittingFolder || !newFolderName.trim()}
+                  className="px-6 py-2.5 rounded-2xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-bold text-xs shadow-md shadow-orange-500/25 hover:opacity-95 transition cursor-pointer font-auth-heading active:scale-95 flex items-center gap-2 disabled:opacity-50"
                 >
-                  {submittingFolder ? 'Creating...' : 'Create Folder'}
+                  {submittingFolder ? <Loader2 className="w-4 h-4 animate-spin" /> : <FolderPlus className="w-4 h-4" />}
+                  <span>{submittingFolder ? 'Creating...' : 'Create Folder'}</span>
                 </button>
               </div>
             </form>
