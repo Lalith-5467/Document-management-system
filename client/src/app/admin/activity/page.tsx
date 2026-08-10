@@ -5,6 +5,7 @@ import {
   Activity, Search, Download, X, CheckCircle2, AlertCircle, Loader2, RefreshCw, ChevronLeft, ChevronRight
 } from 'lucide-react';
 import api from '@/lib/api';
+import CustomSelect from '@/components/CustomSelect';
 
 const ACTION_TYPES = ['ALL', 'LOGIN', 'LOGOUT', 'UPLOAD', 'DOWNLOAD', 'DELETE', 'RESTORE', 'UPDATE', 'CREATE_FOLDER', 'CREATE_CATEGORY', 'FAVORITE_ADD', 'PROFILE_UPDATE'];
 
@@ -130,14 +131,13 @@ export default function AdminActivityPage() {
             className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-medium text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-themePrimary"
           />
         </div>
-        <div>
-          <select
+        <div className="sm:col-span-1">
+          <CustomSelect
             value={actionFilter}
-            onChange={e => { setActionFilter(e.target.value); setPage(1); }}
-            className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold text-slate-800 dark:text-slate-200 focus:outline-none focus:border-themePrimary cursor-pointer"
-          >
-            {ACTION_TYPES.map(a => <option key={a} value={a}>{a === 'ALL' ? 'All Actions' : a.replace(/_/g, ' ')}</option>)}
-          </select>
+            onChange={(val) => { setActionFilter(val); setPage(1); }}
+            options={ACTION_TYPES.map(a => ({ label: a === 'ALL' ? 'All Actions' : a.replace(/_/g, ' '), value: a }))}
+            className="w-full"
+          />
         </div>
       </div>
 

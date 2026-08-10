@@ -6,6 +6,7 @@ import {
   AlertCircle, Clock, RefreshCw, FileText, Plus, Eye, DollarSign,
   Printer, Send, ShieldCheck, ArrowUpRight, ChevronRight, X, User, Zap, Trash2, Edit3
 } from 'lucide-react';
+import CustomSelect from '@/components/CustomSelect';
 
 export interface AdminBillInvoice {
   id: string;
@@ -257,25 +258,25 @@ Thank you for subscribing to DocVault Enterprise SaaS.
   };
 
   return (
-    <div className="space-y-8 pb-16 text-slate-900 font-sans">
+    <div className="space-y-8 pb-16 text-slate-900 dark:text-white font-sans">
       {/* Toast Alert */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-[999] flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-white text-slate-900 border border-themePrimary/30 shadow-2xl shadow-orange-500/10 text-xs font-semibold animate-pop-in">
+        <div className="fixed bottom-6 right-6 z-[999] flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-themePrimary/30 shadow-2xl shadow-orange-500/10 text-xs font-semibold animate-pop-in">
           <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
           <span>{toastMessage}</span>
         </div>
       )}
 
       {/* PAGE HEADER */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-3">
-            <span className="w-10 h-10 rounded-2xl bg-blue-600/20 border border-blue-500/30 text-blue-400 flex items-center justify-center shadow-lg shrink-0">
-              <CreditCard className="w-5 h-5 text-blue-400" />
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-3 font-auth-heading">
+            <span className="w-10 h-10 rounded-2xl bg-orange-500/10 border border-orange-500/20 text-themePrimary flex items-center justify-center shadow-lg shrink-0">
+              <CreditCard className="w-5 h-5 text-themePrimary" />
             </span>
             Subscription Bills & Invoice CRM CRUD
           </h1>
-          <p className="text-xs text-slate-400 mt-1 font-medium">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">
             Full Admin CRUD control: Create custom invoices, review payment records, update bill statuses, and process refunds.
           </p>
         </div>
@@ -297,7 +298,7 @@ Thank you for subscribing to DocVault Enterprise SaaS.
               a.download = 'crm_billing_history.csv';
               a.click();
             }}
-            className="px-4 py-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold border border-slate-200 transition flex items-center gap-2"
+            className="px-4 py-2.5 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 text-xs font-bold border border-slate-200 dark:border-slate-700 transition flex items-center gap-2 shadow-2xs cursor-pointer"
           >
             <Download className="w-4 h-4" /> Export CSV
           </button>
@@ -306,118 +307,119 @@ Thank you for subscribing to DocVault Enterprise SaaS.
 
       {/* 4 CRM FINANCIAL METRIC CARDS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="p-5 rounded-3xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition space-y-4">
+        <div className="p-5 rounded-3xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 shadow-2xs hover:shadow-md transition space-y-4">
           <div className="flex justify-between items-center text-xs font-bold text-slate-500 dark:text-slate-400">
-            <span>TOTAL REVENUE</span>
-            <span className="w-8 h-8 rounded-full bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center">
+            <span className="text-[11px] font-black uppercase font-auth-heading tracking-wider">TOTAL REVENUE</span>
+            <span className="w-9 h-9 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 flex items-center justify-center">
               <DollarSign className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
             </span>
           </div>
-          <p className="text-3xl font-black text-slate-900 dark:text-white">₹{totalRevenue.toLocaleString('en-IN', { maximumFractionDigits: 2 })}</p>
-          <p className="text-[10px] font-extrabold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 inline-block px-2 py-1 rounded-md">
+          <p className="text-3xl font-black text-slate-900 dark:text-white font-auth-heading">₹{totalRevenue.toLocaleString('en-IN', { maximumFractionDigits: 2 })}</p>
+          <p className="text-[10px] font-extrabold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/60 inline-block px-2.5 py-1 rounded-md">
             {totalPaidCount} Paid Invoices
           </p>
         </div>
 
-        <div className="p-5 rounded-3xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition space-y-4">
+        <div className="p-5 rounded-3xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 shadow-2xs hover:shadow-md transition space-y-4">
           <div className="flex justify-between items-center text-xs font-bold text-slate-500 dark:text-slate-400">
-            <span>PENDING INVOICES</span>
-            <span className="w-8 h-8 rounded-full bg-amber-50 dark:bg-amber-500/10 flex items-center justify-center">
+            <span className="text-[11px] font-black uppercase font-auth-heading tracking-wider">PENDING INVOICES</span>
+            <span className="w-9 h-9 rounded-2xl bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800/80 flex items-center justify-center">
               <Clock className="w-4 h-4 text-amber-600 dark:text-amber-400" />
             </span>
           </div>
-          <p className="text-3xl font-black text-slate-900 dark:text-white">{totalPendingCount}</p>
-          <p className="text-[10px] font-extrabold text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-500/10 inline-block px-2 py-1 rounded-md">
+          <p className="text-3xl font-black text-slate-900 dark:text-white font-auth-heading">{totalPendingCount}</p>
+          <p className="text-[10px] font-extrabold text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800/60 inline-block px-2.5 py-1 rounded-md">
             Awaiting Payments
           </p>
         </div>
 
-        <div className="p-5 rounded-3xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition space-y-4">
+        <div className="p-5 rounded-3xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 shadow-2xs hover:shadow-md transition space-y-4">
           <div className="flex justify-between items-center text-xs font-bold text-slate-500 dark:text-slate-400">
-            <span>REFUNDS PROCESSED</span>
-            <span className="w-8 h-8 rounded-full bg-purple-50 dark:bg-purple-500/10 flex items-center justify-center">
+            <span className="text-[11px] font-black uppercase font-auth-heading tracking-wider">REFUNDS PROCESSED</span>
+            <span className="w-9 h-9 rounded-2xl bg-purple-50 dark:bg-purple-950/60 border border-purple-200 dark:border-purple-800/80 flex items-center justify-center">
               <RefreshCw className="w-4 h-4 text-purple-600 dark:text-purple-400" />
             </span>
           </div>
-          <p className="text-3xl font-black text-slate-900 dark:text-white">₹{totalRefunded.toLocaleString('en-IN')}</p>
-          <p className="text-[10px] font-extrabold text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-500/10 inline-block px-2 py-1 rounded-md">
+          <p className="text-3xl font-black text-slate-900 dark:text-white font-auth-heading">₹{totalRefunded.toLocaleString('en-IN')}</p>
+          <p className="text-[10px] font-extrabold text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/60 border border-purple-200 dark:border-purple-800/60 inline-block px-2.5 py-1 rounded-md">
             Refunded to Source
           </p>
         </div>
 
-        <div className="p-5 rounded-3xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition space-y-4">
+        <div className="p-5 rounded-3xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 shadow-2xs hover:shadow-md transition space-y-4">
           <div className="flex justify-between items-center text-xs font-bold text-slate-500 dark:text-slate-400">
-            <span>TOTAL BILLS</span>
-            <span className="w-8 h-8 rounded-full bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center">
-              <FileText className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+            <span className="text-[11px] font-black uppercase font-auth-heading tracking-wider">TOTAL BILLS</span>
+            <span className="w-9 h-9 rounded-2xl bg-orange-50 dark:bg-orange-950/60 border border-orange-200 dark:border-orange-800/80 flex items-center justify-center">
+              <FileText className="w-4 h-4 text-themePrimary dark:text-orange-400" />
             </span>
           </div>
-          <p className="text-3xl font-black text-slate-900 dark:text-white">{invoices.length}</p>
-          <p className="text-[10px] font-extrabold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-500/10 inline-block px-2 py-1 rounded-md">
+          <p className="text-3xl font-black text-slate-900 dark:text-white font-auth-heading">{invoices.length}</p>
+          <p className="text-[10px] font-extrabold text-themePrimary dark:text-orange-400 bg-orange-50 dark:bg-orange-950/60 border border-orange-200 dark:border-orange-800/60 inline-block px-2.5 py-1 rounded-md">
             Total CRM Records
           </p>
         </div>
       </div>
 
       {/* CRM BILLING INVOICES TABLE (READ & CRUD ACTIONS) */}
-      <div className="p-6 rounded-3xl bg-white border border-slate-200 shadow-xs space-y-4">
+      <div className="p-6 rounded-3xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 shadow-2xs space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <h3 className="text-base font-black text-slate-900">Customer Bills & Payment Records ({filteredInvoices.length})</h3>
+          <h3 className="text-base font-black text-slate-900 dark:text-white font-auth-heading">Customer Bills & Payment Records ({filteredInvoices.length})</h3>
 
           <div className="flex flex-wrap items-center gap-3">
             <div className="relative">
-              <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+              <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search invoice # or customer..."
-                className="pl-10 pr-4 py-2 rounded-xl bg-slate-100/80 border border-slate-200 text-xs text-slate-900 placeholder:text-slate-500 focus:outline-none focus:border-themePrimary"
+                className="pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 text-xs font-medium text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-themePrimary"
               />
             </div>
 
-            <select
+            <CustomSelect
               value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-3.5 py-2 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-bold text-slate-700 focus:outline-none focus:border-themePrimary"
-            >
-              <option value="all">All Statuses</option>
-              <option value="paid">Paid</option>
-              <option value="pending">Pending</option>
-              <option value="failed">Failed</option>
-              <option value="refunded">Refunded</option>
-            </select>
+              onChange={(val) => setStatusFilter(val)}
+              options={[
+                { label: 'All Statuses', value: 'all' },
+                { label: 'Paid', value: 'paid' },
+                { label: 'Pending', value: 'pending' },
+                { label: 'Failed', value: 'failed' },
+                { label: 'Refunded', value: 'refunded' }
+              ]}
+              className="min-w-[150px]"
+            />
           </div>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-xs">
             <thead>
-              <tr className="bg-slate-100/80/60 text-slate-400 uppercase text-[10px] font-extrabold border-b border-slate-100">
+              <tr className="bg-slate-50 dark:bg-[#0B1120] text-slate-700 dark:text-slate-300 uppercase text-[10px] font-black tracking-wider border-b border-slate-200 dark:border-slate-800">
                 <th className="py-3.5 px-4">Invoice #</th>
                 <th className="py-3.5 px-4">Customer</th>
                 <th className="py-3.5 px-4">Plan & Cycle</th>
                 <th className="py-3.5 px-4">Billed Date</th>
                 <th className="py-3.5 px-4">Total Billed</th>
                 <th className="py-3.5 px-4">Status</th>
-                <th className="py-3.5 px-4 text-right">CRM CRUD Actions</th>
+                <th className="py-3.5 px-4 text-right">CRM Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100/80">
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-800/80">
               {filteredInvoices.map((inv) => (
-                <tr key={inv.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                  <td className="py-3.5 px-4 font-mono font-bold text-blue-600 dark:text-blue-400">
+                <tr key={inv.id} className="group hover:bg-orange-50/20 dark:hover:bg-slate-800/50 transition-colors">
+                  <td className="py-3.5 px-4 font-mono font-bold text-slate-900 dark:text-white group-hover:text-themePrimary transition-colors">
                     {inv.invoiceNo}
                   </td>
                   <td className="py-3.5 px-4">
                     <div>
-                      <p className="font-extrabold text-slate-900 dark:text-white">{inv.customerName}</p>
+                      <p className="font-extrabold text-slate-900 dark:text-white font-auth-heading group-hover:text-themePrimary transition-colors">{inv.customerName}</p>
                       <p className="text-[10px] text-slate-500 dark:text-slate-400 font-mono">{inv.customerEmail}</p>
                     </div>
                   </td>
                   <td className="py-3.5 px-4">
                     <p className="font-bold text-slate-700 dark:text-slate-300">{inv.planName}</p>
-                    <p className="text-[10px] uppercase font-black tracking-wider text-slate-500 dark:text-slate-500">{inv.billingCycle}</p>
+                    <p className="text-[10px] uppercase font-black tracking-wider text-slate-400 dark:text-slate-500">{inv.billingCycle}</p>
                   </td>
                   <td className="py-3.5 px-4 text-slate-600 dark:text-slate-400 font-medium">
                     {inv.billedDate}
@@ -427,47 +429,47 @@ Thank you for subscribing to DocVault Enterprise SaaS.
                   </td>
                   <td className="py-3.5 px-4">
                     <span className={`px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border ${
-                      inv.status === 'paid' ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20' :
-                      inv.status === 'pending' ? 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20' :
-                      inv.status === 'refunded' ? 'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-500/10 dark:text-purple-400 dark:border-purple-500/20' :
-                      'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-500/10 dark:text-rose-400 dark:border-rose-500/20'
+                      inv.status === 'paid' ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/80 dark:text-emerald-300 dark:border-emerald-800/80' :
+                      inv.status === 'pending' ? 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/80 dark:text-amber-300 dark:border-amber-800/80' :
+                      inv.status === 'refunded' ? 'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950/80 dark:text-purple-300 dark:border-purple-800/80' :
+                      'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/80 dark:text-rose-300 dark:border-rose-800/80'
                     }`}>
                       {inv.status}
                     </span>
                   </td>
                   <td className="py-3.5 px-4 text-right">
-                    <div className="flex items-center justify-end gap-1.5">
+                    <div className="flex items-center justify-end gap-1.5 bg-slate-50 dark:bg-slate-800/80 p-1 rounded-xl border border-slate-200/80 dark:border-slate-700 inline-flex">
                       <button
                         onClick={() => setSelectedInvoice(inv)}
-                        className="p-1.5 text-slate-400 hover:text-blue-400 hover:bg-slate-100 rounded-xl transition"
+                        className="p-1.5 text-slate-500 dark:text-slate-400 hover:text-themePrimary dark:hover:text-themePrimary hover:bg-white dark:hover:bg-slate-700 rounded-lg transition cursor-pointer"
                         title="View / Edit CRM Details"
                       >
-                        <Eye className="w-4 h-4" />
+                        <Eye className="w-3.5 h-3.5" />
                       </button>
 
                       <button
                         onClick={() => handleDownloadPDF(inv)}
-                        className="p-1.5 text-slate-400 hover:text-emerald-400 hover:bg-slate-100 rounded-xl transition"
+                        className="p-1.5 text-slate-500 dark:text-slate-400 hover:text-emerald-500 dark:hover:text-emerald-400 hover:bg-white dark:hover:bg-slate-700 rounded-lg transition cursor-pointer"
                         title="Download PDF Invoice"
                       >
-                        <Download className="w-4 h-4" />
+                        <Download className="w-3.5 h-3.5" />
                       </button>
 
                       <button
                         onClick={() => handleSendReminder(inv)}
-                        className="p-1.5 text-slate-400 hover:text-blue-400 hover:bg-slate-100 rounded-xl transition"
+                        className="p-1.5 text-slate-500 dark:text-slate-400 hover:text-amber-500 dark:hover:text-amber-400 hover:bg-white dark:hover:bg-slate-700 rounded-lg transition cursor-pointer"
                         title="Send Email Reminder"
                       >
-                        <Mail className="w-4 h-4" />
+                        <Mail className="w-3.5 h-3.5" />
                       </button>
 
                       {/* DELETE INVOICE BUTTON */}
                       <button
                         onClick={() => setDeletingInvId(inv.id)}
-                        className="p-1.5 text-rose-400 hover:bg-rose-500/20 rounded-xl transition"
+                        className="p-1.5 text-slate-500 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-white dark:hover:bg-slate-700 rounded-lg transition cursor-pointer"
                         title="Delete Invoice Record"
                       >
-                        <Trash2 className="w-4 h-4" />
+                        <Trash2 className="w-3.5 h-3.5" />
                       </button>
                     </div>
                   </td>
@@ -480,79 +482,79 @@ Thank you for subscribing to DocVault Enterprise SaaS.
 
       {/* CRM BILL DETAIL & UPDATE MODAL */}
       {selectedInvoice && (
-        <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-pop-in overflow-y-auto">
-          <div className="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl border border-slate-200 relative space-y-6 my-6 text-xs text-slate-700">
+        <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm animate-pop-in overflow-y-auto">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl border border-slate-200 dark:border-slate-800 relative space-y-6 my-6 text-xs text-slate-700 dark:text-slate-300">
             <button
               onClick={() => setSelectedInvoice(null)}
-              className="absolute top-5 right-5 p-2 rounded-2xl bg-slate-100 text-slate-500 hover:text-slate-900 border border-slate-200 transition cursor-pointer"
+              className="absolute top-5 right-5 p-2 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-slate-700 transition cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
 
             {/* Header */}
-            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
               <div>
                 <span className="font-mono text-xs font-bold text-themePrimary">Invoice #{selectedInvoice.invoiceNo}</span>
-                <h3 className="text-xl font-black text-slate-900 mt-0.5">{selectedInvoice.customerName}</h3>
-                <p className="text-2xs text-slate-500 font-mono">Ref: {selectedInvoice.transactionRef}</p>
+                <h3 className="text-xl font-black text-slate-900 dark:text-white mt-0.5 font-auth-heading">{selectedInvoice.customerName}</h3>
+                <p className="text-2xs text-slate-500 dark:text-slate-400 font-mono">Ref: {selectedInvoice.transactionRef}</p>
               </div>
               <span className={`px-3 py-1 rounded-full text-xs font-extrabold border ${
-                selectedInvoice.status === 'paid' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
-                selectedInvoice.status === 'pending' ? 'bg-amber-50 text-amber-700 border-amber-200' :
-                'bg-purple-50 text-purple-700 border-purple-200'
+                selectedInvoice.status === 'paid' ? 'bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800/80' :
+                selectedInvoice.status === 'pending' ? 'bg-amber-50 dark:bg-amber-950/80 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-800/80' :
+                'bg-purple-50 dark:bg-purple-950/80 text-purple-700 dark:text-purple-300 border-purple-200 dark:border-purple-800/80'
               }`}>
                 {selectedInvoice.status.toUpperCase()}
               </span>
             </div>
 
             {/* CRM Customer Profile Box */}
-            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
-              <p className="font-extrabold uppercase text-[10px] text-slate-500 tracking-wider flex items-center gap-1.5">
+            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-2">
+              <p className="font-extrabold uppercase text-[10px] text-slate-500 dark:text-slate-400 tracking-wider flex items-center gap-1.5">
                 <User className="w-3.5 h-3.5 text-themePrimary" /> Customer CRM Details
               </p>
-              <div className="grid grid-cols-2 gap-2 text-xs font-medium text-slate-800">
-                <div><span className="text-slate-500">Name:</span> <strong className="text-slate-900">{selectedInvoice.customerName}</strong></div>
-                <div><span className="text-slate-500">Email:</span> <span className="font-mono">{selectedInvoice.customerEmail}</span></div>
-                <div><span className="text-slate-500">Phone:</span> {selectedInvoice.customerPhone || 'N/A'}</div>
-                <div><span className="text-slate-500">Plan:</span> <span className="font-bold text-themePrimary">{selectedInvoice.planName}</span></div>
+              <div className="grid grid-cols-2 gap-2 text-xs font-medium text-slate-800 dark:text-slate-200">
+                <div><span className="text-slate-500 dark:text-slate-400">Name:</span> <strong className="text-slate-900 dark:text-white">{selectedInvoice.customerName}</strong></div>
+                <div><span className="text-slate-500 dark:text-slate-400">Email:</span> <span className="font-mono">{selectedInvoice.customerEmail}</span></div>
+                <div><span className="text-slate-500 dark:text-slate-400">Phone:</span> {selectedInvoice.customerPhone || 'N/A'}</div>
+                <div><span className="text-slate-500 dark:text-slate-400">Plan:</span> <span className="font-bold text-themePrimary">{selectedInvoice.planName}</span></div>
               </div>
             </div>
 
             {/* Amount Summary */}
-            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
-              <div className="flex justify-between text-xs text-slate-600">
+            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-2">
+              <div className="flex justify-between text-xs text-slate-600 dark:text-slate-400">
                 <span>Base Plan Fee</span>
-                <span className="font-mono font-bold text-slate-900">₹{selectedInvoice.baseAmount.toFixed(2)}</span>
+                <span className="font-mono font-bold text-slate-900 dark:text-white">₹{selectedInvoice.baseAmount.toFixed(2)}</span>
               </div>
-              <div className="flex justify-between text-xs text-slate-600">
+              <div className="flex justify-between text-xs text-slate-600 dark:text-slate-400">
                 <span>GST Tax (18%)</span>
-                <span className="font-mono font-bold text-slate-900">₹{selectedInvoice.taxAmount.toFixed(2)}</span>
+                <span className="font-mono font-bold text-slate-900 dark:text-white">₹{selectedInvoice.taxAmount.toFixed(2)}</span>
               </div>
-              <div className="flex justify-between text-sm font-black text-slate-900 pt-2 border-t border-slate-200">
+              <div className="flex justify-between text-sm font-black text-slate-900 dark:text-white pt-2 border-t border-slate-200 dark:border-slate-700">
                 <span>Total Amount Paid</span>
-                <span className="text-themePrimary">₹{selectedInvoice.totalAmount.toFixed(2)}</span>
+                <span className="text-themePrimary font-mono">₹{selectedInvoice.totalAmount.toFixed(2)}</span>
               </div>
             </div>
 
             {/* Status Update Actions */}
             <div className="space-y-2">
-              <p className="text-[10px] font-extrabold uppercase text-slate-500 tracking-wider">Update Billing Status</p>
+              <p className="text-[10px] font-extrabold uppercase text-slate-500 dark:text-slate-400 tracking-wider">Update Billing Status</p>
               <div className="flex items-center gap-2 flex-wrap">
                 <button
                   onClick={() => handleUpdateStatus(selectedInvoice.id, 'paid')}
-                  className="px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-bold hover:bg-emerald-100 transition cursor-pointer"
+                  className="px-3.5 py-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/80 text-xs font-bold hover:bg-emerald-100 transition cursor-pointer"
                 >
                   Mark Paid
                 </button>
                 <button
                   onClick={() => handleUpdateStatus(selectedInvoice.id, 'pending')}
-                  className="px-3 py-1.5 rounded-xl bg-amber-50 text-amber-700 border border-amber-200 text-xs font-bold hover:bg-amber-100 transition cursor-pointer"
+                  className="px-3.5 py-2 rounded-xl bg-amber-50 dark:bg-amber-950/80 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800/80 text-xs font-bold hover:bg-amber-100 transition cursor-pointer"
                 >
                   Mark Pending
                 </button>
                 <button
                   onClick={() => handleUpdateStatus(selectedInvoice.id, 'refunded')}
-                  className="px-3 py-1.5 rounded-xl bg-purple-50 text-purple-700 border border-purple-200 text-xs font-bold hover:bg-purple-100 transition cursor-pointer"
+                  className="px-3.5 py-2 rounded-xl bg-purple-50 dark:bg-purple-950/80 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800/80 text-xs font-bold hover:bg-purple-100 transition cursor-pointer"
                 >
                   Process Refund
                 </button>
@@ -560,16 +562,16 @@ Thank you for subscribing to DocVault Enterprise SaaS.
             </div>
 
             {/* Footer buttons */}
-            <div className="flex items-center justify-between pt-4 border-t border-slate-100">
+            <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800">
               <button
                 onClick={() => handleDeleteInvoice(selectedInvoice.id)}
-                className="px-3.5 py-2 rounded-xl bg-rose-50 text-rose-700 border border-rose-200 font-bold text-xs hover:bg-rose-100 transition cursor-pointer"
+                className="px-4 py-2.5 rounded-xl bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-800 font-bold text-xs hover:bg-rose-100 transition cursor-pointer"
               >
                 Delete Invoice
               </button>
               <button
                 onClick={() => handleDownloadPDF(selectedInvoice)}
-                className="px-4 py-2 rounded-xl bg-themePrimary hover:bg-[#EA580C] text-white font-bold text-xs shadow-md flex items-center gap-1.5 transition cursor-pointer"
+                className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] hover:opacity-90 text-white font-extrabold text-xs shadow-md shadow-orange-500/20 flex items-center gap-1.5 transition cursor-pointer"
               >
                 <Download className="w-3.5 h-3.5" /> Download PDF
               </button>
@@ -580,16 +582,16 @@ Thank you for subscribing to DocVault Enterprise SaaS.
 
       {/* CREATE MANUAL BILL MODAL */}
       {showCreateModal && (
-        <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-white  animate-pop-in">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 relative space-y-5 text-xs text-slate-700">
+        <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm animate-pop-in">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 relative space-y-5 text-xs text-slate-700 dark:text-slate-300">
             <button
               onClick={() => setShowCreateModal(false)}
-              className="absolute top-5 right-5 p-2 rounded-2xl bg-slate-100 text-slate-500 hover:text-slate-900 border border-slate-200 transition"
+              className="absolute top-5 right-5 p-2 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-slate-700 transition cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
 
-            <h3 className="text-base font-black text-slate-900">Create Custom CRM Invoice</h3>
+            <h3 className="text-base font-black text-slate-900 dark:text-white font-auth-heading">Create Custom CRM Invoice</h3>
 
             <form onSubmit={handleCreateBill} className="space-y-3">
               <div className="space-y-1">
@@ -600,7 +602,7 @@ Thank you for subscribing to DocVault Enterprise SaaS.
                   value={newCustName}
                   onChange={(e) => setNewCustName(e.target.value)}
                   placeholder="e.g. Acme Corp / John Doe"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-semibold text-slate-900 focus:outline-none focus:border-themePrimary"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary"
                 />
               </div>
 
@@ -612,22 +614,23 @@ Thank you for subscribing to DocVault Enterprise SaaS.
                   value={newCustEmail}
                   onChange={(e) => setNewCustEmail(e.target.value)}
                   placeholder="john@acme.com"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-semibold text-slate-900 focus:outline-none focus:border-themePrimary"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
                   <label className="font-extrabold uppercase text-[10px] text-slate-400">Subscription Plan</label>
-                  <select
+                  <CustomSelect
                     value={newPlan}
-                    onChange={(e) => setNewPlan(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary"
-                  >
-                    <option value="Pro Plan">Pro Plan</option>
-                    <option value="Business Plan">Business Plan</option>
-                    <option value="Custom Enterprise">Custom Enterprise</option>
-                  </select>
+                    onChange={(val) => setNewPlan(val)}
+                    options={[
+                      { label: 'Pro Plan', value: 'Pro Plan' },
+                      { label: 'Business Plan', value: 'Business Plan' },
+                      { label: 'Custom Plan', value: 'Custom Plan' }
+                    ]}
+                    className="w-full"
+                  />
                 </div>
                 <div className="space-y-1">
                   <label className="font-extrabold uppercase text-[10px] text-slate-400">Amount (₹)</label>
@@ -636,14 +639,14 @@ Thank you for subscribing to DocVault Enterprise SaaS.
                     required
                     value={newAmount}
                     onChange={(e) => setNewAmount(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary"
                   />
                 </div>
               </div>
 
               <button
                 type="submit"
-                className="flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-black text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:opacity-90 shadow-md shadow-orange-500/20 hover:scale-105 transition cursor-pointer">
+                className="w-full mt-2 flex items-center justify-center gap-2 px-4 py-3 rounded-2xl text-xs font-black text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:opacity-90 shadow-md shadow-orange-500/20 transition cursor-pointer font-auth-heading">
                 Generate & Send Bill
               </button>
             </form>
@@ -653,23 +656,23 @@ Thank you for subscribing to DocVault Enterprise SaaS.
 
       {/* DELETE INVOICE CONFIRMATION MODAL */}
       {deletingInvId && (
-        <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-white  animate-pop-in">
-          <div className="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 text-center space-y-4 text-xs text-slate-700">
+        <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm animate-pop-in">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 text-center space-y-4 text-xs text-slate-700 dark:text-slate-300">
             <AlertCircle className="w-10 h-10 text-rose-500 mx-auto" />
-            <h3 className="text-base font-black text-slate-900">Delete Invoice Record?</h3>
-            <p className="text-slate-400 text-xs">
+            <h3 className="text-base font-black text-slate-900 dark:text-white font-auth-heading">Delete Invoice Record?</h3>
+            <p className="text-slate-500 dark:text-slate-400 text-xs">
               Are you sure you want to permanently delete this invoice record from the system?
             </p>
             <div className="flex items-center gap-3 pt-2">
               <button
                 onClick={() => setDeletingInvId(null)}
-                className="flex-1 py-2.5 rounded-xl bg-slate-100 text-slate-700 font-bold hover:bg-slate-200 border border-slate-200 transition"
+                className="flex-1 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 transition cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 onClick={() => handleDeleteInvoice(deletingInvId)}
-                className="flex-1 py-2.5 rounded-xl bg-rose-600 text-slate-900 font-bold hover:bg-rose-500 shadow-md transition"
+                className="flex-1 py-2.5 rounded-xl bg-rose-600 text-white font-bold hover:bg-rose-500 shadow-md transition cursor-pointer"
               >
                 Yes, Delete
               </button>

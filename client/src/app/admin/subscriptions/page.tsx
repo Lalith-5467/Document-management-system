@@ -7,6 +7,7 @@ import {
   Plus, Check, X, DollarSign, Award, Settings, UserPlus, Eye, Tag, Gift, SlidersHorizontal
 } from 'lucide-react';
 import { useSubscription, SubscriptionPlan, PromoCode, TrialConfig } from '@/context/SubscriptionContext';
+import CustomSelect from '@/components/CustomSelect';
 
 export interface AdminUserSub {
   id: number;
@@ -562,33 +563,34 @@ export default function AdminSubscriptionsPage() {
       {/* TAB 4: USER ACCOUNTS & SUBSCRIPTIONS CRUD */}
       {/* ========================================================================= */}
       {activeTab === 'users' && (
-        <div className="p-6 rounded-3xl bg-white border border-slate-200 shadow-xs space-y-4 animate-pop-in">
+        <div className="p-6 rounded-3xl bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 shadow-2xs space-y-4 animate-pop-in">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <h3 className="text-base font-black text-slate-900">All User Subscriptions ({filteredUsers.length})</h3>
+            <h3 className="text-base font-black text-slate-900 dark:text-white font-auth-heading">All User Subscriptions ({filteredUsers.length})</h3>
 
             <div className="flex flex-wrap items-center gap-3">
               <div className="relative">
-                <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-600" />
+                <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search user or email..."
-                  className="pl-10 pr-4 py-2 rounded-xl bg-slate-100/80 border border-slate-200 text-xs text-slate-900 placeholder:text-slate-500 focus:outline-none focus:border-themePrimary"
+                  className="pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 text-xs font-medium text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-themePrimary"
                 />
               </div>
 
-              <select
+              <CustomSelect
                 value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-                className="px-3.5 py-2 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-bold text-slate-700 focus:outline-none focus:border-themePrimary"
-              >
-                <option value="all">All Statuses</option>
-                <option value="active">Active</option>
-                <option value="trial">Trialing</option>
-                <option value="expired">Expired</option>
-                <option value="cancelled">Cancelled</option>
-              </select>
+                onChange={(val) => setStatusFilter(val)}
+                options={[
+                  { label: 'All Statuses', value: 'all' },
+                  { label: 'Active', value: 'active' },
+                  { label: 'Trialing', value: 'trial' },
+                  { label: 'Expired', value: 'expired' },
+                  { label: 'Cancelled', value: 'cancelled' }
+                ]}
+                className="min-w-[150px]"
+              />
 
               <button
                 onClick={() => setShowCreateUserSubModal(true)}
