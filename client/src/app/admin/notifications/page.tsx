@@ -234,19 +234,26 @@ export default function AdminNotificationsPage() {
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: 'Total Notifications', count: notifications.length, bg: 'bg-white dark:bg-[#111827]', border: 'border-slate-200 dark:border-slate-800', text: 'text-slate-900 dark:text-white', icon: Bell, iconBg: 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700' },
-          { label: 'Unread Alerts', count: unreadCount, bg: 'bg-white dark:bg-[#111827]', border: 'border-slate-200 dark:border-slate-800', text: 'text-themePrimary dark:text-orange-400', icon: Zap, iconBg: 'bg-orange-50 dark:bg-orange-950/80 text-themePrimary dark:text-orange-400 border border-orange-200 dark:border-orange-800/80' },
-          { label: 'Expiry Reminders', count: expiryCount, bg: 'bg-white dark:bg-[#111827]', border: 'border-slate-200 dark:border-slate-800', text: 'text-amber-600 dark:text-amber-400', icon: AlertTriangle, iconBg: 'bg-amber-50 dark:bg-amber-950/80 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-800/80' },
-          { label: 'System Warnings', count: warningCount, bg: 'bg-white dark:bg-[#111827]', border: 'border-slate-200 dark:border-slate-800', text: 'text-rose-600 dark:text-rose-400', icon: ShieldAlert, iconBg: 'bg-rose-50 dark:bg-rose-950/80 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800/80' },
+          { label: 'Total Notifications', count: notifications.length, bg: 'bg-white dark:bg-[#111827]', border: 'border-slate-200/90 dark:border-slate-800', text: 'text-slate-900 dark:text-white', icon: Bell, iconBg: 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700/80' },
+          { label: 'Unread Alerts', count: unreadCount, bg: 'bg-white dark:bg-[#111827]', border: 'border-slate-200/90 dark:border-slate-800', text: 'text-themePrimary dark:text-orange-400', icon: Zap, iconBg: 'bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 border border-orange-200/90 dark:border-orange-900/60' },
+          { label: 'Expiry Reminders', count: expiryCount, bg: 'bg-white dark:bg-[#111827]', border: 'border-slate-200/90 dark:border-slate-800', text: 'text-amber-600 dark:text-amber-400', icon: AlertTriangle, iconBg: 'bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 border border-amber-200/90 dark:border-amber-900/60' },
+          { label: 'System Warnings', count: warningCount, bg: 'bg-white dark:bg-[#111827]', border: 'border-slate-200/90 dark:border-slate-800', text: 'text-rose-600 dark:text-rose-400', icon: ShieldAlert, iconBg: 'bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 border border-rose-200/90 dark:border-rose-900/60' },
         ].map((kpi, i) => (
-          <div key={i} className={`p-4.5 rounded-3xl border ${kpi.border} ${kpi.bg} shadow-2xs flex items-center justify-between transition-all duration-200 hover:border-themePrimary/40`}>
-            <div>
-              <p className="text-[11px] font-black uppercase text-slate-500 dark:text-slate-300 font-auth-heading tracking-wider">{kpi.label}</p>
-              <p className={`text-2xl font-black ${kpi.text} font-auth-heading tracking-tight mt-1`}>{kpi.count}</p>
+          <div
+            key={i}
+            className={`p-5 rounded-2xl sm:rounded-3xl border ${kpi.border} ${kpi.bg} shadow-2xs hover:shadow-md transition-all duration-200 flex items-center justify-between gap-4`}
+          >
+            <div className="space-y-1.5">
+              <span className="text-[11px] font-extrabold uppercase text-slate-500 dark:text-slate-400 font-auth-heading tracking-wider block">
+                {kpi.label}
+              </span>
+              <div className={`text-2xl sm:text-3xl font-black ${kpi.text} font-auth-heading tracking-tight leading-none`}>
+                {kpi.count}
+              </div>
             </div>
-            <div className={`w-11 h-11 rounded-2xl ${kpi.iconBg} flex items-center justify-center shadow-2xs`}>
+            <div className={`w-12 h-12 rounded-2xl ${kpi.iconBg} flex items-center justify-center shrink-0 shadow-2xs`}>
               <kpi.icon className="w-5 h-5" />
             </div>
           </div>
