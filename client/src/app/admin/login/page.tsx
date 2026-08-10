@@ -144,13 +144,14 @@ export default function AdminLoginPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden font-poppins">
-      {/* Top Left Corner Return to Home */}
+      {/* Professional Top Left Back Button */}
       <div className="absolute top-6 left-6 z-20">
         <Link
           href="/"
-          className="inline-flex items-center px-4 py-2.5 rounded-2xl bg-themePrimary text-white shadow-md shadow-orange-500/20 text-xs font-black border border-transparent hover:bg-[#FFF7ED] hover:text-themePrimary hover:border-orange-300 hover:shadow-lg transition-all duration-200 cursor-pointer"
+          className="inline-flex items-center gap-2.5 px-6 py-2.5 rounded-full bg-white/95 backdrop-blur-md border border-slate-200 hover:border-orange-300 hover:bg-orange-50/60 text-slate-700 hover:text-slate-900 text-xs font-bold shadow-xs hover:shadow-md hover:shadow-orange-500/10 transition-all duration-300 group cursor-pointer hover:-translate-y-0.5 whitespace-nowrap"
         >
-          <span>Return to Home</span>
+          <ArrowLeft className="w-4 h-4 text-themePrimary group-hover:-translate-x-1 transition-transform duration-300 shrink-0" />
+          <span>Back to Home Page</span>
         </Link>
       </div>
 
