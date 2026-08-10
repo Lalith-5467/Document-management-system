@@ -1,13 +1,14 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { 
   FileText, Plus, Search, ArrowLeft, Download, Trash2, Edit2, Star, 
   RefreshCw, X, AlertCircle, CheckCircle2, Loader2, Eye, LayoutGrid, 
   List, ChevronLeft, ChevronRight, FolderInput, Info, MoreVertical, SlidersHorizontal, RotateCcw,
-  Clock, Check, FolderPlus
+  Clock, Check, FolderPlus, Folder, ChevronDown
 } from 'lucide-react';
 import api from '@/lib/api';
 import { logActivity } from '@/lib/activityLogger';
@@ -47,6 +48,11 @@ export default function MyDocumentsPage() {
   const [folders, setFolders] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const { t } = useLanguage();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // View & Filter States
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
@@ -76,6 +82,7 @@ export default function MyDocumentsPage() {
   // Form Inputs
   const [editTitle, setEditTitle] = useState<string>('');
   const [editFolderId, setEditFolderId] = useState<string>('');
+  const [moveDropdownOpen, setMoveDropdownOpen] = useState<boolean>(false);
 
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
@@ -893,9 +900,9 @@ export default function MyDocumentsPage() {
       )}
 
       {/* RENAME MODAL */}
-      {activeModal === 'rename' && selectedDoc && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-md overflow-y-auto">
-          <div className="bg-white dark:bg-[#111827] rounded-[28px] max-w-[480px] w-full p-6 sm:p-8 shadow-2xl border border-slate-200/90 dark:border-slate-800 space-y-6 animate-in fade-in zoom-in-95 duration-150 my-auto text-slate-900 dark:text-white">
+      {activeModal === 'rename' && selectedDoc && mounted && createPortal(
+        <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-md overflow-y-auto">
+          <div className="bg-white dark:bg-[#111827] rounded-[28px] max-w-[480px] w-full p-6 sm:p-8 shadow-2xl border border-slate-200/90 dark:border-slate-800 space-y-6 animate-in fade-in zoom-in-95 duration-150 m-auto text-slate-900 dark:text-white">
             
             {/* Header with Icon Badge */}
             <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800/80">
@@ -965,13 +972,16 @@ export default function MyDocumentsPage() {
               </div>
             </form>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* MOVE MODAL */}
-      {activeModal === 'move' && selectedDoc && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-md overflow-y-auto">
-          <div className="bg-white dark:bg-[#111827] rounded-[28px] max-w-[480px] w-full p-6 sm:p-8 shadow-2xl border border-slate-200/90 dark:border-slate-800 space-y-6 animate-in fade-in zoom-in-95 duration-150 my-auto text-slate-900 dark:text-white">
+      {activeModal === 'move' && selectedDoc && mounted && createPortal(
+        <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-md overflow-y-auto">
+          <div className="bg-white dark:bg-[#111827] rounded-[28px] max-w-[480px] w-full p-6 sm:p-8 shadow-2xl border border-slate-200/90 dark:border-slate-800 space-y-6 animate-in fade-in zoom-in-95 duration-150 m-auto text-slate-900 dark:text-white">
+            
+            {/* Header with Icon Badge */}
             <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800/80">
               <div className="flex items-center gap-3.5">
                 <div className="w-11 h-11 rounded-2xl bg-orange-50 dark:bg-orange-950/60 text-themePrimary border border-orange-200/80 dark:border-orange-900/60 flex items-center justify-center shrink-0 shadow-xs">
@@ -987,34 +997,95 @@ export default function MyDocumentsPage() {
                 </div>
               </div>
               <button 
-                onClick={() => setActiveModal(null)} 
+                onClick={() => { setActiveModal(null); setMoveDropdownOpen(false); }} 
                 className="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition flex items-center justify-center cursor-pointer"
               >
                 <X className="w-4.5 h-4.5" />
               </button>
             </div>
 
+            {/* Context File Pill */}
+            <div className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-2xl bg-slate-50 dark:bg-[#0B1120] border border-slate-200/80 dark:border-slate-800 text-xs">
+              <span className="text-[10px] font-mono uppercase font-bold text-slate-400 dark:text-slate-500 shrink-0">File:</span>
+              <span className="font-semibold text-slate-700 dark:text-slate-300 truncate max-w-[240px] font-mono">{selectedDoc.file_name || selectedDoc.title}</span>
+              <span className="ml-auto px-2 py-0.5 rounded-full text-[10px] font-bold bg-orange-100 dark:bg-orange-950/60 text-themePrimary shrink-0">
+                {selectedDoc.folder_name || 'Root Vault'}
+              </span>
+            </div>
+
             <form onSubmit={handleMoveSubmit} className="space-y-6">
-              <div className="space-y-2">
+              <div className="space-y-2 relative">
                 <label className="block text-xs font-extrabold uppercase tracking-wider text-slate-700 dark:text-slate-300 font-auth-heading">
                   Target Destination Folder
                 </label>
-                <select
-                  value={editFolderId}
-                  onChange={(e) => setEditFolderId(e.target.value)}
-                  className="w-full px-4 py-3 bg-white dark:bg-[#0B1120] border border-slate-300 dark:border-slate-700 rounded-2xl text-slate-900 dark:text-white text-sm font-semibold focus:outline-none focus:border-themePrimary focus:ring-4 focus:ring-orange-500/15 transition shadow-2xs"
+
+                {/* Custom Folder Dropdown Trigger */}
+                <button
+                  type="button"
+                  onClick={() => setMoveDropdownOpen(!moveDropdownOpen)}
+                  className={`w-full flex items-center justify-between px-4 py-3 bg-white dark:bg-[#0B1120] border rounded-2xl text-slate-900 dark:text-white text-sm font-semibold transition shadow-2xs cursor-pointer ${
+                    moveDropdownOpen ? 'border-themePrimary ring-4 ring-orange-500/15' : 'border-slate-300 dark:border-slate-700 hover:border-themePrimary'
+                  }`}
                 >
-                  <option value="">(No specific folder / Unassigned)</option>
-                  {folders.map(f => (
-                    <option key={f.id} value={f.id}>{f.folder_name}</option>
-                  ))}
-                </select>
+                  <div className="flex items-center gap-2.5 truncate">
+                    <Folder className="w-4 h-4 text-themePrimary shrink-0" />
+                    <span className="truncate">
+                      {editFolderId 
+                        ? (folders.find(f => String(f.id) === String(editFolderId))?.folder_name || 'Selected Folder')
+                        : '(No specific folder / Unassigned)'}
+                    </span>
+                  </div>
+                  <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${moveDropdownOpen ? 'rotate-180 text-themePrimary' : ''}`} />
+                </button>
+
+                {/* Downwards Dropdown Menu */}
+                {moveDropdownOpen && (
+                  <div className="absolute top-full left-0 right-0 mt-1.5 bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl z-[100] max-h-52 overflow-y-auto py-1.5 animate-in fade-in zoom-in-95 duration-100">
+                    <button
+                      type="button"
+                      onClick={() => { setEditFolderId(''); setMoveDropdownOpen(false); }}
+                      className={`w-full flex items-center justify-between px-4 py-2.5 text-left text-xs font-bold transition cursor-pointer ${
+                        !editFolderId ? 'bg-orange-50 dark:bg-orange-950/50 text-themePrimary' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-600" />
+                        <span>(No specific folder / Unassigned)</span>
+                      </div>
+                      {!editFolderId && <Check className="w-3.5 h-3.5 text-themePrimary stroke-[3]" />}
+                    </button>
+
+                    {Array.from(new Map(folders.map(f => [String(f.id), f])).values()).map((f) => {
+                      const isSelected = String(f.id) === String(editFolderId);
+                      return (
+                        <button
+                          key={f.id}
+                          type="button"
+                          onClick={() => { setEditFolderId(String(f.id)); setMoveDropdownOpen(false); }}
+                          className={`w-full flex items-center justify-between px-4 py-2.5 text-left text-xs font-bold transition cursor-pointer ${
+                            isSelected ? 'bg-orange-50 dark:bg-orange-950/50 text-themePrimary' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2.5 truncate">
+                            <span 
+                              className="w-2.5 h-2.5 rounded-full shrink-0" 
+                              style={{ backgroundColor: f.color || '#FF6B00' }} 
+                            />
+                            <span className="truncate">{f.folder_name}</span>
+                          </div>
+                          {isSelected && <Check className="w-3.5 h-3.5 text-themePrimary stroke-[3] shrink-0" />}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
 
+              {/* Action Buttons */}
               <div className="flex items-center justify-end gap-3 pt-2">
                 <button
                   type="button"
-                  onClick={() => setActiveModal(null)}
+                  onClick={() => { setActiveModal(null); setMoveDropdownOpen(false); }}
                   className="px-5 py-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 font-bold text-xs shadow-2xs transition cursor-pointer font-auth-heading active:scale-95"
                 >
                   Cancel
@@ -1030,13 +1101,14 @@ export default function MyDocumentsPage() {
               </div>
             </form>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* DELETE CONFIRMATION MODAL */}
-      {activeModal === 'delete' && selectedDoc && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-md overflow-y-auto">
-          <div className="bg-white dark:bg-[#111827] rounded-[28px] max-w-[480px] w-full p-6 sm:p-8 shadow-2xl border border-slate-200/90 dark:border-slate-800 space-y-6 animate-in fade-in zoom-in-95 duration-150 my-auto text-slate-900 dark:text-white">
+      {activeModal === 'delete' && selectedDoc && mounted && createPortal(
+        <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-md overflow-y-auto">
+          <div className="bg-white dark:bg-[#111827] rounded-[28px] max-w-[480px] w-full p-6 sm:p-8 shadow-2xl border border-slate-200/90 dark:border-slate-800 space-y-6 animate-in fade-in zoom-in-95 duration-150 m-auto text-slate-900 dark:text-white">
             <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800/80">
               <div className="flex items-center gap-3.5">
                 <div className="w-11 h-11 rounded-2xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 border border-rose-200/80 dark:border-rose-900/60 flex items-center justify-center shrink-0 shadow-xs">
@@ -1081,7 +1153,8 @@ export default function MyDocumentsPage() {
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* DOCUMENT PREVIEW MODAL */}
@@ -1094,9 +1167,9 @@ export default function MyDocumentsPage() {
       )}
 
       {/* CREATE FOLDER MODAL */}
-      {isCreateFolderOpen && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-md overflow-y-auto">
-          <div className="bg-white dark:bg-[#111827] rounded-[28px] max-w-[480px] w-full p-6 sm:p-8 shadow-2xl border border-slate-200/90 dark:border-slate-800 space-y-6 animate-in fade-in zoom-in-95 duration-150 my-auto text-slate-900 dark:text-white">
+      {isCreateFolderOpen && mounted && createPortal(
+        <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-md overflow-y-auto">
+          <div className="bg-white dark:bg-[#111827] rounded-[28px] max-w-[480px] w-full p-6 sm:p-8 shadow-2xl border border-slate-200/90 dark:border-slate-800 space-y-6 animate-in fade-in zoom-in-95 duration-150 m-auto text-slate-900 dark:text-white">
             <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800/80">
               <div className="flex items-center gap-3.5">
                 <div className="w-11 h-11 rounded-2xl bg-orange-50 dark:bg-orange-950/60 text-themePrimary border border-orange-200/80 dark:border-orange-900/60 flex items-center justify-center shrink-0 shadow-xs">
@@ -1171,7 +1244,8 @@ export default function MyDocumentsPage() {
               </div>
             </form>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
