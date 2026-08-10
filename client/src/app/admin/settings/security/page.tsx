@@ -56,11 +56,11 @@ export default function AdminSecurityPage() {
   };
 
   return (
-    <div className="space-y-6 max-w-4xl font-sans animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="space-y-6 max-w-4xl font-sans text-slate-900 dark:text-white animate-in fade-in slide-in-from-bottom-4 duration-500">
       {/* Toast */}
       {toastMsg && (
         <div className={`fixed bottom-5 right-5 z-[9999] text-white text-sm font-semibold px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-2 animate-in fade-in slide-in-from-bottom-3 ${
-          toastMsg.type === 'success' ? 'bg-slate-900' : 'bg-rose-600'
+          toastMsg.type === 'success' ? 'bg-slate-900 dark:bg-slate-800 border border-slate-700' : 'bg-rose-600'
         }`}>
           {toastMsg.type === 'success' ? <CheckCircle2 className="w-4 h-4 text-emerald-400" /> : <AlertCircle className="w-4 h-4 text-amber-300" />}
           <span>{toastMsg.text}</span>
@@ -68,26 +68,26 @@ export default function AdminSecurityPage() {
       )}
 
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-black text-slate-900 flex items-center gap-2 font-auth-heading">
-          <ShieldAlert className="w-6 h-6 text-rose-500" /> Password & Security Policy
+      <div className="pb-4 border-b border-slate-100 dark:border-slate-800">
+        <h1 className="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading">
+          <ShieldAlert className="w-6 h-6 text-themePrimary" /> Password & Security Policy
         </h1>
-        <p className="text-sm text-slate-500 mt-1 font-medium">Configure global security rules, password requirements, and session behavior.</p>
+        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">Configure global security rules, password requirements, and session behavior.</p>
       </div>
 
       <form onSubmit={handleSave} className="space-y-6">
         
         {/* Password Complexity */}
-        <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6">
-          <div className="flex items-center gap-2 mb-6 border-b border-slate-100 pb-4">
-            <Key className="w-5 h-5 text-slate-400" />
-            <h2 className="text-lg font-black text-slate-900">Password Complexity</h2>
+        <div className="bg-white dark:bg-[#111827] rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xs p-6 space-y-6">
+          <div className="flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+            <Key className="w-4 h-4 text-themePrimary" />
+            <h2 className="text-sm font-black text-slate-900 dark:text-white font-auth-heading">Password Complexity</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
-              <label className="block text-xs font-black uppercase tracking-wider text-slate-700 mb-2">
-                Minimum Length: <span className="text-rose-500">{policy.minLength}</span> chars
+              <label className="block text-xs font-extrabold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-2">
+                Minimum Length: <span className="text-themePrimary">{policy.minLength}</span> chars
               </label>
               <input
                 type="range"
@@ -95,58 +95,58 @@ export default function AdminSecurityPage() {
                 max={32}
                 value={policy.minLength}
                 onChange={e => setPolicy({ ...policy, minLength: parseInt(e.target.value) })}
-                className="w-full accent-rose-500"
+                className="w-full accent-themePrimary cursor-pointer"
               />
-              <div className="flex justify-between text-[10px] text-slate-400 font-bold mt-1">
+              <div className="flex justify-between text-[10px] text-slate-400 dark:text-slate-500 font-bold mt-1">
                 <span>6</span>
                 <span>32</span>
               </div>
             </div>
 
-            <div className="space-y-4">
-              <label className="flex items-center gap-3 cursor-pointer">
+            <div className="space-y-3">
+              <label className="flex items-center gap-3 cursor-pointer p-2.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition">
                 <input 
                   type="checkbox" 
                   checked={policy.requireUppercase}
                   onChange={e => setPolicy({ ...policy, requireUppercase: e.target.checked })}
-                  className="w-4 h-4 text-rose-500 focus:ring-rose-500 border-slate-300 rounded"
+                  className="w-4 h-4 text-themePrimary focus:ring-themePrimary border-slate-300 rounded cursor-pointer"
                 />
-                <span className="text-sm font-bold text-slate-700">Require Uppercase Letter (A-Z)</span>
+                <span className="text-xs font-bold text-slate-800 dark:text-slate-200">Require Uppercase Letter (A-Z)</span>
               </label>
 
-              <label className="flex items-center gap-3 cursor-pointer">
+              <label className="flex items-center gap-3 cursor-pointer p-2.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition">
                 <input 
                   type="checkbox" 
                   checked={policy.requireNumber}
                   onChange={e => setPolicy({ ...policy, requireNumber: e.target.checked })}
-                  className="w-4 h-4 text-rose-500 focus:ring-rose-500 border-slate-300 rounded"
+                  className="w-4 h-4 text-themePrimary focus:ring-themePrimary border-slate-300 rounded cursor-pointer"
                 />
-                <span className="text-sm font-bold text-slate-700">Require Number (0-9)</span>
+                <span className="text-xs font-bold text-slate-800 dark:text-slate-200">Require Number (0-9)</span>
               </label>
 
-              <label className="flex items-center gap-3 cursor-pointer">
+              <label className="flex items-center gap-3 cursor-pointer p-2.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition">
                 <input 
                   type="checkbox" 
                   checked={policy.requireSpecial}
                   onChange={e => setPolicy({ ...policy, requireSpecial: e.target.checked })}
-                  className="w-4 h-4 text-rose-500 focus:ring-rose-500 border-slate-300 rounded"
+                  className="w-4 h-4 text-themePrimary focus:ring-themePrimary border-slate-300 rounded cursor-pointer"
                 />
-                <span className="text-sm font-bold text-slate-700">Require Special Character (!@#$%)</span>
+                <span className="text-xs font-bold text-slate-800 dark:text-slate-200">Require Special Character (!@#$%)</span>
               </label>
             </div>
           </div>
         </div>
 
         {/* Protection & Sessions */}
-        <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6">
-          <div className="flex items-center gap-2 mb-6 border-b border-slate-100 pb-4">
-            <Lock className="w-5 h-5 text-slate-400" />
-            <h2 className="text-lg font-black text-slate-900">Session & Brute Force Protection</h2>
+        <div className="bg-white dark:bg-[#111827] rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xs p-6 space-y-6">
+          <div className="flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+            <Lock className="w-4 h-4 text-themePrimary" />
+            <h2 className="text-sm font-black text-slate-900 dark:text-white font-auth-heading">Session & Brute Force Protection</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-xs font-black uppercase tracking-wider text-slate-700 mb-1.5 flex items-center gap-1.5">
+              <label className="block text-xs font-extrabold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1.5 flex items-center gap-1.5">
                 <Clock className="w-3.5 h-3.5" /> Session Timeout (Minutes)
               </label>
               <input
@@ -155,13 +155,13 @@ export default function AdminSecurityPage() {
                 max={1440}
                 value={policy.sessionTimeoutMinutes}
                 onChange={e => setPolicy({ ...policy, sessionTimeoutMinutes: parseInt(e.target.value) || 120 })}
-                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:border-rose-500 transition"
+                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary transition"
               />
-              <p className="text-[10px] text-slate-500 font-medium mt-1">Users will be logged out after this period of inactivity.</p>
+              <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium mt-1">Users will be logged out after this period of inactivity.</p>
             </div>
 
             <div>
-              <label className="block text-xs font-black uppercase tracking-wider text-slate-700 mb-1.5 flex items-center gap-1.5">
+              <label className="block text-xs font-extrabold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1.5 flex items-center gap-1.5">
                 <Activity className="w-3.5 h-3.5" /> Max Login Attempts
               </label>
               <input
@@ -170,13 +170,13 @@ export default function AdminSecurityPage() {
                 max={20}
                 value={policy.maxLoginAttempts}
                 onChange={e => setPolicy({ ...policy, maxLoginAttempts: parseInt(e.target.value) || 5 })}
-                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:border-rose-500 transition"
+                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary transition"
               />
-              <p className="text-[10px] text-slate-500 font-medium mt-1">Number of failed attempts before account lockout.</p>
+              <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium mt-1">Number of failed attempts before account lockout.</p>
             </div>
             
             <div>
-              <label className="block text-xs font-black uppercase tracking-wider text-slate-700 mb-1.5 flex items-center gap-1.5">
+              <label className="block text-xs font-extrabold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-1.5 flex items-center gap-1.5">
                 <ShieldAlert className="w-3.5 h-3.5" /> Lockout Duration (Minutes)
               </label>
               <input
@@ -185,24 +185,24 @@ export default function AdminSecurityPage() {
                 max={1440}
                 value={policy.lockoutDurationMinutes}
                 onChange={e => setPolicy({ ...policy, lockoutDurationMinutes: parseInt(e.target.value) || 15 })}
-                className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:border-rose-500 transition"
+                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary transition"
               />
-              <p className="text-[10px] text-slate-500 font-medium mt-1">Time to wait after max failed attempts.</p>
+              <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium mt-1">Time to wait after max failed attempts.</p>
             </div>
 
             <div className="flex items-center pt-2">
-               <label className="flex items-center gap-3 cursor-pointer p-3 rounded-xl border border-rose-100 bg-rose-50/50 hover:bg-rose-50 transition w-full">
+               <label className="flex items-center gap-3 cursor-pointer p-3 rounded-xl border border-orange-200 dark:border-orange-900/60 bg-orange-50/50 dark:bg-orange-950/40 hover:bg-orange-50 dark:hover:bg-orange-950/60 transition w-full">
                 <input 
                   type="checkbox" 
                   checked={policy.force2FA}
                   onChange={e => setPolicy({ ...policy, force2FA: e.target.checked })}
-                  className="w-4 h-4 text-rose-500 focus:ring-rose-500 border-slate-300 rounded"
+                  className="w-4 h-4 text-themePrimary focus:ring-themePrimary border-slate-300 rounded cursor-pointer"
                 />
                 <div>
-                  <div className="text-sm font-black text-rose-900 flex items-center gap-1.5">
+                  <div className="text-xs font-black text-themePrimary dark:text-orange-400 flex items-center gap-1.5 font-auth-heading">
                     <ShieldCheck className="w-4 h-4" /> Force 2FA Globally
                   </div>
-                  <div className="text-[10px] text-rose-700/70 font-medium mt-0.5">Require Two-Factor Authentication for all administrative and user accounts.</div>
+                  <div className="text-[10px] text-slate-600 dark:text-slate-400 font-medium mt-0.5">Require Two-Factor Authentication for all administrative and user accounts.</div>
                 </div>
               </label>
             </div>
@@ -213,7 +213,7 @@ export default function AdminSecurityPage() {
           <button
             type="submit"
             disabled={submitting}
-            className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-rose-500 to-rose-600 text-white font-black text-sm shadow-md shadow-rose-500/20 hover:scale-105 transition disabled:opacity-70 disabled:hover:scale-100"
+            className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-black text-xs shadow-md shadow-orange-500/20 hover:opacity-90 hover:scale-105 transition disabled:opacity-70 cursor-pointer"
           >
             <Save className="w-4 h-4" />
             {submitting ? 'Saving Policy...' : 'Save Security Policy'}

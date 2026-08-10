@@ -14,6 +14,7 @@ import {
   Cpu
 } from 'lucide-react';
 import api from '@/lib/api';
+import CustomSelect from '@/components/CustomSelect';
 
 export default function AdminSettingsPage() {
   const [adminSettings, setAdminSettings] = useState<any>(null);
@@ -157,22 +158,22 @@ export default function AdminSettingsPage() {
   ];
 
   return (
-    <div className="max-w-4xl space-y-8 pb-12 text-slate-900 font-sans">
+    <div className="max-w-4xl space-y-8 pb-12 text-slate-900 dark:text-white font-sans">
       {/* Toast Alert */}
       {toastMsg && (
-        <div className="fixed bottom-6 right-6 z-[9999] flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-white text-slate-900 border border-themePrimary/30 shadow-2xl text-xs font-semibold animate-pop-in">
+        <div className="fixed bottom-6 right-6 z-[9999] flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white border border-themePrimary/30 shadow-2xl text-xs font-semibold animate-pop-in">
           <span>{toastMsg.text}</span>
         </div>
       )}
 
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
         <div>
-          <h1 className="text-2xl font-black text-slate-900 flex items-center gap-2 font-auth-heading">
+          <h1 className="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading">
             <Settings className="w-6 h-6 text-themePrimary" />
             <span>Admin System Settings & Backup</span>
           </h1>
-          <p className="text-xs text-slate-500 font-medium mt-1">
+          <p className="text-xs text-slate-500 dark:text-slate-400 font-medium mt-1">
             Configure upload rules, view server hardware specs, download database backups, and restore snapshots
           </p>
         </div>
@@ -186,14 +187,14 @@ export default function AdminSettingsPage() {
 
           <button
             onClick={() => setIsRestoreModalOpen(true)}
-            className="px-4 py-2.5 text-xs font-extrabold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-2xl transition flex items-center gap-1.5 cursor-pointer shadow-2xs"
+            className="px-4 py-2.5 text-xs font-black text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/80 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 border border-emerald-200 dark:border-emerald-800/80 rounded-2xl transition flex items-center gap-1.5 cursor-pointer shadow-2xs"
           >
             <Upload className="w-3.5 h-3.5" /> Restore DB
           </button>
 
           <button
             onClick={fetchAdminSettings}
-            className="p-2.5 text-slate-600 hover:text-slate-900 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-slate-100 transition cursor-pointer"
+            className="p-2.5 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/80 hover:bg-slate-100 dark:hover:bg-slate-700 transition cursor-pointer"
             title="Refresh settings"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
@@ -202,44 +203,44 @@ export default function AdminSettingsPage() {
       </div>
 
       {loading ? (
-        <div className="bg-white p-12 rounded-3xl border border-slate-200 text-center space-y-3 shadow-2xs">
+        <div className="bg-white dark:bg-[#111827] p-12 rounded-3xl border border-slate-200 dark:border-slate-800 text-center space-y-3 shadow-2xs">
           <Loader2 className="w-8 h-8 text-themePrimary animate-spin mx-auto" />
-          <p className="text-xs text-slate-500 font-medium">Fetching system information & parameters...</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Fetching system information & parameters...</p>
         </div>
       ) : (
         <div className="space-y-6">
           {/* System Specs Overview */}
-          <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-2xs space-y-5">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <h2 className="text-sm font-black text-slate-900 flex items-center gap-2 font-auth-heading">
+          <div className="bg-white dark:bg-[#111827] rounded-3xl border border-slate-200 dark:border-slate-800 p-6 shadow-2xs space-y-5">
+            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+              <h2 className="text-sm font-black text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading">
                 <Cpu className="w-4 h-4 text-themePrimary" /> System Specs & Environment Information
               </h2>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/80">
-                <p className="text-[10px] uppercase font-black tracking-wider text-slate-500">Node Environment</p>
-                <p className="text-xs font-black text-slate-900 font-mono mt-1">{adminSettings?.systemInfo?.nodeVersion || 'v18.17.0'}</p>
+              <div className="p-4 bg-slate-50 dark:bg-[#0B1120] rounded-2xl border border-slate-200/80 dark:border-slate-800">
+                <p className="text-[10px] uppercase font-black tracking-wider text-slate-500 dark:text-slate-400">Node Environment</p>
+                <p className="text-xs font-black text-slate-900 dark:text-white font-mono mt-1">{adminSettings?.systemInfo?.nodeVersion || 'v18.17.0'}</p>
               </div>
-              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/80">
-                <p className="text-[10px] uppercase font-black tracking-wider text-slate-500">Platform OS</p>
-                <p className="text-xs font-black text-slate-900 font-mono mt-1">{adminSettings?.systemInfo?.platform || 'win32'} ({adminSettings?.systemInfo?.osArchitecture || 'x64'})</p>
+              <div className="p-4 bg-slate-50 dark:bg-[#0B1120] rounded-2xl border border-slate-200/80 dark:border-slate-800">
+                <p className="text-[10px] uppercase font-black tracking-wider text-slate-500 dark:text-slate-400">Platform OS</p>
+                <p className="text-xs font-black text-slate-900 dark:text-white font-mono mt-1">{adminSettings?.systemInfo?.platform || 'win32'} ({adminSettings?.systemInfo?.osArchitecture || 'x64'})</p>
               </div>
-              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/80">
-                <p className="text-[10px] uppercase font-black tracking-wider text-slate-500">Total Memory</p>
-                <p className="text-xs font-black text-slate-900 font-mono mt-1">{adminSettings?.systemInfo?.totalMemoryMB || 16384} MB</p>
+              <div className="p-4 bg-slate-50 dark:bg-[#0B1120] rounded-2xl border border-slate-200/80 dark:border-slate-800">
+                <p className="text-[10px] uppercase font-black tracking-wider text-slate-500 dark:text-slate-400">Total Memory</p>
+                <p className="text-xs font-black text-slate-900 dark:text-white font-mono mt-1">{adminSettings?.systemInfo?.totalMemoryMB || 16384} MB</p>
               </div>
-              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/80">
-                <p className="text-[10px] uppercase font-black tracking-wider text-slate-500">Database Engine</p>
-                <p className="text-xs font-black text-slate-900 font-mono mt-1">{adminSettings?.systemInfo?.databaseEngine || 'SQLite / MySQL'}</p>
+              <div className="p-4 bg-slate-50 dark:bg-[#0B1120] rounded-2xl border border-slate-200/80 dark:border-slate-800">
+                <p className="text-[10px] uppercase font-black tracking-wider text-slate-500 dark:text-slate-400">Database Engine</p>
+                <p className="text-xs font-black text-slate-900 dark:text-white font-mono mt-1">{adminSettings?.systemInfo?.databaseEngine || 'SQLite / MySQL'}</p>
               </div>
             </div>
           </div>
 
           {/* System Parameters Form */}
-          <form onSubmit={handleSaveConfig} className="bg-white rounded-3xl border border-slate-200 p-6 shadow-2xs space-y-6">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <h2 className="text-sm font-black text-slate-900 flex items-center gap-2 font-auth-heading">
+          <form onSubmit={handleSaveConfig} className="bg-white dark:bg-[#111827] rounded-3xl border border-slate-200 dark:border-slate-800 p-6 shadow-2xs space-y-6">
+            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+              <h2 className="text-sm font-black text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading">
                 <HardDrive className="w-4 h-4 text-themePrimary" /> Storage & File Limit Controls
               </h2>
             </div>
@@ -247,40 +248,41 @@ export default function AdminSettingsPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {/* Max File Upload Limit */}
               <div className="space-y-2">
-                <label className="block text-xs font-extrabold uppercase tracking-wider text-slate-600">
+                <label className="block text-xs font-extrabold uppercase tracking-wider text-slate-600 dark:text-slate-400">
                   Max File Upload Size (MB)
                 </label>
-                <select
+                <CustomSelect
                   value={maxUploadSize}
-                  onChange={(e) => setMaxUploadSize(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 font-bold focus:outline-none focus:border-themePrimary cursor-pointer"
-                >
-                  <option value="10">10 MB (Standard documents)</option>
-                  <option value="25">25 MB (Medium files)</option>
-                  <option value="50">50 MB (Recommended default)</option>
-                  <option value="100">100 MB (Large media & archives)</option>
-                </select>
-                <p className="text-xs text-slate-500 font-medium">Enforced during multipart form data file ingestion.</p>
+                  onChange={(val) => setMaxUploadSize(val)}
+                  options={[
+                    { label: '10 MB (Standard documents)', value: '10' },
+                    { label: '25 MB (Medium files)', value: '25' },
+                    { label: '50 MB (Recommended default)', value: '50' },
+                    { label: '100 MB (Large media & archives)', value: '100' }
+                  ]}
+                  className="w-full"
+                />
+                <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Enforced during multipart form data file ingestion.</p>
               </div>
 
               {/* JWT Token Duration Info */}
               <div className="space-y-2">
-                <label className="block text-xs font-extrabold uppercase tracking-wider text-slate-600">
+                <label className="block text-xs font-extrabold uppercase tracking-wider text-slate-600 dark:text-slate-400">
                   JWT Session Expiration Policy
                 </label>
                 <input
                   type="text"
                   disabled
                   value="7 Days Expiration (Cryptographically Signed)"
-                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-500 font-bold cursor-not-allowed"
+                  className="w-full px-4 py-2.5 bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-500 dark:text-slate-400 font-bold cursor-not-allowed"
                 />
-                <p className="text-xs text-slate-500 font-medium">Sessions automatically expire after 7 days of inactivity.</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Sessions automatically expire after 7 days of inactivity.</p>
               </div>
             </div>
 
             {/* Allowed File Extensions Checklist */}
             <div className="space-y-3">
-              <label className="block text-xs font-extrabold uppercase tracking-wider text-slate-600">
+              <label className="block text-xs font-extrabold uppercase tracking-wider text-slate-600 dark:text-slate-400">
                 Allowed File Format Extensions
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -293,13 +295,13 @@ export default function AdminSettingsPage() {
                       onClick={() => toggleFileType(item.ext)}
                       className={`p-3.5 rounded-2xl border text-left transition flex items-center justify-between cursor-pointer ${
                         isChecked
-                          ? 'border-themePrimary bg-orange-50/60 text-slate-900 font-extrabold'
-                          : 'border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100'
+                          ? 'border-themePrimary bg-orange-50/60 dark:bg-orange-950/40 text-slate-900 dark:text-white font-extrabold'
+                          : 'border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#0B1120] text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60'
                       }`}
                     >
                       <div className="truncate">
                         <div className="text-xs uppercase font-black font-auth-heading">{item.ext}</div>
-                        <div className="text-[10px] text-slate-500 font-medium truncate">{item.label}</div>
+                        <div className="text-[10px] text-slate-500 dark:text-slate-400 font-medium truncate">{item.label}</div>
                       </div>
                       {isChecked && <Check className="w-4 h-4 text-themePrimary shrink-0" />}
                     </button>
@@ -333,24 +335,24 @@ export default function AdminSettingsPage() {
 
       {/* Download Database Backup Modal */}
       {isBackupModalOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white w-full max-w-md p-6 rounded-3xl border border-slate-200 shadow-2xl space-y-5">
-            <div className="w-12 h-12 rounded-2xl bg-orange-50 text-themePrimary flex items-center justify-center border border-orange-200">
+        <div className="fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4 animate-pop-in">
+          <div className="bg-white dark:bg-slate-900 w-full max-w-md p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl space-y-5 text-slate-900 dark:text-white">
+            <div className="w-12 h-12 rounded-2xl bg-orange-50 dark:bg-orange-950/60 text-themePrimary flex items-center justify-center border border-orange-200 dark:border-orange-900/60">
               <Database className="w-6 h-6" />
             </div>
 
             <div>
-              <h3 className="text-lg font-black text-slate-900 font-auth-heading">Download Database Backup?</h3>
-              <p className="text-xs text-slate-600 mt-1 leading-relaxed font-medium">
+              <h3 className="text-lg font-black text-slate-900 dark:text-white font-auth-heading">Download Database Backup?</h3>
+              <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed font-medium">
                 Generate and download a complete JSON snapshot containing all system tables, users, documents metadata, categories, and logs.
               </p>
             </div>
 
-            <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+            <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100 dark:border-slate-800">
               <button
                 type="button"
                 onClick={() => setIsBackupModalOpen(false)}
-                className="px-4 py-2.5 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-xl transition cursor-pointer"
+                className="px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 rounded-xl transition cursor-pointer"
               >
                 Cancel
               </button>
@@ -379,15 +381,15 @@ export default function AdminSettingsPage() {
 
       {/* Restore Database Modal */}
       {isRestoreModalOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white w-full max-w-md p-6 rounded-3xl border border-slate-200 shadow-2xl space-y-5">
-            <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center border border-amber-200">
+        <div className="fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4 animate-pop-in">
+          <div className="bg-white dark:bg-slate-900 w-full max-w-md p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl space-y-5 text-slate-900 dark:text-white">
+            <div className="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center border border-amber-200 dark:border-amber-900/60">
               <Upload className="w-6 h-6" />
             </div>
 
             <div>
-              <h3 className="text-lg font-black text-slate-900 font-auth-heading">Restore Database Snapshot?</h3>
-              <p className="text-xs text-slate-600 mt-1 leading-relaxed font-medium">
+              <h3 className="text-lg font-black text-slate-900 dark:text-white font-auth-heading">Restore Database Snapshot?</h3>
+              <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed font-medium">
                 Upload a valid DocVault JSON database backup snapshot to restore categories, folders, settings, and table structures.
               </p>
             </div>
@@ -404,24 +406,24 @@ export default function AdminSettingsPage() {
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="w-full p-4 rounded-2xl border border-dashed border-slate-300 bg-slate-50 hover:bg-orange-50/40 text-center transition space-y-1 cursor-pointer"
+                className="w-full p-4 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 hover:bg-orange-50/40 dark:hover:bg-slate-700 text-center transition space-y-1 cursor-pointer"
               >
                 <Upload className="w-5 h-5 text-themePrimary mx-auto" />
-                <p className="text-xs font-extrabold text-slate-900">
+                <p className="text-xs font-extrabold text-slate-900 dark:text-white">
                   {selectedRestoreFile ? selectedRestoreFile.name : 'Choose JSON Backup File'}
                 </p>
-                <p className="text-xs text-slate-500 font-medium">Click to browse your file system</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Click to browse your file system</p>
               </button>
             </div>
 
-            <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+            <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100 dark:border-slate-800">
               <button
                 type="button"
                 onClick={() => {
                   setIsRestoreModalOpen(false);
                   setSelectedRestoreFile(null);
                 }}
-                className="px-4 py-2.5 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-xl transition cursor-pointer"
+                className="px-4 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 rounded-xl transition cursor-pointer"
               >
                 Cancel
               </button>

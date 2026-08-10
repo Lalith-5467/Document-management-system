@@ -33,21 +33,21 @@ export default function AdminSettingsLayout({ children }: { children: React.Reac
   ];
 
   return (
-    <div className="flex flex-col lg:flex-row gap-6 max-w-7xl mx-auto">
+    <div className="flex flex-col lg:flex-row gap-6 max-w-7xl mx-auto text-slate-900 dark:text-white font-sans">
       {/* Settings Navigation Sidebar */}
       <div className="w-full lg:w-64 shrink-0 space-y-6">
         <div>
-          <h2 className="text-xl font-black text-slate-900 flex items-center gap-2 mb-1">
+          <h2 className="text-xl font-black text-slate-900 dark:text-white flex items-center gap-2 mb-1 font-auth-heading">
             <Settings className="w-5 h-5 text-themePrimary" />
             Global Settings
           </h2>
-          <p className="text-xs text-slate-500 font-medium">Manage all application and system-level configurations.</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Manage all application and system-level configurations.</p>
         </div>
 
-        <div className="space-y-6 bg-white rounded-3xl border border-slate-200 p-4 shadow-sm">
+        <div className="space-y-6 bg-white dark:bg-[#111827] rounded-3xl border border-slate-200 dark:border-slate-800 p-4 shadow-2xs">
           {/* App Settings */}
           <div>
-            <p className="text-[10px] uppercase font-black tracking-widest text-slate-400 px-3 mb-2 font-mono">
+            <p className="text-[10px] uppercase font-black tracking-widest text-slate-400 dark:text-slate-500 px-3 mb-2 font-mono">
               Application Settings
             </p>
             <nav className="space-y-1">
@@ -60,12 +60,12 @@ export default function AdminSettingsLayout({ children }: { children: React.Reac
                     href={item.href}
                     className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all relative ${
                       isActive
-                        ? 'bg-orange-50 text-themePrimary'
-                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                        ? 'bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 font-black'
+                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60'
                     }`}
                   >
                     {isActive && <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-themePrimary rounded-r-full -ml-4" />}
-                    <Icon className={`w-4 h-4 ${isActive ? 'text-themePrimary' : 'text-slate-400'}`} />
+                    <Icon className={`w-4 h-4 ${isActive ? 'text-themePrimary dark:text-orange-400' : 'text-slate-400 dark:text-slate-500'}`} />
                     <span>{item.name}</span>
                   </Link>
                 );
@@ -73,11 +73,11 @@ export default function AdminSettingsLayout({ children }: { children: React.Reac
             </nav>
           </div>
 
-          <hr className="border-slate-100" />
+          <hr className="border-slate-100 dark:border-slate-800" />
 
           {/* Sys Settings */}
           <div>
-            <p className="text-[10px] uppercase font-black tracking-widest text-slate-400 px-3 mb-2 font-mono">
+            <p className="text-[10px] uppercase font-black tracking-widest text-slate-400 dark:text-slate-500 px-3 mb-2 font-mono">
               System Settings
             </p>
             <nav className="space-y-1">
@@ -90,12 +90,12 @@ export default function AdminSettingsLayout({ children }: { children: React.Reac
                     href={item.href}
                     className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all relative ${
                       isActive
-                        ? 'bg-orange-50 text-themePrimary'
-                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                        ? 'bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 font-black'
+                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60'
                     }`}
                   >
                     {isActive && <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-themePrimary rounded-r-full -ml-4" />}
-                    <Icon className={`w-4 h-4 ${isActive ? 'text-themePrimary' : 'text-slate-400'}`} />
+                    <Icon className={`w-4 h-4 ${isActive ? 'text-themePrimary dark:text-orange-400' : 'text-slate-400 dark:text-slate-500'}`} />
                     <span>{item.name}</span>
                   </Link>
                 );
