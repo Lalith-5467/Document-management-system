@@ -49,6 +49,15 @@ export default function AdminFoldersPage() {
 
   const fetchFolders = useCallback(async () => {
     setLoading(true);
+    try {
+      const res = await api.get('/admin/folders', { params: { search: searchQuery } });
+      if (res.data?.success && res.data.folders?.length > 0) {
+        saveFoldersState(res.data.folders);
+        setLoading(false);
+        return;
+      }
+    } catch { /* fallback below */ }
+
     let saved = null;
     if (typeof window !== 'undefined') {
       saved = localStorage.getItem('dms_admin_folders');
@@ -67,15 +76,6 @@ export default function AdminFoldersPage() {
         }
       } catch {}
     }
-
-    try {
-      const res = await api.get('/admin/folders', { params: { search: searchQuery } });
-      if (res.data?.success && res.data.folders?.length > 0) {
-        saveFoldersState(res.data.folders);
-        setLoading(false);
-        return;
-      }
-    } catch { /* fallback below */ }
 
     const initialFolders = [
       { id: 1, folder_name: 'Academic Transcripts', description: 'Degree certificates & marksheets', color: '#10B981', owner_name: 'Alex Johnson', document_count: 6, created_at: '2026-01-10T10:00:00Z' },

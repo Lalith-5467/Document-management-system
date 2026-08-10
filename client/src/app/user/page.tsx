@@ -89,6 +89,18 @@ export default function UserWorkspacePage() {
 
   useEffect(() => {
     fetchWorkspaceData();
+
+    const handleUpdate = () => {
+      fetchWorkspaceData();
+    };
+
+    window.addEventListener('dms_folders_updated', handleUpdate);
+    window.addEventListener('dms_documents_updated', handleUpdate);
+
+    return () => {
+      window.removeEventListener('dms_folders_updated', handleUpdate);
+      window.removeEventListener('dms_documents_updated', handleUpdate);
+    };
   }, []);
 
   const showToast = (message: string, type: 'success' | 'error' = 'success') => {
@@ -134,9 +146,58 @@ export default function UserWorkspacePage() {
         setRecentUploads(sampleDocs);
       }
 
+      // 2. Fetch Folders
+      let userFolders: any[] = [];
+      const folderRes = await api.get('/folders').catch(() => null);
+      if (folderRes?.data?.folders && folderRes.data.folders.length > 0) {
+        userFolders = folderRes.data.folders;
+      } else if (typeof window !== 'undefined') {
+        const saved = localStorage.getItem('dms_user_folders') || localStorage.getItem('dms_admin_folders');
+        if (saved) {
+          try { userFolders = JSON.parse(saved); } catch (e) {}
+        }
+      }
+
+      if (userFolders.length > 0) {
+        setFolders(userFolders);
+      } else {
+        userFolders = [
+          { id: 1, folder_name: 'Resume', color: '#F59E0B', document_count: 3 },
+          { id: 2, folder_name: 'Personal', color: '#3B82F6', document_count: 1 },
+          { id: 3, folder_name: 'Academic', color: '#10B981', document_count: 0 },
+          { id: 4, folder_name: 'Projects', color: '#8B5CF6', document_count: 0 },
+          { id: 5, folder_name: 'Financial', color: '#06B6D4', document_count: 0 },
+        ];
+        setFolders(userFolders);
+      }
+
+      // 3. Fetch Categories
+      let userCategories: any[] = [];
+      const catRes = await api.get('/categories').catch(() => null);
+      if (catRes?.data?.categories && catRes.data.categories.length > 0) {
+        userCategories = catRes.data.categories;
+        setCategoriesList(userCategories);
+      } else {
+        userCategories = [
+          { id: 1, category_name: 'Personal Documents', icon: '👤', color: 'var(--theme-primary, #FF6B00)', document_count: 12 },
+          { id: 2, category_name: 'Academic Documents', icon: '🎓', color: '#8B5CF6', document_count: 8 },
+          { id: 3, category_name: 'Resume & CV', icon: '📄', color: '#EC4899', document_count: 5 },
+          { id: 4, category_name: 'Certificates', icon: '🏆', color: '#F59E0B', document_count: 7 },
+          { id: 5, category_name: 'Project Documents', icon: '💻', color: '#10B981', document_count: 14 },
+          { id: 6, category_name: 'Financial Documents', icon: '💵', color: '#14B8A6', document_count: 6 }
+        ];
+        setCategoriesList(userCategories);
+      }
+
       const summaryRes = await api.get('/dashboard/summary').catch(() => null);
       const totalDocsCount = allMergedDocs.length || (summaryRes?.data?.stats?.totalDocuments ?? 4);
-      const favDocsCount = allMergedDocs.filter(d => Boolean(d.is_favorite)).length || (summaryRes?.data?.stats?.favoriteDocuments ?? 2);
+      const favDocsCount = allMergedDocs.filter(d => Boolean(d.is_favorite)).length || (summaryRes?.data?.stats?.favoriteDocuments ?? 1);
+      const totalFoldersCount = (summaryRes?.data?.stats?.totalFolders && summaryRes.data.stats.totalFolders > 0)
+        ? summaryRes.data.stats.totalFolders
+        : userFolders.length;
+      const totalCatsCount = (summaryRes?.data?.stats?.totalCategories && summaryRes.data.stats.totalCategories > 0)
+        ? summaryRes.data.stats.totalCategories
+        : (userCategories.length || 10);
 
       // Compute total real storage bytes used by all documents
       let calculatedBytes = 0;
@@ -170,38 +231,12 @@ export default function UserWorkspacePage() {
         ...prev,
         ...(summaryRes?.data?.stats || {}),
         totalDocuments: totalDocsCount,
+        totalFolders: totalFoldersCount,
+        totalCategories: totalCatsCount,
         favoriteDocuments: favDocsCount,
         storageUsedBytes: realStorageBytes,
         storageLimitBytes: 10 * 1024 * 1024 * 1024 // 10 GB
       }));
-
-      // Categories
-      const catRes = await api.get('/categories').catch(() => null);
-      if (catRes?.data?.categories && catRes.data.categories.length > 0) {
-        setCategoriesList(catRes.data.categories);
-      } else {
-        setCategoriesList([
-          { id: 1, category_name: 'Personal Documents', icon: '👤', color: 'var(--theme-primary, #FF6B00)', document_count: 12 },
-          { id: 2, category_name: 'Academic Documents', icon: '🎓', color: '#8B5CF6', document_count: 8 },
-          { id: 3, category_name: 'Resume & CV', icon: '📄', color: '#EC4899', document_count: 5 },
-          { id: 4, category_name: 'Certificates', icon: '🏆', color: '#F59E0B', document_count: 7 },
-          { id: 5, category_name: 'Project Documents', icon: '💻', color: '#10B981', document_count: 14 },
-          { id: 6, category_name: 'Financial Documents', icon: '💵', color: '#14B8A6', document_count: 6 }
-        ]);
-      }
-
-      // Folders
-      const folderRes = await api.get('/folders').catch(() => null);
-      if (folderRes?.data?.folders && folderRes.data.folders.length > 0) {
-        setFolders(folderRes.data.folders);
-      } else {
-        setFolders([
-          { id: 1, folder_name: 'Academic Transcripts', color: '#10B981', document_count: 6 },
-          { id: 2, folder_name: 'Tax Filings 2026', color: '#EF4444', document_count: 4 },
-          { id: 3, folder_name: 'Passport & Identity', color: 'var(--theme-primary, #FF6B00)', document_count: 5 },
-          { id: 4, folder_name: 'Project Architecture', color: '#8B5CF6', document_count: 3 },
-        ]);
-      }
 
       // Trash items
       setTrashItems([
@@ -258,39 +293,63 @@ export default function UserWorkspacePage() {
         return;
       }
       if (uploadConfirmPassword !== uploadPassword) {
-        setUploadError('Passwords do not match.');
+        setUploadError('Master passwords do not match.');
         return;
       }
     }
 
     setUploadingInline(true);
+
     try {
-      const newDoc = {
+      const formData = new FormData();
+      if (uploadFile) formData.append('file', uploadFile);
+      formData.append('title', uploadTitle.trim());
+      formData.append('description', uploadDescription.trim());
+      formData.append('category_name', uploadCategory);
+      if (uploadFolder) formData.append('folder_name', uploadFolder);
+      if (uploadExpiryDate) formData.append('expiry_date', uploadExpiryDate);
+      if (uploadIsPassword && uploadPassword) {
+        formData.append('is_password_protected', 'true');
+        formData.append('password', uploadPassword);
+      }
+
+      const res = await api.post('/documents', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      }).catch(() => null);
+
+      const newDoc = res?.data?.document || {
         id: Date.now(),
         title: uploadTitle.trim(),
+        file_name: uploadFile?.name || 'Document.pdf',
         description: uploadDescription.trim(),
         category_name: uploadCategory,
         folder_name: uploadFolder || 'Unassigned',
-        size: formatFileSize(uploadFile!.size),
+        size: uploadFile ? formatFileSize(uploadFile.size) : '1.2 MB',
+        file_size: uploadFile ? uploadFile.size : 1200000,
+        mime_type: uploadFile?.type || 'application/pdf',
         created_at: new Date().toISOString(),
         is_favorite: 0
       };
 
+      const updated = [newDoc, ...recentUploads];
+      setRecentUploads(updated.slice(0, 6));
+      setStats(prev => ({
+        ...prev,
+        totalDocuments: prev.totalDocuments + 1,
+        storageUsedBytes: prev.storageUsedBytes + (uploadFile?.size || 1200000)
+      }));
+
       if (typeof window !== 'undefined') {
         const saved = localStorage.getItem('dms_user_documents');
-        const existing = saved ? JSON.parse(saved) : [];
-        localStorage.setItem('dms_user_documents', JSON.stringify([newDoc, ...existing]));
+        let docs = saved ? JSON.parse(saved) : [];
+        docs.unshift(newDoc);
+        localStorage.setItem('dms_user_documents', JSON.stringify(docs));
+        window.dispatchEvent(new CustomEvent('dms_documents_updated'));
       }
 
-      setRecentUploads(prev => [newDoc, ...prev]);
-      setStats(prev => ({ ...prev, totalDocuments: prev.totalDocuments + 1 }));
-
-      logActivity('UPLOAD', newDoc.title, `Vaulted document "${newDoc.title}" under ${newDoc.category_name}`);
-      addNotification('Document Uploaded', `"${newDoc.title}" stored securely.`, 'success', '/user/documents');
-
-      showToast(`"${newDoc.title}" vaulted successfully!`);
-      setUploadModalOpen(false);
       resetUploadForm();
+      setUploadModalOpen(false);
+      showToast(`Document "${newDoc.title}" uploaded successfully!`);
     } catch {
       setUploadError('Failed to upload document. Please try again.');
     } finally {
@@ -313,23 +372,33 @@ export default function UserWorkspacePage() {
     e.preventDefault();
     if (!newFolderName.trim()) return;
     try {
-      await api.post('/folders', { folder_name: newFolderName.trim() }).catch(() => null);
-      const newFolder = {
+      const res = await api.post('/folders', {
+        folder_name: newFolderName.trim(),
+        description: newFolderDesc.trim(),
+        color: 'var(--theme-primary, #FF6B00)'
+      }).catch(() => null);
+
+      const createdFolder = res?.data?.folder || {
         id: Date.now(),
         folder_name: newFolderName.trim(),
+        description: newFolderDesc.trim(),
         color: 'var(--theme-primary, #FF6B00)',
         document_count: 0,
         created_at: new Date().toISOString()
       };
-      const updated = [newFolder, ...folders];
+
+      const updated = [createdFolder, ...folders];
       setFolders(updated);
       setStats(prev => ({ ...prev, totalFolders: prev.totalFolders + 1 }));
       if (typeof window !== 'undefined') {
+        localStorage.setItem('dms_user_folders', JSON.stringify(updated));
         localStorage.setItem('dms_admin_folders', JSON.stringify(updated));
+        window.dispatchEvent(new CustomEvent('dms_folders_updated'));
       }
       setNewFolderName('');
+      setNewFolderDesc('');
       setCreateFolderModalOpen(false);
-      showToast(`Folder "${newFolder.folder_name}" created!`);
+      showToast(`Folder "${createdFolder.folder_name}" created!`);
     } catch {
       setCreateFolderModalOpen(false);
     }

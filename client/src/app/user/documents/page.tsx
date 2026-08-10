@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import api from '@/lib/api';
 import { logActivity } from '@/lib/activityLogger';
+import { downloadDocumentFile } from '@/lib/downloadHelper';
 import DocumentPreviewModal from '@/components/dashboard/DocumentPreviewModal';
 import EditDocumentModal from '@/components/dashboard/EditDocumentModal';
 import CustomSelect from '@/components/CustomSelect';
@@ -289,12 +290,20 @@ export default function MyDocumentsPage() {
       { id: 6, user_id: 1, category_id: 6, folder_id: 2, title: 'Tax_Returns_Assessment_2026.pdf', file_name: 'Tax_Returns_Assessment_2026.pdf', description: 'Annual tax assessment receipts and income disclosures.', file_path: '/uploads/tax_2026.pdf', file_size: 943718, mime_type: 'application/pdf', is_favorite: 0, is_archived: 0, created_at: '2026-07-19T16:00:00Z', category_name: 'Client Requirements & Contracts', color: '#06B6D4', folder_name: 'Tax Filings 2026' }
     ];
 
-    // Merge API and local docs, prioritizing uploaded local docs first
+    // Merge API and local docs, prioritizing real database docs first
     let combinedDocs: DocumentItem[] = [];
     if (isApiSuccess && apiDocs.length > 0) {
-      const apiIds = new Set(apiDocs.map(d => d.id));
-      const extraLocal = localDocs.filter(d => !apiIds.has(d.id));
-      combinedDocs = [...extraLocal, ...apiDocs];
+      const apiTitles = new Set(apiDocs.map(d => (d.title || '').toLowerCase().trim()));
+      const apiFileNames = new Set(apiDocs.map(d => (d.file_name || '').toLowerCase().trim()));
+      const apiIds = new Set(apiDocs.map(d => String(d.id)));
+
+      // Only retain local docs that are truly unique and not in API by ID, title, or filename
+      const extraLocal = localDocs.filter(d => 
+        !apiIds.has(String(d.id)) && 
+        !apiTitles.has((d.title || '').toLowerCase().trim()) && 
+        !apiFileNames.has((d.file_name || '').toLowerCase().trim())
+      );
+      combinedDocs = [...apiDocs, ...extraLocal];
     } else if (localDocs.length > 0) {
       combinedDocs = [...localDocs];
     } else {
@@ -394,17 +403,14 @@ export default function MyDocumentsPage() {
       showToast(`Downloading ${doc.title}...`);
       logActivity('DOWNLOAD', doc.title, `Downloaded document "${doc.title}"`);
       
-      const token = typeof window !== 'undefined' ? localStorage.getItem('dms_token') : '';
-      const envApiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
-      const baseUrl = envApiUrl.endsWith('/') ? envApiUrl.slice(0, -1) : envApiUrl;
-      const rootUrl = baseUrl.endsWith('/api') ? baseUrl.slice(0, -4) : baseUrl;
-      
-      const downloadUrl = `${rootUrl}/api/documents/${doc.id}/download${token ? `?token=${token}` : ''}`;
-      window.location.assign(downloadUrl);
-      
-      showToast('Download initiated.');
+      const success = await downloadDocumentFile(doc);
+      if (success) {
+        showToast('Download completed!');
+      } else {
+        showToast('Download initiated.');
+      }
     } catch (err) {
-      showToast('Failed to initiate download.');
+      showToast('Failed to initiate download.', 'error');
     }
   };
 

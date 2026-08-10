@@ -7,6 +7,7 @@ import {
   Presentation, ChevronLeft, ChevronRight, CheckCircle2
 } from 'lucide-react';
 import api from '@/lib/api';
+import { downloadDocumentFile } from '@/lib/downloadHelper';
 
 export interface DocumentItem {
   id: number;
@@ -67,10 +68,16 @@ export default function DocumentPreviewModal({ documentId, document, initialDocu
     setTextContent('');
     setExtractedHtml('');
     try {
-      const res = await api.get(`/documents/${activeId}/preview`);
+      const params: any = {};
+      if (doc?.file_name) params.file_name = doc.file_name;
+      if (doc?.title) params.title = doc.title;
+      if (doc?.file_path) params.file_path = doc.file_path;
+      if (doc?.category_name) params.category_name = doc.category_name;
+
+      const res = await api.get(`/documents/${activeId}/preview`, { params });
       if (res.data && res.data.document) {
         const fetchedDoc = res.data.document;
-        setDoc(fetchedDoc);
+        setDoc(prev => ({ ...(prev || {}), ...fetchedDoc }));
         setCanPreview(true);
 
         if (res.data.slidesData && Array.isArray(res.data.slidesData)) {
@@ -88,7 +95,7 @@ export default function DocumentPreviewModal({ documentId, document, initialDocu
           const fileName = (fetchedDoc.file_name || fetchedDoc.title || '').toLowerCase();
           if (fileName.endsWith('.txt') || fetchedDoc.mime_type?.includes('text/plain')) {
             try {
-              const textRes = await api.get(`/documents/${activeId}/stream`, { responseType: 'text' });
+              const textRes = await api.get(`/documents/${activeId}/stream`, { responseType: 'text', params });
               setTextContent(textRes.data);
             } catch (e) {
               setTextContent('No text content available to preview.');
@@ -232,33 +239,23 @@ export default function DocumentPreviewModal({ documentId, document, initialDocu
 
   const [downloadState, setDownloadState] = useState<'idle' | 'downloading' | 'done'>('idle');
 
-  const handleDownloadClick = async (e?: React.MouseEvent) => {
-    if (e) {
+  const handleDownloadClick = async (e?: React.MouseEvent | any, docOverride?: any) => {
+    if (e && typeof e.preventDefault === 'function') {
       e.preventDefault();
       e.stopPropagation();
     }
-    if (!doc) return;
+    const targetDoc = docOverride || (e && !e.preventDefault && (e.title || e.id) ? e : null) || doc;
+    if (!targetDoc) return;
 
     setDownloadState('downloading');
 
     try {
-      const titleName = (doc.title || doc.file_name || 'Document').trim();
-      const ext = getExtLabel().toLowerCase();
-      let finalExt = ext || 'bin';
-      if (finalExt === 'file') finalExt = 'bin';
-      const fileName = titleName.includes('.') ? titleName : `${titleName}.${finalExt}`;
-
-      if (doc.id) {
-        const token = typeof window !== 'undefined' ? localStorage.getItem('dms_token') : '';
-        const envApiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
-        const baseUrl = envApiUrl.endsWith('/') ? envApiUrl.slice(0, -1) : envApiUrl;
-        const rootUrl = baseUrl.endsWith('/api') ? baseUrl.slice(0, -4) : baseUrl;
-        
-        const downloadUrl = `${rootUrl}/api/documents/${doc.id}/download${token ? `?token=${token}` : ''}`;
-        window.location.assign(downloadUrl);
+      const success = await downloadDocumentFile(targetDoc);
+      if (success) {
         setDownloadState('done');
         setTimeout(() => setDownloadState('idle'), 2500);
-        return;
+      } else {
+        setDownloadState('idle');
       }
     } catch (err) {
       console.error('Download error:', err);
@@ -759,12 +756,25 @@ function PowerPointViewer({ doc, slidesData, textContent, zoomLevel, handleDownl
                     <div className="flex items-center justify-between text-xs text-orange-700 font-bold border-b border-slate-200/80 pb-2.5 font-auth-heading">
                       <span className="flex items-center gap-2">
                         <span className="px-2 py-0.5 rounded bg-orange-100 text-orange-800 text-[11px] font-mono">SLIDE {String(sItem.slideNumber || idx + 1).padStart(2, '0')}</span>
-                        <span>{sItem.title || `SLIDE ${idx + 1} SPECIFICATION`}</span>
+                        <span className="text-sm font-extrabold text-slate-900">{sItem.title || `SLIDE ${idx + 1}`}</span>
                       </span>
                       <span className="text-[11px] text-slate-400 font-normal font-mono">DocVault Deck</span>
                     </div>
-                    <div className="whitespace-pre-wrap font-sans text-sm text-slate-800 leading-relaxed select-text pt-1">
-                      {sItem.content}
+                    <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-2xs space-y-2">
+                      {sItem.bullets && sItem.bullets.length > 0 ? (
+                        <ul className="space-y-2 font-sans text-xs sm:text-sm text-slate-800">
+                          {sItem.bullets.map((b: string, bIdx: number) => (
+                            <li key={bIdx} className="flex items-start gap-2.5">
+                              <span className="w-2 h-2 rounded-full bg-orange-500 mt-1.5 shrink-0" />
+                              <span className="leading-relaxed">{b}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <div className="whitespace-pre-wrap font-sans text-sm text-slate-800 leading-relaxed select-text">
+                          {sItem.content}
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -806,26 +816,47 @@ function PowerPointViewer({ doc, slidesData, textContent, zoomLevel, handleDownl
               </div>
 
               {/* Slide Body Visual Content */}
-              <div className="my-auto relative z-10 max-h-[34vh] overflow-y-auto space-y-4 py-2">
+              <div className="my-auto relative z-10 max-h-[36vh] overflow-y-auto space-y-4 py-2">
                 <div className="space-y-3">
                   <span className="inline-block px-3 py-1 rounded-md bg-orange-500/20 text-orange-300 text-xs font-mono font-bold tracking-wider uppercase border border-orange-500/30">
                     SLIDE {String(slide).padStart(2, '0')} — {(slideList[slide - 1]?.title) || `Slide ${slide}`}
                   </span>
-                  <h1 className="text-xl sm:text-3xl font-black text-white tracking-tight font-auth-heading leading-tight">
+                  <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight font-auth-heading leading-tight">
                     {(slideList[slide - 1]?.title) || doc?.title || `Slide ${slide}`}
                   </h1>
-                  <div className="whitespace-pre-wrap font-sans text-xs sm:text-sm text-slate-200 leading-relaxed p-5 rounded-2xl bg-slate-800/80 border border-slate-700/80 shadow-inner select-text">
-                    {slideList[slide - 1]?.content || `Slide ${slide} content specification.`}
+                  <div className="p-5 rounded-2xl bg-slate-800/90 border border-slate-700/80 shadow-inner select-text">
+                    {slideList[slide - 1]?.bullets && slideList[slide - 1].bullets.length > 0 ? (
+                      <ul className="space-y-2.5 font-sans text-xs sm:text-sm text-slate-200">
+                        {slideList[slide - 1].bullets.map((b: string, bIdx: number) => (
+                          <li key={bIdx} className="flex items-start gap-2.5">
+                            <span className="w-2 h-2 rounded-full bg-orange-400 mt-1.5 shrink-0" />
+                            <span className="leading-relaxed">{b}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <div className="whitespace-pre-wrap font-sans text-xs sm:text-sm text-slate-200 leading-relaxed">
+                        {slideList[slide - 1]?.content || `Slide ${slide} content specification.`}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
 
               {/* Slide Footer */}
-              <div className="flex items-center justify-between text-xs font-mono text-slate-500 pt-4 border-t border-slate-800 relative z-10">
-                <span className="flex items-center gap-1.5">
-                  <ShieldCheck className="w-4 h-4 text-emerald-400" /> DocVault Presentation Reader v2.0
+              <div className="flex items-center justify-between text-xs font-mono text-slate-400 pt-4 border-t border-slate-800 relative z-10">
+                <span className="flex items-center gap-1.5 text-slate-400">
+                  <ShieldCheck className="w-4 h-4 text-emerald-400" /> DocVault Presentation Reader • Verified Deck
                 </span>
-                <span>Slide {slide} of {totalSlides}</span>
+                <div className="flex items-center gap-3">
+                  <span>Slide {slide} of {totalSlides}</span>
+                  <button
+                    onClick={handleDownloadClick}
+                    className="px-3 py-1.5 rounded-lg bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs flex items-center gap-1.5 transition shadow-sm cursor-pointer"
+                  >
+                    <Download className="w-3.5 h-3.5" /> Download (.pptx)
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -840,7 +871,7 @@ function PowerPointViewer({ doc, slidesData, textContent, zoomLevel, handleDownl
                     <button
                       key={idx}
                       onClick={() => setSlide(sNum)}
-                      className={`shrink-0 w-36 h-22 rounded-xl p-2.5 transition-all text-left flex flex-col justify-between cursor-pointer border ${
+                      className={`shrink-0 w-40 h-24 rounded-xl p-2.5 transition-all text-left flex flex-col justify-between cursor-pointer border ${
                         isActive
                           ? 'bg-gradient-to-br from-orange-500/20 to-amber-500/20 border-orange-500 ring-2 ring-orange-500/40 shadow-lg scale-102'
                           : 'bg-slate-800/90 border-slate-700/80 hover:bg-slate-800 hover:border-slate-600'
@@ -852,11 +883,11 @@ function PowerPointViewer({ doc, slidesData, textContent, zoomLevel, handleDownl
                         </span>
                         {isActive && <span className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-ping" />}
                       </div>
-                      <p className="text-[10px] font-bold text-slate-200 truncate font-auth-heading mt-1">
+                      <p className="text-[11px] font-bold text-slate-200 truncate font-auth-heading mt-1">
                         {sItem.title || `Slide ${sNum}`}
                       </p>
                       <p className="text-[9px] text-slate-400 truncate">
-                        {sItem.content?.slice(0, 30) || 'Slide text content...'}
+                        {sItem.content?.slice(0, 35) || 'Slide text content...'}
                       </p>
                     </button>
                   );
@@ -937,7 +968,7 @@ function WordViewer({ doc, textContent, extractedHtml, zoomLevel, handleDownload
             </div>
 
             {/* Document Text / HTML / Visual Body */}
-            <div className="space-y-6 text-xs text-slate-700 leading-relaxed font-sans">
+            <div className="space-y-6 text-slate-800 leading-relaxed font-sans">
               {hasHtml ? (
                 <div className="p-6 sm:p-8 rounded-2xl bg-slate-50/80 border border-slate-200/80 space-y-4 shadow-2xs">
                   <div className="flex items-center justify-between text-xs text-blue-700 font-bold border-b border-slate-200/80 pb-3 font-auth-heading">
@@ -945,10 +976,10 @@ function WordViewer({ doc, textContent, extractedHtml, zoomLevel, handleDownload
                       <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                       FULL WORD DOCUMENT FORMATTED VIEW
                     </span>
-                    <span className="text-[11px] text-slate-400 font-normal">Mammoth HTML Rendering</span>
+                    <span className="text-[11px] text-slate-400 font-normal">Microsoft Word Document Layout</span>
                   </div>
                   <div 
-                    className="prose max-w-none font-sans text-sm text-slate-800 leading-relaxed pt-1 select-text"
+                    className="word-document-content max-w-none text-slate-800 leading-relaxed pt-1 select-text"
                     dangerouslySetInnerHTML={{ __html: extractedHtml }}
                   />
                 </div>

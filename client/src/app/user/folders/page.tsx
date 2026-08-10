@@ -132,6 +132,11 @@ export default function FoldersPage() {
 
   const saveFoldersState = (updated: FolderItem[]) => {
     setFolders(updated);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('dms_user_folders', JSON.stringify(updated));
+      localStorage.setItem('dms_admin_folders', JSON.stringify(updated));
+      window.dispatchEvent(new CustomEvent('dms_folders_updated'));
+    }
   };
 
   // Helper: merge API folder list with live localStorage document counts
@@ -143,9 +148,8 @@ export default function FoldersPage() {
       const localDocs: any[] = JSON.parse(stored);
       return apiFolders.map(f => {
         const localCount = localDocs.filter(
-          (d: any) => String(d.folder_id) === String(f.id) && !d.is_archived
+          (d: any) => (String(d.folder_id) === String(f.id) || (d.folder_name && d.folder_name.toLowerCase() === f.folder_name.toLowerCase())) && !d.is_archived
         ).length;
-        // Use whichever count is higher (API count vs local count)
         return { ...f, document_count: Math.max(f.document_count || 0, localCount) };
       });
     } catch {
@@ -165,7 +169,7 @@ export default function FoldersPage() {
     } catch {}
 
     if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('dms_admin_folders');
+      const saved = localStorage.getItem('dms_user_folders') || localStorage.getItem('dms_admin_folders');
       if (saved) {
         try {
           const parsed = JSON.parse(saved);
@@ -214,7 +218,7 @@ export default function FoldersPage() {
       ? formCustomCategory.trim()
       : formCategory;
 
-    const newF: FolderItem = {
+    let newF: FolderItem = {
       id: Date.now(),
       user_id: 1,
       folder_name: formName.trim(),
@@ -226,12 +230,22 @@ export default function FoldersPage() {
     };
 
     try {
-      await api.post('/folders', {
+      const res = await api.post('/folders', {
         folder_name: formName.trim(),
         description: formDescription.trim() || (selectedCategoryName ? `${selectedCategoryName} documents` : ''),
         color: formColor,
         category_name: selectedCategoryName || undefined
       }).catch(() => null);
+
+      if (res?.data?.folder) {
+        newF = {
+          ...newF,
+          id: res.data.folder.id,
+          user_id: res.data.folder.user_id || 1,
+          folder_name: res.data.folder.folder_name || newF.folder_name,
+          color: res.data.folder.color || newF.color
+        };
+      }
     } catch {}
 
     const updated = [newF, ...folders];

@@ -33,30 +33,36 @@ class DocumentModel {
      */
     static async getStatsByUserId(userId) {
         try {
+            const numUserId = Number(userId);
+            const FolderModel = require('./folderModel');
+            if (FolderModel && FolderModel.ensureStarterFolders && numUserId) {
+                await FolderModel.ensureStarterFolders(numUserId);
+            }
+
             const [rows] = await pool.execute(
                 `SELECT 
                     COUNT(*) as totalDocs,
                     COALESCE(SUM(file_size), 0) as totalBytes,
                     SUM(CASE WHEN is_favorite = 1 THEN 1 ELSE 0 END) as favoriteDocs,
                     SUM(CASE WHEN is_archived = 1 THEN 1 ELSE 0 END) as archivedDocs
-                FROM documents WHERE user_id = ? AND is_archived = 0`,
-                [userId]
+                FROM documents WHERE user_id = ? AND (is_archived = 0 OR is_archived IS NULL)`,
+                [numUserId]
             );
 
             const [catRows] = await pool.execute(
                 `SELECT COUNT(*) as catCount FROM categories WHERE user_id = ? OR user_id IS NULL`,
-                [userId]
+                [numUserId]
             );
 
             const [folderRows] = await pool.execute(
                 `SELECT COUNT(*) as folderCount FROM folders WHERE user_id = ?`,
-                [userId]
+                [numUserId]
             );
 
             return {
                 totalDocuments: Number(rows[0]?.totalDocs || 0),
                 totalFolders: Number(folderRows[0]?.folderCount || 0),
-                categoriesCount: Number(catRows[0]?.catCount || 8),
+                categoriesCount: Number(catRows[0]?.catCount || 10),
                 favoriteDocuments: Number(rows[0]?.favoriteDocs || 0),
                 archivedDocuments: Number(rows[0]?.archivedDocs || 0),
                 storageUsedBytes: Number(rows[0]?.totalBytes || 0),
@@ -302,9 +308,10 @@ class DocumentModel {
     }
 
     /**
-     * Find document by ID
+     * Find document by ID, filename, or title
      */
     static async findById(id, userId) {
+        if (!id) return null;
         try {
             const { sqliteDb } = require('../config/db');
             let sql = `
@@ -321,8 +328,9 @@ class DocumentModel {
             }
             
             if (sqliteDb) {
-                const row = await sqliteDb.get(sql, params);
+                let row = await sqliteDb.get(sql, params);
                 if (row) return row;
+                
                 // If user-scoped query returned nothing, try without user filter
                 if (userId) {
                     const fallbackSql = `
@@ -332,9 +340,21 @@ class DocumentModel {
                         LEFT JOIN folders f ON d.folder_id = f.id
                         WHERE (d.id = ? OR d.id = ?)
                     `;
-                    const fallbackRow = await sqliteDb.get(fallbackSql, [id, String(id)]);
-                    if (fallbackRow) return fallbackRow;
+                    row = await sqliteDb.get(fallbackSql, [id, String(id)]);
+                    if (row) return row;
                 }
+
+                // If not found by numeric ID, try matching by file_name or title
+                const nameSql = `
+                    SELECT d.*, c.category_name, c.color, c.icon_name, f.folder_name
+                    FROM documents d
+                    LEFT JOIN categories c ON d.category_id = c.id
+                    LEFT JOIN folders f ON d.folder_id = f.id
+                    WHERE (d.file_name = ? OR d.title = ? OR d.file_name LIKE ? OR d.file_path LIKE ?)
+                    ORDER BY d.id DESC LIMIT 1
+                `;
+                row = await sqliteDb.get(nameSql, [String(id), String(id), `%${id}%`, `%${id}%`]);
+                if (row) return row;
             }
             if (pool) {
                 const [rows] = await pool.execute(sql, params);
@@ -343,7 +363,14 @@ class DocumentModel {
         } catch (err) {
             console.warn('[DocumentModel] findById DB error, using memory fallback:', err.message);
         }
-        return memoryDocuments.find(d => String(d.id) === String(id) || d.id == id) || null;
+
+        const idStr = String(id).toLowerCase();
+        return memoryDocuments.find(d => 
+            String(d.id) === String(id) || 
+            d.id == id || 
+            (d.file_name && d.file_name.toLowerCase() === idStr) || 
+            (d.title && d.title.toLowerCase() === idStr)
+        ) || null;
     }
 
     /**

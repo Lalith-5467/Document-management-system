@@ -338,27 +338,42 @@ export default function UploadPage() {
     try {
       const res = await api.post('/folders', {
         folder_name: newFolderName.trim(),
-        description: newFolderDesc.trim()
+        description: newFolderDesc.trim(),
+        color: 'var(--theme-primary, #FF6B00)'
       });
+      let createdF: any;
       if (res.data?.folder) {
-        const createdF = res.data.folder;
+        createdF = res.data.folder;
         setFolders(prev => [createdF, ...prev]);
         setFolderId(String(createdF.id));
         setFolderName(createdF.folder_name);
       } else {
         const fallbackId = String(Date.now());
-        setFolders(prev => [{ id: fallbackId, folder_name: newFolderName.trim() }, ...prev]);
+        createdF = { id: fallbackId, folder_name: newFolderName.trim(), color: 'var(--theme-primary, #FF6B00)' };
+        setFolders(prev => [createdF, ...prev]);
         setFolderId(fallbackId);
         setFolderName(newFolderName.trim());
+      }
+      if (typeof window !== 'undefined') {
+        const saved = localStorage.getItem('dms_user_folders');
+        let currentFolders = saved ? JSON.parse(saved) : [];
+        currentFolders.unshift(createdF);
+        localStorage.setItem('dms_user_folders', JSON.stringify(currentFolders));
+        localStorage.setItem('dms_admin_folders', JSON.stringify(currentFolders));
+        window.dispatchEvent(new CustomEvent('dms_folders_updated'));
       }
       setNewFolderName('');
       setNewFolderDesc('');
       setCreateFolderModalOpen(false);
     } catch {
       const fallbackId = String(Date.now());
-      setFolders(prev => [{ id: fallbackId, folder_name: newFolderName.trim() }, ...prev]);
+      const createdF = { id: fallbackId, folder_name: newFolderName.trim(), color: 'var(--theme-primary, #FF6B00)' };
+      setFolders(prev => [createdF, ...prev]);
       setFolderId(fallbackId);
       setFolderName(newFolderName.trim());
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('dms_folders_updated'));
+      }
       setCreateFolderModalOpen(false);
     } finally {
       setCreatingFolder(false);
@@ -529,7 +544,12 @@ export default function UploadPage() {
           if (stored) existingDocs = JSON.parse(stored);
         } catch (e) {}
 
-        const updatedDocs = [createdDoc, ...existingDocs];
+        const cleanExisting = existingDocs.filter(d => 
+          String(d.id) !== String(createdDoc.id) && 
+          (d.title || '').toLowerCase() !== (createdDoc.title || '').toLowerCase() &&
+          (d.file_name || '').toLowerCase() !== (createdDoc.file_name || '').toLowerCase()
+        );
+        const updatedDocs = [createdDoc, ...cleanExisting];
         localStorage.setItem('dms_user_documents', JSON.stringify(updatedDocs));
 
         // Update dashboard recent docs
