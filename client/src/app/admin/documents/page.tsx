@@ -369,27 +369,27 @@ export default function AdminDocumentsPage() {
   const fmtBytes = (b: number) => { if (!b) return '0 B'; const k = 1024; const s = ['B','KB','MB','GB']; const i = Math.floor(Math.log(b) / Math.log(k)); return parseFloat((b / Math.pow(k, i)).toFixed(2)) + ' ' + s[i]; };
 
   return (
-    <div className="space-y-6 pb-12 text-slate-900 font-sans">
+    <div className="space-y-6 pb-12 text-slate-900 dark:text-white font-sans">
       <Toast toast={toast} onClose={() => setToast(null)} />
 
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight font-auth-heading">
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight font-auth-heading">
             Document Management
           </h1>
-          <p className="text-xs text-slate-500 font-medium mt-1">
+          <p className="text-xs text-slate-500 dark:text-slate-400 font-medium mt-1">
             {totalCount} documents · Preview, download, edit metadata, move, soft delete, restore, or permanently purge
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <div className="flex rounded-2xl p-1 bg-slate-100 border border-slate-200">
-            <button onClick={() => { setViewMode('active'); setPage(1); if (typeof window !== 'undefined') window.history.replaceState(null, '', '/admin/documents'); }} className={`px-4 py-2 text-xs font-black rounded-xl transition-all cursor-pointer ${viewMode === 'active' ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/20' : 'text-slate-600 hover:text-slate-900'}`}>Active</button>
-            <button onClick={() => { setViewMode('archived'); setPage(1); if (typeof window !== 'undefined') window.history.replaceState(null, '', '/admin/documents?tab=trash'); }} className={`px-4 py-2 text-xs font-black rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${viewMode === 'archived' ? 'bg-rose-600 text-white shadow-md shadow-rose-600/20' : 'text-slate-600 hover:text-slate-900'}`}>
+          <div className="flex rounded-2xl p-1 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+            <button onClick={() => { setViewMode('active'); setPage(1); if (typeof window !== 'undefined') window.history.replaceState(null, '', '/admin/documents'); }} className={`px-4 py-2 text-xs font-black rounded-xl transition-all cursor-pointer ${viewMode === 'active' ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/20' : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'}`}>Active</button>
+            <button onClick={() => { setViewMode('archived'); setPage(1); if (typeof window !== 'undefined') window.history.replaceState(null, '', '/admin/documents?tab=trash'); }} className={`px-4 py-2 text-xs font-black rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ${viewMode === 'archived' ? 'bg-rose-600 text-white shadow-md shadow-rose-600/20' : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'}`}>
               <Archive className="w-3.5 h-3.5" /> Trash
             </button>
           </div>
-          <button onClick={fetchDocuments} className="text-xs font-extrabold px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-100 hover:bg-slate-200 text-slate-800 flex items-center gap-2 shadow-2xs transition cursor-pointer">
+          <button onClick={fetchDocuments} className="text-xs font-extrabold px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 flex items-center gap-2 shadow-2xs transition cursor-pointer">
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} /> Refresh
           </button>
         </div>
@@ -397,15 +397,15 @@ export default function AdminDocumentsPage() {
 
       {/* Filters (only for active view) */}
       {viewMode === 'active' && (
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-white p-4 rounded-3xl border border-slate-200 shadow-2xs">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-white dark:bg-[#111827] p-4 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xs">
           <div className="relative sm:col-span-2">
-            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
             <input
               type="text"
               value={searchQuery}
               onChange={e => { setSearchQuery(e.target.value); setPage(1); }}
               placeholder="Search documents by title, file name, description..."
-              className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-themePrimary"
+              className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-medium text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-themePrimary"
             />
           </div>
           <CustomSelect
@@ -420,20 +420,20 @@ export default function AdminDocumentsPage() {
       )}
 
       {/* Table */}
-      <div className="bg-white rounded-3xl border border-slate-200 shadow-2xs overflow-hidden">
+      <div className="bg-white dark:bg-[#111827] rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xs overflow-hidden">
         {loading ? (
-          <div className="p-12 flex items-center justify-center gap-2 text-xs text-slate-500 font-medium">
+          <div className="p-12 flex items-center justify-center gap-2 text-xs text-slate-500 dark:text-slate-400 font-medium">
             <Loader2 className="w-5 h-5 animate-spin text-themePrimary" /> Loading documents...
           </div>
         ) : documents.length === 0 ? (
-          <div className="p-12 text-center text-xs text-slate-500 font-medium">
+          <div className="p-12 text-center text-xs text-slate-500 dark:text-slate-400 font-medium">
             {viewMode === 'archived' ? 'Recycle bin is empty.' : 'No documents found.'}
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs">
               <thead>
-                <tr className="border-b border-slate-200 text-slate-700 text-xs font-black uppercase tracking-wider bg-slate-50">
+                <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 text-xs font-black uppercase tracking-wider bg-slate-50 dark:bg-[#0B1120]">
                   <th className="py-4 px-5">Document</th>
                   <th className="py-4 px-5">Owner</th>
                   <th className="py-4 px-5">Category</th>
@@ -442,46 +442,46 @@ export default function AdminDocumentsPage() {
                   <th className="py-4 px-5 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800/80">
                 {documents.map(doc => (
-                  <tr key={doc.id} className="group hover:bg-orange-50/20 transition-all duration-200">
+                  <tr key={doc.id} className="group hover:bg-orange-50/20 dark:hover:bg-slate-800/50 transition-all duration-200">
                     <td className="py-3.5 px-5">
                       <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-xl bg-orange-50 border border-orange-200 text-themePrimary flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                        <div className="w-9 h-9 rounded-xl bg-orange-50 dark:bg-orange-950/60 border border-orange-200 dark:border-orange-900/60 text-themePrimary flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
                           <FileText className="w-4 h-4" />
                         </div>
                         <div>
-                          <span className="font-black text-slate-900 text-xs font-auth-heading block truncate max-w-[220px] group-hover:text-themePrimary transition-colors">{doc.title}</span>
-                          <span className="text-[11px] text-slate-500 font-mono truncate max-w-[220px] block">{doc.file_name}</span>
+                          <span className="font-black text-slate-900 dark:text-white text-xs font-auth-heading block truncate max-w-[220px] group-hover:text-themePrimary transition-colors">{doc.title}</span>
+                          <span className="text-[11px] text-slate-500 dark:text-slate-400 font-mono truncate max-w-[220px] block">{doc.file_name}</span>
                         </div>
                       </div>
                     </td>
                     <td className="py-3.5 px-5">
                       <div className="flex items-center gap-1.5">
-                        <User className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                        <span className="text-slate-800 font-bold">{doc.owner_name || doc.owner_email || 'User'}</span>
+                        <User className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 shrink-0" />
+                        <span className="text-slate-800 dark:text-slate-200 font-bold">{doc.owner_name || doc.owner_email || 'User'}</span>
                       </div>
                     </td>
                     <td className="py-3.5 px-5">
-                      <span className="px-2.5 py-1 rounded-full bg-orange-50 text-themePrimary border border-orange-200 text-[10px] font-black uppercase">
+                      <span className="px-2.5 py-1 rounded-full bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 border border-orange-200 dark:border-orange-900/60 text-[10px] font-black uppercase">
                         {doc.category_name || 'General'}
                       </span>
                     </td>
-                    <td className="py-3.5 px-5 font-mono text-slate-700 text-xs font-bold">{fmtBytes(doc.file_size)}</td>
-                    <td className="py-3.5 px-5 text-slate-500 font-medium">{fmt(viewMode === 'archived' ? doc.deleted_at : doc.created_at)}</td>
+                    <td className="py-3.5 px-5 font-mono text-slate-700 dark:text-slate-300 text-xs font-bold">{fmtBytes(doc.file_size)}</td>
+                    <td className="py-3.5 px-5 text-slate-500 dark:text-slate-400 font-medium">{fmt(viewMode === 'archived' ? doc.deleted_at : doc.created_at)}</td>
                     <td className="py-3.5 px-5 text-right">
-                      <div className="flex items-center justify-end gap-1 bg-slate-50 p-1 rounded-xl border border-slate-200/80 inline-flex">
+                      <div className="flex items-center justify-end gap-1 bg-slate-50 dark:bg-slate-800/80 p-1 rounded-xl border border-slate-200/80 dark:border-slate-700 inline-flex">
                         {viewMode === 'active' ? (
                           <>
-                            <button onClick={() => { setSelectedDoc(doc); setActiveModal('preview'); }} className="p-1.5 rounded-lg text-slate-500 hover:text-themePrimary hover:bg-white transition cursor-pointer" title="Preview"><Eye className="w-3.5 h-3.5" /></button>
-                            <button onClick={() => openEdit(doc)} className="p-1.5 rounded-lg text-slate-500 hover:text-themePrimary hover:bg-white transition cursor-pointer" title="Edit Metadata"><Edit2 className="w-3.5 h-3.5" /></button>
-                            <button onClick={() => handleDownload(doc)} className="p-1.5 rounded-lg text-slate-500 hover:text-emerald-600 hover:bg-white transition cursor-pointer" title="Download"><Download className="w-3.5 h-3.5" /></button>
-                            <button onClick={() => handleSoftDelete(doc)} className="p-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-white transition cursor-pointer" title="Move to Trash"><Trash2 className="w-3.5 h-3.5" /></button>
+                            <button onClick={() => { setSelectedDoc(doc); setActiveModal('preview'); }} className="p-1.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-themePrimary dark:hover:text-themePrimary hover:bg-white dark:hover:bg-slate-700 transition cursor-pointer" title="Preview"><Eye className="w-3.5 h-3.5" /></button>
+                            <button onClick={() => openEdit(doc)} className="p-1.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-themePrimary dark:hover:text-themePrimary hover:bg-white dark:hover:bg-slate-700 transition cursor-pointer" title="Edit Metadata"><Edit2 className="w-3.5 h-3.5" /></button>
+                            <button onClick={() => handleDownload(doc)} className="p-1.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-white dark:hover:bg-slate-700 transition cursor-pointer" title="Download"><Download className="w-3.5 h-3.5" /></button>
+                            <button onClick={() => handleSoftDelete(doc)} className="p-1.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-white dark:hover:bg-slate-700 transition cursor-pointer" title="Move to Trash"><Trash2 className="w-3.5 h-3.5" /></button>
                           </>
                         ) : (
                           <>
-                            <button onClick={() => handleRestore(doc)} className="p-1.5 rounded-lg text-slate-500 hover:text-emerald-600 hover:bg-white transition cursor-pointer" title="Restore"><RotateCcw className="w-3.5 h-3.5" /></button>
-                            <button onClick={() => { setSelectedDoc(doc); setActiveModal('delete'); }} className="p-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-white transition cursor-pointer" title="Permanently Delete"><Trash2 className="w-3.5 h-3.5" /></button>
+                            <button onClick={() => handleRestore(doc)} className="p-1.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-white dark:hover:bg-slate-700 transition cursor-pointer" title="Restore"><RotateCcw className="w-3.5 h-3.5" /></button>
+                            <button onClick={() => { setSelectedDoc(doc); setActiveModal('delete'); }} className="p-1.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-white dark:hover:bg-slate-700 transition cursor-pointer" title="Permanently Delete"><Trash2 className="w-3.5 h-3.5" /></button>
                           </>
                         )}
                       </div>
@@ -494,12 +494,12 @@ export default function AdminDocumentsPage() {
         )}
 
         {viewMode === 'active' && totalPages > 1 && (
-          <div className="flex items-center justify-between px-5 py-3 border-t border-slate-200 bg-slate-50/80">
-            <span className="text-xs font-bold text-slate-600">{totalCount} total documents</span>
+          <div className="flex items-center justify-between px-5 py-3 border-t border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-[#0B1120]">
+            <span className="text-xs font-bold text-slate-600 dark:text-slate-400">{totalCount} total documents</span>
             <div className="flex items-center gap-1.5">
-              <button disabled={page <= 1} onClick={() => setPage(p => p - 1)} className="p-1.5 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-100 disabled:opacity-40 cursor-pointer transition"><ChevronLeft className="w-4 h-4" /></button>
-              <span className="text-xs font-mono font-bold text-slate-700 px-2">Page {page} of {totalPages}</span>
-              <button disabled={page >= totalPages} onClick={() => setPage(p => p + 1)} className="p-1.5 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-100 disabled:opacity-40 cursor-pointer transition"><ChevronRight className="w-4 h-4" /></button>
+              <button disabled={page <= 1} onClick={() => setPage(p => p - 1)} className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-40 cursor-pointer transition"><ChevronLeft className="w-4 h-4" /></button>
+              <span className="text-xs font-mono font-bold text-slate-700 dark:text-slate-300 px-2">Page {page} of {totalPages}</span>
+              <button disabled={page >= totalPages} onClick={() => setPage(p => p + 1)} className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-40 cursor-pointer transition"><ChevronRight className="w-4 h-4" /></button>
             </div>
           </div>
         )}
@@ -517,37 +517,37 @@ export default function AdminDocumentsPage() {
 
       {/* Edit Metadata Modal */}
       {activeModal === 'edit' && selectedDoc && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-pop-in">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 border border-slate-200 shadow-2xl space-y-4 text-xs text-slate-900">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <h2 className="text-base font-black text-slate-900 flex items-center gap-2 font-auth-heading"><Edit2 className="w-5 h-5 text-themePrimary" /> Edit Document Metadata</h2>
-              <button onClick={() => setActiveModal(null)} className="text-slate-400 hover:text-slate-900 p-1.5 rounded-xl hover:bg-slate-100 transition cursor-pointer"><X className="w-4 h-4" /></button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm animate-pop-in">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-4 text-xs text-slate-900 dark:text-white">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+              <h2 className="text-base font-black text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading"><Edit2 className="w-5 h-5 text-themePrimary" /> Edit Document Metadata</h2>
+              <button onClick={() => setActiveModal(null)} className="text-slate-400 hover:text-slate-900 dark:hover:text-white p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"><X className="w-4 h-4" /></button>
             </div>
             <form onSubmit={handleEditSave} className="space-y-3">
               <div>
-                <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">Document Title</label>
-                <input required type="text" value={editTitle} onChange={e => setEditTitle(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary" />
+                <label className="text-[10px] font-extrabold uppercase text-slate-600 dark:text-slate-400 block mb-1">Document Title</label>
+                <input required type="text" value={editTitle} onChange={e => setEditTitle(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary" />
               </div>
               <div>
-                <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">Description</label>
-                <textarea rows={3} value={editDesc} onChange={e => setEditDesc(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 focus:outline-none focus:border-themePrimary resize-none" />
+                <label className="text-[10px] font-extrabold uppercase text-slate-600 dark:text-slate-400 block mb-1">Description</label>
+                <textarea rows={3} value={editDesc} onChange={e => setEditDesc(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-medium text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary resize-none" />
               </div>
               <div>
-                <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">Category Tag</label>
-                <select value={editCatId} onChange={e => setEditCatId(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary cursor-pointer">
+                <label className="text-[10px] font-extrabold uppercase text-slate-600 dark:text-slate-400 block mb-1">Category Tag</label>
+                <select value={editCatId} onChange={e => setEditCatId(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary cursor-pointer">
                   <option value="">No Category</option>
                   {categories.map(c => <option key={c.id} value={c.id}>{c.category_name}</option>)}
                 </select>
               </div>
               <div>
-                <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">Folder Container</label>
-                <select value={editFolderId} onChange={e => setEditFolderId(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary cursor-pointer">
+                <label className="text-[10px] font-extrabold uppercase text-slate-600 dark:text-slate-400 block mb-1">Folder Container</label>
+                <select value={editFolderId} onChange={e => setEditFolderId(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary cursor-pointer">
                   <option value="">No Folder</option>
                   {folders.map(f => <option key={f.id} value={f.id}>{f.folder_name}</option>)}
                 </select>
               </div>
-              <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
-                <button type="button" onClick={() => setActiveModal(null)} className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-bold text-slate-700 transition cursor-pointer">Cancel</button>
+              <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100 dark:border-slate-800">
+                <button type="button" onClick={() => setActiveModal(null)} className="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-700 dark:text-slate-300 transition cursor-pointer">Cancel</button>
                 <button type="submit" disabled={submitting} className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-extrabold text-xs shadow-md shadow-orange-500/20 disabled:opacity-50 transition cursor-pointer flex items-center gap-2">
                   {submitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />} Save Changes
                 </button>
@@ -559,15 +559,15 @@ export default function AdminDocumentsPage() {
 
       {/* Permanent Delete Modal */}
       {activeModal === 'delete' && selectedDoc && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-pop-in">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 border border-slate-200 shadow-2xl space-y-4 text-center text-xs text-slate-900">
-            <div className="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 border border-rose-200 flex items-center justify-center mx-auto"><Trash2 className="w-6 h-6" /></div>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm animate-pop-in">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-4 text-center text-xs text-slate-900 dark:text-white">
+            <div className="w-12 h-12 rounded-2xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800 flex items-center justify-center mx-auto"><Trash2 className="w-6 h-6" /></div>
             <div className="space-y-1">
-              <h3 className="text-base font-black text-slate-900 font-auth-heading">Permanently Delete?</h3>
-              <p className="text-xs text-slate-600 font-medium">This will permanently delete <strong className="text-slate-900">"{selectedDoc.title}"</strong> from disk. This action cannot be undone.</p>
+              <h3 className="text-base font-black text-slate-900 dark:text-white font-auth-heading">Permanently Delete?</h3>
+              <p className="text-xs text-slate-600 dark:text-slate-400 font-medium">This will permanently delete <strong className="text-slate-900 dark:text-white">"{selectedDoc.title}"</strong> from disk. This action cannot be undone.</p>
             </div>
-            <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
-              <button onClick={() => setActiveModal(null)} className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-bold text-slate-700 transition cursor-pointer">Cancel</button>
+            <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100 dark:border-slate-800">
+              <button onClick={() => setActiveModal(null)} className="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-700 dark:text-slate-300 transition cursor-pointer">Cancel</button>
               <button onClick={handlePermanentDelete} disabled={submitting} className="px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black text-xs flex items-center gap-1.5 shadow-md transition cursor-pointer">
                 {submitting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Trash2 className="w-3.5 h-3.5" />} Delete Forever
               </button>
