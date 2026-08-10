@@ -89,52 +89,52 @@ export default function AdminActivityPage() {
   };
 
   return (
-    <div className="space-y-6 pb-12 text-slate-900 font-sans">
+    <div className="space-y-6 pb-12 text-slate-900 dark:text-white font-sans">
       {toast && (
         <div className={`fixed bottom-6 right-6 z-[60] flex items-center gap-3 px-4 py-3 rounded-2xl shadow-2xl text-xs font-semibold border ${
-          toast.type === 'success' ? 'bg-emerald-50 text-emerald-800 border-emerald-200' : 'bg-rose-50 text-rose-800 border-rose-200'
+          toast.type === 'success' ? 'bg-emerald-50 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200 border-emerald-200 dark:border-emerald-800' : 'bg-rose-50 dark:bg-rose-950 text-rose-800 dark:text-rose-200 border-rose-200 dark:border-rose-800'
         }`}>
           {toast.type === 'success' ? <CheckCircle2 className="w-5 h-5 text-emerald-500" /> : <AlertCircle className="w-5 h-5 text-rose-400" />}
           <span>{toast.message}</span>
-          <button onClick={() => setToast(null)}><X className="w-4 h-4 ml-2 text-slate-400 hover:text-slate-900" /></button>
+          <button onClick={() => setToast(null)}><X className="w-4 h-4 ml-2 text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer" /></button>
         </div>
       )}
 
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
         <div>
-          <h1 className="text-2xl font-black text-slate-900 font-auth-heading">
+          <h1 className="text-2xl font-black text-slate-900 dark:text-white font-auth-heading">
             Activity Audit Logs
           </h1>
-          <p className="text-xs text-slate-500 font-medium mt-1">{totalCount} total activities tracked system-wide</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 font-medium mt-1">{totalCount} total activities tracked system-wide</p>
         </div>
         <div className="flex items-center gap-3">
-          <button onClick={handleExport} className="text-xs font-extrabold px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-100 hover:bg-slate-200 text-slate-800 flex items-center gap-2 shadow-2xs transition cursor-pointer">
+          <button onClick={handleExport} className="text-xs font-extrabold px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 flex items-center gap-2 shadow-2xs transition cursor-pointer">
             <Download className="w-3.5 h-3.5" /> Export CSV
           </button>
-          <button onClick={fetchLogs} className="text-xs font-extrabold px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-100 hover:bg-slate-200 text-slate-800 flex items-center gap-2 shadow-2xs transition cursor-pointer">
+          <button onClick={fetchLogs} className="text-xs font-extrabold px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 flex items-center gap-2 shadow-2xs transition cursor-pointer">
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} /> Refresh
           </button>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-white p-4 rounded-3xl border border-slate-200 shadow-2xs">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-white dark:bg-[#111827] p-4 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xs">
         <div className="relative sm:col-span-2">
-          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
           <input
             type="text"
             value={searchQuery}
             onChange={e => { setSearchQuery(e.target.value); setPage(1); }}
             placeholder="Search by user, action, document, or details..."
-            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-themePrimary"
+            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-medium text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-themePrimary"
           />
         </div>
         <div>
           <select
             value={actionFilter}
             onChange={e => { setActionFilter(e.target.value); setPage(1); }}
-            className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:border-themePrimary cursor-pointer"
+            className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold text-slate-800 dark:text-slate-200 focus:outline-none focus:border-themePrimary cursor-pointer"
           >
             {ACTION_TYPES.map(a => <option key={a} value={a}>{a === 'ALL' ? 'All Actions' : a.replace(/_/g, ' ')}</option>)}
           </select>
@@ -142,16 +142,16 @@ export default function AdminActivityPage() {
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-3xl border border-slate-200 shadow-2xs overflow-hidden">
+      <div className="bg-white dark:bg-[#111827] rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xs overflow-hidden">
         {loading ? (
-          <div className="p-12 flex items-center justify-center gap-2 text-xs text-slate-500"><Loader2 className="w-5 h-5 animate-spin text-themePrimary" /> Loading logs...</div>
+          <div className="p-12 flex items-center justify-center gap-2 text-xs text-slate-500 dark:text-slate-400"><Loader2 className="w-5 h-5 animate-spin text-themePrimary" /> Loading logs...</div>
         ) : logs.length === 0 ? (
-          <div className="p-12 text-center text-xs text-slate-500 font-medium">No activity logs found.</div>
+          <div className="p-12 text-center text-xs text-slate-500 dark:text-slate-400 font-medium">No activity logs found.</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="border-b border-slate-200 text-slate-700 text-xs font-black uppercase tracking-wider bg-slate-50">
+                <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 text-xs font-black uppercase tracking-wider bg-slate-50 dark:bg-[#0B1120]">
                   <th className="py-4 px-5">User</th>
                   <th className="py-4 px-5">Action</th>
                   <th className="py-4 px-5">Document</th>
@@ -159,38 +159,38 @@ export default function AdminActivityPage() {
                   <th className="py-4 px-5">Date & Time</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800/80">
                 {logs.map(log => (
-                  <tr key={log.id} className="group hover:bg-orange-50/20 transition-all duration-200">
+                  <tr key={log.id} className="group hover:bg-orange-50/20 dark:hover:bg-slate-800/50 transition-all duration-200">
                     <td className="py-3.5 px-5">
                       <div className="flex items-center gap-2.5">
                         <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-themePrimary to-[#F97316] text-white font-black text-xs flex items-center justify-center shrink-0 shadow-md group-hover:scale-105 transition-transform">
                           {(log.user_name || 'S').charAt(0).toUpperCase()}
                         </div>
                         <div>
-                          <p className="font-black text-slate-900 text-xs font-auth-heading group-hover:text-themePrimary transition-colors">{log.user_name || 'System'}</p>
-                          <p className="text-[10px] text-slate-500 font-medium">{log.user_email}</p>
+                          <p className="font-black text-slate-900 dark:text-white text-xs font-auth-heading group-hover:text-themePrimary transition-colors">{log.user_name || 'System'}</p>
+                          <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">{log.user_email}</p>
                         </div>
                       </div>
                     </td>
                     <td className="py-3.5 px-5">
                       <span className={`px-2.5 py-1 rounded-full text-[10px] font-black uppercase border shadow-2xs ${
-                        log.action_type === 'LOGIN' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
-                        log.action_type === 'UPLOAD' ? 'bg-blue-50 text-blue-700 border-blue-200' :
-                        log.action_type === 'DELETE' ? 'bg-rose-50 text-rose-700 border-rose-200' :
-                        log.action_type === 'CREATE_FOLDER' ? 'bg-orange-50 text-themePrimary border-orange-200' :
-                        'bg-slate-100 text-slate-700 border-slate-200'
+                        log.action_type === 'LOGIN' ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/80 dark:text-emerald-300 dark:border-emerald-800/80' :
+                        log.action_type === 'UPLOAD' ? 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/80 dark:text-blue-300 dark:border-blue-800/80' :
+                        log.action_type === 'DELETE' ? 'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/80 dark:text-rose-300 dark:border-rose-800/80' :
+                        log.action_type === 'CREATE_FOLDER' ? 'bg-orange-50 text-themePrimary border-orange-200 dark:bg-orange-950/80 dark:text-orange-300 dark:border-orange-900/80' :
+                        'bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700'
                       }`}>
                         {log.action_type?.replace(/_/g, ' ')}
                       </span>
                     </td>
-                    <td className="py-3.5 px-5 font-bold text-slate-800 font-auth-heading truncate max-w-[150px]">
+                    <td className="py-3.5 px-5 font-bold text-slate-800 dark:text-slate-200 font-auth-heading truncate max-w-[150px]">
                       {log.document_name || '—'}
                     </td>
-                    <td className="py-3.5 px-5 text-slate-600 font-medium truncate max-w-[250px]">
+                    <td className="py-3.5 px-5 text-slate-600 dark:text-slate-400 font-medium truncate max-w-[250px]">
                       {log.details}
                     </td>
-                    <td className="py-3.5 px-5 font-mono text-slate-600 text-xs font-semibold whitespace-nowrap">
+                    <td className="py-3.5 px-5 font-mono text-slate-600 dark:text-slate-400 text-xs font-semibold whitespace-nowrap">
                       {fmt(log.created_at)}
                     </td>
                   </tr>
@@ -201,13 +201,13 @@ export default function AdminActivityPage() {
         )}
 
         {totalPages > 1 && (
-          <div className="flex items-center justify-between px-5 py-3 border-t border-slate-200 bg-slate-50/80">
-            <span className="text-xs font-bold text-slate-600">Page {page} of {totalPages}</span>
+          <div className="flex items-center justify-between px-5 py-3 border-t border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-[#0B1120]">
+            <span className="text-xs font-bold text-slate-600 dark:text-slate-400">Page {page} of {totalPages}</span>
             <div className="flex items-center gap-1.5">
-              <button disabled={page <= 1} onClick={() => setPage(p => p - 1)} className="p-1.5 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-100 disabled:opacity-40 cursor-pointer transition">
+              <button disabled={page <= 1} onClick={() => setPage(p => p - 1)} className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-40 cursor-pointer transition">
                 <ChevronLeft className="w-4 h-4" />
               </button>
-              <button disabled={page >= totalPages} onClick={() => setPage(p => p + 1)} className="p-1.5 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-100 disabled:opacity-40 cursor-pointer transition">
+              <button disabled={page >= totalPages} onClick={() => setPage(p => p + 1)} className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-40 cursor-pointer transition">
                 <ChevronRight className="w-4 h-4" />
               </button>
             </div>

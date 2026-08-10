@@ -162,19 +162,19 @@ export default function AdminFoldersPage() {
   };
 
   return (
-    <div className="space-y-6 pb-12 text-slate-900 font-sans">
+    <div className="space-y-6 pb-12 text-slate-900 dark:text-white font-sans">
       <Toast toast={toast} onClose={() => setToast(null)} />
 
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
         <div>
-          <h1 className="text-2xl font-black text-slate-900 font-auth-heading">
+          <h1 className="text-2xl font-black text-slate-900 dark:text-white font-auth-heading">
             Folder Management
           </h1>
-          <p className="text-xs text-slate-500 font-medium mt-1">{folders.length} folders · Create, edit, move documents, and delete folders system-wide</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 font-medium mt-1">{folders.length} folders · Create, edit, move documents, and delete folders system-wide</p>
         </div>
         <div className="flex items-center gap-3">
-          <button onClick={fetchFolders} className="text-xs font-extrabold px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-100 hover:bg-slate-200 text-slate-800 flex items-center gap-2 shadow-2xs transition cursor-pointer">
+          <button onClick={fetchFolders} className="text-xs font-extrabold px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 flex items-center gap-2 shadow-2xs transition cursor-pointer">
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} /> Refresh
           </button>
           <button onClick={openCreate} className="flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-black text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:opacity-90 shadow-md shadow-orange-500/20 hover:scale-105 transition cursor-pointer">
@@ -184,30 +184,30 @@ export default function AdminFoldersPage() {
       </div>
 
       {/* Search Input */}
-      <div className="bg-white p-4 rounded-3xl border border-slate-200 shadow-2xs">
+      <div className="bg-white dark:bg-[#111827] p-4 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xs">
         <div className="relative">
-          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
           <input
             type="text"
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
             placeholder="Search folders by name..."
-            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-themePrimary"
+            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-medium text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-themePrimary"
           />
         </div>
       </div>
 
       {/* Folders Grid */}
       {loading ? (
-        <div className="p-16 flex items-center justify-center gap-2 text-xs text-slate-500"><Loader2 className="w-5 h-5 animate-spin text-themePrimary" /> Loading folders...</div>
+        <div className="p-16 flex items-center justify-center gap-2 text-xs text-slate-500 dark:text-slate-400"><Loader2 className="w-5 h-5 animate-spin text-themePrimary" /> Loading folders...</div>
       ) : folders.length === 0 ? (
-        <div className="p-16 text-center text-xs text-slate-500 bg-white rounded-3xl border border-slate-200 font-medium">No folders found.</div>
+        <div className="p-16 text-center text-xs text-slate-500 dark:text-slate-400 bg-white dark:bg-[#111827] rounded-3xl border border-slate-200 dark:border-slate-800 font-medium">No folders found.</div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {folders.map(folder => (
             <div
               key={folder.id}
-              className="group relative p-5 rounded-3xl border border-slate-200 bg-white shadow-2xs hover:shadow-xl hover:shadow-orange-500/10 hover:border-themePrimary hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between overflow-hidden cursor-pointer"
+              className="group relative p-5 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#111827] shadow-2xs hover:shadow-xl hover:shadow-orange-500/10 hover:border-themePrimary dark:hover:border-themePrimary hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between overflow-hidden cursor-pointer"
             >
               {/* Top Orange Hover Accent Bar */}
               <div className="absolute top-0 left-0 right-0 h-1 bg-transparent group-hover:bg-gradient-to-r group-hover:from-themePrimary group-hover:to-[#F97316] transition-all duration-300" />
@@ -220,17 +220,17 @@ export default function AdminFoldersPage() {
                   >
                     <FolderOpen className="w-5 h-5 text-white" />
                   </div>
-                  <div className="flex items-center gap-1 bg-slate-50 p-1 rounded-xl border border-slate-200/80">
+                  <div className="flex items-center gap-1 bg-slate-50 dark:bg-slate-800/80 p-1 rounded-xl border border-slate-200/80 dark:border-slate-700">
                     <button
                       onClick={() => openEdit(folder)}
-                      className="p-1.5 rounded-lg text-slate-500 hover:text-themePrimary hover:bg-white transition cursor-pointer"
+                      className="p-1.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-themePrimary dark:hover:text-themePrimary hover:bg-white dark:hover:bg-slate-700 transition cursor-pointer"
                       title="Edit Folder"
                     >
                       <Edit2 className="w-3.5 h-3.5" />
                     </button>
                     <button
                       onClick={() => { setSelectedFolder(folder); setActiveModal('delete'); }}
-                      className="p-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-white transition cursor-pointer"
+                      className="p-1.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-white dark:hover:bg-slate-700 transition cursor-pointer"
                       title="Delete Folder"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
@@ -239,21 +239,21 @@ export default function AdminFoldersPage() {
                 </div>
 
                 <div className="mt-4 space-y-1">
-                  <h4 className="text-sm font-black text-slate-900 line-clamp-1 font-auth-heading tracking-tight group-hover:text-themePrimary transition-colors duration-300">
+                  <h4 className="text-sm font-black text-slate-900 dark:text-white line-clamp-1 font-auth-heading tracking-tight group-hover:text-themePrimary transition-colors duration-300">
                     {folder.folder_name}
                   </h4>
-                  <p className="text-xs text-slate-600 line-clamp-2 font-medium leading-relaxed">
+                  <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-2 font-medium leading-relaxed">
                     {folder.description || 'Organized folder storage container.'}
                   </p>
                 </div>
               </div>
 
-              <div className="pt-3.5 border-t border-slate-100 mt-4 flex items-center justify-between">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-100 group-hover:bg-orange-50 group-hover:border-orange-200 border border-slate-200 text-xs font-mono font-bold text-slate-700 group-hover:text-themePrimary transition-colors duration-300">
-                  <FileText className="w-3.5 h-3.5 text-slate-400 group-hover:text-themePrimary" />
+              <div className="pt-3.5 border-t border-slate-100 dark:border-slate-800 mt-4 flex items-center justify-between">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 group-hover:bg-orange-50 dark:group-hover:bg-orange-950/60 group-hover:border-orange-200 dark:group-hover:border-orange-900/60 border border-slate-200 dark:border-slate-700 text-xs font-mono font-bold text-slate-700 dark:text-slate-300 group-hover:text-themePrimary dark:group-hover:text-orange-400 transition-colors duration-300">
+                  <FileText className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 group-hover:text-themePrimary dark:group-hover:text-orange-400" />
                   {folder.document_count || 0} docs
                 </span>
-                <span className="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-md border border-slate-200 bg-slate-100 text-slate-600">
+                <span className="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-md border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
                   {folder.owner_name || 'Admin System'}
                 </span>
               </div>
@@ -264,29 +264,29 @@ export default function AdminFoldersPage() {
 
       {/* Create / Edit Modal */}
       {(activeModal === 'create' || activeModal === 'edit') && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-pop-in">
-          <div className="w-full max-w-md rounded-3xl border border-slate-200 bg-white shadow-2xl p-6 space-y-4 text-xs text-slate-900">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <h3 className="text-base font-black text-slate-900 font-auth-heading">{activeModal === 'create' ? 'Create Folder' : 'Edit Folder'}</h3>
-              <button onClick={() => setActiveModal(null)} className="text-slate-400 hover:text-slate-900 p-1.5 rounded-xl hover:bg-slate-100 transition cursor-pointer"><X className="w-4 h-4" /></button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm animate-pop-in">
+          <div className="w-full max-w-md rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xl p-6 space-y-4 text-xs text-slate-900 dark:text-white">
+            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+              <h3 className="text-base font-black text-slate-900 dark:text-white font-auth-heading">{activeModal === 'create' ? 'Create Folder' : 'Edit Folder'}</h3>
+              <button onClick={() => setActiveModal(null)} className="text-slate-400 hover:text-slate-900 dark:hover:text-white p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"><X className="w-4 h-4" /></button>
             </div>
             <form onSubmit={handleSubmit} className="space-y-3">
               <div>
-                <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">Folder Name</label>
-                <input required type="text" value={formName} onChange={e => setFormName(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-themePrimary" placeholder="e.g. Tax Documents 2026" />
+                <label className="text-[10px] font-extrabold uppercase text-slate-600 dark:text-slate-400 block mb-1">Folder Name</label>
+                <input required type="text" value={formName} onChange={e => setFormName(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-themePrimary" placeholder="e.g. Tax Documents 2026" />
               </div>
               <div>
-                <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">Description</label>
-                <textarea rows={2} value={formDesc} onChange={e => setFormDesc(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-themePrimary resize-none" placeholder="Add folder notes or details..." />
+                <label className="text-[10px] font-extrabold uppercase text-slate-600 dark:text-slate-400 block mb-1">Description</label>
+                <textarea rows={2} value={formDesc} onChange={e => setFormDesc(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-medium text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-themePrimary resize-none" placeholder="Add folder notes or details..." />
               </div>
               <div>
-                <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-2">Color Accent</label>
+                <label className="text-[10px] font-extrabold uppercase text-slate-600 dark:text-slate-400 block mb-2">Color Accent</label>
                 <div className="flex flex-wrap gap-2">
                   {COLORS.map(c => <button key={c} type="button" onClick={() => setFormColor(c)} className={`w-7 h-7 rounded-full transition cursor-pointer ${formColor === c ? 'ring-2 ring-themePrimary ring-offset-2' : ''}`} style={{ backgroundColor: c }} />)}
                 </div>
               </div>
-              <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100 mt-4">
-                <button type="button" onClick={() => setActiveModal(null)} className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-bold text-slate-700 transition cursor-pointer">Cancel</button>
+              <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100 dark:border-slate-800 mt-4">
+                <button type="button" onClick={() => setActiveModal(null)} className="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-700 dark:text-slate-300 transition cursor-pointer">Cancel</button>
                 <button type="submit" disabled={submitting} className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-extrabold text-xs shadow-md shadow-orange-500/20 disabled:opacity-50 transition cursor-pointer">
                   {submitting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : null}{activeModal === 'create' ? 'Create Folder' : 'Save Changes'}
                 </button>
@@ -298,15 +298,15 @@ export default function AdminFoldersPage() {
 
       {/* Delete Modal */}
       {activeModal === 'delete' && selectedFolder && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-pop-in">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 border border-slate-200 shadow-2xl space-y-4 text-center text-xs text-slate-900">
-            <div className="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 border border-rose-200 flex items-center justify-center mx-auto"><Trash2 className="w-6 h-6" /></div>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm animate-pop-in">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-4 text-center text-xs text-slate-900 dark:text-white">
+            <div className="w-12 h-12 rounded-2xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800 flex items-center justify-center mx-auto"><Trash2 className="w-6 h-6" /></div>
             <div className="space-y-1">
-              <h3 className="text-base font-black text-slate-900 font-auth-heading">Delete Folder?</h3>
-              <p className="text-xs text-slate-600 font-medium">Delete <strong className="text-slate-900">"{selectedFolder.folder_name}"</strong>? Documents inside will be unassigned but not deleted.</p>
+              <h3 className="text-base font-black text-slate-900 dark:text-white font-auth-heading">Delete Folder?</h3>
+              <p className="text-xs text-slate-600 dark:text-slate-400 font-medium">Delete <strong className="text-slate-900 dark:text-white">"{selectedFolder.folder_name}"</strong>? Documents inside will be unassigned but not deleted.</p>
             </div>
-            <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
-              <button onClick={() => setActiveModal(null)} className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-bold text-slate-700 transition cursor-pointer">Cancel</button>
+            <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100 dark:border-slate-800">
+              <button onClick={() => setActiveModal(null)} className="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-700 dark:text-slate-300 transition cursor-pointer">Cancel</button>
               <button onClick={handleDelete} disabled={submitting} className="px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black text-xs flex items-center gap-1.5 shadow-md transition cursor-pointer">
                 {submitting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Trash2 className="w-3.5 h-3.5" />} Delete Folder
               </button>
