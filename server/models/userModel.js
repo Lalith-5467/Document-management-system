@@ -165,9 +165,14 @@ class UserModel {
         try {
             if (getIsSQLite()) {
                 const db = getSqliteDb();
-                await db.run('UPDATE users SET password = ? WHERE id = ?', [hashedPassword, id]);
-            } else {
-                await pool.execute('UPDATE users SET password = ? WHERE id = ?', [hashedPassword, id]);
+                if (db) {
+                    await db.run('UPDATE users SET password = ? WHERE id = ?', [hashedPassword, id]);
+                }
+            }
+            if (pool) {
+                try {
+                    await pool.execute('UPDATE users SET password = ? WHERE id = ?', [hashedPassword, id]);
+                } catch (e) {}
             }
             const user = memoryUsers.find(u => u.id === Number(id));
             if (user) user.password = hashedPassword;

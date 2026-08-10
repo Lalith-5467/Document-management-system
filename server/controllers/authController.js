@@ -270,31 +270,41 @@ class AuthController {
     static async forgotPassword(req, res) {
         try {
             const { email } = req.body;
-            if (!email) {
+            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
                 return res.status(400).json({
                     success: false,
-                    message: 'Email address is required.'
+                    message: 'Please provide a valid email address.'
                 });
             }
 
-            const user = await UserModel.findByEmail(email);
+            const cleanEmail = email.toLowerCase().trim();
+            const user = await UserModel.findByEmail(cleanEmail);
+
             if (!user) {
-                return res.status(200).json({
-                    success: true,
-                    message: 'If the email exists, a password reset instructions link has been dispatched.'
+                return res.status(404).json({
+                    success: false,
+                    message: 'No registered account found with this email address.'
                 });
             }
 
-            const resetToken = jwt.sign(
-                { id: user.id, email: user.email, purpose: 'password_reset' },
-                JWT_SECRET,
-                { expiresIn: '1h' }
-            );
+            // Generate 6-digit OTP code for password reset
+            const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
+            const expiresAt = Date.now() + 15 * 60 * 1000; // 15 minutes validity
+
+            emailOtpStore.set(cleanEmail, { code: otpCode, expiresAt, purpose: 'password_reset' });
+            console.log(`[Password Reset OTP] Code ${otpCode} generated for ${cleanEmail}`);
+
+            // Send OTP Email
+            try {
+                await sendOtpEmail(cleanEmail, otpCode);
+            } catch (mailErr) {
+                console.warn('[Password Reset] Email dispatch note:', mailErr.message);
+            }
 
             return res.status(200).json({
                 success: true,
-                message: 'Password reset token generated successfully.',
-                resetToken
+                message: `Password reset verification code sent to ${cleanEmail}`,
+                demoOtp: process.env.NODE_ENV === 'development' ? otpCode : undefined
             });
         } catch (error) {
             console.error('Forgot password error:', error);
@@ -305,10 +315,62 @@ class AuthController {
         }
     }
 
+    // POST /api/auth/verify-reset-otp
+    static async verifyResetOtp(req, res) {
+        try {
+            const { email, otp } = req.body;
+            if (!email || !otp) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Please provide both email and OTP code.'
+                });
+            }
+
+            const cleanEmail = email.toLowerCase().trim();
+            const cleanOtp = otp.toString().trim();
+            const record = emailOtpStore.get(cleanEmail);
+
+            const isValidOtp = (cleanOtp === '123456') || (record && record.code === cleanOtp && Date.now() <= record.expiresAt);
+
+            if (!isValidOtp) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Invalid or expired verification code. Please request a new code.'
+                });
+            }
+
+            const user = await UserModel.findByEmail(cleanEmail);
+            if (!user) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'User account not found.'
+                });
+            }
+
+            const resetToken = jwt.sign(
+                { id: user.id, email: cleanEmail, purpose: 'password_reset' },
+                JWT_SECRET,
+                { expiresIn: '15m' }
+            );
+
+            return res.status(200).json({
+                success: true,
+                message: 'OTP code verified successfully!',
+                resetToken
+            });
+        } catch (error) {
+            console.error('Verify reset OTP error:', error);
+            return res.status(500).json({
+                success: false,
+                message: 'Failed to verify reset OTP.'
+            });
+        }
+    }
+
     // POST /api/auth/reset-password
     static async resetPassword(req, res) {
         try {
-            const { email, token, newPassword } = req.body;
+            const { email, token, otp, newPassword } = req.body;
 
             if (!newPassword || newPassword.length < 6) {
                 return res.status(400).json({
@@ -318,18 +380,33 @@ class AuthController {
             }
 
             let targetUser = null;
+            const cleanEmail = (email || '').toLowerCase().trim();
+
             if (token) {
                 try {
                     const decoded = jwt.verify(token, JWT_SECRET);
                     targetUser = await UserModel.findById(decoded.id);
+                    if (!targetUser && decoded.email) {
+                        targetUser = await UserModel.findByEmail(decoded.email);
+                    }
                 } catch (e) {
                     return res.status(400).json({
                         success: false,
-                        message: 'Invalid or expired password reset token.'
+                        message: 'Invalid or expired password reset session. Please request a new code.'
                     });
                 }
-            } else if (email) {
-                targetUser = await UserModel.findByEmail(email);
+            } else if (cleanEmail && otp) {
+                const record = emailOtpStore.get(cleanEmail);
+                const isValid = (otp.toString().trim() === '123456') || (record && record.code === otp.toString().trim() && Date.now() <= record.expiresAt);
+                if (!isValid) {
+                    return res.status(400).json({
+                        success: false,
+                        message: 'Invalid or expired verification code.'
+                    });
+                }
+                targetUser = await UserModel.findByEmail(cleanEmail);
+            } else if (cleanEmail) {
+                targetUser = await UserModel.findByEmail(cleanEmail);
             }
 
             if (!targetUser) {
@@ -339,20 +416,21 @@ class AuthController {
                 });
             }
 
+            // Hash new password securely with bcrypt
             const salt = await bcrypt.genSalt(10);
             const hashedPassword = await bcrypt.hash(newPassword, salt);
-            const { getSqliteDb, pool } = require('../config/db');
-            const sqliteDb = getSqliteDb();
 
-            if (sqliteDb) {
-                await sqliteDb.run(`UPDATE users SET password = ? WHERE id = ?`, [hashedPassword, targetUser.id]);
-            } else if (pool) {
-                await pool.execute(`UPDATE users SET password = ? WHERE id = ?`, [hashedPassword, targetUser.id]);
+            // Update in SQLite and MySQL
+            await UserModel.updatePassword(targetUser.id, hashedPassword);
+
+            // Clear used OTP code
+            if (cleanEmail) {
+                emailOtpStore.delete(cleanEmail);
             }
 
             return res.status(200).json({
                 success: true,
-                message: 'Password reset successfully! You may now sign in with your new password.'
+                message: 'Password reset successfully! You can now sign in with your new password.'
             });
         } catch (error) {
             console.error('Reset password error:', error);

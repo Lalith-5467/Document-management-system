@@ -10,6 +10,7 @@ router.post('/verify-email-otp', AuthController.verifyEmailOtp);
 router.post('/login', AuthController.login);
 router.post('/logout', AuthController.logout);
 router.post('/forgot-password', AuthController.forgotPassword);
+router.post('/verify-reset-otp', AuthController.verifyResetOtp);
 router.post('/reset-password', AuthController.resetPassword);
 
 // Protected routes
