@@ -74,10 +74,20 @@ input, textarea, button, select {
 }
 
 /* Custom Dropdown Option Hover & Checked Orange Theme Styling */
+select {
+  accent-color: #FF6B00 !important;
+}
+
+select:focus {
+  outline: none !important;
+  border-color: #FF6B00 !important;
+  box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.15) !important;
+}
+
 select option {
   background-color: var(--select-bg, #ffffff);
   color: var(--select-text, #0f172a);
-  padding: 8px 12px;
+  padding: 10px 14px;
 }
 
 select option:hover,
@@ -93,6 +103,16 @@ select option:checked {
 select:focus option:checked,
 select option:checked {
   box-shadow: 0 0 10px 100px #FF6B00 inset !important;
+  color: #ffffff !important;
+}
+
+::selection {
+  background-color: #FF6B00 !important;
+  color: #ffffff !important;
+}
+
+::-moz-selection {
+  background-color: #FF6B00 !important;
   color: #ffffff !important;
 }
 

@@ -32,6 +32,7 @@ import {
 } from 'lucide-react';
 import api from '@/lib/api';
 import { getUserActivities, clearUserActivities } from '@/lib/activityLogger';
+import CustomSelect from '@/components/CustomSelect';
 
 export default function ActivityHistoryPage() {
   const [activities, setActivities] = useState<any[]>([]);
@@ -296,40 +297,42 @@ export default function ActivityHistoryPage() {
         </div>
 
         {/* Filters */}
-        <div className="flex items-center gap-3 w-full sm:w-auto">
+        <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
           {/* Action Type */}
-          <select
+          <CustomSelect
             value={actionTypeFilter}
-            onChange={(e) => {
-              setActionTypeFilter(e.target.value);
+            onChange={(val) => {
+              setActionTypeFilter(val);
               setCurrentPage(1);
             }}
-            className="px-3 py-2 bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 rounded-xl text-sm font-semibold text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 transition-all"
-          >
-            <option value="ALL">All Activity Types</option>
-            <option value="UPLOAD">Uploads (📄)</option>
-            <option value="DOWNLOAD">Downloads (⬇)</option>
-            <option value="FAVORITE_ADD">Favorites (⭐)</option>
-            <option value="PREVIEW">Views / Previews (👁)</option>
-            <option value="EDIT">Edits & Moves (✏)</option>
-            <option value="DELETE">Deletions (🗑)</option>
-            <option value="LOGIN">Logins & Auth (🔑)</option>
-          </select>
+            options={[
+              { label: 'All Activity Types', value: 'ALL' },
+              { label: 'Uploads', value: 'UPLOAD' },
+              { label: 'Downloads', value: 'DOWNLOAD' },
+              { label: 'Favorites', value: 'FAVORITE_ADD' },
+              { label: 'Views / Previews', value: 'PREVIEW' },
+              { label: 'Edits & Moves', value: 'EDIT' },
+              { label: 'Deletions', value: 'DELETE' },
+              { label: 'Logins & Auth', value: 'LOGIN' },
+            ]}
+            className="w-full sm:w-52"
+          />
 
           {/* Date Range */}
-          <select
+          <CustomSelect
             value={dateRange}
-            onChange={(e) => {
-              setDateRange(e.target.value);
+            onChange={(val) => {
+              setDateRange(val);
               setCurrentPage(1);
             }}
-            className="px-3 py-2 bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 rounded-xl text-sm font-semibold text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 transition-all"
-          >
-            <option value="all">All Time</option>
-            <option value="today">Today</option>
-            <option value="7days">Last 7 Days</option>
-            <option value="30days">Last 30 Days</option>
-          </select>
+            options={[
+              { label: 'All Time', value: 'all' },
+              { label: 'Today', value: 'today' },
+              { label: 'Last 7 Days', value: '7days' },
+              { label: 'Last 30 Days', value: '30days' },
+            ]}
+            className="w-full sm:w-44"
+          />
         </div>
       </div>
 
