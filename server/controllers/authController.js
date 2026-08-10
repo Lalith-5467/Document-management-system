@@ -168,41 +168,45 @@ class AuthController {
             if (!email || !password) {
                 return res.status(400).json({
                     success: false,
-                    message: 'Please provide email and password.'
+                    message: 'Please provide both email and password.'
                 });
             }
 
-            let user = await UserModel.findByEmail(email);
-            if (!user) {
-                // Auto create account if user logs in with valid email
-                const salt = await bcrypt.genSalt(10);
-                const hashedPassword = await bcrypt.hash(password, salt);
-                const nameParts = (email || '').split('@')[0].split(/[\._-]/);
-                const formattedName = nameParts.map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(' ');
+            const cleanEmail = email.toLowerCase().trim();
+            const user = await UserModel.findByEmail(cleanEmail);
 
-                await UserModel.create({
-                    fullName: formattedName || 'Nisha Begum',
-                    email: email.toLowerCase(),
-                    password: hashedPassword,
-                    userType: 'professional',
-                    mobileNumber: '9876543210',
-                    country: 'India',
-                    state: 'Tamil Nadu',
-                    city: 'Chennai'
+            if (!user) {
+                return res.status(401).json({
+                    success: false,
+                    message: 'Invalid email or password. Please check your credentials or register an account.'
                 });
-                user = await UserModel.findByEmail(email);
-            } else {
-                const isMatch = await bcrypt.compare(password, user.password);
-                if (!isMatch) {
-                    // Sync new password hash so user login succeeds smoothly
-                    const salt = await bcrypt.genSalt(10);
-                    const hashedPassword = await bcrypt.hash(password, salt);
-                    await UserModel.updatePassword(user.id, hashedPassword);
-                    user.password = hashedPassword;
+            }
+
+            if (user.is_blocked) {
+                return res.status(403).json({
+                    success: false,
+                    message: 'Your account has been deactivated. Please contact administrator.'
+                });
+            }
+
+            // Real Password Verification with bcrypt
+            let isMatch = false;
+            if (user.password) {
+                if (user.password.startsWith('$2a$') || user.password.startsWith('$2b$') || user.password.startsWith('$2y$')) {
+                    isMatch = await bcrypt.compare(password, user.password);
+                } else {
+                    isMatch = (user.password === password);
                 }
             }
 
-            if (email.toLowerCase().includes('admin')) {
+            if (!isMatch) {
+                return res.status(401).json({
+                    success: false,
+                    message: 'Incorrect password. Please enter the password you created during registration.'
+                });
+            }
+
+            if (cleanEmail.includes('admin') || user.email.toLowerCase().includes('admin')) {
                 user.user_type = 'admin';
             }
 
