@@ -921,7 +921,7 @@ export default function MyDocumentsPage() {
               </div>
               <button 
                 onClick={() => setActiveModal(null)} 
-                className="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition flex items-center justify-center cursor-pointer"
+                className="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-themePrimary dark:hover:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-950/60 transition flex items-center justify-center cursor-pointer"
               >
                 <X className="w-4.5 h-4.5" />
               </button>
@@ -957,7 +957,7 @@ export default function MyDocumentsPage() {
                 <button
                   type="button"
                   onClick={() => setActiveModal(null)}
-                  className="px-5 py-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 font-bold text-xs shadow-2xs transition cursor-pointer font-auth-heading active:scale-95"
+                  className="px-5 py-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-orange-300 dark:hover:border-orange-800 hover:bg-orange-50/60 dark:hover:bg-orange-950/40 hover:text-themePrimary font-bold text-xs shadow-2xs transition cursor-pointer font-auth-heading active:scale-95"
                 >
                   Cancel
                 </button>
@@ -998,7 +998,7 @@ export default function MyDocumentsPage() {
               </div>
               <button 
                 onClick={() => { setActiveModal(null); setMoveDropdownOpen(false); }} 
-                className="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition flex items-center justify-center cursor-pointer"
+                className="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-themePrimary dark:hover:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-950/60 transition flex items-center justify-center cursor-pointer"
               >
                 <X className="w-4.5 h-4.5" />
               </button>
@@ -1040,19 +1040,21 @@ export default function MyDocumentsPage() {
 
                 {/* Downwards Dropdown Menu */}
                 {moveDropdownOpen && (
-                  <div className="absolute top-full left-0 right-0 mt-1.5 bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl z-[100] max-h-52 overflow-y-auto py-1.5 animate-in fade-in zoom-in-95 duration-100">
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-[#111827] border border-slate-200/90 dark:border-slate-800 rounded-2xl shadow-2xl z-[100] max-h-56 overflow-y-auto p-1.5 animate-in fade-in zoom-in-95 duration-100">
                     <button
                       type="button"
                       onClick={() => { setEditFolderId(''); setMoveDropdownOpen(false); }}
-                      className={`w-full flex items-center justify-between px-4 py-2.5 text-left text-xs font-bold transition cursor-pointer ${
-                        !editFolderId ? 'bg-orange-50 dark:bg-orange-950/50 text-themePrimary' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800'
+                      className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-left text-xs transition-all duration-150 cursor-pointer ${
+                        !editFolderId 
+                          ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-black shadow-md shadow-orange-500/20' 
+                          : 'text-slate-700 dark:text-slate-200 font-bold hover:bg-orange-50 dark:hover:bg-orange-950/60 hover:text-themePrimary'
                       }`}
                     >
                       <div className="flex items-center gap-2.5">
-                        <div className="w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-600" />
+                        <div className={`w-2.5 h-2.5 rounded-full ${!editFolderId ? 'bg-white' : 'bg-slate-300 dark:bg-slate-600'}`} />
                         <span>(No specific folder / Unassigned)</span>
                       </div>
-                      {!editFolderId && <Check className="w-3.5 h-3.5 text-themePrimary stroke-[3]" />}
+                      {!editFolderId && <Check className="w-3.5 h-3.5 text-white stroke-[3]" />}
                     </button>
 
                     {Array.from(new Map(folders.map(f => [String(f.id), f])).values()).map((f) => {
@@ -1062,18 +1064,20 @@ export default function MyDocumentsPage() {
                           key={f.id}
                           type="button"
                           onClick={() => { setEditFolderId(String(f.id)); setMoveDropdownOpen(false); }}
-                          className={`w-full flex items-center justify-between px-4 py-2.5 text-left text-xs font-bold transition cursor-pointer ${
-                            isSelected ? 'bg-orange-50 dark:bg-orange-950/50 text-themePrimary' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800'
+                          className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-left text-xs transition-all duration-150 cursor-pointer mt-0.5 ${
+                            isSelected 
+                              ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-black shadow-md shadow-orange-500/20' 
+                              : 'text-slate-700 dark:text-slate-200 font-bold hover:bg-orange-50 dark:hover:bg-orange-950/60 hover:text-themePrimary'
                           }`}
                         >
                           <div className="flex items-center gap-2.5 truncate">
                             <span 
-                              className="w-2.5 h-2.5 rounded-full shrink-0" 
+                              className={`w-2.5 h-2.5 rounded-full shrink-0 ${isSelected ? 'ring-2 ring-white' : ''}`} 
                               style={{ backgroundColor: f.color || '#FF6B00' }} 
                             />
                             <span className="truncate">{f.folder_name}</span>
                           </div>
-                          {isSelected && <Check className="w-3.5 h-3.5 text-themePrimary stroke-[3] shrink-0" />}
+                          {isSelected && <Check className="w-3.5 h-3.5 text-white stroke-[3] shrink-0" />}
                         </button>
                       );
                     })}
@@ -1086,7 +1090,7 @@ export default function MyDocumentsPage() {
                 <button
                   type="button"
                   onClick={() => { setActiveModal(null); setMoveDropdownOpen(false); }}
-                  className="px-5 py-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 font-bold text-xs shadow-2xs transition cursor-pointer font-auth-heading active:scale-95"
+                  className="px-5 py-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-orange-300 dark:hover:border-orange-800 hover:bg-orange-50/60 dark:hover:bg-orange-950/40 hover:text-themePrimary font-bold text-xs shadow-2xs transition cursor-pointer font-auth-heading active:scale-95"
                 >
                   Cancel
                 </button>
@@ -1125,7 +1129,7 @@ export default function MyDocumentsPage() {
               </div>
               <button 
                 onClick={() => setActiveModal(null)} 
-                className="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition flex items-center justify-center cursor-pointer"
+                className="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/60 transition flex items-center justify-center cursor-pointer"
               >
                 <X className="w-4.5 h-4.5" />
               </button>
@@ -1139,7 +1143,7 @@ export default function MyDocumentsPage() {
               <button
                 type="button"
                 onClick={() => setActiveModal(null)}
-                className="px-5 py-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 font-bold text-xs shadow-2xs transition cursor-pointer font-auth-heading active:scale-95"
+                className="px-5 py-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700 font-bold text-xs shadow-2xs transition cursor-pointer font-auth-heading active:scale-95"
               >
                 Cancel
               </button>
@@ -1186,7 +1190,7 @@ export default function MyDocumentsPage() {
               </div>
               <button 
                 onClick={() => setIsCreateFolderOpen(false)} 
-                className="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition flex items-center justify-center cursor-pointer"
+                className="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-themePrimary dark:hover:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-950/60 transition flex items-center justify-center cursor-pointer"
               >
                 <X className="w-4.5 h-4.5" />
               </button>
@@ -1229,7 +1233,7 @@ export default function MyDocumentsPage() {
                 <button
                   type="button"
                   onClick={() => setIsCreateFolderOpen(false)}
-                  className="px-5 py-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 font-bold text-xs shadow-2xs transition cursor-pointer font-auth-heading active:scale-95"
+                  className="px-5 py-2.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:border-orange-300 dark:hover:border-orange-800 hover:bg-orange-50/60 dark:hover:bg-orange-950/40 hover:text-themePrimary font-bold text-xs shadow-2xs transition cursor-pointer font-auth-heading active:scale-95"
                 >
                   Cancel
                 </button>
