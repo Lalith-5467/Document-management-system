@@ -422,7 +422,7 @@ function CommandPalette({ open, onClose, router }: { open: boolean; onClose: () 
     { label: 'Billing & Invoicing CRM', icon: CreditCard, action: () => router.push('/admin/billing'), category: 'Navigation' },
     { label: 'Support Desk Tickets', icon: MessageSquare, action: () => router.push('/admin/support'), category: 'Navigation' },
     { label: 'Global Admin Settings', icon: Settings, action: () => router.push('/admin/settings'), category: 'Navigation' },
-    { label: 'Switch to User Vault Portal', icon: Zap, action: () => router.push('/user'), category: 'Quick Action' },
+    { label: 'Switch to User Vault Portal', icon: Zap, action: () => router.push('/login'), category: 'Quick Action' },
   ];
 
   const filtered = commands.filter(c => c.label.toLowerCase().includes(query.toLowerCase()));
@@ -577,7 +577,7 @@ function AdminUserDropdown({ user, logout }: { user: any; logout: () => void }) 
             </Link>
 
             <Link
-              href="/user"
+              href="/login"
               onClick={() => setOpen(false)}
               className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-slate-700 dark:text-slate-200 font-bold hover:bg-orange-50 dark:hover:bg-slate-800 hover:text-themePrimary transition-all duration-200"
             >
@@ -755,7 +755,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
           <div className="pt-4">
             <p className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500 px-3 pb-2 font-auth-heading">Quick Access</p>
-            <a href="/user" target="_blank" className="group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-extrabold text-slate-700 dark:text-slate-200 hover:text-themePrimary hover:bg-orange-50/80 dark:hover:bg-slate-800 transition-all duration-200">
+            <a href="/login" target="_blank" className="group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-extrabold text-slate-700 dark:text-slate-200 hover:text-themePrimary hover:bg-orange-50/80 dark:hover:bg-slate-800 transition-all duration-200">
               <Zap className="w-4 h-4 text-themePrimary shrink-0 group-hover:scale-110 transition-transform" />
               <span>User Vault Portal</span>
               <ChevronRight className="w-3.5 h-3.5 ml-auto text-slate-400 group-hover:text-themePrimary transition-transform group-hover:translate-x-0.5" />
