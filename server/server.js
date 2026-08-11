@@ -5,6 +5,8 @@ const dotenv = require('dotenv');
 const { testConnection } = require('./config/db');
 
 dotenv.config();
+// Environment loaded
+
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -49,6 +51,21 @@ app.use('/api/reports', reportRoutes);
 app.use('/api/subscriptions', subscriptionRoutes);
 app.use('/api/settings', settingRoutes);
 app.use('/api/themes', themeRoutes);
+
+// Root Welcome Endpoint
+app.get('/', (req, res) => {
+    res.status(200).json({
+        status: 'online',
+        name: 'Document Management System API',
+        message: '🚀 Express Backend Server is running successfully!',
+        endpoints: {
+            health: '/api/health',
+            supabaseHealth: '/api/supabase-health',
+            frontend: 'http://localhost:3000'
+        },
+        timestamp: new Date().toISOString()
+    });
+});
 
 // Health Check Endpoint
 app.get('/api/health', (req, res) => {
@@ -103,14 +120,14 @@ app.get('/api/supabase-health', async (req, res) => {
             });
         }
 
-        // Check if target bucket exists
-        const bucketExists = buckets.some(b => b.name === bucketName);
-
-        // List files in bucket
+        // Check if target bucket exists via listBuckets or direct list test
+        let bucketExists = Array.isArray(buckets) && buckets.some(b => b.name === bucketName);
         let fileCount = 0;
-        if (bucketExists) {
-            const { data: files } = await supabase.storage.from(bucketName).list('', { limit: 100 });
-            fileCount = files ? files.length : 0;
+
+        const { data: files, error: filesError } = await supabase.storage.from(bucketName).list('', { limit: 100 });
+        if (!filesError && files) {
+            bucketExists = true;
+            fileCount = files.length;
         }
 
         return res.status(200).json({
