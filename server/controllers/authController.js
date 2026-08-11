@@ -308,6 +308,34 @@ class AuthController {
 
     // POST /api/auth/logout
     static async logout(req, res) {
+        try {
+            const ActivityModel = require('../models/activityModel');
+            let userId = req.user?.id;
+            let userName = req.user?.full_name || 'User';
+
+            if (!userId && req.headers.authorization) {
+                try {
+                    const jwt = require('jsonwebtoken');
+                    const { JWT_SECRET } = require('../config/env');
+                    const token = req.headers.authorization.split(' ')[1];
+                    const decoded = jwt.verify(token, JWT_SECRET);
+                    userId = decoded.id;
+                    userName = decoded.full_name || 'User';
+                } catch (e) {}
+            }
+
+            if (userId) {
+                await ActivityModel.log({
+                    userId,
+                    action_type: 'LOGOUT',
+                    document_name: null,
+                    details: `${userName} signed out of system session`
+                });
+            }
+        } catch (logErr) {
+            console.warn('[Logout Activity] Log note:', logErr.message);
+        }
+
         return res.status(200).json({
             success: true,
             message: 'Logged out successfully'
