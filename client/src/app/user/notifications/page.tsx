@@ -229,13 +229,14 @@ export default function NotificationsCenterPage() {
         </div>
       ) : (
         <div className="space-y-3">
-          {filteredNotifications.map((notif) => {
+          {filteredNotifications.map((notif, idx) => {
             const badge = getNotifBadge(notif.type);
 
             return (
               <div
                 key={notif.id}
-                className={`p-4 rounded-3xl border transition-all shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ${
+                style={{ animationDelay: `${(idx % 10) * 50}ms` }}
+                className={`p-4 rounded-3xl border transition-all shadow-xs hover:shadow-md hover:-translate-y-0.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 animate-fade-in ${
                   !notif.is_read
                     ? 'bg-orange-50/40 dark:bg-orange-950/20 border-themePrimary/40 dark:border-orange-900/60'
                     : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800'

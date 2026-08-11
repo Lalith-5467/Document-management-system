@@ -229,10 +229,50 @@ export default function AdminUsersPage() {
     }
   };
 
-  const fmt = (s: string) => { try { return new Date(s).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }); } catch { return s || '—'; } };
+  const fmt = (s: string) => { 
+    if (!s) return '—';
+    try { 
+      let cleanStr = String(s).trim();
+      if (!cleanStr.endsWith('Z') && !cleanStr.includes('+') && !cleanStr.includes('Z')) {
+        cleanStr = cleanStr.replace(' ', 'T') + 'Z';
+      }
+      const d = new Date(cleanStr);
+      if (isNaN(d.getTime())) return new Date(s).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }); 
+    } catch { 
+      return s || '—'; 
+    } 
+  };
+  
+  const fmtLogin = (s: string) => {
+    if (!s) return null;
+    try {
+      let cleanStr = String(s).trim();
+      if (!cleanStr.endsWith('Z') && !cleanStr.includes('+') && !cleanStr.includes('Z')) {
+        cleanStr = cleanStr.replace(' ', 'T') + 'Z';
+      }
+      const d = new Date(cleanStr);
+      if (isNaN(d.getTime())) return null;
+      const now = new Date();
+      const isToday = d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth() && d.getDate() === now.getDate();
+      
+      const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      const timeStr = d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+
+      return {
+        isToday,
+        dateStr,
+        timeStr,
+        fullLabel: `${dateStr} · ${timeStr}`,
+        todayLabel: `Today (${dateStr}) at ${timeStr}`
+      };
+    } catch {
+      return null;
+    }
+  };
 
   return (
-    <div className="space-y-6 pb-12 text-slate-900 dark:text-white font-sans">
+    <div className="space-y-6 pb-12 text-slate-900 dark:text-white font-sans animate-fade-in">
       <Toast toast={toast} onClose={() => setToast(null)} />
 
       {/* Header */}
@@ -245,7 +285,7 @@ export default function AdminUsersPage() {
             </span>
           </h1>
           <p className="text-xs text-slate-500 dark:text-slate-400 font-medium mt-1 leading-relaxed">
-            Full administrative control — create user accounts, modify permissions, toggle access statuses, reset passwords & audit vault files
+            Full administrative control — create user accounts, track daily login activity, modify permissions, toggle access statuses & audit vault files
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -289,54 +329,89 @@ export default function AdminUsersPage() {
                   <th className="py-4 px-6">Account Role</th>
                   <th className="py-4 px-6">Vault Files</th>
                   <th className="py-4 px-6">Status</th>
-                  <th className="py-4 px-6">Registered Date</th>
+                  <th className="py-4 px-6">Last Login / Activity Date</th>
                   <th className="py-4 px-6 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 dark:divide-slate-800/80">
-                {users.map(user => (
-                  <tr key={user.id} className={`group hover:bg-orange-50/30 dark:hover:bg-slate-800/50 transition-all duration-200 ${user.is_blocked ? 'opacity-70 bg-rose-50/20 dark:bg-rose-950/20' : ''}`}>
-                    <td className="py-4 px-6 align-middle">
-                      <div className="flex items-center gap-3.5">
-                        <div className="w-10 h-10 rounded-2xl font-black flex items-center justify-center text-xs text-white bg-gradient-to-tr from-themePrimary to-[#F97316] shadow-sm group-hover:scale-105 transition-transform duration-200">
-                          {(user.full_name || 'U').charAt(0).toUpperCase()}
+                {users.map((user, idx) => {
+                  const loginInfo = fmtLogin(user.last_login_at);
+                  return (
+                    <tr
+                      key={user.id}
+                      style={{ animationDelay: `${(idx % 15) * 35}ms` }}
+                      className={`group hover:bg-orange-50/30 dark:hover:bg-slate-800/50 transition-all duration-200 animate-fade-in ${user.is_blocked ? 'opacity-70 bg-rose-50/20 dark:bg-rose-950/20' : ''}`}
+                    >
+                      <td className="py-4 px-6 align-middle">
+                        <div className="flex items-center gap-3.5">
+                          <div className="w-10 h-10 rounded-2xl font-black flex items-center justify-center text-xs text-white bg-gradient-to-tr from-themePrimary to-[#F97316] shadow-sm group-hover:scale-105 transition-transform duration-200">
+                            {(user.full_name || 'U').charAt(0).toUpperCase()}
+                          </div>
+                          <div className="min-w-0">
+                            <span className="font-black text-slate-900 dark:text-white text-xs font-auth-heading block truncate group-hover:text-themePrimary transition-colors tracking-tight">{user.full_name}</span>
+                            <span className="text-[11px] text-slate-500 dark:text-slate-400 font-mono block truncate mt-0.5">{user.email}</span>
+                            {user.is_blocked ? <span className="text-[10px] text-rose-600 dark:text-rose-400 font-extrabold block mt-0.5">⛔ Blocked Account</span> : null}
+                          </div>
                         </div>
-                        <div className="min-w-0">
-                          <span className="font-black text-slate-900 dark:text-white text-xs font-auth-heading block truncate group-hover:text-themePrimary transition-colors tracking-tight">{user.full_name}</span>
-                          <span className="text-[11px] text-slate-500 dark:text-slate-400 font-mono block truncate mt-0.5">{user.email}</span>
-                          {user.is_blocked ? <span className="text-[10px] text-rose-600 dark:text-rose-400 font-extrabold block mt-0.5">⛔ Blocked Account</span> : null}
+                      </td>
+                      <td className="py-4 px-6 align-middle">
+                        <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border shadow-2xs ${
+                          user.user_type === 'admin' ? 'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950/80 dark:text-purple-300 dark:border-purple-800/80' :
+                          user.user_type === 'professional' ? 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/80 dark:text-blue-300 dark:border-blue-800/80' :
+                          user.user_type === 'student' ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/80 dark:text-emerald-300 dark:border-emerald-800/80' :
+                          'bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800/80 dark:text-slate-300 dark:border-slate-700'
+                        }`}>
+                          {user.user_type || 'individual'}
+                        </span>
+                      </td>
+                      <td className="py-4 px-6 align-middle">
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-orange-50/80 text-orange-700 font-black font-mono text-xs border border-orange-200/80 dark:bg-orange-950/80 dark:text-orange-300 dark:border-orange-900/80 shadow-2xs">
+                          <FileText className="w-3.5 h-3.5 text-themePrimary" />
+                          <span>{user.total_documents || 0}</span>
+                        </span>
+                      </td>
+                      <td className="py-4 px-6 align-middle">
+                        {user.is_active !== 0 ? (
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/80 dark:text-emerald-300 dark:border-emerald-800/80 text-[10px] font-black uppercase tracking-wider shadow-2xs">
+                            <UserCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> Active
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-50 text-rose-700 border border-rose-200 dark:bg-rose-950/80 dark:text-rose-300 dark:border-rose-800/80 text-[10px] font-black uppercase tracking-wider shadow-2xs">
+                            <UserX className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" /> Inactive
+                          </span>
+                        )}
+                      </td>
+                      <td className="py-4 px-6 align-middle">
+                        <div className="space-y-1">
+                          {loginInfo ? (
+                            <div>
+                              <div className="flex items-center gap-1.5">
+                                <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-black font-mono shadow-2xs ${
+                                  loginInfo.isToday
+                                    ? 'bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-700'
+                                    : 'bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700'
+                                }`}>
+                                  <span className={`w-2 h-2 rounded-full ${loginInfo.isToday ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400'}`} />
+                                  {loginInfo.fullLabel}
+                                </span>
+                              </div>
+                              <p className="text-[10px] text-slate-400 dark:text-slate-500 font-mono mt-0.5">
+                                Registered: {fmt(user.created_at)}
+                              </p>
+                            </div>
+                          ) : (
+                            <div>
+                              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl text-[11px] font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 font-mono">
+                                {fmt(user.created_at)} (Joined)
+                              </span>
+                              <p className="text-[10px] text-slate-400 dark:text-slate-500 font-mono mt-0.5">
+                                No recent login
+                              </p>
+                            </div>
+                          )}
                         </div>
-                      </div>
-                    </td>
-                    <td className="py-4 px-6 align-middle">
-                      <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border shadow-2xs ${
-                        user.user_type === 'admin' ? 'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950/80 dark:text-purple-300 dark:border-purple-800/80' :
-                        user.user_type === 'professional' ? 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/80 dark:text-blue-300 dark:border-blue-800/80' :
-                        user.user_type === 'student' ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/80 dark:text-emerald-300 dark:border-emerald-800/80' :
-                        'bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800/80 dark:text-slate-300 dark:border-slate-700'
-                      }`}>
-                        {user.user_type || 'individual'}
-                      </span>
-                    </td>
-                    <td className="py-4 px-6 align-middle">
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-orange-50/80 text-orange-700 font-black font-mono text-xs border border-orange-200/80 dark:bg-orange-950/80 dark:text-orange-300 dark:border-orange-900/80 shadow-2xs">
-                        <FileText className="w-3.5 h-3.5 text-themePrimary" />
-                        <span>{user.total_documents || 0}</span>
-                      </span>
-                    </td>
-                    <td className="py-4 px-6 align-middle">
-                      {user.is_active !== 0 ? (
-                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/80 dark:text-emerald-300 dark:border-emerald-800/80 text-[10px] font-black uppercase tracking-wider shadow-2xs">
-                          <UserCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> Active
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-50 text-rose-700 border border-rose-200 dark:bg-rose-950/80 dark:text-rose-300 dark:border-rose-800/80 text-[10px] font-black uppercase tracking-wider shadow-2xs">
-                          <UserX className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" /> Inactive
-                        </span>
-                      )}
-                    </td>
-                    <td className="py-4 px-6 align-middle text-slate-500 dark:text-slate-400 font-semibold font-mono text-xs">{fmt(user.created_at)}</td>
-                    <td className="py-4 px-6 align-middle text-right">
+                      </td>
+                      <td className="py-4 px-6 align-middle text-right">
                       <div className="flex items-center justify-end gap-1 bg-slate-100/70 dark:bg-slate-800/80 p-1.5 rounded-2xl border border-slate-200/80 dark:border-slate-700 inline-flex shadow-2xs">
                         <button onClick={() => openDetails(user)} className="w-7 h-7 rounded-xl text-slate-500 dark:text-slate-400 hover:text-themePrimary dark:hover:text-themePrimary hover:bg-white dark:hover:bg-slate-700 flex items-center justify-center transition cursor-pointer" title="View Details"><Eye className="w-3.5 h-3.5" /></button>
                         <button onClick={() => openEdit(user)} className="w-7 h-7 rounded-xl text-slate-500 dark:text-slate-400 hover:text-themePrimary dark:hover:text-themePrimary hover:bg-white dark:hover:bg-slate-700 flex items-center justify-center transition cursor-pointer" title="Edit User"><Edit2 className="w-3.5 h-3.5" /></button>
@@ -351,10 +426,11 @@ export default function AdminUsersPage() {
                       </div>
                     </td>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
         )}
 
         {/* Pagination Footer */}
@@ -378,8 +454,8 @@ export default function AdminUsersPage() {
 
       {/* Details Modal */}
       {activeModal === 'details' && selectedUser && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm animate-pop-in">
-          <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-lg w-full p-6 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-4 text-xs text-slate-900 dark:text-white max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm overflow-y-auto">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-lg w-full p-6 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-4 text-xs text-slate-900 dark:text-white max-h-[90vh] overflow-y-auto m-auto animate-pop-in">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
               <h2 className="text-base font-black text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading"><Users className="w-5 h-5 text-themePrimary" /> User Profile & Activity</h2>
               <button onClick={() => setActiveModal(null)} className="text-slate-400 hover:text-slate-900 dark:hover:text-white p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"><X className="w-4 h-4" /></button>
@@ -429,8 +505,8 @@ export default function AdminUsersPage() {
 
       {/* Create / Edit Modal */}
       {(activeModal === 'create' || activeModal === 'edit') && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm animate-pop-in">
-          <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-4 text-xs text-slate-900 dark:text-white">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm overflow-y-auto">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-4 text-xs text-slate-900 dark:text-white m-auto animate-pop-in">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
               <h2 className="text-base font-black text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading">
                 {activeModal === 'create' ? <Plus className="w-5 h-5 text-themePrimary" /> : <Edit2 className="w-5 h-5 text-themePrimary" />}
@@ -477,8 +553,8 @@ export default function AdminUsersPage() {
 
       {/* Reset Password Modal */}
       {activeModal === 'reset-password' && selectedUser && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm animate-pop-in">
-          <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-4 text-xs text-slate-900 dark:text-white">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm overflow-y-auto">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-4 text-xs text-slate-900 dark:text-white m-auto animate-pop-in">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
               <h2 className="text-base font-black text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading"><KeyRound className="w-5 h-5 text-themePrimary" /> Reset User Password</h2>
               <button onClick={() => setActiveModal(null)} className="text-slate-400 hover:text-slate-900 dark:hover:text-white p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"><X className="w-4 h-4" /></button>
@@ -502,8 +578,8 @@ export default function AdminUsersPage() {
 
       {/* Delete Modal */}
       {activeModal === 'delete' && selectedUser && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm animate-pop-in">
-          <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-4 text-center text-xs text-slate-900 dark:text-white">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm overflow-y-auto">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-4 text-center text-xs text-slate-900 dark:text-white m-auto animate-pop-in">
             <div className="w-12 h-12 rounded-2xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800 flex items-center justify-center mx-auto"><Trash2 className="w-6 h-6" /></div>
             <div className="space-y-1">
               <h3 className="text-base font-black text-slate-900 dark:text-white font-auth-heading">Delete User Account?</h3>

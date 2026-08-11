@@ -365,27 +365,43 @@ export default function FoldersPage() {
 
       {/* Folders Grid */}
       {loading ? (
-        <div className="py-16 text-center text-slate-500 dark:text-slate-400 space-y-3">
-          <Loader2 className="w-8 h-8 animate-spin mx-auto text-themePrimary dark:text-orange-400" />
-          <p className="text-sm">Loading folders...</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
+            <div key={n} className="bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 p-5 rounded-2xl space-y-3 shadow-xs">
+              <div className="flex items-center justify-between">
+                <div className="w-10 h-10 rounded-2xl skeleton-box" />
+                <div className="w-12 h-4 rounded skeleton-box" />
+              </div>
+              <div className="space-y-2">
+                <div className="w-3/4 h-5 rounded-lg skeleton-box" />
+                <div className="w-full h-3 rounded skeleton-box" />
+              </div>
+              <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex justify-between">
+                <div className="w-16 h-3 rounded skeleton-box" />
+              </div>
+            </div>
+          ))}
         </div>
       ) : filteredFolders.length === 0 ? (
-        <div className="bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 rounded-3xl p-12 text-center space-y-4 shadow-md">
-          <FolderClosed className="w-12 h-12 text-slate-400 dark:text-slate-600 mx-auto" />
-          <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">No folders found matching your query.</p>
+        <div className="bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 rounded-3xl p-12 text-center space-y-4 shadow-md animate-fade-in">
+          <div className="w-16 h-16 rounded-3xl bg-orange-50 dark:bg-orange-950/40 text-themePrimary border border-orange-200 dark:border-orange-900 flex items-center justify-center mx-auto animate-float-bob">
+            <FolderClosed className="w-8 h-8" />
+          </div>
+          <p className="text-sm text-slate-600 dark:text-slate-400 font-medium font-auth-heading">No folders found matching your query.</p>
           <button
             onClick={handleOpenCreate}
-            className="px-4 py-2 text-sm font-bold text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 rounded-xl shadow-md shadow-orange-500/25 transition"
+            className="px-5 py-2.5 text-sm font-bold text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:scale-105 active:scale-95 rounded-xl shadow-md shadow-orange-500/25 transition-all duration-200"
           >
             Create New Folder
           </button>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {filteredFolders.map((folder) => (
+          {filteredFolders.map((folder, idx) => (
             <div
               key={folder.id}
-              className="bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 hover:border-themePrimary/40 p-5 rounded-2xl space-y-3 transition-all duration-300 group flex flex-col justify-between shadow-sm hover:shadow-[0_12px_35px_rgba(255,107,0,0.12)] hover:-translate-y-1.5 active-press cursor-pointer relative overflow-hidden"
+              style={{ animationDelay: `${(idx % 8) * 60}ms` }}
+              className="bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 hover:border-themePrimary/40 p-5 rounded-2xl space-y-3 transition-all duration-300 group flex flex-col justify-between shadow-xs hover:shadow-[0_12px_35px_rgba(255,107,0,0.12)] hover:-translate-y-1.5 cursor-pointer relative overflow-hidden animate-fade-in"
             >
               <div className="space-y-2.5">
                 <div className="flex items-center justify-between">

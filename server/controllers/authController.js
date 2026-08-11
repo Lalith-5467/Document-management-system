@@ -156,6 +156,18 @@ class AuthController {
                 });
             } catch (e) {}
 
+            // Set initial last_login_at timestamp on registration
+            try {
+                const { getSqliteDb, pool } = require('../config/db');
+                const sqliteDb = getSqliteDb();
+                if (sqliteDb) {
+                    await sqliteDb.run("UPDATE users SET last_login_at = datetime('now') WHERE id = ?", [newUser.id]);
+                }
+                if (pool) {
+                    await pool.execute("UPDATE users SET last_login_at = NOW() WHERE id = ?", [newUser.id]);
+                }
+            } catch (uErr) {}
+
             return res.status(201).json({
                 success: true,
                 message: 'Registration successful!',

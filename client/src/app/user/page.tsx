@@ -22,6 +22,7 @@ import {
   getFieldStatusClasses
 } from '@/lib/validation';
 import DocumentPreviewModal from '@/components/dashboard/DocumentPreviewModal';
+import AnimatedCounter from '@/components/dashboard/AnimatedCounter';
 
 export default function UserWorkspacePage() {
   const { user } = useAuth();
@@ -510,13 +511,13 @@ export default function UserWorkspacePage() {
         </div>
       )}
 
-      {/* HEADER HERO BANNER (Stripe / Vercel Grade Gradient) */}
-      <div className="bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] rounded-3xl p-6 sm:p-8 text-white shadow-xl shadow-orange-500/20 relative overflow-hidden">
+      {/* HEADER HERO BANNER with Staggered Entrance */}
+      <div className="bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] rounded-3xl p-6 sm:p-8 text-white shadow-xl shadow-orange-500/20 relative overflow-hidden animate-fade-in-up stagger-1">
         <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-white/10 transform skew-x-12 pointer-events-none" />
         
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-3">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/20 text-white text-xs font-bold backdrop-blur-md border border-white/30 font-auth-heading tracking-wide">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/20 text-white text-xs font-bold backdrop-blur-md border border-white/30 font-auth-heading tracking-wide animate-badge-sparkle">
               <Sparkles className="w-3.5 h-3.5 text-amber-300" /> AES-256 Verified Vault Workspace
             </div>
             <h1 className="text-2xl sm:text-3xl lg:text-[40px] font-bold text-white tracking-tight font-auth-heading leading-tight">
@@ -531,15 +532,16 @@ export default function UserWorkspacePage() {
             <button
               type="button"
               onClick={() => setUploadModalOpen(true)}
-              className="group inline-flex items-center justify-center gap-2.5 bg-white hover:bg-slate-100 text-slate-900 font-bold px-6 py-3.5 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-200 text-sm active:scale-95 cursor-pointer border border-white/90 hover:-translate-y-0.5 whitespace-nowrap shrink-0 min-w-max"
+              className="group relative overflow-hidden inline-flex items-center justify-center gap-2.5 bg-white hover:bg-slate-50 text-slate-900 font-bold px-6 py-3.5 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 text-sm active:scale-95 cursor-pointer border border-white/90 hover:-translate-y-0.5 whitespace-nowrap shrink-0 min-w-max"
             >
-              <Upload className="w-4.5 h-4.5 text-themePrimary group-hover:-translate-y-0.5 transition-transform duration-200 shrink-0" /> 
-              <span className="font-extrabold font-auth-heading text-themePrimary">Upload Document</span>
+              <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-orange-500/10 to-transparent transition-transform duration-1000 ease-in-out" />
+              <Upload className="w-4.5 h-4.5 text-themePrimary group-hover:-translate-y-0.5 transition-transform duration-200 shrink-0 relative z-10" /> 
+              <span className="font-extrabold font-auth-heading text-themePrimary relative z-10">Upload Document</span>
             </button>
             <button
               type="button"
               onClick={() => setCreateFolderModalOpen(true)}
-              className="group inline-flex items-center justify-center gap-2.5 bg-white/20 hover:bg-white/30 text-white font-bold px-6 py-3.5 rounded-2xl backdrop-blur-md border border-white/40 shadow-md transition-all duration-200 text-sm active:scale-95 cursor-pointer hover:-translate-y-0.5 whitespace-nowrap shrink-0 min-w-max"
+              className="group relative overflow-hidden inline-flex items-center justify-center gap-2.5 bg-white/20 hover:bg-white/30 text-white font-bold px-6 py-3.5 rounded-2xl backdrop-blur-md border border-white/40 shadow-md transition-all duration-300 text-sm active:scale-95 cursor-pointer hover:-translate-y-0.5 whitespace-nowrap shrink-0 min-w-max"
             >
               <FolderPlus className="w-4.5 h-4.5 text-amber-300 group-hover:rotate-12 transition-transform duration-200 shrink-0" /> 
               <span className="font-bold font-auth-heading text-white">Create Folder</span>
@@ -547,52 +549,60 @@ export default function UserWorkspacePage() {
           </div>
         </div>
 
-        {/* Stats Summary Strip (8px Grid & Clean Typography Scale) */}
+        {/* Stats Summary Strip with Animated Counters */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-8 pt-6 border-t border-white/20">
-          <div className="flex items-center gap-3.5">
-            <div className="w-10 h-10 rounded-2xl bg-white/20 border border-white/30 flex items-center justify-center text-white shrink-0">
+          <div className="flex items-center gap-3.5 group cursor-default">
+            <div className="w-10 h-10 rounded-2xl bg-white/20 border border-white/30 flex items-center justify-center text-white shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
               <FileText className="w-5 h-5 text-white" />
             </div>
             <div>
               <p className="text-orange-100/80 text-xs font-medium uppercase tracking-wider font-mono">Total Files</p>
-              <p className="text-2xl lg:text-[32px] font-bold text-white font-auth-heading leading-tight">{stats.totalDocuments}</p>
+              <p className="text-2xl lg:text-[32px] font-bold text-white font-auth-heading leading-tight">
+                <AnimatedCounter value={stats.totalDocuments} />
+              </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3.5">
-            <div className="w-10 h-10 rounded-2xl bg-white/20 border border-white/30 flex items-center justify-center text-white shrink-0">
+          <div className="flex items-center gap-3.5 group cursor-default">
+            <div className="w-10 h-10 rounded-2xl bg-white/20 border border-white/30 flex items-center justify-center text-white shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
               <FolderClosed className="w-5 h-5 text-white" />
             </div>
             <div>
               <p className="text-orange-100/80 text-xs font-medium uppercase tracking-wider font-mono">Folders</p>
-              <p className="text-2xl lg:text-[32px] font-bold text-white font-auth-heading leading-tight">{stats.totalFolders}</p>
+              <p className="text-2xl lg:text-[32px] font-bold text-white font-auth-heading leading-tight">
+                <AnimatedCounter value={stats.totalFolders} />
+              </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3.5">
-            <div className="w-10 h-10 rounded-2xl bg-white/20 border border-white/30 flex items-center justify-center text-white shrink-0">
+          <div className="flex items-center gap-3.5 group cursor-default">
+            <div className="w-10 h-10 rounded-2xl bg-white/20 border border-white/30 flex items-center justify-center text-white shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
               <Tags className="w-5 h-5 text-white" />
             </div>
             <div>
               <p className="text-orange-100/80 text-xs font-medium uppercase tracking-wider font-mono">Categories</p>
-              <p className="text-2xl lg:text-[32px] font-bold text-white font-auth-heading leading-tight">{stats.totalCategories}</p>
+              <p className="text-2xl lg:text-[32px] font-bold text-white font-auth-heading leading-tight">
+                <AnimatedCounter value={stats.totalCategories} />
+              </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3.5">
-            <div className="w-10 h-10 rounded-2xl bg-white/20 border border-white/30 flex items-center justify-center text-white shrink-0">
+          <div className="flex items-center gap-3.5 group cursor-default">
+            <div className="w-10 h-10 rounded-2xl bg-white/20 border border-white/30 flex items-center justify-center text-white shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
               <Star className="w-5 h-5 fill-amber-300 text-amber-300" />
             </div>
             <div>
               <p className="text-orange-100/80 text-xs font-medium uppercase tracking-wider font-mono">Favorites</p>
-              <p className="text-2xl lg:text-[32px] font-bold text-white font-auth-heading leading-tight">{stats.favoriteDocuments}</p>
+              <p className="text-2xl lg:text-[32px] font-bold text-white font-auth-heading leading-tight">
+                <AnimatedCounter value={stats.favoriteDocuments} />
+              </p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* QUICK ACTIONS SECTION (200-300ms Ease Lift Cards) */}
-      <div className="space-y-4">
+      {/* QUICK ACTIONS SECTION (Staggered Entrance & Smooth Lift) */}
+      <div className="space-y-4 animate-fade-in-up stagger-2">
         <h3 className="text-lg lg:text-[20px] font-semibold text-slate-900 dark:text-white flex items-center gap-2.5 font-auth-heading tracking-tight">
           <Zap className="w-5 h-5 text-amber-500 fill-amber-500/20" /> Quick Actions
         </h3>
@@ -602,9 +612,9 @@ export default function UserWorkspacePage() {
           <button
             type="button"
             onClick={() => setUploadModalOpen(true)}
-            className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 p-5 rounded-3xl flex flex-col items-center justify-center text-center shadow-sm hover:shadow-xl hover:-translate-y-1 hover:border-themePrimary transition-all duration-300 group cursor-pointer active:scale-95"
+            className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 p-5 rounded-3xl flex flex-col items-center justify-center text-center shadow-xs hover:shadow-xl hover:-translate-y-1.5 hover:border-themePrimary/50 transition-all duration-300 group cursor-pointer active:scale-95"
           >
-            <div className="w-12 h-12 rounded-2xl bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 border border-orange-200 dark:border-orange-900 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
+            <div className="w-12 h-12 rounded-2xl bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 border border-orange-200 dark:border-orange-900 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-200">
               <Upload className="w-5 h-5" />
             </div>
             <p className="text-sm font-semibold text-slate-900 dark:text-white group-hover:text-themePrimary transition-colors font-auth-heading">Upload Document</p>
@@ -615,9 +625,9 @@ export default function UserWorkspacePage() {
           <button
             type="button"
             onClick={() => setCreateFolderModalOpen(true)}
-            className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 p-5 rounded-3xl flex flex-col items-center justify-center text-center shadow-sm hover:shadow-xl hover:-translate-y-1 hover:border-themePrimary transition-all duration-300 group cursor-pointer active:scale-95"
+            className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 p-5 rounded-3xl flex flex-col items-center justify-center text-center shadow-xs hover:shadow-xl hover:-translate-y-1.5 hover:border-themePrimary/50 transition-all duration-300 group cursor-pointer active:scale-95"
           >
-            <div className="w-12 h-12 rounded-2xl bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 border border-orange-200 dark:border-orange-900 flex items-center justify-center mb-3 group-hover:rotate-90 transition-transform">
+            <div className="w-12 h-12 rounded-2xl bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 border border-orange-200 dark:border-orange-900 flex items-center justify-center mb-3 group-hover:rotate-90 transition-transform duration-300">
               <FolderPlus className="w-5 h-5" />
             </div>
             <p className="text-sm font-semibold text-slate-900 dark:text-white group-hover:text-themePrimary transition-colors font-auth-heading">Create Folder</p>
@@ -628,9 +638,9 @@ export default function UserWorkspacePage() {
           <button
             type="button"
             onClick={() => setBrowseCategoriesModalOpen(true)}
-            className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 p-5 rounded-3xl flex flex-col items-center justify-center text-center shadow-sm hover:shadow-xl hover:-translate-y-1 hover:border-themePrimary transition-all duration-300 group cursor-pointer active:scale-95"
+            className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 p-5 rounded-3xl flex flex-col items-center justify-center text-center shadow-xs hover:shadow-xl hover:-translate-y-1.5 hover:border-themePrimary/50 transition-all duration-300 group cursor-pointer active:scale-95"
           >
-            <div className="w-12 h-12 rounded-2xl bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 border border-orange-200 dark:border-orange-900 flex items-center justify-center mb-3 group-hover:-rotate-45 transition-transform">
+            <div className="w-12 h-12 rounded-2xl bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 border border-orange-200 dark:border-orange-900 flex items-center justify-center mb-3 group-hover:-rotate-45 transition-transform duration-300">
               <Tags className="w-5 h-5" />
             </div>
             <p className="text-sm font-extrabold text-slate-900 dark:text-white group-hover:text-themePrimary transition-colors font-auth-heading">Browse Categories</p>
@@ -641,9 +651,9 @@ export default function UserWorkspacePage() {
           <button
             type="button"
             onClick={() => setSearchFilesModalOpen(true)}
-            className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-3xl flex flex-col items-center justify-center text-center shadow-md hover:shadow-xl hover:-translate-y-1 hover:border-themePrimary transition-all duration-300 group cursor-pointer font-auth-body active-press"
+            className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-3xl flex flex-col items-center justify-center text-center shadow-xs hover:shadow-xl hover:-translate-y-1.5 hover:border-themePrimary/50 transition-all duration-300 group cursor-pointer font-auth-body active:scale-95"
           >
-            <div className="w-11 h-11 rounded-2xl bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 border border-orange-200 dark:border-orange-900 flex items-center justify-center mb-2.5 group-hover:scale-115 transition-transform">
+            <div className="w-12 h-12 rounded-2xl bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 border border-orange-200 dark:border-orange-900 flex items-center justify-center mb-3 group-hover:scale-115 transition-transform duration-200">
               <Search className="w-5 h-5" />
             </div>
             <p className="text-sm font-extrabold text-slate-900 dark:text-white group-hover:text-themePrimary transition-colors font-auth-heading">Search Files</p>
@@ -654,9 +664,9 @@ export default function UserWorkspacePage() {
           <button
             type="button"
             onClick={() => setViewFavoritesModalOpen(true)}
-            className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-3xl flex flex-col items-center justify-center text-center shadow-md hover:shadow-xl hover:-translate-y-1 hover:border-amber-400 transition-all duration-300 group cursor-pointer font-auth-body active-press"
+            className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-3xl flex flex-col items-center justify-center text-center shadow-xs hover:shadow-xl hover:-translate-y-1.5 hover:border-amber-400/50 transition-all duration-300 group cursor-pointer font-auth-body active:scale-95"
           >
-            <div className="w-11 h-11 rounded-2xl bg-amber-50 dark:bg-amber-950/60 text-amber-500 dark:text-amber-400 border border-amber-200 dark:border-amber-900 flex items-center justify-center mb-2.5 group-hover:rotate-180 transition-transform duration-500">
+            <div className="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-950/60 text-amber-500 dark:text-amber-400 border border-amber-200 dark:border-amber-900 flex items-center justify-center mb-3 group-hover:rotate-180 transition-transform duration-500">
               <Star className="w-5 h-5 fill-amber-500" />
             </div>
             <p className="text-sm font-extrabold text-slate-900 dark:text-white group-hover:text-amber-600 transition-colors font-auth-heading">View Favorites</p>
@@ -667,9 +677,9 @@ export default function UserWorkspacePage() {
           <button
             type="button"
             onClick={() => setRestoreFilesModalOpen(true)}
-            className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-3xl flex flex-col items-center justify-center text-center shadow-md hover:shadow-xl hover:-translate-y-1 hover:border-themePrimary transition-all duration-300 group cursor-pointer font-auth-body active-press"
+            className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-3xl flex flex-col items-center justify-center text-center shadow-xs hover:shadow-xl hover:-translate-y-1.5 hover:border-themePrimary/50 transition-all duration-300 group cursor-pointer font-auth-body active:scale-95"
           >
-            <div className="w-11 h-11 rounded-2xl bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 border border-orange-200 dark:border-orange-900 flex items-center justify-center mb-2.5 group-hover:rotate-[360deg] transition-transform duration-700">
+            <div className="w-12 h-12 rounded-2xl bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 border border-orange-200 dark:border-orange-900 flex items-center justify-center mb-3 group-hover:rotate-[360deg] transition-transform duration-700">
               <RefreshCw className="w-5 h-5" />
             </div>
             <p className="text-sm font-extrabold text-slate-900 dark:text-white group-hover:text-themePrimary transition-colors font-auth-heading">Restore Files</p>
@@ -678,25 +688,26 @@ export default function UserWorkspacePage() {
         </div>
       </div>
 
-      {/* RECENT DOCUMENTS & STORAGE OVERVIEW */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 font-auth-body">
+      {/* RECENT DOCUMENTS & STORAGE OVERVIEW with Staggered Entrance */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 font-auth-body animate-fade-in-up stagger-3">
         {/* Recent Documents Table */}
         <div className="lg:col-span-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-xl space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-extrabold text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading">
               <FileText className="w-5 h-5 text-themePrimary" /> Recent Uploaded Documents
             </h3>
-            <Link href="/user/documents" className="text-sm font-bold text-themePrimary hover:underline flex items-center gap-1 font-auth-body">
-              View All →
+            <Link href="/user/documents" className="text-sm font-bold text-themePrimary hover:underline flex items-center gap-1 font-auth-body group">
+              <span>View All</span> <span className="group-hover:translate-x-0.5 transition-transform">→</span>
             </Link>
           </div>
 
-          <div className="space-y-2">
-            {recentUploads.map((doc) => (
+          <div className="space-y-2.5">
+            {recentUploads.map((doc, idx) => (
               <div
                 key={doc.id}
+                style={{ animationDelay: `${(idx % 6) * 50}ms` }}
                 onClick={() => setPreviewDoc(doc)}
-                className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3 hover:border-themePrimary hover:shadow-md transition cursor-pointer group active-press"
+                className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3 hover:border-themePrimary/60 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer group active:scale-[0.99] animate-fade-in"
               >
                 <div className="flex items-center gap-3 truncate">
                   <div className="w-9 h-9 rounded-xl bg-orange-100 text-themePrimary dark:bg-orange-950 dark:text-orange-400 flex items-center justify-center font-bold text-sm shrink-0 group-hover:scale-110 transition-transform">
@@ -714,7 +725,7 @@ export default function UserWorkspacePage() {
                   <button
                     type="button"
                     onClick={(e) => { e.stopPropagation(); setPreviewDoc(doc); }}
-                    className="p-2 text-slate-400 hover:text-themePrimary hover:bg-orange-50 dark:hover:bg-orange-950/60 rounded-xl transition cursor-pointer"
+                    className="p-2 text-slate-400 hover:text-themePrimary hover:bg-orange-50 dark:hover:bg-orange-950/60 rounded-xl transition-all hover:scale-110 active:scale-90 cursor-pointer"
                     title="Preview Document"
                   >
                     <Eye className="w-4 h-4" />
@@ -752,7 +763,7 @@ export default function UserWorkspacePage() {
                 </div>
                 <div className="w-full h-3 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden border border-slate-200 dark:border-slate-700">
                   <div
-                    className="h-full bg-gradient-to-r from-themePrimary to-[#F97316] rounded-full transition-all duration-500"
+                    className="h-full bg-gradient-to-r from-themePrimary to-[#F97316] rounded-full transition-all duration-1000 ease-out"
                     style={{ width: `${Math.max(usedBytes > 0 ? 2 : 0, pctVal)}%` }}
                   />
                 </div>
@@ -991,7 +1002,7 @@ export default function UserWorkspacePage() {
       {/* ─── MODAL 3: BROWSE CATEGORIES MODAL ───────────────────────── */}
       {browseCategoriesModalOpen && (
         <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-md flex items-center justify-center p-4 animate-fade-in font-auth-body">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 max-w-2xl w-full rounded-3xl p-6 shadow-2xl space-y-4 max-h-[85vh] flex flex-col text-slate-900 dark:text-white">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 max-w-2xl w-full rounded-3xl p-6 shadow-2xl space-y-4 max-h-[85vh] flex flex-col text-slate-900 dark:text-white animate-pop-in">
             <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
               <h3 className="text-lg font-extrabold text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading">
                 <Tags className="w-5 h-5 text-themePrimary" /> Category Domains
@@ -1047,7 +1058,7 @@ export default function UserWorkspacePage() {
       {/* ─── MODAL 4: SEARCH FILES MODAL ─────────────────────────────── */}
       {searchFilesModalOpen && (
         <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-md flex items-center justify-center p-4 animate-fade-in font-auth-body">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 max-w-2xl w-full rounded-3xl p-6 shadow-2xl space-y-4 max-h-[85vh] flex flex-col text-slate-900 dark:text-white">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 max-w-2xl w-full rounded-3xl p-6 shadow-2xl space-y-4 max-h-[85vh] flex flex-col text-slate-900 dark:text-white animate-pop-in">
             <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
               <h3 className="text-lg font-extrabold text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading">
                 <Search className="w-5 h-5 text-themePrimary" /> Search Workspace Files
@@ -1159,7 +1170,7 @@ export default function UserWorkspacePage() {
       {/* ─── MODAL 5: VIEW FAVORITES MODAL ──────────────────────────── */}
       {viewFavoritesModalOpen && (
         <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-md flex items-center justify-center p-4 animate-fade-in font-auth-body">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 max-w-2xl w-full rounded-3xl p-6 shadow-2xl space-y-4 max-h-[85vh] flex flex-col text-slate-900 dark:text-white">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 max-w-2xl w-full rounded-3xl p-6 shadow-2xl space-y-4 max-h-[85vh] flex flex-col text-slate-900 dark:text-white animate-pop-in">
             <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
               <h3 className="text-lg font-extrabold text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading">
                 <Star className="w-5 h-5 text-amber-500 fill-amber-500" /> Starred Favorites ({favoriteDocs.length})
@@ -1205,7 +1216,7 @@ export default function UserWorkspacePage() {
       {/* ─── MODAL 6: RESTORE FILES MODAL (RECYCLE BIN) ──────────────── */}
       {restoreFilesModalOpen && (
         <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-md flex items-center justify-center p-4 animate-fade-in font-auth-body">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 max-w-2xl w-full rounded-3xl p-6 shadow-2xl space-y-4 max-h-[85vh] flex flex-col text-slate-900 dark:text-white">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 max-w-2xl w-full rounded-3xl p-6 shadow-2xl space-y-4 max-h-[85vh] flex flex-col text-slate-900 dark:text-white animate-pop-in">
             <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
               <h3 className="text-lg font-extrabold text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading">
                 <RefreshCw className="w-5 h-5 text-themePrimary" /> Recycle Bin & Restore

@@ -731,68 +731,86 @@ export default function MyDocumentsPage() {
 
       {/* Main Results View */}
       {loading ? (
-        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-12 sm:p-16 text-center space-y-3 shadow-xl">
-          <Loader2 className="w-8 h-8 text-themePrimary dark:text-orange-400 animate-spin mx-auto" />
-          <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">Loading documents...</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
+            <div key={n} className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-xs space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="w-12 h-10 rounded-full skeleton-box" />
+                <div className="w-6 h-6 rounded-lg skeleton-box" />
+              </div>
+              <div className="space-y-2">
+                <div className="w-3/4 h-5 rounded-lg skeleton-box" />
+                <div className="w-full h-3 rounded-lg skeleton-box" />
+                <div className="w-2/3 h-3 rounded-lg skeleton-box" />
+              </div>
+              <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-between">
+                <div className="w-12 h-3 rounded skeleton-box" />
+                <div className="w-16 h-3 rounded skeleton-box" />
+              </div>
+            </div>
+          ))}
         </div>
       ) : documents.length === 0 ? (
-        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-12 sm:p-16 text-center space-y-4 shadow-xl">
-          <Search className="w-12 h-12 text-slate-400 dark:text-slate-600 mx-auto" />
-          <h3 className="text-lg font-bold text-slate-900 dark:text-white">No matching documents found.</h3>
+        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-12 sm:p-16 text-center space-y-4 shadow-xl animate-fade-in">
+          <div className="w-16 h-16 rounded-3xl bg-orange-50 dark:bg-orange-950/40 text-themePrimary border border-orange-200 dark:border-orange-900 flex items-center justify-center mx-auto animate-float-bob">
+            <Search className="w-8 h-8" />
+          </div>
+          <h3 className="text-lg font-bold text-slate-900 dark:text-white font-auth-heading">No matching documents found.</h3>
           <p className="text-sm text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
             Try adjusting your search criteria or uploading a new file.
           </p>
           <Link
             href="/user/upload"
-            className="inline-flex items-center gap-2 text-sm font-bold text-white bg-themePrimary hover:bg-[#E05E00] px-4 py-2 rounded-xl transition"
+            className="inline-flex items-center gap-2 text-sm font-bold text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:scale-105 active:scale-95 shadow-md shadow-orange-500/25 px-5 py-2.5 rounded-xl transition-all duration-200"
           >
             <Plus className="w-4 h-4" /> Upload New Document
           </Link>
         </div>
       ) : viewMode === 'grid' ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {documents.map((doc) => (
+          {documents.map((doc, idx) => (
             <div
               key={doc.id}
-              className="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-themePrimary/50 p-5 shadow-md hover:shadow-xl transition-all flex flex-col justify-between space-y-4 relative"
+              style={{ animationDelay: `${(idx % 12) * 50}ms` }}
+              className="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 hover:border-themePrimary/50 p-5 shadow-xs hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between space-y-4 relative animate-fade-in"
             >
               <div className="flex items-start justify-between gap-3">
-                <div className="px-3 h-10 rounded-full flex items-center justify-center text-themePrimary dark:text-orange-400 bg-orange-50 dark:bg-orange-950/60 border border-orange-200 dark:border-orange-900/60 font-black text-xs tracking-wider shadow-sm">
+                <div className="px-3 h-10 rounded-full flex items-center justify-center text-themePrimary dark:text-orange-400 bg-orange-50 dark:bg-orange-950/60 border border-orange-200 dark:border-orange-900/60 font-black text-xs tracking-wider shadow-xs group-hover:scale-105 transition-transform">
                   {getFileTypeLabel(doc.file_name, doc.mime_type)}
                 </div>
 
                 <div className="flex items-center gap-1">
                   <button
                     onClick={() => handleToggleFavorite(doc)}
-                    className={`p-1.5 rounded-lg transition ${doc.is_favorite ? 'text-amber-500 bg-amber-50 dark:bg-amber-950/60' : 'text-slate-400 hover:text-amber-500'}`}
+                    className={`p-1.5 rounded-lg transition-all active:scale-90 cursor-pointer ${doc.is_favorite ? 'text-amber-500 bg-amber-50 dark:bg-amber-950/60 scale-105' : 'text-slate-400 hover:text-amber-500 hover:bg-slate-50 dark:hover:bg-slate-800'}`}
                   >
-                    <Star className={`w-4 h-4 ${doc.is_favorite ? 'fill-amber-400' : ''}`} />
+                    <Star className={`w-4 h-4 ${doc.is_favorite ? 'fill-amber-400 animate-badge-sparkle' : ''}`} />
                   </button>
 
                   <div className="relative">
                     <button
                       onClick={() => setActionMenuOpen(actionMenuOpen === doc.id ? null : doc.id)}
-                      className="p-1.5 rounded-lg text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                      className="p-1.5 rounded-lg text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition active:scale-90 cursor-pointer"
                     >
                       <MoreVertical className="w-4 h-4" />
                     </button>
 
                     {actionMenuOpen === doc.id && (
-                      <div className="absolute right-0 top-8 z-40 w-48 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl py-1 text-sm text-slate-700 dark:text-slate-300 space-y-0.5 backdrop-blur-xl">
-                        <button onClick={() => handleOpenModal(doc, 'preview')} className="w-full px-3.5 py-2 text-left hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
+                      <div className="absolute right-0 top-8 z-40 w-48 bg-white/95 dark:bg-slate-900/95 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl py-1 text-sm text-slate-700 dark:text-slate-300 space-y-0.5 backdrop-blur-xl animate-pop-in">
+                        <button onClick={() => handleOpenModal(doc, 'preview')} className="w-full px-3.5 py-2 text-left hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2 transition-colors cursor-pointer">
                           <Eye className="w-3.5 h-3.5 text-themePrimary dark:text-orange-400" /> Preview File
                         </button>
-                        <button onClick={() => handleDownload(doc)} className="w-full px-3.5 py-2 text-left hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
+                        <button onClick={() => handleDownload(doc)} className="w-full px-3.5 py-2 text-left hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2 transition-colors cursor-pointer">
                           <Download className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> Download
                         </button>
-                        <button onClick={() => handleOpenModal(doc, 'rename')} className="w-full px-3.5 py-2 text-left hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
+                        <button onClick={() => handleOpenModal(doc, 'rename')} className="w-full px-3.5 py-2 text-left hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2 transition-colors cursor-pointer">
                           <Edit2 className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" /> Rename
                         </button>
-                        <button onClick={() => handleOpenModal(doc, 'move')} className="w-full px-3.5 py-2 text-left hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
+                        <button onClick={() => handleOpenModal(doc, 'move')} className="w-full px-3.5 py-2 text-left hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2 transition-colors cursor-pointer">
                           <FolderInput className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" /> Move Folder
                         </button>
                         <div className="border-t border-slate-200 dark:border-slate-800 my-1" />
-                        <button onClick={() => handleOpenModal(doc, 'delete')} className="w-full px-3.5 py-2 text-left hover:bg-rose-50 dark:hover:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center gap-2 font-medium">
+                        <button onClick={() => handleOpenModal(doc, 'delete')} className="w-full px-3.5 py-2 text-left hover:bg-rose-50 dark:hover:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center gap-2 font-medium transition-colors cursor-pointer">
                           <Trash2 className="w-3.5 h-3.5" /> Move to Recycle Bin
                         </button>
                       </div>

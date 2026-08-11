@@ -519,21 +519,36 @@ export default function CategoriesPage() {
 
       {/* Main Categories Display */}
       {loading ? (
-        <div className="bg-white rounded-3xl border border-[#EAE4F8] p-12 text-center space-y-4 shadow-[0_10px_30px_rgba(255,107,0,0.06)] font-auth-body">
-          <Loader2 className="w-8 h-8 text-themePrimary animate-spin mx-auto" />
-          <p className="text-sm font-bold text-[#7B7393]">Loading document categories...</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
+            <div key={n} className="bg-white dark:bg-slate-900 rounded-3xl border border-[#EAE4F8] dark:border-slate-800 p-6 space-y-4 shadow-xs">
+              <div className="flex items-center justify-between">
+                <div className="w-12 h-12 rounded-2xl skeleton-box" />
+                <div className="w-16 h-5 rounded-full skeleton-box" />
+              </div>
+              <div className="space-y-2">
+                <div className="w-3/4 h-5 rounded-lg skeleton-box" />
+                <div className="w-full h-3 rounded skeleton-box" />
+              </div>
+              <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-between">
+                <div className="w-16 h-3 rounded skeleton-box" />
+              </div>
+            </div>
+          ))}
         </div>
       ) : filteredCategories.length === 0 ? (
-        <div className="bg-white rounded-3xl border border-[#EAE4F8] p-12 text-center space-y-4 shadow-[0_10px_30px_rgba(255,107,0,0.06)] font-auth-body">
-          <FolderClosed className="w-12 h-12 text-orange-300 mx-auto" />
-          <h3 className="font-extrabold text-[#1E1235] text-lg font-auth-heading">No categories found</h3>
-          <p className="text-sm text-[#7B7393] max-w-sm mx-auto font-auth-body">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-[#EAE4F8] dark:border-slate-800 p-12 text-center space-y-4 shadow-md font-auth-body animate-fade-in">
+          <div className="w-16 h-16 rounded-3xl bg-orange-50 dark:bg-orange-950/40 text-themePrimary border border-orange-200 dark:border-orange-900 flex items-center justify-center mx-auto animate-float-bob">
+            <FolderClosed className="w-8 h-8" />
+          </div>
+          <h3 className="font-extrabold text-slate-900 dark:text-white text-lg font-auth-heading">No categories found</h3>
+          <p className="text-sm text-slate-500 dark:text-slate-400 max-w-sm mx-auto font-auth-body">
             {searchQuery ? `No category matched "${searchQuery}".` : 'Create categories to organize your documents.'}
           </p>
           {!searchQuery && (
             <button
               onClick={handleOpenCreate}
-              className="text-sm font-extrabold text-white bg-gradient-to-r from-themePrimary to-[#F97316] px-5 py-2.5 rounded-2xl transition shadow-lg shadow-orange-500/25 hover:scale-105 active-press font-auth-heading"
+              className="text-sm font-extrabold text-white bg-gradient-to-r from-themePrimary to-[#F97316] px-5 py-2.5 rounded-2xl transition shadow-lg shadow-orange-500/25 hover:scale-105 active:scale-95 font-auth-heading"
             >
               + Create Category Now
             </button>
@@ -542,12 +557,13 @@ export default function CategoriesPage() {
       ) : viewMode === 'grid' ? (
         /* GRID VIEW */
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-          {filteredCategories.map((cat) => {
+          {filteredCategories.map((cat, idx) => {
             const categoryDocsUrl = `/user/documents?category_id=${cat.id}&category=${encodeURIComponent(cat.category_name)}`;
             return (
               <div
                 key={cat.id}
-                className="group bg-white rounded-3xl border border-[#EAE4F8] p-6 shadow-[0_10px_30px_rgba(108,92,231,0.06)] hover:shadow-[0_15px_35px_rgba(108,92,231,0.14)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between space-y-4 relative overflow-hidden"
+                style={{ animationDelay: `${(idx % 8) * 60}ms` }}
+                className="group bg-white dark:bg-slate-900 rounded-3xl border border-[#EAE4F8] dark:border-slate-800 p-6 shadow-xs hover:shadow-[0_15px_35px_rgba(255,107,0,0.14)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between space-y-4 relative overflow-hidden animate-fade-in"
               >
                 {/* Top indicator bar */}
                 <div 

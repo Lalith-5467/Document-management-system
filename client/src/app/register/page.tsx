@@ -64,10 +64,10 @@ const customStyles = `
 const InputField = ({ icon: Icon, label, required, error, value, ...props }: any) => {
   const isFilled = value && value.toString().length > 0;
   return (
-    <div className="relative mb-4 group w-full">
+    <div className={`relative mb-4 group w-full ${error ? 'animate-shake-subtle' : ''}`}>
       {Icon && (
-        <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-6 h-6 flex items-center justify-center transition-all duration-300 pointer-events-none">
-          <Icon className={`w-5 h-5 transition-colors duration-300 ${error ? 'text-red-400' : 'text-slate-400 group-hover:text-[#D96B00] group-focus-within:text-[#FF6B00]'}`} />
+        <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-6 h-6 flex items-center justify-center transition-all duration-200 pointer-events-none">
+          <Icon className={`w-5 h-5 transition-all duration-200 ${error ? 'text-red-400' : 'text-slate-400 group-hover:text-[#D96B00] group-focus-within:text-[#FF6B00] group-focus-within:scale-110'}`} />
         </div>
       )}
       <div className="relative">
@@ -79,9 +79,9 @@ const InputField = ({ icon: Icon, label, required, error, value, ...props }: any
             error 
               ? 'border-red-300 focus:border-red-400 focus:ring-4 focus:ring-red-500/15' 
               : 'border-[#E6E0D4] hover:border-[#DFD2BA] hover:bg-[#FFFDF8] focus:border-[#FF6B00] focus:ring-4 focus:ring-orange-500/15 focus:bg-white'
-          } rounded-[16px] text-[15px] text-slate-900 focus:outline-none transition-all duration-300 font-medium cream-hover-input`}
+          } rounded-[16px] text-[15px] text-slate-900 focus:outline-none transition-all duration-200 font-medium cream-hover-input`}
         />
-        <label className={`absolute left-${Icon ? '12' : '4'} text-slate-400 pointer-events-none transition-all duration-300 font-medium ${
+        <label className={`absolute left-${Icon ? '12' : '4'} text-slate-400 pointer-events-none transition-all duration-200 font-medium ${
           isFilled ? 'top-2 text-[11px] text-slate-400' : 'top-1/2 -translate-y-1/2 text-[15px] peer-focus:top-2 peer-focus:text-[11px] peer-focus:text-[#FF6B00]'
         }`}>
           {label} {required && <span className="text-red-500">*</span>}
@@ -89,7 +89,7 @@ const InputField = ({ icon: Icon, label, required, error, value, ...props }: any
       </div>
       {error && (
         <p className="text-red-500 text-[12px] font-medium mt-1.5 pl-1 flex items-center gap-1.5 animate-fade-in">
-          <AlertCircle className="w-3.5 h-3.5" />
+          <AlertCircle className="w-3.5 h-3.5 shrink-0" />
           {error}
         </p>
       )}
@@ -113,10 +113,10 @@ const SelectField = ({ icon: Icon, label, options, required, error, value, onCha
   }, []);
 
   return (
-    <div className="relative mb-4 group w-full" ref={dropdownRef}>
+    <div className={`relative mb-4 group w-full ${error ? 'animate-shake-subtle' : ''}`} ref={dropdownRef}>
       {Icon && (
-        <div className="absolute left-4 top-7 -translate-y-1/2 z-10 w-6 h-6 flex items-center justify-center transition-all duration-300 pointer-events-none">
-          <Icon className={`w-5 h-5 transition-colors duration-300 ${error ? 'text-red-400' : isOpen ? 'text-[#FF6B00]' : 'text-slate-400 group-hover:text-[#D96B00]'}`} />
+        <div className="absolute left-4 top-7 -translate-y-1/2 z-10 w-6 h-6 flex items-center justify-center transition-all duration-200 pointer-events-none">
+          <Icon className={`w-5 h-5 transition-all duration-200 ${error ? 'text-red-400' : isOpen ? 'text-[#FF6B00] scale-110' : 'text-slate-400 group-hover:text-[#D96B00]'}`} />
         </div>
       )}
       <div className="relative cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
@@ -125,13 +125,13 @@ const SelectField = ({ icon: Icon, label, options, required, error, value, onCha
             error 
               ? 'border-red-300 ring-4 ring-red-500/15' 
               : isOpen
-                ? 'border-[#FF6B00] ring-4 ring-orange-500/15 bg-white'
+                ? 'border-[#FF6B00] ring-4 ring-orange-500/15 bg-white shadow-xs'
                 : 'border-[#E6E0D4] hover:border-[#DFD2BA] hover:bg-[#FFFDF8]'
-          } rounded-[16px] text-[15px] ${value ? 'text-slate-900 font-semibold' : 'text-transparent'} transition-all duration-300 font-medium cream-hover-input flex items-center justify-between select-none`}
+          } rounded-[16px] text-[15px] ${value ? 'text-slate-900 font-semibold' : 'text-transparent'} transition-all duration-200 font-medium cream-hover-input flex items-center justify-between select-none`}
         >
           <span className="truncate">{value || ' '}</span>
         </div>
-        <label className={`absolute left-${Icon ? '12' : '4'} text-slate-400 pointer-events-none transition-all duration-300 font-medium ${
+        <label className={`absolute left-${Icon ? '12' : '4'} text-slate-400 pointer-events-none transition-all duration-200 font-medium ${
           isFilled || isOpen ? 'top-2 text-[11px] text-[#FF6B00] font-semibold' : 'top-1/2 -translate-y-1/2 text-[15px]'
         }`}>
           {label} {required && <span className="text-red-500">*</span>}
@@ -145,7 +145,7 @@ const SelectField = ({ icon: Icon, label, options, required, error, value, onCha
 
       {/* Custom Floating Options Dropdown Menu */}
       {isOpen && (
-        <div className="absolute left-0 right-0 top-[62px] z-50 bg-white border border-[#E8E1D5] rounded-[20px] shadow-[0_15px_45px_rgba(40,30,15,0.15)] py-2 max-h-[240px] overflow-y-auto animate-slide-up scrollbar-thin">
+        <div className="absolute left-0 right-0 top-[62px] z-50 bg-white border border-[#E8E1D5] rounded-[20px] shadow-[0_15px_45px_rgba(40,30,15,0.15)] py-2 max-h-[240px] overflow-y-auto animate-pop-in scrollbar-thin">
           <div className="px-4 py-2 text-[11px] font-bold text-[#FF6B00] uppercase tracking-wider border-b border-slate-100 bg-[#FFFDF8] mb-1">
             Select {label}
           </div>
@@ -532,18 +532,18 @@ export default function RegisterPage() {
       <div className="absolute bottom-10 right-1/4 w-[500px] h-[500px] bg-orange-500/6 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-[#FAF2E4]/40 rounded-full blur-3xl pointer-events-none" />
       
-      {/* Main Centered Card Container */}
-      <div className="w-full max-w-[480px] bg-white/95 backdrop-blur-xl rounded-[32px] shadow-[0_25px_70px_rgba(40,30,15,0.06)] border border-[#E8E1D5] relative z-10 flex flex-col my-8">
+      {/* Main Centered Card Container with Smooth Float Entrance */}
+      <div className="w-full max-w-[480px] bg-white/95 backdrop-blur-xl rounded-[32px] shadow-[0_25px_70px_rgba(40,30,15,0.06)] hover:shadow-[0_30px_80px_rgba(40,30,15,0.09)] border border-[#E8E1D5] relative z-10 flex flex-col my-8 animate-card-float transition-shadow duration-500">
         <div className="p-8 sm:p-10">
           
           {/* Header */}
           <div className="text-center space-y-3 mb-8">
             <Link href="/" className="inline-flex items-center justify-center mb-2 group">
-              <div className="w-14 h-14 rounded-[22px] bg-[#FF6500] flex items-center justify-center text-white shadow-[0_12px_30px_rgba(255,101,0,0.35)] group-hover:scale-105 transition-all duration-300">
-                <ShieldCheck className="w-7 h-7 stroke-[2.2]" />
+              <div className="w-14 h-14 rounded-[22px] bg-[#FF6500] flex items-center justify-center text-white shadow-[0_12px_30px_rgba(255,101,0,0.35)] group-hover:scale-110 group-hover:shadow-[0_16px_35px_rgba(255,101,0,0.45)] transition-all duration-300">
+                <ShieldCheck className="w-7 h-7 stroke-[2.2] group-hover:rotate-6 transition-transform duration-300" />
               </div>
             </Link>
-            <h2 className="text-[28px] sm:text-[32px] font-bold text-slate-900 tracking-tight leading-tight">
+            <h2 className="text-[28px] sm:text-[32px] font-bold text-slate-900 tracking-tight leading-tight font-auth-heading">
               Create your account
             </h2>
             <p className="text-[15px] text-slate-500 font-medium max-w-sm mx-auto">
@@ -567,15 +567,15 @@ export default function RegisterPage() {
                     <div className="flex flex-col items-center relative z-10">
                       <div className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 ${
                         isCurrent 
-                          ? 'bg-gradient-to-br from-[#FF6B00] to-[#E05500] text-white shadow-md shadow-orange-500/25 ring-4 ring-[#FAF4E8]' 
+                          ? 'bg-gradient-to-br from-[#FF6B00] to-[#E05500] text-white shadow-md shadow-orange-500/25 ring-4 ring-[#FAF4E8] scale-110' 
                           : isDone 
                             ? 'bg-[#FAF4E6] text-[#D96B00] border border-[#EADECA]' 
                             : 'bg-[#F5F2EC] text-slate-400 border border-[#EBE7DF]'
                       }`}>
-                        {isDone ? <Check className="w-4 h-4 stroke-[3]" /> : item.step}
+                        {isDone ? <Check className="w-4 h-4 stroke-[3] animate-check-pop" /> : item.step}
                       </div>
                       <span className={`text-[10px] font-semibold mt-1.5 transition-colors ${
-                        isCurrent ? 'text-[#FF6B00]' : isDone ? 'text-slate-700' : 'text-slate-400'
+                        isCurrent ? 'text-[#FF6B00] font-bold' : isDone ? 'text-slate-700' : 'text-slate-400'
                       }`}>
                         {item.label}
                       </span>
@@ -593,7 +593,7 @@ export default function RegisterPage() {
           
           {/* Validation Banner (Compact Modern) */}
           {globalError && (
-            <div className="mb-6 p-4 rounded-[16px] bg-red-50 text-red-600 text-sm font-medium flex items-center gap-3 border border-red-100 animate-fade-in shadow-sm">
+            <div className="mb-6 p-4 rounded-[16px] bg-red-50 text-red-600 text-sm font-medium flex items-center gap-3 border border-red-100 animate-shake-subtle shadow-sm">
               <AlertCircle className="w-5 h-5 shrink-0" />
               <span>{globalError}</span>
             </div>
@@ -953,9 +953,9 @@ export default function RegisterPage() {
               <button 
                 type="button" 
                 onClick={handleBack} 
-                className="h-[54px] px-7 rounded-[16px] font-bold text-[15px] text-slate-700 bg-white border border-[#E6E0D4] hover:bg-[#FFFDF5] hover:border-[#DFD2BA] hover:shadow-xs transition-all duration-300 flex items-center gap-2 cream-hover-btn"
+                className="h-[54px] px-7 rounded-[16px] font-bold text-[15px] text-slate-700 bg-white border border-[#E6E0D4] hover:bg-[#FFFDF5] hover:border-[#DFD2BA] hover:shadow-xs active:scale-95 transition-all duration-200 flex items-center gap-2 cream-hover-btn cursor-pointer"
               >
-                <ArrowLeft className="w-4 h-4" /> Back
+                <ArrowLeft className="w-4 h-4 hover:-translate-x-0.5 transition-transform" /> Back
               </button>
             )}
             
@@ -963,18 +963,33 @@ export default function RegisterPage() {
               <button 
                 type="button" 
                 onClick={handleNext} 
-                className="flex-1 h-[54px] rounded-[16px] font-bold text-[15px] text-white bg-gradient-to-r from-[#FF6B00] via-[#F76400] to-[#E05500] hover:brightness-105 shadow-lg shadow-orange-500/25 hover:shadow-xl hover:shadow-orange-500/35 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 flex justify-center items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="group relative overflow-hidden flex-1 h-[54px] rounded-[16px] font-bold text-[15px] text-white bg-gradient-to-r from-[#FF6B00] via-[#F76400] to-[#E05500] hover:scale-[1.01] active:scale-[0.98] shadow-lg shadow-orange-500/25 hover:shadow-xl hover:shadow-orange-500/35 transition-all duration-300 flex justify-center items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none cursor-pointer"
               >
-                Continue <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-1000 ease-in-out" />
+                <div className="relative z-10 flex items-center gap-2">
+                  <span>Continue</span>
+                  <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </div>
               </button>
             ) : (
               <button 
                 type="button" 
                 onClick={handleSubmit} 
                 disabled={loading || !userType} 
-                className="flex-1 h-[54px] rounded-[16px] font-bold text-[15px] text-white bg-gradient-to-r from-[#FF6B00] via-[#F76400] to-[#E05500] hover:brightness-105 shadow-lg shadow-orange-500/25 hover:shadow-xl hover:shadow-orange-500/35 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 flex justify-center items-center gap-2 disabled:opacity-50"
+                className="group relative overflow-hidden flex-1 h-[54px] rounded-[16px] font-bold text-[15px] text-white bg-gradient-to-r from-[#FF6B00] via-[#F76400] to-[#E05500] hover:scale-[1.01] active:scale-[0.98] shadow-lg shadow-orange-500/25 hover:shadow-xl hover:shadow-orange-500/35 transition-all duration-300 flex justify-center items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none cursor-pointer"
               >
-                {loading ? <><Loader2 className="w-5 h-5 animate-spin" /> Creating...</> : <><UserPlus className="w-5 h-5" /> Create Account</>}
+                <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-1000 ease-in-out" />
+                {loading ? (
+                  <div className="relative z-10 flex items-center gap-2">
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    <span>Creating Account...</span>
+                  </div>
+                ) : (
+                  <div className="relative z-10 flex items-center gap-2">
+                    <UserPlus className="w-5 h-5" />
+                    <span>Create Account</span>
+                  </div>
+                )}
               </button>
             )}
           </div>

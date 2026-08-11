@@ -75,18 +75,18 @@ export default function Sidebar({ mobileOpen = false, setMobileOpen }: SidebarPr
 
   return (
     <aside
-      className={`fixed inset-y-0 left-0 z-40 w-64 bg-white dark:bg-slate-900 text-slate-800 dark:text-white transform transition-all duration-200 ease-in-out lg:translate-x-0 ${
+      className={`fixed inset-y-0 left-0 z-40 w-64 bg-white dark:bg-slate-900 text-slate-800 dark:text-white transform transition-transform duration-300 ease-out lg:translate-x-0 ${
         mobileOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'
       } flex flex-col border-r border-slate-200/80 dark:border-slate-800/80 font-sans`}
     >
       {/* Brand Header */}
       <div className="h-20 flex items-center px-6 border-b border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900">
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-themePrimary to-[#F97316] text-white flex items-center justify-center font-extrabold shadow-md shadow-orange-500/25 group-hover:scale-105 transition-transform duration-300">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-themePrimary to-[#F97316] text-white flex items-center justify-center font-extrabold shadow-md shadow-orange-500/25 group-hover:scale-105 group-hover:rotate-3 transition-all duration-300">
             <ShieldCheck className="w-5 h-5 text-white" />
           </div>
           <div>
-            <span className="font-black text-base text-slate-900 dark:text-white tracking-tight leading-none block font-auth-heading">
+            <span className="font-black text-base text-slate-900 dark:text-white tracking-tight leading-none block font-auth-heading group-hover:text-themePrimary transition-colors">
               DocVault
             </span>
             <span className="text-[10px] font-semibold text-slate-500 dark:text-slate-400 block mt-0.5 whitespace-nowrap tracking-tight font-mono">
@@ -120,11 +120,11 @@ export default function Sidebar({ mobileOpen = false, setMobileOpen }: SidebarPr
                   className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition-all duration-200 group relative ${
                     isActive
                       ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/25 font-bold border border-orange-400/30'
-                      : 'text-slate-700 dark:text-slate-200 hover:bg-orange-50/80 dark:hover:bg-slate-800/80 hover:text-themePrimary dark:hover:text-white font-semibold'
+                      : 'text-slate-700 dark:text-slate-200 hover:bg-orange-50/80 dark:hover:bg-slate-800/80 hover:text-themePrimary dark:hover:text-white font-semibold hover:translate-x-0.5'
                   }`}
                 >
-                  {isActive && <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-white rounded-r-full -ml-3.5" />}
-                  <Icon className={`w-4 h-4 shrink-0 transition-transform duration-200 ${isActive ? 'text-white scale-105' : 'text-slate-400 dark:text-slate-400 group-hover:scale-105 group-hover:text-themePrimary dark:group-hover:text-white'}`} />
+                  {isActive && <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-6 bg-white rounded-r-full -ml-3.5 shadow-xs animate-scale-up" />}
+                  <Icon className={`w-4 h-4 shrink-0 transition-transform duration-200 ${isActive ? 'text-white scale-105' : 'text-slate-400 dark:text-slate-400 group-hover:scale-110 group-hover:text-themePrimary dark:group-hover:text-white'}`} />
                   <span className="truncate tracking-tight">{item.name}</span>
                 </Link>
               );
@@ -149,14 +149,16 @@ export default function Sidebar({ mobileOpen = false, setMobileOpen }: SidebarPr
                   className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition-all duration-200 group relative ${
                     isActive
                       ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/25 font-bold border border-orange-400/30'
-                      : 'text-slate-700 dark:text-slate-200 hover:bg-orange-50/80 dark:hover:bg-slate-800/80 hover:text-themePrimary dark:hover:text-white font-semibold'
+                      : 'text-slate-700 dark:text-slate-200 hover:bg-orange-50/80 dark:hover:bg-slate-800/80 hover:text-themePrimary dark:hover:text-white font-semibold hover:translate-x-0.5'
                   }`}
                 >
-                  {isActive && <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-white rounded-r-full -ml-3.5" />}
-                  <Icon className={`w-4 h-4 shrink-0 transition-transform duration-200 ${isActive ? 'text-white scale-105' : 'text-slate-400 dark:text-slate-400 group-hover:scale-105 group-hover:text-themePrimary dark:group-hover:text-white'}`} />
+                  {isActive && <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-6 bg-white rounded-r-full -ml-3.5 shadow-xs animate-scale-up" />}
+                  <Icon className={`w-4 h-4 shrink-0 transition-transform duration-200 ${isActive ? 'text-white scale-105' : 'text-slate-400 dark:text-slate-400 group-hover:scale-110 group-hover:text-themePrimary dark:group-hover:text-white'}`} />
                   <span className="truncate tracking-tight flex-1">{item.name}</span>
                   {item.href === '/user/notifications' && unreadCount > 0 && (
-                    <span className="px-2 py-0.5 rounded-full bg-themePrimary text-white text-[10px] font-black">{unreadCount}</span>
+                    <span className="px-2 py-0.5 rounded-full bg-themePrimary text-white text-[10px] font-black animate-pulse shadow-xs">
+                      {unreadCount}
+                    </span>
                   )}
                 </Link>
               );
@@ -181,11 +183,11 @@ export default function Sidebar({ mobileOpen = false, setMobileOpen }: SidebarPr
                   className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition-all duration-200 group relative ${
                     isActive
                       ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/25 font-bold border border-orange-400/30'
-                      : 'text-slate-700 dark:text-slate-200 hover:bg-orange-50/80 dark:hover:bg-slate-800/80 hover:text-themePrimary dark:hover:text-white font-semibold'
+                      : 'text-slate-700 dark:text-slate-200 hover:bg-orange-50/80 dark:hover:bg-slate-800/80 hover:text-themePrimary dark:hover:text-white font-semibold hover:translate-x-0.5'
                   }`}
                 >
-                  {isActive && <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-white rounded-r-full -ml-3.5" />}
-                  <Icon className={`w-4 h-4 shrink-0 transition-transform duration-200 ${isActive ? 'text-white scale-105' : 'text-slate-400 dark:text-slate-400 group-hover:scale-105 group-hover:text-themePrimary dark:group-hover:text-white'}`} />
+                  {isActive && <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-6 bg-white rounded-r-full -ml-3.5 shadow-xs animate-scale-up" />}
+                  <Icon className={`w-4 h-4 shrink-0 transition-transform duration-200 ${isActive ? 'text-white scale-105' : 'text-slate-400 dark:text-slate-400 group-hover:scale-110 group-hover:text-themePrimary dark:group-hover:text-white'}`} />
                   <span className="truncate tracking-tight">{item.name}</span>
                 </Link>
               );
@@ -196,9 +198,9 @@ export default function Sidebar({ mobileOpen = false, setMobileOpen }: SidebarPr
                 if (setMobileOpen) setMobileOpen(false);
                 logout();
               }}
-              className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/20 hover:text-rose-700 transition-all duration-200 group active:scale-95 text-left cursor-pointer"
+              className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/20 hover:text-rose-700 transition-all duration-200 group active:scale-95 text-left cursor-pointer hover:translate-x-0.5"
             >
-              <LogOut className="w-4 h-4 text-rose-500 shrink-0 group-hover:scale-105 transition-transform" />
+              <LogOut className="w-4 h-4 text-rose-500 shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-transform" />
               <span className="truncate tracking-tight">{t('logout', 'Logout')}</span>
             </button>
           </div>

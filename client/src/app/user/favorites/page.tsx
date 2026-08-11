@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import api from '@/lib/api';
 import { useLanguage } from '@/context/LanguageContext';
+import AnimatedCounter from '@/components/dashboard/AnimatedCounter';
 
 export interface FavoriteDocument {
   id: number;
@@ -585,7 +586,9 @@ export default function FavoritesPage() {
           <div>
             <p className="text-xs font-extrabold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{t('favoriteFiles', 'Favorite Files')}</p>
             <div className="flex items-baseline justify-between mt-1">
-              <h3 className="text-3xl font-black text-slate-900 dark:text-white">{favorites.length || 38}</h3>
+              <h3 className="text-3xl font-black text-slate-900 dark:text-white">
+                <AnimatedCounter value={favorites.length || 0} />
+              </h3>
               <span className="text-sm text-slate-500 dark:text-slate-400 font-semibold">{t('myDocuments', 'Documents')}</span>
             </div>
           </div>
@@ -610,7 +613,9 @@ export default function FavoritesPage() {
           <div>
             <p className="text-xs font-extrabold text-[#7B7393] dark:text-[#A39BB8] uppercase tracking-wider">{t('categoriesCount', 'Categories')}</p>
             <div className="flex items-baseline justify-between mt-1">
-              <h3 className="text-3xl font-black text-[#1E1235] dark:text-white">{categoriesCount}</h3>
+              <h3 className="text-3xl font-black text-[#1E1235] dark:text-white">
+                <AnimatedCounter value={categoriesCount} />
+              </h3>
               <span className="text-sm text-[#7B7393] dark:text-[#A39BB8] font-semibold">{t('categories', 'Categories')}</span>
             </div>
           </div>

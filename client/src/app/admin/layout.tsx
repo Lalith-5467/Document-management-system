@@ -527,14 +527,14 @@ function AdminUserDropdown({ user, logout }: { user: any; logout: () => void }) 
     <div className="relative font-sans" ref={dropdownRef}>
       <button
         onClick={() => setOpen(p => !p)}
-        className="flex items-center gap-2.5 p-1.5 pr-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700/80 shadow-2xs hover:bg-orange-50/60 dark:hover:bg-slate-700 hover:border-orange-200 dark:hover:border-orange-500/50 transition-all duration-200 cursor-pointer group"
+        className="h-9 flex items-center gap-2 px-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700/80 shadow-2xs hover:bg-orange-50/60 dark:hover:bg-slate-700 hover:border-orange-200 dark:hover:border-orange-500/50 transition-all duration-200 cursor-pointer group"
       >
-        <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-themePrimary to-[#F97316] text-white flex items-center justify-center font-black shadow-sm group-hover:scale-105 transition-transform">
-          <User className="w-4 h-4 text-white" />
+        <div className="w-6 h-6 rounded-lg bg-gradient-to-tr from-themePrimary to-[#F97316] text-white flex items-center justify-center font-black shadow-xs shrink-0 group-hover:scale-105 transition-transform">
+          <User className="w-3.5 h-3.5 text-white" />
         </div>
-        <div className="text-left hidden sm:block">
-          <p className="text-xs font-black text-slate-900 dark:text-white leading-none truncate max-w-[130px] font-auth-heading">{adminName}</p>
-          <span className="text-[10px] font-extrabold text-themePrimary tracking-tight">Super Admin</span>
+        <div className="text-left hidden sm:flex flex-col justify-center">
+          <span className="text-xs font-black text-slate-900 dark:text-white leading-none truncate max-w-[120px] font-auth-heading">{adminName}</span>
+          <span className="text-[9px] font-extrabold text-themePrimary tracking-tight leading-none mt-0.5 font-mono">Super Admin</span>
         </div>
         <ChevronDown className={`w-3.5 h-3.5 text-slate-400 group-hover:text-themePrimary transition-transform duration-200 ${open ? 'rotate-180 text-themePrimary' : ''}`} />
       </button>
@@ -740,11 +740,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 className={`group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-extrabold transition-all duration-200 relative ${
                   isActive
                     ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/25 font-black'
-                    : 'text-slate-700 dark:text-slate-200 hover:text-themePrimary hover:bg-orange-50/80 dark:hover:bg-slate-800'
+                    : 'text-slate-700 dark:text-slate-200 hover:text-themePrimary hover:bg-orange-50/80 dark:hover:bg-slate-800 hover:translate-x-1'
                 }`}
               >
-                {isActive && <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-white rounded-r-full -ml-3.5" />}
-                <Icon className={`w-4 h-4 shrink-0 transition-transform duration-200 ${isActive ? 'text-white scale-105' : 'text-slate-400 dark:text-slate-400 group-hover:text-themePrimary group-hover:scale-105'}`} />
+                {isActive && <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-white rounded-r-full -ml-3.5 animate-scale-up" />}
+                <Icon className={`w-4 h-4 shrink-0 transition-transform duration-200 ${isActive ? 'text-white scale-105' : 'text-slate-400 dark:text-slate-400 group-hover:text-themePrimary group-hover:scale-110'}`} />
                 <span className="flex-1 truncate tracking-tight">{item.name}</span>
                 {item.badge && (
                   <span className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider ${isActive ? 'bg-white/25 text-white' : 'bg-orange-100 dark:bg-orange-950/60 text-orange-800 dark:text-orange-300 border border-orange-200/80 dark:border-orange-800/80'}`}>{item.badge}</span>
@@ -795,42 +795,39 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* ===== MAIN CONTENT WRAPPER ===== */}
       <div className="flex-1 flex flex-col lg:pl-64 min-w-0 bg-slate-50 dark:bg-slate-950">
         {/* Top Header */}
-        <header className="sticky top-0 z-30 h-16 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 px-4 sm:px-8 flex items-center justify-between transition-all text-slate-900 dark:text-white shadow-2xs">
+        <header className="sticky top-0 z-30 h-16 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 px-4 sm:px-8 flex items-center justify-between transition-all text-slate-900 dark:text-white shadow-2xs">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setMobileOpen(true)}
-              className="lg:hidden p-2 rounded-xl text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              className="lg:hidden p-2 rounded-xl text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
               aria-label="Open Admin Menu"
             >
               <Menu className="w-5 h-5" />
             </button>
 
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-themePrimary to-[#F97316] flex items-center justify-center text-white shadow-md shadow-orange-500/20">
-                <ShieldCheck className="w-5 h-5 text-white" />
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-themePrimary to-[#F97316] flex items-center justify-center text-white shadow-sm shadow-orange-500/20 shrink-0">
+                <ShieldCheck className="w-4.5 h-4.5 text-white" />
               </div>
-              <div>
-                <h1 className="text-sm sm:text-base font-black text-slate-900 dark:text-white tracking-tight leading-none flex items-center gap-2 font-auth-heading">
+              <div className="flex items-center gap-2">
+                <h1 className="text-sm sm:text-base font-black text-slate-900 dark:text-white tracking-tight leading-none font-auth-heading">
                   Admin Control Center
-                  <span className="px-2 py-0.5 rounded-full bg-themePrimary text-white text-[9px] font-extrabold uppercase font-mono tracking-wider shadow-2xs">
-                    Admin Portal
-                  </span>
                 </h1>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium leading-tight mt-0.5">
-                  System management, SaaS subscriptions, audit logs & user vaults
-                </p>
+                <span className="px-2 py-0.5 rounded-full bg-orange-100 dark:bg-orange-950/80 text-themePrimary dark:text-orange-400 border border-orange-200/80 dark:border-orange-800/80 text-[9px] font-black uppercase font-mono tracking-wider shadow-2xs">
+                  Admin Portal
+                </span>
               </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
             {/* Theme Toggle */}
             <AdminThemeToggle />
 
             {/* Quick Search */}
             <button
               onClick={() => setCommandOpen(true)}
-              className="hidden sm:flex items-center gap-2 px-3.5 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200/80 dark:hover:bg-slate-700 border border-slate-200/80 dark:border-slate-700/80 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all duration-200 text-xs font-semibold shadow-2xs cursor-pointer"
+              className="hidden sm:flex items-center gap-2 px-3 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200/80 dark:hover:bg-slate-700 border border-slate-200/80 dark:border-slate-700/80 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all duration-200 text-xs font-semibold shadow-2xs cursor-pointer"
             >
               <Command className="w-3.5 h-3.5 text-themePrimary" />
               <span className="font-extrabold">Quick Search</span>

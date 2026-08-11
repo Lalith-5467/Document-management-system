@@ -82,6 +82,7 @@ export default function UploadPage() {
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [isDragging, setIsDragging] = useState<boolean>(false);
 
   // ─── VALIDATION STATES & REFS ──────────────────────────────────
   const [fileTouched, setFileTouched] = useState<boolean>(false);
@@ -320,12 +321,28 @@ export default function UploadPage() {
     }
   };
 
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
+    e.stopPropagation();
+    if (!isDragging) setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
   };
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       handleFileSelect(e.dataTransfer.files[0]);
     }
@@ -688,14 +705,18 @@ export default function UploadPage() {
 
           <div
             onClick={() => fileInputRef.current?.click()}
+            onDragEnter={handleDragEnter}
             onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
             onDrop={handleDrop}
             className={`border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-all duration-300 relative group overflow-hidden ${
-              fileTouched && fileError
+              isDragging
+                ? 'drag-active border-themePrimary'
+                : fileTouched && fileError
                 ? 'border-red-500 bg-red-50/20 dark:bg-red-950/20'
                 : selectedFile
-                ? 'border-emerald-500 bg-emerald-50/20 dark:bg-emerald-950/20'
-                : 'border-slate-200 dark:border-slate-800 hover:border-themePrimary/80 bg-slate-50 dark:bg-[#0b1120]/60 hover:bg-slate-100 dark:hover:bg-[#0b1120]'
+                ? 'border-emerald-500 bg-emerald-50/20 dark:bg-emerald-950/20 shadow-xs'
+                : 'border-slate-200 dark:border-slate-800 hover:border-themePrimary/80 bg-slate-50 dark:bg-[#0b1120]/60 hover:bg-slate-100 dark:hover:bg-[#0b1120] hover:shadow-md'
             }`}
           >
             {selectedFile ? (

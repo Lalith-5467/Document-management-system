@@ -55,7 +55,7 @@ export default function ForgotPasswordPage() {
     }, 1000);
   };
 
-  // Step 1: Send OTP to Email
+  // Step 1: Send OTP to Email (Only registered emails allowed)
   const handleSendOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg('');
@@ -79,7 +79,11 @@ export default function ForgotPasswordPage() {
         startResendTimer();
       }
     } catch (err: any) {
-      setErrorMsg(err.response?.data?.message || 'Failed to send verification code. Please check your email.');
+      if (err.response?.status === 404 || (err.response?.data?.message && err.response.data.message.toLowerCase().includes('no registered'))) {
+        setErrorMsg('This email address is not registered in DocVault. Only registered accounts can reset their password.');
+      } else {
+        setErrorMsg(err.response?.data?.message || 'Failed to send verification code. Please check your email.');
+      }
     } finally {
       setLoading(false);
     }
@@ -171,11 +175,13 @@ export default function ForgotPasswordPage() {
       {/* Centered Card Container */}
       <main className="w-full max-w-[500px] bg-white/95 backdrop-blur-xl rounded-[32px] p-8 sm:p-10 shadow-[0_25px_70px_rgba(40,30,15,0.06)] border border-[#E8E1D5] relative z-10 my-auto">
         
-        {/* Top DocVault Logo */}
+        {/* Top DocVault Logo Badge */}
         <div className="text-center mb-6">
           <Link href="/" className="inline-flex items-center justify-center group">
-            <div className="w-13 h-13 rounded-[20px] bg-[#FF6500] flex items-center justify-center text-white shadow-[0_10px_25px_rgba(255,101,0,0.3)] group-hover:scale-105 transition-all duration-300">
-              <ShieldCheck className="w-6.5 h-6.5 stroke-[2.2]" />
+            <div className="p-2 sm:p-2.5 rounded-[26px] sm:rounded-[28px] bg-gradient-to-b from-[#FFF2E8] to-[#FFE7D5] ring-4 ring-[#FF6B00]/10 border border-[#FF6B00]/20 shadow-[0_4px_20px_rgba(255,107,0,0.12)] group-hover:scale-105 group-hover:ring-[#FF6B00]/20 group-hover:shadow-[0_8px_30px_rgba(255,107,0,0.22)] transition-all duration-300">
+              <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-[18px] sm:rounded-[20px] bg-gradient-to-br from-[#FF7A00] via-[#FF6500] to-[#EE5800] flex items-center justify-center text-white shadow-[0_10px_25px_rgba(255,101,0,0.35)]">
+                <ShieldCheck className="w-7 h-7 sm:w-7.5 sm:h-7.5 stroke-[2.3] text-white drop-shadow-xs" />
+              </div>
             </div>
           </Link>
         </div>
@@ -212,9 +218,23 @@ export default function ForgotPasswordPage() {
 
           {/* Alert Message Box */}
           {errorMsg && (
-            <div className="mb-6 p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold flex items-center gap-3 animate-in fade-in duration-200">
-              <AlertCircle className="w-5 h-5 shrink-0 text-rose-600" />
-              <span>{errorMsg}</span>
+            <div className="mb-6 p-4 rounded-2xl bg-rose-50 border border-rose-200/90 text-rose-700 text-xs font-semibold space-y-2 animate-in fade-in duration-200 shadow-sm">
+              <div className="flex items-center gap-3">
+                <AlertCircle className="w-5 h-5 shrink-0 text-rose-600" />
+                <span className="flex-1 leading-relaxed">{errorMsg}</span>
+              </div>
+              {errorMsg.includes('not registered') && (
+                <div className="pt-2 border-t border-rose-200/60 flex items-center justify-between gap-2">
+                  <span className="text-[11px] text-rose-600 font-medium">Don&apos;t have a DocVault account yet?</span>
+                  <Link
+                    href="/register"
+                    className="px-3 py-1 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-[11px] font-bold shadow-xs transition-all inline-flex items-center gap-1 shrink-0"
+                  >
+                    <span>Register Now</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </Link>
+                </div>
+              )}
             </div>
           )}
 

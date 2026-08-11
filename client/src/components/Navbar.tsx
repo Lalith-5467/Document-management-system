@@ -9,6 +9,7 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [navItems, setNavItems] = useState<CMSNavItem[]>([]);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     const unsub = cmsStore.subscribe((data) => {
@@ -22,6 +23,11 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (totalHeight > 0) {
+        const progress = (window.scrollY / totalHeight) * 100;
+        setScrollProgress(Math.min(100, Math.max(0, progress)));
+      }
       if (window.scrollY > 20) {
         setIsScrolled(true);
       } else {
@@ -150,6 +156,14 @@ export default function Navbar() {
           </div>
         </div>
       )}
+
+      {/* Dynamic Glowing Scroll Progress Bar */}
+      <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-slate-100/40 overflow-hidden pointer-events-none">
+        <div
+          className="h-full bg-gradient-to-r from-themePrimary via-[#F97316] to-[#FB923C] transition-all duration-150 ease-out shadow-[0_0_12px_rgba(255,107,0,0.9)]"
+          style={{ width: `${scrollProgress}%` }}
+        />
+      </div>
     </header>
   );
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import { HardDrive, Info } from 'lucide-react';
+import AnimatedCounter from './AnimatedCounter';
 
 interface StorageProgressBarProps {
   usedBytes: number;
@@ -18,51 +19,56 @@ export default function StorageProgressBar({ usedBytes, limitBytes }: StoragePro
   const percentage = Math.min(100, Math.round((usedBytes / limitBytes) * 100)) || 16; // default visual 16%
 
   return (
-    <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs space-y-4">
+    <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800/80 shadow-xs hover:shadow-md transition-all duration-300 space-y-4 animate-fade-in group">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <div className="flex items-center gap-2.5">
-          <div className="p-2 rounded-xl bg-brand-50 text-brand-600 border border-brand-200">
+          <div className="p-2 rounded-xl bg-orange-50 dark:bg-orange-950/40 text-themePrimary border border-orange-200/80 dark:border-orange-800/80 group-hover:scale-105 transition-transform">
             <HardDrive className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-slate-900">Storage Usage Breakdown</h3>
-            <p className="text-xs text-slate-500">Local disk space allocation in server/uploads/</p>
+            <h3 className="text-sm font-bold text-slate-900 dark:text-white">Storage Usage Breakdown</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Local disk space allocation in server/uploads/</p>
           </div>
         </div>
 
         <div className="text-right">
-          <span className="text-base font-extrabold text-slate-900">{usedGb} GB</span>
-          <span className="text-xs text-slate-500"> of {limitGb} GB used ({percentage}%)</span>
+          <span className="text-base font-extrabold text-slate-900 dark:text-white">
+            <AnimatedCounter value={usedGb} /> GB
+          </span>
+          <span className="text-xs text-slate-500 dark:text-slate-400">
+            {' '}of {limitGb} GB used (<AnimatedCounter value={percentage} />%)
+          </span>
         </div>
       </div>
 
-      {/* Progress Bar Container */}
-      <div className="w-full h-3 bg-slate-100 rounded-full overflow-hidden flex">
+      {/* Progress Bar Container with Smooth Transition */}
+      <div className="w-full h-3 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden flex p-0.5">
         <div
           style={{ width: `${percentage}%` }}
-          className="h-full bg-gradient-to-r from-brand-500 to-brand-600 transition-all duration-500 rounded-full"
+          className="h-full bg-gradient-to-r from-themePrimary via-[#F97316] to-[#E05E00] transition-all duration-1000 ease-out rounded-full shadow-xs"
         />
       </div>
 
       {/* Category Color Legend */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 text-xs">
-        <div className="flex items-center gap-2">
-          <div className="w-2.5 h-2.5 rounded-full bg-blue-500" />
-          <span className="text-slate-600">Personal (35%)</span>
+        <div className="flex items-center gap-2 group/legend">
+          <div className="w-2.5 h-2.5 rounded-full bg-blue-500 group-hover/legend:scale-125 transition-transform" />
+          <span className="text-slate-600 dark:text-slate-400">Personal (35%)</span>
         </div>
-        <div className="flex items-center gap-2">
-          <div className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
-          <span className="text-slate-600">Academic (25%)</span>
+        <div className="flex items-center gap-2 group/legend">
+          <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 group-hover/legend:scale-125 transition-transform" />
+          <span className="text-slate-600 dark:text-slate-400">Academic (25%)</span>
         </div>
-        <div className="flex items-center gap-2">
-          <div className="w-2.5 h-2.5 rounded-full bg-amber-500" />
-          <span className="text-slate-600">Client BRDs (20%)</span>
+        <div className="flex items-center gap-2 group/legend">
+          <div className="w-2.5 h-2.5 rounded-full bg-amber-500 group-hover/legend:scale-125 transition-transform" />
+          <span className="text-slate-600 dark:text-slate-400">Client BRDs (20%)</span>
         </div>
-        <div className="flex items-center gap-2">
-          <div className="w-2.5 h-2.5 rounded-full bg-slate-300" />
-          <span className="text-slate-600">Free Space (84%)</span>
+        <div className="flex items-center gap-2 group/legend">
+          <div className="w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-slate-600 group-hover/legend:scale-125 transition-transform" />
+          <span className="text-slate-600 dark:text-slate-400">Free Space (84%)</span>
         </div>
       </div>
     </div>
   );
 }
+

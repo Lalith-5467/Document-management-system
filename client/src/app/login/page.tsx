@@ -171,17 +171,17 @@ export default function LoginPage() {
       <div className="absolute bottom-10 right-1/4 w-[500px] h-[500px] bg-orange-500/6 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-[#FAF2E4]/40 rounded-full blur-3xl pointer-events-none" />
 
-      {/* Centered Card Container */}
-      <div className="w-full max-w-[480px] bg-white/95 backdrop-blur-xl rounded-[32px] p-8 sm:p-10 shadow-[0_25px_70px_rgba(40,30,15,0.06)] border border-[#E8E1D5] relative z-10 my-auto">
+      {/* Centered Card Container with Smooth Float Entrance */}
+      <div className="w-full max-w-[480px] bg-white/95 backdrop-blur-xl rounded-[32px] p-8 sm:p-10 shadow-[0_25px_70px_rgba(40,30,15,0.06)] hover:shadow-[0_30px_80px_rgba(40,30,15,0.09)] border border-[#E8E1D5] relative z-10 my-auto animate-card-float transition-shadow duration-500">
         
         {/* Header */}
         <div className="text-center space-y-3 mb-8">
           <Link href="/" className="inline-flex items-center justify-center mb-2 group">
-            <div className="w-14 h-14 rounded-[22px] bg-[#FF6500] flex items-center justify-center text-white shadow-[0_12px_30px_rgba(255,101,0,0.35)] group-hover:scale-105 transition-all duration-300">
-              <ShieldCheck className="w-7 h-7 stroke-[2.2]" />
+            <div className="w-14 h-14 rounded-[22px] bg-[#FF6500] flex items-center justify-center text-white shadow-[0_12px_30px_rgba(255,101,0,0.35)] group-hover:scale-110 group-hover:shadow-[0_16px_35px_rgba(255,101,0,0.45)] transition-all duration-300">
+              <ShieldCheck className="w-7 h-7 stroke-[2.2] group-hover:rotate-6 transition-transform duration-300" />
             </div>
           </Link>
-          <h2 className="text-[28px] sm:text-[32px] font-bold text-slate-900 tracking-tight leading-tight">
+          <h2 className="text-[28px] sm:text-[32px] font-bold text-slate-900 tracking-tight leading-tight font-auth-heading">
             Sign In to <span className="text-[#FF6B00]">DocVault</span>
           </h2>
           <p className="text-[15px] text-slate-500 font-medium leading-relaxed max-w-sm mx-auto">
@@ -191,7 +191,7 @@ export default function LoginPage() {
 
         {/* Global Server Error Message */}
         {errorMsg && (
-          <div className="mb-6 p-4 rounded-[16px] bg-red-50 text-red-600 text-sm font-medium flex items-center gap-3 border border-red-100 animate-fade-in shadow-sm">
+          <div className="mb-6 p-4 rounded-[16px] bg-red-50 text-red-600 text-sm font-medium flex items-center gap-3 border border-red-100 animate-shake-subtle shadow-sm">
             <AlertCircle className="w-5 h-5 shrink-0" />
             <span>{errorMsg}</span>
           </div>
@@ -205,8 +205,8 @@ export default function LoginPage() {
             <label className="block text-[12px] font-bold uppercase tracking-wider text-slate-700 mb-2">
               Email Address <span className="text-red-500">*</span>
             </label>
-            <div className="relative">
-              <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-6 h-6 flex items-center justify-center pointer-events-none text-slate-400 group-hover:text-[#D96B00] group-focus-within:text-[#FF6B00] transition-colors">
+            <div className={`relative ${emailTouched && emailError ? 'animate-shake-subtle' : ''}`}>
+              <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-6 h-6 flex items-center justify-center pointer-events-none text-slate-400 group-hover:text-[#D96B00] group-focus-within:text-[#FF6B00] group-focus-within:scale-110 transition-all duration-200">
                 <Mail className="w-5 h-5" />
               </div>
               <input
@@ -221,10 +221,10 @@ export default function LoginPage() {
                   emailError 
                     ? 'border-red-300 focus:border-red-400 focus:ring-4 focus:ring-red-500/15' 
                     : 'border-[#E6E0D4] hover:border-[#DFD2BA] hover:bg-[#FFFDF8] focus:border-[#FF6B00] focus:ring-4 focus:ring-orange-500/15 focus:bg-white'
-                } rounded-[16px] text-[15px] text-slate-900 placeholder-slate-400 focus:outline-none transition-all duration-300 font-medium cream-hover-input`}
+                } rounded-[16px] text-[15px] text-slate-900 placeholder-slate-400 focus:outline-none transition-all duration-200 font-medium cream-hover-input`}
               />
               {emailTouched && emailRes.isValid && !emailError && (
-                <CheckCircle2 className="w-5 h-5 absolute right-4 top-1/2 -translate-y-1/2 text-emerald-500" />
+                <CheckCircle2 className="w-5 h-5 absolute right-4 top-1/2 -translate-y-1/2 text-emerald-500 animate-check-pop" />
               )}
             </div>
             {/* Inline Email Error Message */}
@@ -241,8 +241,8 @@ export default function LoginPage() {
             <label className="block text-[12px] font-bold uppercase tracking-wider text-slate-700 mb-2">
               Password <span className="text-red-500">*</span>
             </label>
-            <div className="relative">
-              <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-6 h-6 flex items-center justify-center pointer-events-none text-slate-400 group-hover:text-[#D96B00] group-focus-within:text-[#FF6B00] transition-colors">
+            <div className={`relative ${passwordTouched && passwordError ? 'animate-shake-subtle' : ''}`}>
+              <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-6 h-6 flex items-center justify-center pointer-events-none text-slate-400 group-hover:text-[#D96B00] group-focus-within:text-[#FF6B00] group-focus-within:scale-110 transition-all duration-200">
                 <Lock className="w-5 h-5" />
               </div>
               <input
@@ -257,12 +257,12 @@ export default function LoginPage() {
                   passwordError 
                     ? 'border-red-300 focus:border-red-400 focus:ring-4 focus:ring-red-500/15' 
                     : 'border-[#E6E0D4] hover:border-[#DFD2BA] hover:bg-[#FFFDF8] focus:border-[#FF6B00] focus:ring-4 focus:ring-orange-500/15 focus:bg-white'
-                } rounded-[16px] text-[15px] text-slate-900 placeholder-slate-400 focus:outline-none transition-all duration-300 font-medium cream-hover-input`}
+                } rounded-[16px] text-[15px] text-slate-900 placeholder-slate-400 focus:outline-none transition-all duration-200 font-medium cream-hover-input`}
               />
               <button
                 type="button"
                 onClick={togglePasswordVisibility}
-                className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full hover:bg-[#FAF5EC] hover:text-[#D96B00] flex items-center justify-center text-slate-400 transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full hover:bg-[#FAF5EC] hover:text-[#D96B00] flex items-center justify-center text-slate-400 hover:scale-110 active:scale-90 transition-all duration-200 cursor-pointer"
                 title={showPassword ? 'Hide password' : 'Show password'}
               >
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -285,7 +285,7 @@ export default function LoginPage() {
                     ? 'bg-[#FF6B00] border-[#FF6B00] text-white shadow-xs scale-105' 
                     : 'bg-white border-[#D6CEBF] hover:border-[#FF6B00] hover:bg-[#FFFDF8]'
                 }`}>
-                  {rememberMe && <Check className="w-3.5 h-3.5 text-white stroke-[3]" />}
+                  {rememberMe && <Check className="w-3.5 h-3.5 text-white stroke-[3] animate-check-pop" />}
                 </div>
                 <span className="text-[13.5px] font-medium text-slate-700 group-hover:text-slate-900 transition-colors">
                   Remember me for 30 days
@@ -309,22 +309,23 @@ export default function LoginPage() {
             )}
           </div>
 
-          {/* Submit Button */}
+          {/* Submit Button with Shine Sweep and Lift */}
           <button
             type="submit"
             disabled={loading || (emailTouched && passwordTouched && !isFormValid)}
-            className="w-full h-[54px] rounded-[16px] text-[15px] font-bold text-white bg-gradient-to-r from-[#FF6B00] via-[#F76400] to-[#E05500] hover:brightness-105 shadow-lg shadow-orange-500/25 hover:shadow-xl hover:shadow-orange-500/35 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed mt-4"
+            className="group relative overflow-hidden w-full h-[54px] rounded-[16px] text-[15px] font-bold text-white bg-gradient-to-r from-[#FF6B00] via-[#F76400] to-[#E05500] hover:scale-[1.01] active:scale-[0.98] shadow-lg shadow-orange-500/25 hover:shadow-xl hover:shadow-orange-500/35 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none mt-4 cursor-pointer"
           >
+            <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-1000 ease-in-out" />
             {loading ? (
-              <>
+              <div className="relative z-10 flex items-center gap-2">
                 <Loader2 className="w-5 h-5 animate-spin" />
                 <span>Signing In...</span>
-              </>
+              </div>
             ) : (
-              <>
+              <div className="relative z-10 flex items-center gap-2">
                 <span>Sign In To Vault</span>
-                <ArrowRight className="w-5 h-5" />
-              </>
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
+              </div>
             )}
           </button>
         </form>

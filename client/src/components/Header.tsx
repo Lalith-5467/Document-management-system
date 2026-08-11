@@ -133,23 +133,23 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
 
       {/* Right side: Search (+4px height), Upload CTA, Theme Toggle, Notifications & Profile */}
       <div className="flex items-center gap-3">
-        {/* Global Search Input (+4px height = h-11 / py-3) */}
+        {/* Global Search Input with smooth expand */}
         <form
           onSubmit={(e) => {
             e.preventDefault();
             const val = (e.currentTarget.elements.namedItem('headerSearch') as HTMLInputElement)?.value;
             if (val) window.location.href = `/user/documents?q=${encodeURIComponent(val.trim())}`;
           }}
-          className="relative w-full sm:w-72 md:w-80 group hidden sm:block"
+          className="relative w-64 md:w-72 lg:w-80 focus-within:lg:w-96 transition-all duration-300 group hidden sm:block"
         >
-          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 group-focus-within:text-themePrimary transition-colors" />
+          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 group-focus-within:text-themePrimary group-focus-within:scale-110 transition-all duration-200" />
           <input
             name="headerSearch"
             type="text"
             placeholder={t('common.searchPlaceholder', 'Search documents, folders...')}
-            className="w-full h-11 pl-10 pr-12 text-xs font-medium bg-slate-100/90 dark:bg-slate-800/90 border border-slate-200/90 dark:border-slate-700/90 rounded-2xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:bg-white dark:focus:bg-slate-800 focus:border-themePrimary focus:ring-2 focus:ring-themePrimary/20 transition-all duration-200 shadow-2xs"
+            className="w-full h-11 pl-10 pr-12 text-xs font-medium bg-slate-100/90 dark:bg-slate-800/90 border border-slate-200/90 dark:border-slate-700/90 rounded-2xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:bg-white dark:focus:bg-slate-800 focus:border-themePrimary focus:ring-4 focus:ring-themePrimary/15 transition-all duration-300 shadow-2xs"
           />
-          <div className="absolute right-3.5 top-1/2 -translate-y-1/2 flex items-center gap-0.5 px-2 py-1 rounded-lg bg-slate-200/80 dark:bg-slate-700 border border-slate-300/80 dark:border-slate-600 text-[10px] font-mono font-bold text-slate-600 dark:text-slate-300 pointer-events-none shadow-2xs">
+          <div className="absolute right-3.5 top-1/2 -translate-y-1/2 flex items-center gap-0.5 px-2 py-1 rounded-lg bg-slate-200/80 dark:bg-slate-700 border border-slate-300/80 dark:border-slate-600 text-[10px] font-mono font-bold text-slate-600 dark:text-slate-300 pointer-events-none shadow-2xs group-focus-within:opacity-0 transition-opacity">
             <Command className="w-3 h-3" /> K
           </div>
         </form>
@@ -157,7 +157,7 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
         {/* Upload Document Primary Button */}
         <Link
           href="/user/upload"
-          className="inline-flex items-center gap-2 h-11 px-5 rounded-2xl text-xs font-semibold bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] hover:opacity-95 text-white shadow-md shadow-orange-500/25 border border-orange-400/30 transition-all duration-200 active:scale-95 shrink-0 hover:-translate-y-0.5"
+          className="inline-flex items-center gap-2 h-11 px-5 rounded-2xl text-xs font-semibold bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] text-white shadow-md shadow-orange-500/25 border border-orange-400/30 transition-all duration-200 hover:scale-105 active:scale-95 shrink-0 hover:shadow-lg hover:shadow-orange-500/40"
         >
           <Upload className="w-4 h-4 text-white" />
           <span className="hidden sm:inline">{t('nav.uploadDocument', 'Upload Document')}</span>
@@ -166,7 +166,7 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
         {/* Theme Toggle Button */}
         <button
           onClick={toggleTheme}
-          className="flex items-center gap-2 h-11 px-3.5 rounded-2xl bg-slate-100/90 dark:bg-slate-800 hover:bg-slate-200/80 dark:hover:bg-slate-700 border border-slate-200/80 dark:border-slate-700/80 text-slate-700 dark:text-slate-200 transition-all duration-200 active:scale-95 shrink-0 cursor-pointer shadow-2xs group"
+          className="flex items-center gap-2 h-11 px-3.5 rounded-2xl bg-slate-100/90 dark:bg-slate-800 hover:bg-slate-200/80 dark:hover:bg-slate-700 border border-slate-200/80 dark:border-slate-700/80 text-slate-700 dark:text-slate-200 transition-all duration-200 hover:scale-105 active:scale-95 shrink-0 cursor-pointer shadow-2xs group"
           title={theme === 'dark' ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
         >
           {theme === 'dark' ? (
@@ -190,10 +190,10 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
               setShowProfileMenu(false);
               setNotificationsList(getNotifications());
             }}
-            className="w-11 h-11 rounded-2xl text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white bg-slate-100/90 dark:bg-slate-800 hover:bg-slate-200/80 dark:hover:bg-slate-700 border border-slate-200/80 dark:border-slate-700/80 flex items-center justify-center transition-all duration-200 relative active:scale-95 shadow-2xs group cursor-pointer"
+            className="w-11 h-11 rounded-2xl text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white bg-slate-100/90 dark:bg-slate-800 hover:bg-slate-200/80 dark:hover:bg-slate-700 border border-slate-200/80 dark:border-slate-700/80 flex items-center justify-center transition-all duration-200 relative hover:scale-105 active:scale-95 shadow-2xs group cursor-pointer"
             title="Notifications"
           >
-            <Bell className="w-4 h-4 group-hover:rotate-12 transition-transform duration-300" />
+            <Bell className={`w-4 h-4 group-hover:rotate-12 transition-transform duration-300 ${unreadCount > 0 ? 'animate-bell-wiggle' : ''}`} />
             {unreadCount > 0 && (
               <span className="absolute top-2 right-2 flex h-2.5 w-2.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-themePrimary opacity-75" />
@@ -203,7 +203,7 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
           </button>
 
           {showNotifications && (
-            <div className="absolute right-0 mt-3 w-[360px] sm:w-[420px] bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-3xl shadow-2xl z-50 p-4 space-y-3 backdrop-blur-xl animate-in fade-in slide-in-from-top-2 duration-200 text-slate-900 dark:text-white font-sans">
+            <div className="absolute right-0 mt-3 w-[360px] sm:w-[420px] bg-white/95 dark:bg-slate-900/95 border border-slate-200/90 dark:border-slate-800 rounded-3xl shadow-2xl z-50 p-4 space-y-3 backdrop-blur-xl animate-pop-in text-slate-900 dark:text-white font-sans">
               <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
                 <span className="text-xs font-bold flex items-center gap-2 font-auth-heading tracking-tight">
                   <Bell className="w-4 h-4 text-themePrimary" /> System Notifications
