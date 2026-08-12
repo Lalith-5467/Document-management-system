@@ -108,7 +108,7 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
   });
 
   return (
-    <header className="sticky top-0 z-30 min-h-[72px] sm:min-h-[80px] py-3.5 sm:py-4 px-4 sm:px-8 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-b border-slate-200/80 dark:border-slate-800/80 flex items-center justify-between gap-4 text-slate-900 dark:text-white shadow-sm transition-all duration-200 font-sans">
+    <header className="sticky top-0 z-30 min-h-[72px] sm:min-h-[80px] py-4 px-4 sm:px-8 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between gap-4 text-slate-900 dark:text-white shadow-xs transition-all duration-200 font-sans">
       {/* Left side: Greeting Title & Subtitle */}
       <div className="flex items-center gap-3.5 min-w-0 flex-1 sm:flex-initial">
         <button
@@ -120,20 +120,20 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
         </button>
 
         <div className="min-w-0 flex flex-col justify-center">
-          <h1 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-1.5 font-auth-heading truncate leading-tight">
+          <h1 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-1.5 font-auth-heading truncate leading-none">
             <span className="shrink-0">{t('app.welcome', greeting)},</span>
-            <span className="text-themePrimary font-extrabold max-w-[150px] sm:max-w-[220px] lg:max-w-[320px] truncate inline-block">{userName}</span>
+            <span className="text-themePrimary font-extrabold max-w-[150px] sm:max-w-[220px] lg:max-w-[320px] truncate">{userName}</span>
             <span className="shrink-0">👋</span>
           </h1>
-          <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-normal mt-0.5 leading-tight truncate max-w-sm sm:max-w-md">
+          <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-normal mt-1 leading-none truncate max-w-sm sm:max-w-md">
             {t('app.welcomeSub', 'Manage your documents, folders and categories in one secure place.')}
           </p>
         </div>
       </div>
 
-      {/* Right side: Search (+4px height), Upload CTA, Theme Toggle, Notifications & Profile */}
-      <div className="flex items-center gap-3">
-        {/* Global Search Input with smooth expand */}
+      {/* Right side: Search, Upload CTA, Theme Toggle, Notifications & Profile */}
+      <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
+        {/* Global Search Input */}
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -147,9 +147,9 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
             name="headerSearch"
             type="text"
             placeholder={t('common.searchPlaceholder', 'Search documents, folders...')}
-            className="w-full h-11 pl-10 pr-12 text-xs font-medium bg-slate-100/90 dark:bg-slate-800/90 border border-slate-200/90 dark:border-slate-700/90 rounded-2xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:bg-white dark:focus:bg-slate-800 focus:border-themePrimary focus:ring-4 focus:ring-themePrimary/15 transition-all duration-300 shadow-2xs"
+            className="w-full h-10 pl-10 pr-12 text-xs font-medium bg-slate-100/90 dark:bg-slate-800/90 border border-slate-200/90 dark:border-slate-700/90 rounded-2xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:bg-white dark:focus:bg-slate-800 focus:border-themePrimary focus:ring-2 focus:ring-themePrimary/15 transition-all duration-300 shadow-2xs"
           />
-          <div className="absolute right-3.5 top-1/2 -translate-y-1/2 flex items-center gap-0.5 px-2 py-1 rounded-lg bg-slate-200/80 dark:bg-slate-700 border border-slate-300/80 dark:border-slate-600 text-[10px] font-mono font-bold text-slate-600 dark:text-slate-300 pointer-events-none shadow-2xs group-focus-within:opacity-0 transition-opacity">
+          <div className="absolute right-3.5 top-1/2 -translate-y-1/2 flex items-center gap-0.5 px-2 py-0.5 rounded-lg bg-slate-200/80 dark:bg-slate-700 border border-slate-300/80 dark:border-slate-600 text-[10px] font-mono font-bold text-slate-600 dark:text-slate-300 pointer-events-none shadow-2xs group-focus-within:opacity-0 transition-opacity">
             <Command className="w-3 h-3" /> K
           </div>
         </form>
@@ -157,7 +157,7 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
         {/* Upload Document Primary Button */}
         <Link
           href="/user/upload"
-          className="inline-flex items-center gap-2 h-11 px-5 rounded-2xl text-xs font-semibold bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] text-white shadow-md shadow-orange-500/25 border border-orange-400/30 transition-all duration-200 hover:scale-105 active:scale-95 shrink-0 hover:shadow-lg hover:shadow-orange-500/40"
+          className="inline-flex items-center gap-2 h-10 px-4 rounded-2xl text-xs font-semibold bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] text-white shadow-md shadow-orange-500/25 border border-orange-400/30 transition-all duration-200 hover:scale-105 active:scale-95 shrink-0 hover:shadow-lg hover:shadow-orange-500/40"
         >
           <Upload className="w-4 h-4 text-white" />
           <span className="hidden sm:inline">{t('nav.uploadDocument', 'Upload Document')}</span>
@@ -166,7 +166,7 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
         {/* Theme Toggle Button */}
         <button
           onClick={toggleTheme}
-          className="flex items-center gap-2 h-11 px-3.5 rounded-2xl bg-slate-100/90 dark:bg-slate-800 hover:bg-slate-200/80 dark:hover:bg-slate-700 border border-slate-200/80 dark:border-slate-700/80 text-slate-700 dark:text-slate-200 transition-all duration-200 hover:scale-105 active:scale-95 shrink-0 cursor-pointer shadow-2xs group"
+          className="flex items-center gap-2 h-10 px-3.5 rounded-2xl bg-slate-100/90 dark:bg-slate-800 hover:bg-slate-200/80 dark:hover:bg-slate-700 border border-slate-200/80 dark:border-slate-700/80 text-slate-700 dark:text-slate-200 transition-all duration-200 hover:scale-105 active:scale-95 shrink-0 cursor-pointer shadow-2xs group"
           title={theme === 'dark' ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
         >
           {theme === 'dark' ? (
@@ -190,7 +190,7 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
               setShowProfileMenu(false);
               setNotificationsList(getNotifications());
             }}
-            className="w-11 h-11 rounded-2xl text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white bg-slate-100/90 dark:bg-slate-800 hover:bg-slate-200/80 dark:hover:bg-slate-700 border border-slate-200/80 dark:border-slate-700/80 flex items-center justify-center transition-all duration-200 relative hover:scale-105 active:scale-95 shadow-2xs group cursor-pointer"
+            className="w-10 h-10 rounded-2xl text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white bg-slate-100/90 dark:bg-slate-800 hover:bg-slate-200/80 dark:hover:bg-slate-700 border border-slate-200/80 dark:border-slate-700/80 flex items-center justify-center transition-all duration-200 relative hover:scale-105 active:scale-95 shadow-2xs group cursor-pointer"
             title="Notifications"
           >
             <Bell className={`w-4 h-4 group-hover:rotate-12 transition-transform duration-300 ${unreadCount > 0 ? 'animate-bell-wiggle' : ''}`} />
