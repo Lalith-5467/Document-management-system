@@ -88,6 +88,7 @@ interface SubscriptionContextType {
   upgradeModalOpen: boolean;
   paymentModalOpen: boolean;
   selectedPlanForUpgrade: SubscriptionPlan | null;
+  selectedCycle: 'monthly' | 'yearly';
   openUpgradeModal: (plan?: SubscriptionPlan) => void;
   closeUpgradeModal: () => void;
   openPaymentModal: (plan: SubscriptionPlan, cycle?: 'monthly' | 'yearly') => void;
@@ -409,6 +410,7 @@ export const SubscriptionProvider: React.FC<{ children: React.ReactNode }> = ({ 
         upgradeModalOpen,
         paymentModalOpen,
         selectedPlanForUpgrade,
+        selectedCycle,
         openUpgradeModal,
         closeUpgradeModal,
         openPaymentModal,

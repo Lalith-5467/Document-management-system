@@ -127,7 +127,71 @@ class DocumentModel {
                     params.push(Number(is_favorite), Number(userId));
                 }
 
-                sql += ` ORDER BY d.created_at DESC`;
+                if (file_type) {
+                    switch (file_type.toLowerCase()) {
+                        case 'pdf':
+                            sql += ` AND (d.mime_type LIKE '%pdf%' OR d.file_name LIKE '%.pdf' OR d.title LIKE '%.pdf')`;
+                            break;
+                        case 'word':
+                            sql += ` AND (d.mime_type LIKE '%word%' OR d.mime_type LIKE '%wordprocessingml%' OR d.file_name LIKE '%.doc%' OR d.title LIKE '%.doc%')`;
+                            break;
+                        case 'excel':
+                            sql += ` AND (d.mime_type LIKE '%excel%' OR d.file_name LIKE '%.xls%' OR d.title LIKE '%.xls%' OR d.mime_type LIKE '%sheet%')`;
+                            break;
+                        case 'image':
+                            sql += ` AND (d.mime_type LIKE 'image/%' OR d.file_name LIKE '%.png' OR d.file_name LIKE '%.jpg' OR d.file_name LIKE '%.jpeg' OR d.title LIKE '%.png' OR d.title LIKE '%.jpg' OR d.title LIKE '%.jpeg')`;
+                            break;
+                        case 'pptx':
+                        case 'presentation':
+                            sql += ` AND (d.mime_type LIKE '%presentation%' OR d.mime_type LIKE '%powerpoint%' OR d.file_name LIKE '%.ppt%' OR d.title LIKE '%.ppt%')`;
+                            break;
+                        case 'text':
+                            sql += ` AND (d.mime_type LIKE '%text%' OR d.file_name LIKE '%.txt' OR d.title LIKE '%.txt')`;
+                            break;
+                    }
+                }
+
+                if (date_range) {
+                    const now = new Date();
+                    if (date_range === 'today') {
+                        const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
+                        sql += ` AND d.created_at >= ?`;
+                        params.push(todayStart);
+                    } else if (date_range === '7days') {
+                        const past7Days = new Date(now.getTime() - 7 * 24 * 3600 * 1000).toISOString();
+                        sql += ` AND d.created_at >= ?`;
+                        params.push(past7Days);
+                    } else if (date_range === '30days') {
+                        const past30Days = new Date(now.getTime() - 30 * 24 * 3600 * 1000).toISOString();
+                        sql += ` AND d.created_at >= ?`;
+                        params.push(past30Days);
+                    } else if (date_range === 'year') {
+                        const pastYear = new Date(now.getTime() - 365 * 24 * 3600 * 1000).toISOString();
+                        sql += ` AND d.created_at >= ?`;
+                        params.push(pastYear);
+                    }
+                }
+
+                switch (sort_by) {
+                    case 'name_asc':
+                        sql += ` ORDER BY d.title ASC`;
+                        break;
+                    case 'name_desc':
+                        sql += ` ORDER BY d.title DESC`;
+                        break;
+                    case 'date_asc':
+                        sql += ` ORDER BY d.created_at ASC`;
+                        break;
+                    case 'size_desc':
+                        sql += ` ORDER BY d.file_size DESC`;
+                        break;
+                    case 'size_asc':
+                        sql += ` ORDER BY d.file_size ASC`;
+                        break;
+                    default:
+                        sql += ` ORDER BY d.created_at DESC`;
+                        break;
+                }
 
                 const sqliteRows = await sqliteDb.all(sql, params);
                 // Only return SQLite results if there are actual documents; otherwise fall through to MySQL
@@ -184,7 +248,11 @@ class DocumentModel {
                         sql += ` AND (d.mime_type LIKE '%pdf%' OR d.file_name LIKE '%.pdf')`;
                         break;
                     case 'word':
-                        sql += ` AND (d.mime_type LIKE '%word%' OR d.file_name LIKE '%.doc%' OR d.mime_type LIKE '%document%')`;
+                        sql += ` AND (d.mime_type LIKE '%word%' OR d.mime_type LIKE '%wordprocessingml%' OR d.file_name LIKE '%.doc%')`;
+                        break;
+                    case 'pptx':
+                    case 'presentation':
+                        sql += ` AND (d.mime_type LIKE '%presentation%' OR d.mime_type LIKE '%powerpoint%' OR d.file_name LIKE '%.ppt%')`;
                         break;
                     case 'excel':
                         sql += ` AND (d.mime_type LIKE '%excel%' OR d.file_name LIKE '%.xls%' OR d.mime_type LIKE '%sheet%')`;

@@ -349,6 +349,62 @@ export default function MyDocumentsPage() {
       filtered = filtered.filter(d => Boolean(d.is_favorite));
     }
 
+    if (selectedFileType) {
+      const typeLower = selectedFileType.toLowerCase();
+      filtered = filtered.filter(d => {
+        const mime = (d.mime_type || '').toLowerCase();
+        const fname = (d.file_name || '').toLowerCase();
+        const title = (d.title || '').toLowerCase();
+        const ext = fname.split('.').pop() || title.split('.').pop() || '';
+
+        if (typeLower === 'pdf') {
+          return mime.includes('pdf') || ext === 'pdf' || fname.endsWith('.pdf') || title.endsWith('.pdf');
+        }
+        if (typeLower === 'word') {
+          return mime.includes('word') || mime.includes('msword') || mime.includes('wordprocessingml') || ['doc', 'docx', 'dot', 'dotx'].includes(ext) || Boolean(fname.match(/\.docx?$/)) || Boolean(title.match(/\.docx?$/));
+        }
+        if (typeLower === 'excel') {
+          return mime.includes('excel') || mime.includes('spreadsheet') || ['xls', 'xlsx', 'csv'].includes(ext) || Boolean(fname.match(/\.(xlsx?|csv)$/)) || Boolean(title.match(/\.(xlsx?|csv)$/));
+        }
+        if (typeLower === 'image') {
+          return mime.startsWith('image/') || ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'].includes(ext) || Boolean(fname.match(/\.(png|jpe?g|gif|webp|svg)$/)) || Boolean(title.match(/\.(png|jpe?g|gif|webp|svg)$/));
+        }
+        if (typeLower === 'pptx' || typeLower === 'presentation') {
+          return mime.includes('presentation') || mime.includes('powerpoint') || ['ppt', 'pptx'].includes(ext) || Boolean(fname.match(/\.pptx?$/)) || Boolean(title.match(/\.pptx?$/));
+        }
+        if (typeLower === 'text') {
+          return mime.includes('text') || ext === 'txt' || fname.endsWith('.txt');
+        }
+        return true;
+      });
+    }
+
+    if (selectedDateRange) {
+      const now = new Date().getTime();
+      filtered = filtered.filter(d => {
+        if (!d.created_at) return true;
+        const created = new Date(d.created_at).getTime();
+        const diffDays = (now - created) / (1000 * 3600 * 24);
+
+        if (selectedDateRange === 'today') return diffDays <= 1;
+        if (selectedDateRange === '7days') return diffDays <= 7;
+        if (selectedDateRange === '30days') return diffDays <= 30;
+        if (selectedDateRange === 'year') return diffDays <= 365;
+        return true;
+      });
+    }
+
+    // Apply Sorting
+    filtered.sort((a, b) => {
+      if (sortBy === 'name_asc') return (a.title || '').localeCompare(b.title || '');
+      if (sortBy === 'name_desc') return (b.title || '').localeCompare(a.title || '');
+      if (sortBy === 'date_asc') return new Date(a.created_at || 0).getTime() - new Date(b.created_at || 0).getTime();
+      if (sortBy === 'size_desc') return (b.file_size || 0) - (a.file_size || 0);
+      if (sortBy === 'size_asc') return (a.file_size || 0) - (b.file_size || 0);
+      // default 'date_desc'
+      return new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime();
+    });
+
     setDocuments(filtered);
     setTotalPages(Math.ceil(filtered.length / limit) || 1);
     setTotalCount(filtered.length);
@@ -675,10 +731,11 @@ export default function MyDocumentsPage() {
               onChange={(val) => { setSelectedFileType(val); setCurrentPage(1); }}
               options={[
                 { label: t('allFileTypes', 'All File Types'), value: '' },
-                { label: '📄 PDF Documents', value: 'pdf' },
-                { label: '📝 Word Documents', value: 'word' },
-                { label: '📊 Excel Spreadsheets', value: 'excel' },
-                { label: '🖼️ Images (PNG, JPG)', value: 'image' }
+                { label: 'PDF Documents', value: 'pdf' },
+                { label: 'Word Documents', value: 'word' },
+                { label: 'Excel Spreadsheets', value: 'excel' },
+                { label: 'Images (PNG, JPG)', value: 'image' },
+                { label: 'PPT Presentations', value: 'pptx' }
               ]}
             />
           </div>
@@ -720,6 +777,30 @@ export default function MyDocumentsPage() {
               <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-orange-50 dark:bg-orange-950 text-themePrimary dark:text-orange-400 border border-orange-200 dark:border-orange-900/60 text-xs font-semibold">
                 Search: &quot;{debouncedSearch}&quot;
                 <button onClick={() => { setSearchQuery(''); setDebouncedSearch(''); }}><X className="w-3 h-3" /></button>
+              </span>
+            )}
+            {selectedCategory && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-purple-50 dark:bg-purple-950 text-purple-600 dark:text-purple-300 border border-purple-200 dark:border-purple-800/60 text-xs font-semibold">
+                Category: {categories.find(c => String(c.id) === String(selectedCategory))?.category_name || selectedCategory}
+                <button onClick={() => setSelectedCategory('')}><X className="w-3 h-3" /></button>
+              </span>
+            )}
+            {selectedFolder && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-300 border border-blue-200 dark:border-blue-800/60 text-xs font-semibold">
+                Folder: {folderName || folders.find(f => String(f.id) === String(selectedFolder))?.folder_name || selectedFolder}
+                <button onClick={() => { setSelectedFolder(''); setFolderName(''); }}><X className="w-3 h-3" /></button>
+              </span>
+            )}
+            {selectedFileType && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60 text-xs font-semibold">
+                Type: {selectedFileType.toUpperCase()}
+                <button onClick={() => setSelectedFileType('')}><X className="w-3 h-3" /></button>
+              </span>
+            )}
+            {selectedDateRange && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950 text-amber-600 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60 text-xs font-semibold">
+                Date: {selectedDateRange}
+                <button onClick={() => setSelectedDateRange('')}><X className="w-3 h-3" /></button>
               </span>
             )}
             <button onClick={handleClearFilters} className="text-xs font-bold text-rose-600 dark:text-rose-400 hover:underline ml-auto flex items-center gap-1">

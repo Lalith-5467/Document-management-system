@@ -11,6 +11,7 @@ export default function PaymentModal() {
     paymentModalOpen,
     closePaymentModal,
     selectedPlanForUpgrade,
+    selectedCycle,
     activateSubscription
   } = useSubscription();
 
@@ -37,7 +38,9 @@ export default function PaymentModal() {
   if (!paymentModalOpen || !selectedPlanForUpgrade || !mounted) return null;
 
   const plan = selectedPlanForUpgrade;
-  const basePrice = plan.priceMonthly;
+  const cycle = selectedCycle || 'monthly';
+  const basePrice = cycle === 'yearly' ? plan.priceYearly : plan.priceMonthly;
+  const monthlyEffective = cycle === 'yearly' ? Math.round(plan.priceYearly / 12) : plan.priceMonthly;
   const discountAmount = promoApplied ? Math.round((basePrice * discountPercent) / 100) : 0;
   const finalPrice = Math.max(0, basePrice - discountAmount);
 
@@ -62,8 +65,8 @@ export default function PaymentModal() {
       setProcessing(false);
       setSuccess(true);
 
-      // Activate subscription in Context
-      await activateSubscription(plan.id, 'monthly', {
+      // Activate subscription in Context with correct cycle
+      await activateSubscription(plan.id, cycle, {
         cardNumber: cardNumber.replace(/\s/g, '')
       });
 
@@ -125,9 +128,16 @@ export default function PaymentModal() {
             {/* Payment Summary Box */}
             <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 space-y-2 text-xs">
               <div className="flex justify-between font-bold text-slate-900 dark:text-white">
-                <span>{plan.name} Subscription</span>
-                <span>₹{basePrice} / mo</span>
+                <span>{plan.name} ({cycle === 'yearly' ? 'Annual Billing - Save 20%' : 'Monthly Billing'})</span>
+                <span>{cycle === 'yearly' ? `₹${plan.priceYearly.toLocaleString()} / year` : `₹${plan.priceMonthly} / mo`}</span>
               </div>
+
+              {cycle === 'yearly' && (
+                <div className="flex justify-between font-semibold text-emerald-600 dark:text-emerald-400">
+                  <span>Effective Monthly Rate</span>
+                  <span>₹{monthlyEffective} / month (Save 20%)</span>
+                </div>
+              )}
 
               <div className="flex justify-between font-extrabold text-emerald-600 dark:text-emerald-400">
                 <span>First 7 Days Promo</span>
@@ -145,7 +155,7 @@ export default function PaymentModal() {
                 <span>Today's Total Due</span>
                 <span className="text-base text-emerald-600 dark:text-emerald-400 font-mono">₹0.00 (Free Trial)</span>
               </div>
-              <p className="text-[10px] text-slate-400 font-medium">First charge of ₹{finalPrice} will take place after 7 days.</p>
+              <p className="text-[10px] text-slate-400 font-medium">First charge of ₹{finalPrice} ({cycle === 'yearly' ? 'billed annually' : 'billed monthly'}) will take place after 7 days.</p>
             </div>
 
             {/* Form */}

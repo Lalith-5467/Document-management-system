@@ -342,6 +342,14 @@ Thank you for choosing DocVault! For billing inquiries, contact billing@docvault
           </div>
         </div>
 
+        {/* BILLING EXPLANATION TIP */}
+        <div className="p-3.5 rounded-2xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900/60 flex items-center gap-3 text-xs">
+          <Info className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
+          <p className="text-blue-900 dark:text-blue-200 font-medium">
+            <strong className="font-bold">Billing Clarification:</strong> <strong>Annual Billing</strong> provides a 20% discount for committing to a 1-year subscription, which lowers your effective monthly rate (e.g. Pro is ₹239/mo billed as ₹2,870/year vs. ₹299/mo on Monthly Billing).
+          </p>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-3 items-stretch">
           {plans.map((plan) => {
             const isCurrentPlan = subscription.planId === plan.id;
@@ -380,17 +388,39 @@ Thank you for choosing DocVault! For billing inquiries, contact billing@docvault
                       )}
                     </div>
 
-                    <div className="mt-2 flex items-baseline gap-1">
-                      <span className="font-black text-slate-900 dark:text-white text-3xl sm:text-4xl">
-                        {plan.priceMonthly === 0 ? '₹0' : `₹${price}`}
-                      </span>
-                      <span className="text-sm font-bold text-slate-500">
-                        {plan.priceMonthly === 0 ? ' / 7 Days Free' : ' / month'}
-                      </span>
+                    <div className="mt-2 space-y-1">
+                      <div className="flex items-baseline gap-2 flex-wrap">
+                        {billingCycle === 'yearly' && plan.priceMonthly > 0 && (
+                          <span className="text-xl font-extrabold text-slate-400 dark:text-slate-500 line-through">
+                            ₹{plan.priceMonthly}
+                          </span>
+                        )}
+                        <span className="font-black text-slate-900 dark:text-white text-3xl sm:text-4xl">
+                          {plan.priceMonthly === 0 ? '₹0' : `₹${price}`}
+                        </span>
+                        <span className="text-sm font-bold text-slate-500">
+                          {plan.priceMonthly === 0 ? ' / 7 Days Free' : ' / month'}
+                        </span>
+                      </div>
+
+                      {billingCycle === 'yearly' && plan.priceMonthly > 0 ? (
+                        <p className="text-xs font-black text-emerald-600 dark:text-emerald-400 pt-0.5 flex items-center gap-1.5">
+                          <span className="px-2 py-0.5 rounded-md bg-emerald-100 dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-700">
+                            Billed annually (₹{plan.priceYearly.toLocaleString()}/yr)
+                          </span>
+                          <span className="text-[10px] font-black text-emerald-700 dark:text-emerald-300 uppercase tracking-wider">
+                            Save 20%
+                          </span>
+                        </p>
+                      ) : plan.priceMonthly > 0 ? (
+                        <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 pt-0.5">
+                          Standard monthly billing rate
+                        </p>
+                      ) : null}
                     </div>
 
                     <div className="mt-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-extrabold bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 border border-orange-200 dark:border-orange-900/60 shadow-sm">
-                      <Gift className="w-3 h-3" /> First 7 Days Free of Cost
+                      <Gift className="w-3.5 h-3.5" /> First 7 Days Free of Cost
                     </div>
                   </div>
 

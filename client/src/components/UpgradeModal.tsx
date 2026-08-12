@@ -105,7 +105,12 @@ export default function UpgradeModal() {
                     <h3 className={`text-base font-black ${isPro ? 'text-white' : 'text-slate-900 dark:text-white'}`}>
                       {plan.name}
                     </h3>
-                    <div className="mt-2 flex items-baseline gap-1">
+                    <div className="mt-2 flex items-baseline gap-1.5 flex-wrap">
+                      {billingCycle === 'yearly' && plan.priceMonthly > 0 && (
+                        <span className={`text-lg font-extrabold line-through ${isPro ? 'text-orange-200' : 'text-slate-400'}`}>
+                          ₹{plan.priceMonthly}
+                        </span>
+                      )}
                       <span className={`text-3xl font-black ${isPro ? 'text-white' : 'text-slate-900 dark:text-white'}`}>
                         {plan.priceMonthly === 0 ? '₹0' : `₹${price}`}
                       </span>
@@ -113,14 +118,16 @@ export default function UpgradeModal() {
                         {plan.priceMonthly === 0 ? ' / 7 Days Free' : ' / month'}
                       </span>
                     </div>
-                    <div className="mt-1.5 inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[9px] font-extrabold bg-white/20 text-white dark:bg-orange-950/60 dark:text-orange-300">
-                      🎁 7 Days 100% Free (₹0)
+                    <div className="mt-1.5 flex flex-wrap items-center gap-1">
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[9px] font-extrabold bg-white/20 text-white dark:bg-orange-950/60 dark:text-orange-300">
+                        🎁 7 Days 100% Free (₹0)
+                      </span>
+                      {billingCycle === 'yearly' && plan.priceMonthly > 0 && (
+                        <span className={`text-[10px] font-black px-2 py-0.5 rounded-lg ${isPro ? 'bg-white/20 text-white' : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'}`}>
+                          Billed annually (₹{plan.priceYearly.toLocaleString()}/yr) • Save 20%
+                        </span>
+                      )}
                     </div>
-                    {billingCycle === 'yearly' && plan.priceMonthly > 0 && (
-                      <p className={`text-[10px] font-bold mt-0.5 ${isPro ? 'text-orange-100' : 'text-emerald-600'}`}>
-                        Billed annually (₹{plan.priceYearly}/year)
-                      </p>
-                    )}
                   </div>
 
                   {/* Feature Checkmarks */}
