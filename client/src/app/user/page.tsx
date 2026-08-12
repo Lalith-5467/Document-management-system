@@ -778,8 +778,8 @@ export default function UserWorkspacePage() {
 
       {/* ─── MODAL 1: UPLOAD DOCUMENT MODAL ───────────────────────── */}
       {uploadModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fade-in font-auth-body">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-xl w-full p-6 sm:p-7 shadow-2xl space-y-5 animate-pop-in text-slate-900 dark:text-white">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fade-in font-auth-body overflow-y-auto">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-xl w-full p-6 sm:p-7 shadow-2xl space-y-5 animate-pop-in text-slate-900 dark:text-white max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
               <h2 className="text-lg font-black text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading">
                 <Upload className="w-5 h-5 text-themePrimary" /> Upload New Document

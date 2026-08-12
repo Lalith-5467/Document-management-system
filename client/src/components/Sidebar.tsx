@@ -80,7 +80,7 @@ export default function Sidebar({ mobileOpen = false, setMobileOpen }: SidebarPr
       } flex flex-col border-r border-slate-200/80 dark:border-slate-800/80 font-sans`}
     >
       {/* Brand Header */}
-      <div className="h-20 flex items-center px-6 border-b border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900">
+      <div className="min-h-[72px] sm:min-h-[80px] py-3.5 sm:py-4 flex items-center px-6 border-b border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900">
         <Link href="/" className="flex items-center gap-3 group">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-themePrimary to-[#F97316] text-white flex items-center justify-center font-extrabold shadow-md shadow-orange-500/25 group-hover:scale-105 group-hover:rotate-3 transition-all duration-300">
             <ShieldCheck className="w-5 h-5 text-white" />

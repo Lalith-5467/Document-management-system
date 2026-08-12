@@ -108,7 +108,7 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
   });
 
   return (
-    <header className="sticky top-0 z-30 min-h-[76px] py-3.5 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-b border-slate-200/80 dark:border-slate-800/80 px-4 sm:px-8 flex items-center justify-between gap-4 text-slate-900 dark:text-white shadow-2xs transition-all duration-200 font-sans">
+    <header className="sticky top-0 z-30 min-h-[72px] sm:min-h-[80px] py-3.5 sm:py-4 px-4 sm:px-8 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-b border-slate-200/80 dark:border-slate-800/80 flex items-center justify-between gap-4 text-slate-900 dark:text-white shadow-sm transition-all duration-200 font-sans">
       {/* Left side: Greeting Title & Subtitle */}
       <div className="flex items-center gap-3.5 min-w-0 flex-1 sm:flex-initial">
         <button
@@ -119,13 +119,13 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
           <Menu className="w-5 h-5" />
         </button>
 
-        <div className="min-w-0">
-          <h1 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-1.5 font-auth-heading truncate">
+        <div className="min-w-0 flex flex-col justify-center">
+          <h1 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-1.5 font-auth-heading truncate leading-tight">
             <span className="shrink-0">{t('app.welcome', greeting)},</span>
             <span className="text-themePrimary font-extrabold max-w-[150px] sm:max-w-[220px] lg:max-w-[320px] truncate inline-block">{userName}</span>
             <span className="shrink-0">👋</span>
           </h1>
-          <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-normal mt-0.5 leading-snug truncate max-w-sm sm:max-w-md">
+          <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-normal mt-0.5 leading-tight truncate max-w-sm sm:max-w-md">
             {t('app.welcomeSub', 'Manage your documents, folders and categories in one secure place.')}
           </p>
         </div>
