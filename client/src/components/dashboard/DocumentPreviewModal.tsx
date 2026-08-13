@@ -377,9 +377,9 @@ export default function DocumentPreviewModal({ documentId, document: documentPro
         </div>
 
         {/* Main Body Area (Soft Light Background) */}
-        <div className="flex-1 flex overflow-hidden relative">
+        <div className="flex-1 flex min-h-0 overflow-hidden relative">
           {/* Main Viewer Display */}
-          <div className="flex-1 bg-slate-100/70 overflow-y-auto flex items-start justify-center p-4 sm:p-6">
+          <div className="flex-1 bg-slate-100/70 overflow-y-auto min-h-0 flex items-start justify-center p-4 sm:p-6">
             {loading ? (
               <div className="text-center space-y-3">
                 <Loader2 className="w-10 h-10 text-themePrimary animate-spin mx-auto" />
