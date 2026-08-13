@@ -522,7 +522,8 @@ export default function DocumentPreviewModal({ documentId, document, initialDocu
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 
@@ -1069,7 +1070,6 @@ function WordViewer({ doc, textContent, extractedHtml, zoomLevel, handleDownload
           </div>
         </div>
       </div>
-    </div>,
-    document.body
+    </div>
   );
 }
