@@ -112,6 +112,11 @@ export default function UserWorkspacePage() {
     setMounted(true);
   }, []);
 
+  const renderPortal = (children: React.ReactNode) => {
+    if (!mounted || typeof window === 'undefined' || !document || !document.body) return null;
+    return createPortal(children, document.body);
+  };
+
   // Overview stats
   const [stats, setStats] = useState({
     totalDocuments: 128,
@@ -874,7 +879,7 @@ export default function UserWorkspacePage() {
       </div>
 
       {/* ─── MODAL 1: UPLOAD DOCUMENT MODAL ───────────────────────── */}
-      {mounted && uploadModalOpen && createPortal(
+      {uploadModalOpen && renderPortal(
         <div className="fixed inset-0 w-vw h-dvh min-h-screen z-[9990] flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-md animate-fade-in font-auth-body overflow-hidden">
           <form
             onSubmit={handleUploadSubmit}
@@ -1051,12 +1056,11 @@ export default function UserWorkspacePage() {
               </button>
             </div>
           </form>
-        </div>,
-        document.body
+        </div>
       )}
 
       {/* ─── MODAL 2: CREATE WORKSPACE FOLDER MODAL ─── */}
-      {mounted && createFolderModalOpen && createPortal(
+      {createFolderModalOpen && renderPortal(
         <div className="fixed inset-0 w-vw h-dvh min-h-screen z-[9990] flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-md animate-fade-in font-auth-body overflow-hidden">
           <form
             onSubmit={handleCreateFolder}
@@ -1100,12 +1104,11 @@ export default function UserWorkspacePage() {
               </button>
             </div>
           </form>
-        </div>,
-        document.body
+        </div>
       )}
 
       {/* ─── MODAL 3: BROWSE CATEGORIES MODAL ───────────────────────── */}
-      {mounted && browseCategoriesModalOpen && createPortal(
+      {browseCategoriesModalOpen && renderPortal(
         <div className="fixed inset-0 w-vw h-dvh min-h-screen z-[9990] flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-md animate-fade-in font-auth-body overflow-hidden">
           <div
             className="relative z-[9995] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl flex flex-col text-slate-900 dark:text-white animate-pop-in my-auto overflow-hidden"
@@ -1159,12 +1162,11 @@ export default function UserWorkspacePage() {
               </button>
             </div>
           </div>
-        </div>,
-        document.body
+        </div>
       )}
 
       {/* ─── MODAL 4: SEARCH FILES MODAL ─────────────────────────────── */}
-      {mounted && searchFilesModalOpen && createPortal(
+      {searchFilesModalOpen && renderPortal(
         <div className="fixed inset-0 w-vw h-dvh min-h-screen z-[9990] flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-md animate-fade-in font-auth-body overflow-hidden">
           <div
             className="relative z-[9995] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl flex flex-col text-slate-900 dark:text-white animate-pop-in my-auto overflow-hidden"
@@ -1274,12 +1276,11 @@ export default function UserWorkspacePage() {
               </button>
             </div>
           </div>
-        </div>,
-        document.body
+        </div>
       )}
 
       {/* ─── MODAL 5: VIEW FAVORITES MODAL ──────────────────────────── */}
-      {mounted && viewFavoritesModalOpen && createPortal(
+      {viewFavoritesModalOpen && renderPortal(
         <div className="fixed inset-0 w-vw h-dvh min-h-screen z-[9990] flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-md animate-fade-in font-auth-body overflow-hidden">
           <div
             className="relative z-[9995] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl flex flex-col text-slate-900 dark:text-white animate-pop-in my-auto overflow-hidden"
@@ -1332,12 +1333,11 @@ export default function UserWorkspacePage() {
               </button>
             </div>
           </div>
-        </div>,
-        document.body
+        </div>
       )}
 
       {/* ─── MODAL 6: RESTORE FILES MODAL (RECYCLE BIN) ──────────────── */}
-      {mounted && restoreFilesModalOpen && createPortal(
+      {restoreFilesModalOpen && renderPortal(
         <div className="fixed inset-0 w-vw h-dvh min-h-screen z-[9990] flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-md animate-fade-in font-auth-body overflow-hidden">
           <div
             className="relative z-[9995] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl flex flex-col text-slate-900 dark:text-white animate-pop-in my-auto overflow-hidden"
@@ -1388,19 +1388,7 @@ export default function UserWorkspacePage() {
               </button>
             </div>
           </div>
-        </div>,
-        document.body
-      )}
-
-      {/* ─── MODAL 7: FULL-SCREEN DOCUMENT PREVIEW MODAL ─────────────── */}
-      {previewDoc && (
-        <DocumentPreviewModal
-          document={previewDoc}
-          onClose={() => setPreviewDoc(null)}
-          onDownload={(docToDownload) => {
-            showToast(`Downloading "${docToDownload.title || docToDownload.file_name}"...`);
-          }}
-        />
+        </div>
       )}
 
       {/* ─── MODAL 7: FULL-SCREEN DOCUMENT PREVIEW MODAL ─────────────── */}
