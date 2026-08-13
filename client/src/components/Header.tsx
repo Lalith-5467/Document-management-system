@@ -120,12 +120,12 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
         </button>
 
         <div className="min-w-0 flex flex-col justify-center">
-          <h1 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-1.5 font-auth-heading truncate leading-none">
+          <h1 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-1.5 font-auth-heading truncate leading-snug">
             <span className="shrink-0">{t('app.welcome', greeting)},</span>
             <span className="text-themePrimary font-extrabold max-w-[150px] sm:max-w-[220px] lg:max-w-[320px] truncate">{userName}</span>
             <span className="shrink-0">👋</span>
           </h1>
-          <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-normal mt-1 leading-none truncate max-w-sm sm:max-w-md">
+          <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-normal mt-1 leading-normal truncate max-w-sm sm:max-w-md">
             {t('app.welcomeSub', 'Manage your documents, folders and categories in one secure place.')}
           </p>
         </div>

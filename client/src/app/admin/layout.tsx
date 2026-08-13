@@ -695,7 +695,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <ShieldCheck className="w-5 h-5 text-white" />
             </div>
             <div className="flex flex-col justify-center">
-              <span className="font-black text-base text-slate-900 dark:text-white tracking-tight leading-none mb-0.5 font-auth-heading">DocVault</span>
+              <span className="font-black text-base text-slate-900 dark:text-white tracking-tight leading-snug mb-0.5 font-auth-heading">DocVault</span>
               <span className="text-[9px] font-extrabold uppercase tracking-widest text-themePrimary leading-none font-mono">Admin Center</span>
             </div>
           </Link>

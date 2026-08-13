@@ -295,7 +295,7 @@ export default function FloatingHelpCenter() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-[9999] flex flex-col items-end pointer-events-auto font-auth-body">
+    <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end pointer-events-auto font-auth-body">
       
       {/* PROFESSIONAL LIVE SUPPORT CHAT WINDOW */}
       {isOpen && (

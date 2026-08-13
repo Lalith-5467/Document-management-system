@@ -73,7 +73,7 @@ export default function Navbar() {
             <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-themePrimary to-[#F97316] flex items-center justify-center text-white shadow-lg shadow-orange-500/20 group-hover:scale-105 transition-transform duration-300">
               <ShieldCheck className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
-            <span className="font-black text-xl sm:text-2xl text-slate-900 tracking-tight leading-none block font-auth-heading">
+            <span className="font-black text-xl sm:text-2xl text-slate-900 tracking-tight leading-snug block font-auth-heading">
               DocVault
             </span>
           </Link>

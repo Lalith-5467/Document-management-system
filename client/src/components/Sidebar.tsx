@@ -86,7 +86,7 @@ export default function Sidebar({ mobileOpen = false, setMobileOpen }: SidebarPr
             <ShieldCheck className="w-5 h-5 text-white" />
           </div>
           <div>
-            <span className="font-black text-base text-slate-900 dark:text-white tracking-tight leading-none block font-auth-heading group-hover:text-themePrimary transition-colors">
+            <span className="font-black text-base text-slate-900 dark:text-white tracking-tight leading-snug block font-auth-heading group-hover:text-themePrimary transition-colors">
               DocVault
             </span>
             <span className="text-[10px] font-semibold text-slate-500 dark:text-slate-400 block mt-0.5 whitespace-nowrap tracking-tight font-mono">

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { 
   X, Download, ZoomIn, ZoomOut, Maximize2, Minimize2, RotateCcw, 
   FileText, Info, AlertTriangle, AlertCircle, Loader2, Calendar, Folder, File, Layers, ShieldCheck,
@@ -42,6 +43,11 @@ export default function DocumentPreviewModal({ documentId, document, initialDocu
   const [doc, setDoc] = useState<DocumentItem | null>(initialData);
   const [loading, setLoading] = useState<boolean>(!initialData);
   const [error, setError] = useState<string | null>(null);
+  const [mounted, setMounted] = useState<boolean>(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const [canPreview, setCanPreview] = useState<boolean>(true);
   const [textContent, setTextContent] = useState<string | null>(null);
@@ -263,8 +269,10 @@ export default function DocumentPreviewModal({ documentId, document, initialDocu
     }
   };
 
-  return (
-    <div className={`fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-slate-900/60 backdrop-blur-md transition-all duration-200 ${
+  if (!mounted) return null;
+
+  return createPortal(
+    <div className={`fixed inset-0 z-[9990] flex items-center justify-center p-2 sm:p-4 bg-slate-900/60 backdrop-blur-md transition-all duration-200 ${
       isFullScreen ? 'p-0' : ''
     }`}>
       <div className={`bg-white text-slate-900 shadow-2xl overflow-hidden flex flex-col border border-slate-200 transition-all ${
@@ -1061,6 +1069,7 @@ function WordViewer({ doc, textContent, extractedHtml, zoomLevel, handleDownload
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
