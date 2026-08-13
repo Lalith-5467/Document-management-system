@@ -918,11 +918,14 @@ function PowerPointViewer({ doc, slidesData, textContent, zoomLevel, handleDownl
 // Interactive Word Document Reader (Executive & Professional Light Theme)
 function WordViewer({ doc, textContent, extractedHtml, zoomLevel, handleDownloadClick, formatFileSize, formatDate }: any): JSX.Element {
   const hasHtml = Boolean(extractedHtml && extractedHtml.trim());
-  const isRealText = Boolean(textContent && textContent.trim() && !textContent.startsWith('Official Word document record') && !textContent.startsWith('Document Title:'));
+  const displayContent = extractedHtml || textContent || doc?.description || '';
+  const isRealText = Boolean(displayContent && displayContent.trim());
 
   const rawPath = doc?.file_path || '';
-  const isCloudUrl = rawPath.startsWith('http://') || rawPath.startsWith('https://');
-  const googleViewerUrl = isCloudUrl ? `https://docs.google.com/gview?url=${encodeURIComponent(rawPath)}&embedded=true` : '';
+  const envApiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+  const baseUrl = envApiUrl.endsWith('/api') ? envApiUrl.slice(0, -4) : envApiUrl;
+  const fullFileUrl = rawPath ? (rawPath.startsWith('http') ? rawPath : `${baseUrl}${rawPath.startsWith('/') ? '' : '/'}${rawPath}`) : '';
+  const googleViewerUrl = fullFileUrl ? `https://docs.google.com/gview?url=${encodeURIComponent(fullFileUrl)}&embedded=true` : '';
 
   return (
     <div 
@@ -931,41 +934,16 @@ function WordViewer({ doc, textContent, extractedHtml, zoomLevel, handleDownload
     >
       <div className="bg-white text-slate-900 rounded-3xl overflow-hidden shadow-2xl relative border border-slate-200/90 font-sans">
         
-        {/* Microsoft Word Executive Ribbon Header */}
-        <div className="bg-white border-b border-slate-200/80 px-6 py-3.5 flex flex-wrap items-center justify-between gap-3 shadow-2xs">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-blue-700 text-white font-bold flex items-center justify-center text-sm shadow-md shadow-blue-500/20 font-auth-heading">
-              W
-            </div>
-            <div>
-              <h3 className="text-sm font-extrabold text-slate-900 font-auth-heading tracking-tight leading-snug">
-                {doc?.title || doc?.file_name || 'Document.docx'}
-              </h3>
-              <p className="text-xs text-slate-500 font-medium mt-0.5 flex items-center gap-2">
-                <span>Microsoft Word Document</span>
-                <span>•</span>
-                <span className="font-mono">{formatFileSize(doc?.file_size || 100000)}</span>
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-bold font-auth-heading tracking-wide border border-blue-100">
-              <ShieldCheck className="w-3.5 h-3.5 text-blue-600" /> AES-256 Verified
-            </span>
-          </div>
-        </div>
-
         {/* Main Authentic A4 Document Canvas Sheet */}
         <div className="p-4 sm:p-8 bg-slate-100/60 font-sans font-auth-body">
           {/* A4 Paper Container */}
-          <div className="max-w-3xl mx-auto bg-white border border-slate-200/90 rounded-2xl p-8 sm:p-12 shadow-xl space-y-6">
+          <div className="max-w-3xl mx-auto bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-10 shadow-xl space-y-6">
             
             {/* Document Header Ribbon */}
-            <div className="border-b border-slate-100 pb-5 flex justify-between items-start">
-              <div className="space-y-1.5">
+            <div className="border-b border-slate-100 pb-4 flex justify-between items-start">
+              <div className="space-y-1">
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-bold font-auth-heading tracking-wide border border-blue-100">
-                  <ShieldCheck className="w-3.5 h-3.5 text-blue-600" /> OFFICIAL WORD RECORD
+                  <ShieldCheck className="w-3.5 h-3.5 text-blue-600" /> OFFICIAL WORD DOCUMENT
                 </span>
                 <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight font-auth-heading pt-1">
                   {doc?.title || doc?.file_name || 'Word Document'}
@@ -983,43 +961,34 @@ function WordViewer({ doc, textContent, extractedHtml, zoomLevel, handleDownload
             {/* Document Text / HTML / Visual Body */}
             <div className="space-y-6 text-slate-800 leading-relaxed font-sans">
               {hasHtml ? (
-                <div className="p-6 sm:p-8 rounded-2xl bg-slate-50/80 border border-slate-200/80 space-y-4 shadow-2xs">
-                  <div className="flex items-center justify-between text-xs text-blue-700 font-bold border-b border-slate-200/80 pb-3 font-auth-heading">
-                    <span className="flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                      FULL WORD DOCUMENT FORMATTED VIEW
-                    </span>
-                    <span className="text-[11px] text-slate-400 font-normal">Microsoft Word Document Layout</span>
-                  </div>
-                  <div 
-                    className="word-document-content max-w-none text-slate-800 leading-relaxed pt-1 select-text"
-                    dangerouslySetInnerHTML={{ __html: extractedHtml }}
-                  />
-                </div>
+                <div 
+                  className="word-document-content max-w-none text-slate-800 leading-relaxed p-2 select-text text-sm sm:text-base space-y-3"
+                  dangerouslySetInnerHTML={{ __html: extractedHtml }}
+                />
               ) : isRealText ? (
-                <div className="p-6 sm:p-8 rounded-2xl bg-slate-50/80 border border-slate-200/80 space-y-4 shadow-2xs">
-                  <div className="flex items-center justify-between text-xs text-blue-700 font-bold border-b border-slate-200/80 pb-3 font-auth-heading">
+                <div className="p-4 sm:p-6 rounded-2xl bg-slate-50/80 border border-slate-200/80 space-y-3">
+                  <div className="flex items-center justify-between text-xs text-blue-700 font-bold border-b border-slate-200/80 pb-2.5 font-auth-heading">
                     <span className="flex items-center gap-1.5">
                       <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                      DOCUMENT CONTENT
+                      FULL DOCUMENT CONTENT
                     </span>
-                    <span className="text-[11px] text-slate-400 font-normal">Extracted Reader View</span>
+                    <span className="text-[11px] text-slate-400 font-normal">DocVault Reader View</span>
                   </div>
-                  <div className="whitespace-pre-wrap font-sans text-sm text-slate-800 leading-relaxed pt-1 select-text">
-                    {textContent}
+                  <div className="whitespace-pre-wrap font-sans text-sm sm:text-base text-slate-800 leading-relaxed select-text pt-1">
+                    {displayContent}
                   </div>
                 </div>
-              ) : isCloudUrl ? (
+              ) : fullFileUrl ? (
                 /* Interactive Visual Page View via Google Docs Viewer */
                 <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-lg">
                   <iframe 
                     src={googleViewerUrl}
-                    className="w-full h-[62vh] bg-white border-0"
+                    className="w-full h-[65vh] min-h-[500px] bg-white border-0"
                     title={doc?.title || 'Word Visual View'}
                   />
                 </div>
               ) : (
-                <div className="p-8 rounded-2xl bg-gradient-to-br from-blue-50/50 via-slate-50 to-indigo-50/30 border border-blue-100 space-y-5 text-center">
+                <div className="p-8 rounded-2xl bg-gradient-to-br from-blue-50/50 via-slate-50 to-indigo-50/30 border border-blue-100 space-y-4 text-center">
                   <div className="w-12 h-12 rounded-2xl bg-blue-600 text-white font-bold flex items-center justify-center text-lg mx-auto shadow-md shadow-blue-500/20 font-auth-heading">
                     W
                   </div>
