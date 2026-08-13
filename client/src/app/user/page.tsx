@@ -10,7 +10,7 @@ import {
   Trash2, Edit3, FolderInput, Filter, Calendar, Sparkles,
   TrendingUp, Layers, Clock, Activity, BarChart2, Zap,
   MoreVertical, FileSpreadsheet, FileCode, Check, HelpCircle, X,
-  AlertCircle, Lock, RotateCcw
+  AlertCircle, Lock, RotateCcw, ChevronDown
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import api from '@/lib/api';
@@ -24,6 +24,84 @@ import {
 } from '@/lib/validation';
 import DocumentPreviewModal from '@/components/dashboard/DocumentPreviewModal';
 import AnimatedCounter from '@/components/dashboard/AnimatedCounter';
+
+// Custom Accessible Dropdown Component with Primary Orange Hover Styling
+function CustomSelectDropdown({
+  label,
+  value,
+  onChange,
+  options,
+  placeholder = "Select an option",
+  required = false
+}: {
+  label?: string;
+  value: string;
+  onChange: (val: string) => void;
+  options: { label: string; value: string }[];
+  placeholder?: string;
+  required?: boolean;
+}) {
+  const [open, setOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const selectedOption = options.find(o => o.value === value);
+
+  return (
+    <div className="relative font-auth-body" ref={dropdownRef}>
+      {label && (
+        <label className="block font-bold uppercase text-slate-700 dark:text-slate-300 mb-1 font-auth-label text-xs">
+          {label} {required && <span className="text-red-500">*</span>}
+        </label>
+      )}
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary font-auth-body text-sm cursor-pointer flex items-center justify-between gap-2 transition hover:border-themePrimary/60"
+      >
+        <span className="truncate">
+          {selectedOption ? selectedOption.label : placeholder}
+        </span>
+        <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform ${open ? 'rotate-180 text-themePrimary' : ''}`} />
+      </button>
+
+      {open && (
+        <div className="absolute left-0 right-0 top-full mt-1.5 z-[10000] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl max-h-56 overflow-y-auto p-1.5 space-y-1 animate-fade-in">
+          {options.map((opt) => {
+            const isSelected = opt.value === value;
+            return (
+              <button
+                key={opt.value}
+                type="button"
+                onClick={() => {
+                  onChange(opt.value);
+                  setOpen(false);
+                }}
+                className={`w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center justify-between cursor-pointer ${
+                  isSelected
+                    ? 'bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] text-white shadow-md shadow-orange-500/20'
+                    : 'text-slate-700 dark:text-slate-200 hover:bg-orange-50 dark:hover:bg-orange-950/60 hover:text-themePrimary'
+                }`}
+              >
+                <span className="truncate">{opt.label}</span>
+                {isSelected && <Check className="w-4 h-4 text-white shrink-0" />}
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function UserWorkspacePage() {
   const { user } = useAuth();
@@ -885,32 +963,23 @@ export default function UserWorkspacePage() {
 
               {/* Category & Folder Dropdowns */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="block font-bold uppercase text-slate-700 dark:text-slate-300 mb-1 font-auth-label text-xs">Category Domain *</label>
-                  <select
-                    value={uploadCategory}
-                    onChange={(e) => setUploadCategory(e.target.value)}
-                    className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary font-auth-body text-sm cursor-pointer"
-                  >
-                    {categoriesList.map(c => (
-                      <option key={c.id} value={c.category_name}>{c.category_name}</option>
-                    ))}
-                  </select>
-                </div>
+                <CustomSelectDropdown
+                  label="Category Domain"
+                  required
+                  value={uploadCategory}
+                  onChange={(val) => setUploadCategory(val)}
+                  options={categoriesList.map(c => ({ label: c.category_name, value: c.category_name }))}
+                />
 
-                <div>
-                  <label className="block font-bold uppercase text-slate-700 dark:text-slate-300 mb-1 font-auth-label text-xs">Target Folder</label>
-                  <select
-                    value={uploadFolder}
-                    onChange={(e) => setUploadFolder(e.target.value)}
-                    className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary font-auth-body text-sm cursor-pointer"
-                  >
-                    <option value="">(No specific folder)</option>
-                    {folders.map(f => (
-                      <option key={f.id} value={f.folder_name}>{f.folder_name}</option>
-                    ))}
-                  </select>
-                </div>
+                <CustomSelectDropdown
+                  label="Target Folder"
+                  value={uploadFolder}
+                  onChange={(val) => setUploadFolder(val)}
+                  options={[
+                    { label: '(No specific folder)', value: '' },
+                    ...folders.map(f => ({ label: f.folder_name, value: f.folder_name }))
+                  ]}
+                />
               </div>
 
               {/* Expiry Date (Mandatory) */}
