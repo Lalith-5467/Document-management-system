@@ -527,7 +527,7 @@ export default function DocumentPreviewModal({ documentId, document, initialDocu
 }
 
 // Interactive Excel Spreadsheet Viewer (Clean Light Theme)
-function ExcelViewer({ doc, zoomLevel, handleDownloadClick, formatFileSize, formatDate }: any) {
+function ExcelViewer({ doc, zoomLevel, handleDownloadClick, formatFileSize, formatDate }: any): JSX.Element {
   const [activeSheet, setActiveSheet] = useState(0);
 
   const mockRows = [
@@ -637,7 +637,7 @@ function ExcelViewer({ doc, zoomLevel, handleDownloadClick, formatFileSize, form
 }
 
 // Interactive PowerPoint Presentation Viewer (Executive Visual Slide Deck Theme)
-function PowerPointViewer({ doc, slidesData, textContent, zoomLevel, handleDownloadClick, formatFileSize, formatDate }: any) {
+function PowerPointViewer({ doc, slidesData, textContent, zoomLevel, handleDownloadClick, formatFileSize, formatDate }: any): JSX.Element {
   const [slide, setSlide] = useState(1);
   const [viewMode, setViewMode] = useState<'slides' | 'full'>('slides');
   const totalSlides = slidesData && slidesData.length > 0 ? slidesData.length : 3;
@@ -911,7 +911,7 @@ function PowerPointViewer({ doc, slidesData, textContent, zoomLevel, handleDownl
 }
 
 // Interactive Word Document Reader (Executive & Professional Light Theme)
-function WordViewer({ doc, textContent, extractedHtml, zoomLevel, handleDownloadClick, formatFileSize, formatDate }: any) {
+function WordViewer({ doc, textContent, extractedHtml, zoomLevel, handleDownloadClick, formatFileSize, formatDate }: any): JSX.Element {
   const hasHtml = Boolean(extractedHtml && extractedHtml.trim());
   const isRealText = Boolean(textContent && textContent.trim() && !textContent.startsWith('Official Word document record') && !textContent.startsWith('Document Title:'));
 
