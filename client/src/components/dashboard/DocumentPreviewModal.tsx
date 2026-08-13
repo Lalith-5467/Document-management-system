@@ -37,8 +37,8 @@ interface DocumentPreviewModalProps {
   onDownload?: (doc: DocumentItem) => void;
 }
 
-export default function DocumentPreviewModal({ documentId, document, initialDocument, onClose, onDownload }: DocumentPreviewModalProps) {
-  const initialData = document || initialDocument || null;
+export default function DocumentPreviewModal({ documentId, document: documentProp, initialDocument, onClose, onDownload }: DocumentPreviewModalProps) {
+  const initialData = documentProp || initialDocument || null;
   const targetId = documentId || initialData?.id || 0;
   const [doc, setDoc] = useState<DocumentItem | null>(initialData);
   const [loading, setLoading] = useState<boolean>(!initialData);
@@ -58,8 +58,12 @@ export default function DocumentPreviewModal({ documentId, document, initialDocu
   const [showInfoPanel, setShowInfoPanel] = useState<boolean>(false);
 
   useEffect(() => {
+    const freshData = documentProp || initialDocument || null;
+    if (freshData) {
+      setDoc(freshData);
+    }
     fetchPreviewData();
-  }, [targetId, documentId]);
+  }, [targetId, documentId, documentProp, initialDocument]);
 
   const [slidesData, setSlidesData] = useState<any[] | null>(null);
   const [extractedHtml, setExtractedHtml] = useState<string>('');
@@ -269,7 +273,7 @@ export default function DocumentPreviewModal({ documentId, document, initialDocu
     }
   };
 
-  if (!mounted || typeof window === 'undefined' || !document || !document.body) return null;
+  if (!mounted || typeof window === 'undefined' || !window.document || !window.document.body) return null;
 
   return createPortal(
     <div className={`fixed inset-0 z-[9990] flex items-center justify-center p-2 sm:p-4 bg-slate-900/60 backdrop-blur-md transition-all duration-200 ${
@@ -523,7 +527,7 @@ export default function DocumentPreviewModal({ documentId, document, initialDocu
         </div>
       </div>
     </div>,
-    document.body
+    window.document.body
   );
 }
 
