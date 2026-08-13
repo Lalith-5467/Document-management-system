@@ -273,10 +273,19 @@ export default function DocumentPreviewModal({ documentId, document: documentPro
     }
   };
 
+  useEffect(() => {
+    if (doc) {
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = '';
+      };
+    }
+  }, [doc]);
+
   if (!mounted || typeof window === 'undefined' || !window.document || !window.document.body) return null;
 
   return createPortal(
-    <div className={`fixed inset-0 z-[9990] flex items-center justify-center p-2 sm:p-4 bg-slate-900/60 backdrop-blur-md transition-all duration-200 ${
+    <div className={`fixed inset-0 z-[99999] flex items-center justify-center p-2 sm:p-4 bg-slate-950/80 backdrop-blur-md transition-all duration-200 ${
       isFullScreen ? 'p-0' : ''
     }`}>
       <div className={`bg-white text-slate-900 shadow-2xl overflow-hidden flex flex-col border border-slate-200 transition-all ${

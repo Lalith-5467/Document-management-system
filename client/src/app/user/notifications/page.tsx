@@ -132,7 +132,7 @@ export default function NotificationsCenterPage() {
     <div className="space-y-6 pb-16 font-sans max-w-6xl mx-auto">
       {/* Toast Feedback */}
       {toast && (
-        <div className={`fixed bottom-6 right-6 z-[1000] flex items-center gap-3 px-5 py-3 rounded-2xl shadow-2xl border text-sm font-bold transition-all animate-bounce-once ${
+        <div className={`fixed top-20 right-6 z-[100000] flex items-center gap-3 px-5 py-3 rounded-2xl shadow-2xl border text-sm font-bold transition-all animate-bounce-once ${
           toast.type === 'success' ? 'bg-emerald-950/90 border-emerald-800 text-emerald-100' : 'bg-rose-950/90 border-rose-800 text-rose-100'
         }`}>
           <CheckCircle2 className="w-4 h-4 text-emerald-400" />

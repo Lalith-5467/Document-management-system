@@ -21,6 +21,15 @@ export default function UpgradeModal() {
     setMounted(true);
   }, []);
 
+  useEffect(() => {
+    if (upgradeModalOpen) {
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = '';
+      };
+    }
+  }, [upgradeModalOpen]);
+
   if (!upgradeModalOpen || !mounted) return null;
 
   return createPortal(

@@ -84,7 +84,7 @@ export default function AdminReportsPage() {
   return (
     <div className="space-y-8 pb-12 text-slate-900 font-sans">
       {toast && (
-        <div className={`fixed bottom-6 right-6 z-[60] flex items-center gap-3 px-4 py-3 rounded-2xl shadow-2xl text-xs font-semibold border ${toast.type === 'success' ? 'bg-emerald-50 text-emerald-800 border-emerald-200' : 'bg-rose-50 text-rose-800 border-rose-200'}`}>
+        <div className={`fixed top-20 right-6 z-[100000] flex items-center gap-3 px-4 py-3 rounded-2xl shadow-2xl text-xs font-semibold border ${toast.type === 'success' ? 'bg-emerald-50 text-emerald-800 border-emerald-200' : 'bg-rose-50 text-rose-800 border-rose-200'}`}>
           {toast.type === 'success' ? <CheckCircle2 className="w-5 h-5 text-emerald-500" /> : <AlertCircle className="w-5 h-5 text-rose-400" />}
           <span>{toast.message}</span>
           <button onClick={() => setToast(null)}><X className="w-4 h-4 ml-2 text-slate-400 hover:text-slate-900" /></button>

@@ -161,7 +161,7 @@ export default function AdminSettingsPage() {
     <div className="max-w-4xl space-y-8 pb-12 text-slate-900 dark:text-white font-sans">
       {/* Toast Alert */}
       {toastMsg && (
-        <div className="fixed bottom-6 right-6 z-[9999] flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white border border-themePrimary/30 shadow-2xl text-xs font-semibold animate-pop-in">
+        <div className="fixed top-20 right-6 z-[100000] flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white border border-themePrimary/30 shadow-2xl text-xs font-semibold animate-pop-in">
           <span>{toastMsg.text}</span>
         </div>
       )}

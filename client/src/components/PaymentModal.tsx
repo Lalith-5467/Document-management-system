@@ -35,6 +35,15 @@ export default function PaymentModal() {
     setMounted(true);
   }, []);
 
+  useEffect(() => {
+    if (paymentModalOpen) {
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = '';
+      };
+    }
+  }, [paymentModalOpen]);
+
   if (!paymentModalOpen || !selectedPlanForUpgrade || !mounted) return null;
 
   const plan = selectedPlanForUpgrade;

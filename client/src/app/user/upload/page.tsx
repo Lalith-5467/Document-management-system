@@ -19,6 +19,7 @@ import {
   validateExpiryDate,
   getFieldStatusClasses
 } from '@/lib/validation';
+import Modal from '@/components/ui/Modal';
 
 // Categories with icons & color themes
 const DEFAULT_CATEGORIES = [
@@ -83,6 +84,14 @@ export default function UploadPage() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState<boolean>(false);
+
+  // Toast State & Helper
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 4000);
+  };
 
   // ─── VALIDATION STATES & REFS ──────────────────────────────────
   const [fileTouched, setFileTouched] = useState<boolean>(false);
@@ -379,6 +388,7 @@ export default function UploadPage() {
         localStorage.setItem('dms_admin_folders', JSON.stringify(currentFolders));
         window.dispatchEvent(new CustomEvent('dms_folders_updated'));
       }
+      showToast(`Folder "${newFolderName.trim()}" created successfully!`, 'success');
       setNewFolderName('');
       setNewFolderDesc('');
       setCreateFolderModalOpen(false);
@@ -391,6 +401,7 @@ export default function UploadPage() {
       if (typeof window !== 'undefined') {
         window.dispatchEvent(new CustomEvent('dms_folders_updated'));
       }
+      showToast(`Folder "${newFolderName.trim()}" created!`, 'success');
       setCreateFolderModalOpen(false);
     } finally {
       setCreatingFolder(false);
@@ -611,6 +622,7 @@ export default function UploadPage() {
 
       setUploadProgress(100);
       setSuccessMessage('Document uploaded and vaulted successfully!');
+      showToast('Document uploaded and vaulted successfully!', 'success');
       setUploading(false);
       setTimeout(() => {
         router.push('/user/documents');
@@ -1204,76 +1216,87 @@ export default function UploadPage() {
       </form>
 
       {/* INLINE CREATE FOLDER MODAL */}
-      {createFolderModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
-          <div className="bg-white dark:bg-[#111827] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-5 animate-pop-in text-slate-900 dark:text-white font-auth-body">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
-              <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading">
-                <FolderPlus className="w-4 h-4 text-themePrimary dark:text-orange-400" /> Create Workspace Folder
-              </h2>
-              <button onClick={() => setCreateFolderModalOpen(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-white">
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <form onSubmit={handleCreateFolderInline} className="space-y-4 text-sm">
-              <div>
-                <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1 font-auth-label">Folder Name *</label>
-                <input
-                  type="text"
-                  required
-                  value={newFolderName}
-                  onChange={(e) => setNewFolderName(e.target.value)}
-                  placeholder="e.g., 2026 Tax Return, Project Alpha Specs"
-                  className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary font-auth-body"
-                />
-              </div>
-
-              <div>
-                <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1 font-auth-label">Description (Optional)</label>
-                <textarea
-                  rows={2}
-                  value={newFolderDesc}
-                  onChange={(e) => setNewFolderDesc(e.target.value)}
-                  placeholder="Brief description..."
-                  className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary resize-none font-auth-body"
-                />
-              </div>
-
-              <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-200 dark:border-slate-800">
-                <button type="button" onClick={() => setCreateFolderModalOpen(false)} className="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 font-semibold hover:text-slate-900 dark:hover:text-white font-auth-body">
-                  Cancel
-                </button>
-                <button type="submit" disabled={creatingFolder} className="px-4 py-2 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 text-white font-bold flex items-center gap-2 shadow-lg shadow-orange-500/25 font-auth-heading">
-                  {creatingFolder && <Loader2 className="w-3.5 h-3.5 animate-spin" />} Save Folder
-                </button>
-              </div>
-            </form>
+      <Modal
+        isOpen={createFolderModalOpen}
+        onClose={() => setCreateFolderModalOpen(false)}
+        title="Create Workspace Folder"
+        subtitle="Organize your files with custom folders"
+        icon={<FolderPlus className="w-5 h-5 text-themePrimary" />}
+        maxWidth="max-w-md"
+      >
+        <form onSubmit={handleCreateFolderInline} className="space-y-4 text-sm font-auth-body">
+          <div>
+            <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1 font-auth-label">Folder Name *</label>
+            <input
+              type="text"
+              required
+              value={newFolderName}
+              onChange={(e) => setNewFolderName(e.target.value)}
+              placeholder="e.g., 2026 Tax Return, Project Alpha Specs"
+              className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary font-auth-body"
+            />
           </div>
-        </div>
-      )}
+
+          <div>
+            <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1 font-auth-label">Description (Optional)</label>
+            <textarea
+              rows={2}
+              value={newFolderDesc}
+              onChange={(e) => setNewFolderDesc(e.target.value)}
+              placeholder="Brief description..."
+              className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary resize-none font-auth-body"
+            />
+          </div>
+
+          <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-200 dark:border-slate-800">
+            <button type="button" onClick={() => setCreateFolderModalOpen(false)} className="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 font-semibold hover:text-slate-900 dark:hover:text-white font-auth-body">
+              Cancel
+            </button>
+            <button type="submit" disabled={creatingFolder} className="px-4 py-2 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 text-white font-bold flex items-center gap-2 shadow-lg shadow-orange-500/25 font-auth-heading">
+              {creatingFolder && <Loader2 className="w-3.5 h-3.5 animate-spin" />} Save Folder
+            </button>
+          </div>
+        </form>
+      </Modal>
 
       {/* FILE PREVIEW MODAL */}
-      {previewModalOpen && filePreviewUrl && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
-          <div className="bg-white dark:bg-[#111827] rounded-3xl max-w-2xl w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4 animate-pop-in text-slate-900 dark:text-white font-auth-body">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
-              <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading">
-                <Eye className="w-4 h-4 text-themePrimary dark:text-orange-400" /> Document Preview: {selectedFile?.name}
-              </h3>
-              <button onClick={() => setPreviewModalOpen(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-white">
-                <X className="w-5 h-5" />
-              </button>
-            </div>
+      <Modal
+        isOpen={previewModalOpen && Boolean(filePreviewUrl)}
+        onClose={() => setPreviewModalOpen(false)}
+        title={`Document Preview: ${selectedFile?.name || ''}`}
+        subtitle="File Content Preview"
+        icon={<Eye className="w-5 h-5 text-themePrimary" />}
+        maxWidth="max-w-2xl"
+      >
+        <div className="max-h-96 overflow-auto rounded-2xl border border-slate-200 dark:border-slate-800 flex items-center justify-center bg-slate-50 dark:bg-[#0b1120] p-4">
+          {selectedFile?.type.startsWith('image/') ? (
+            <img src={filePreviewUrl || ''} alt="Preview" className="max-h-80 rounded-xl object-contain" />
+          ) : (
+            <iframe src={filePreviewUrl || ''} title="Document Preview" className="w-full h-80 rounded-xl" />
+          )}
+        </div>
+      </Modal>
 
-            <div className="max-h-96 overflow-auto rounded-2xl border border-slate-200 dark:border-slate-800 flex items-center justify-center bg-slate-50 dark:bg-[#0b1120] p-4">
-              {selectedFile?.type.startsWith('image/') ? (
-                <img src={filePreviewUrl} alt="Preview" className="max-h-80 rounded-xl object-contain" />
-              ) : (
-                <iframe src={filePreviewUrl} title="Document Preview" className="w-full h-80 rounded-xl" />
-              )}
-            </div>
-          </div>
+      {/* Toast Notification Popup */}
+      {toast && (
+        <div className={`fixed top-20 right-6 z-[100000] flex items-center gap-3 px-5 py-4 rounded-2xl shadow-2xl animate-fade-in text-sm font-bold border transition-all duration-300 ${
+          toast.type === 'success'
+            ? 'bg-slate-900 text-white border-emerald-500/50 shadow-emerald-950/20 dark:bg-slate-900 dark:text-white dark:border-emerald-500/50'
+            : 'bg-slate-900 text-white border-rose-500/50 shadow-rose-950/20 dark:bg-slate-900 dark:text-white dark:border-rose-500/50'
+        }`}>
+          {toast.type === 'success' ? (
+            <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
+          ) : (
+            <AlertCircle className="w-5 h-5 text-rose-400 shrink-0" />
+          )}
+          <span>{toast.message}</span>
+          <button
+            type="button"
+            onClick={() => setToast(null)}
+            className="ml-2 text-slate-400 hover:text-white transition-colors"
+          >
+            <X className="w-4 h-4" />
+          </button>
         </div>
       )}
     </div>

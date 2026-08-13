@@ -228,7 +228,7 @@ export default function AdminCmsPage() {
 
       {/* Toast Feedback */}
       {toast && (
-        <div className={`fixed bottom-6 right-6 z-[100] flex items-center gap-3 px-5 py-3.5 rounded-2xl shadow-2xl text-xs font-semibold border ${
+        <div className={`fixed top-20 right-6 z-[100000] flex items-center gap-3 px-5 py-3.5 rounded-2xl shadow-2xl text-xs font-semibold border ${
           toast.type === 'success' ? 'bg-emerald-950/95 text-emerald-100 border-emerald-800/60' : 'bg-rose-950/95 text-rose-100 border-rose-800/60'
         }`}>
           {toast.type === 'success' ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : <AlertCircle className="w-4 h-4 text-rose-400" />}

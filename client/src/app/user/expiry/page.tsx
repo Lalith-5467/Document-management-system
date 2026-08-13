@@ -167,7 +167,7 @@ export default function ExpiryRemindersPage() {
     <div className="space-y-6 pb-16" style={{ fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif" }}>
       {/* Toast */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-[999] flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-white dark:bg-[#19102E] border border-[#EAE4F8] dark:border-[#2D1F47] text-[#1E1235] dark:text-white text-sm font-bold shadow-2xl animate-pop-in">
+        <div className="fixed top-20 right-6 z-[100000] flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-white dark:bg-[#19102E] border border-[#EAE4F8] dark:border-[#2D1F47] text-[#1E1235] dark:text-white text-sm font-bold shadow-2xl animate-pop-in">
           <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
           <span>{toastMessage}</span>
         </div>

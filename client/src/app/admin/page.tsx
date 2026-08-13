@@ -35,7 +35,7 @@ const fmtTime = (s: string) => {
 function Toast({ toast, onClose }: { toast: any; onClose: () => void }) {
   if (!toast) return null;
   return (
-    <div className={`fixed bottom-6 right-6 z-[80] flex items-center gap-3 px-5 py-3.5 rounded-2xl shadow-2xl text-xs font-semibold border animate-pop-in ${
+    <div className={`fixed top-20 right-6 z-[100000] flex items-center gap-3 px-5 py-3.5 rounded-2xl shadow-2xl text-xs font-semibold border animate-pop-in ${
       toast.type === 'success'
         ? 'bg-emerald-950/95 text-emerald-100 border-emerald-800/60 shadow-emerald-900/40'
         : 'bg-rose-950/95 text-rose-100 border-rose-800/60 shadow-rose-900/40'

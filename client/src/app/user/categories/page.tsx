@@ -10,6 +10,8 @@ import {
 } from 'lucide-react';
 import api from '@/lib/api';
 import { useLanguage } from '@/context/LanguageContext';
+import Modal from '@/components/ui/Modal';
+import ConfirmModal from '@/components/ui/ConfirmModal';
 
 // Icon map helper
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -366,12 +368,22 @@ export default function CategoriesPage() {
     <div className="space-y-6 pb-12">
       {/* Toast Notification */}
       {toast && (
-        <div className={`fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3 rounded-2xl shadow-2xl shadow-[#6C5CE7]/15 text-base font-bold transition-all ${
-          toast.type === 'success' ? 'bg-white border-2 border-emerald-200 text-emerald-700' : 'bg-white border-2 border-rose-200 text-rose-700'
+        <div className={`fixed top-20 right-6 z-[100000] flex items-center gap-3 px-5 py-4 rounded-2xl shadow-2xl animate-fade-in text-sm font-bold border transition-all duration-300 ${
+          toast.type === 'success'
+            ? 'bg-slate-900 text-white border-emerald-500/50 shadow-emerald-950/20 dark:bg-slate-900 dark:text-white dark:border-emerald-500/50'
+            : 'bg-slate-900 text-white border-rose-500/50 shadow-rose-950/20 dark:bg-slate-900 dark:text-white dark:border-rose-500/50'
         }`}>
-          {toast.type === 'success' ? <CheckCircle2 className="w-5 h-5 text-emerald-500" /> : <AlertCircle className="w-5 h-5 text-rose-500" />}
+          {toast.type === 'success' ? (
+            <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
+          ) : (
+            <AlertCircle className="w-5 h-5 text-rose-400 shrink-0" />
+          )}
           <span>{toast.message}</span>
-          <button onClick={() => setToast(null)} className="ml-2 text-[#7B7393] hover:text-[#1E1235]">
+          <button
+            type="button"
+            onClick={() => setToast(null)}
+            className="ml-2 text-slate-400 hover:text-white transition-colors"
+          >
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -721,270 +733,232 @@ export default function CategoriesPage() {
       )}
 
       {/* CREATE CATEGORY MODAL */}
-      {isCreateOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1E1235]/60 backdrop-blur-md">
-          <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl shadow-[#6C5CE7]/10 border border-[#EAE4F8] space-y-5 text-[#1E1235]">
-            <div className="flex items-center justify-between pb-4 border-b border-[#EAE4F8]">
-              <div className="flex items-center gap-2.5">
-                <div className="w-10 h-10 rounded-2xl bg-[#6C5CE7]/10 text-[#6C5CE7] border border-[#6C5CE7]/20 flex items-center justify-center">
-                  <Plus className="w-5 h-5" />
-                </div>
-                <div>
-                  <h2 className="text-lg font-extrabold text-[#1E1235]">Create New Category</h2>
-                  <p className="text-sm text-[#7B7393]">Add a custom category to classify your documents</p>
-                </div>
-              </div>
-              <button 
-                onClick={() => setIsCreateOpen(false)}
-                className="p-1.5 text-[#7B7393] hover:text-[#1E1235] rounded-2xl hover:bg-[#F3F0FA] transition"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {formError && (
-              <div className="p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-sm flex items-center gap-2.5">
-                <AlertCircle className="w-4 h-4 text-rose-500 shrink-0" />
-                <span>{formError}</span>
-              </div>
-            )}
-
-            <form onSubmit={handleCreateSubmit} className="space-y-4 text-sm">
-              <div>
-                <label className="block font-extrabold text-[#1E1235] mb-1.5">Category Name *</label>
-                <input
-                  type="text"
-                  required
-                  value={formName}
-                  onChange={(e) => setFormName(e.target.value)}
-                  placeholder="e.g., Tax Invoices 2026"
-                  className="w-full px-3.5 py-2.5 bg-[#F3F0FA] border border-[#EAE4F8] rounded-2xl text-[#1E1235] placeholder:text-[#7B7393] focus:outline-none focus:ring-2 focus:ring-[#6C5CE7]/20 focus:border-[#6C5CE7] transition-all text-sm"
-                />
-              </div>
-
-              <div>
-                <label className="block font-extrabold text-[#1E1235] mb-1.5">Category Description (Optional)</label>
-                <textarea
-                  rows={3}
-                  value={formDescription}
-                  onChange={(e) => setFormDescription(e.target.value)}
-                  placeholder="Brief summary of documents stored in this category..."
-                  className="w-full px-3.5 py-2.5 bg-[#F3F0FA] border border-[#EAE4F8] rounded-2xl text-[#1E1235] placeholder:text-[#7B7393] focus:outline-none focus:ring-2 focus:ring-[#6C5CE7]/20 focus:border-[#6C5CE7] transition-all text-sm resize-none"
-                />
-              </div>
-
-              {/* Color Selector */}
-              <div>
-                <label className="block font-extrabold text-[#1E1235] mb-2">Category Badge Color</label>
-                <div className="flex flex-wrap gap-2.5">
-                  {COLOR_OPTIONS.map((c) => (
-                    <button
-                      key={c.value}
-                      type="button"
-                      onClick={() => setFormColor(c.value)}
-                      className={`w-8 h-8 rounded-full transition-transform flex items-center justify-center border-2 ${
-                        formColor === c.value ? 'scale-110 border-[#1E1235] shadow-sm' : 'border-transparent hover:scale-105'
-                      }`}
-                      style={{ backgroundColor: c.value }}
-                      title={c.name}
-                    >
-                      {formColor === c.value && <CheckCircle2 className="w-4 h-4 text-white drop-shadow-xs" />}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Icon Selector */}
-              <div>
-                <label className="block font-extrabold text-[#1E1235] mb-2">Category Icon</label>
-                <div className="grid grid-cols-4 sm:grid-cols-6 gap-2 max-h-36 overflow-y-auto p-1">
-                  {AVAILABLE_ICONS.map((ic) => (
-                    <button
-                      key={ic.name}
-                      type="button"
-                      onClick={() => setFormIcon(ic.name)}
-                      className={`p-2.5 rounded-2xl border flex flex-col items-center justify-center gap-1 transition-all ${
-                        formIcon === ic.name 
-                          ? 'border-[#6C5CE7] bg-[#6C5CE7]/10 text-[#6C5CE7] shadow-sm' 
-                          : 'border-[#EAE4F8] hover:border-[#6C5CE7]/40 text-[#7B7393] bg-[#F3F0FA] hover:text-[#6C5CE7]'
-                      }`}
-                      title={ic.label}
-                    >
-                      {renderIcon(ic.name, "w-4 h-4")}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Submit Buttons */}
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-[#EAE4F8]">
-                <button
-                  type="button"
-                  onClick={() => setIsCreateOpen(false)}
-                  className="px-4 py-2.5 rounded-2xl border border-[#EAE4F8] text-[#7B7393] font-bold hover:bg-[#F3F0FA] transition text-sm"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={formSubmitting}
-                  className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-extrabold shadow-md shadow-orange-500/25 hover:scale-105 transition flex items-center gap-2 disabled:opacity-50 text-sm font-auth-heading"
-                >
-                  {formSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
-                  Create Category
-                </button>
-              </div>
-            </form>
+      <Modal
+        isOpen={isCreateOpen}
+        onClose={() => setIsCreateOpen(false)}
+        title="Create New Category"
+        subtitle="Add a custom category to classify your documents"
+        icon={<Plus className="w-5 h-5 text-[#6C5CE7]" />}
+        maxWidth="max-w-lg"
+      >
+        {formError && (
+          <div className="p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-sm flex items-center gap-2.5">
+            <AlertCircle className="w-4 h-4 text-rose-500 shrink-0" />
+            <span>{formError}</span>
           </div>
-        </div>
-      )}
+        )}
+
+        <form onSubmit={handleCreateSubmit} className="space-y-4 text-sm font-auth-body">
+          <div>
+            <label className="block font-extrabold text-[#1E1235] mb-1.5 font-auth-label">Category Name *</label>
+            <input
+              type="text"
+              required
+              value={formName}
+              onChange={(e) => setFormName(e.target.value)}
+              placeholder="e.g., Tax Invoices 2026"
+              className="w-full px-3.5 py-2.5 bg-[#F3F0FA] dark:bg-slate-950 border border-[#EAE4F8] dark:border-slate-800 rounded-2xl text-[#1E1235] dark:text-white placeholder:text-[#7B7393] focus:outline-none focus:border-themePrimary transition-all text-sm font-auth-body"
+            />
+          </div>
+
+          <div>
+            <label className="block font-extrabold text-[#1E1235] dark:text-slate-300 mb-1.5 font-auth-label">Category Description (Optional)</label>
+            <textarea
+              rows={3}
+              value={formDescription}
+              onChange={(e) => setFormDescription(e.target.value)}
+              placeholder="Brief summary of documents stored in this category..."
+              className="w-full px-3.5 py-2.5 bg-[#F3F0FA] dark:bg-slate-950 border border-[#EAE4F8] dark:border-slate-800 rounded-2xl text-[#1E1235] dark:text-white placeholder:text-[#7B7393] focus:outline-none focus:border-themePrimary transition-all text-sm resize-none font-auth-body"
+            />
+          </div>
+
+          {/* Color Selector */}
+          <div>
+            <label className="block font-extrabold text-[#1E1235] dark:text-slate-300 mb-2 font-auth-label">Category Badge Color</label>
+            <div className="flex flex-wrap gap-2.5">
+              {COLOR_OPTIONS.map((c) => (
+                <button
+                  key={c.value}
+                  type="button"
+                  onClick={() => setFormColor(c.value)}
+                  className={`w-8 h-8 rounded-full transition-transform flex items-center justify-center border-2 ${
+                    formColor === c.value ? 'scale-110 border-[#1E1235] dark:border-white shadow-sm' : 'border-transparent hover:scale-105'
+                  }`}
+                  style={{ backgroundColor: c.value }}
+                  title={c.name}
+                >
+                  {formColor === c.value && <CheckCircle2 className="w-4 h-4 text-white drop-shadow-xs" />}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Icon Selector */}
+          <div>
+            <label className="block font-extrabold text-[#1E1235] dark:text-slate-300 mb-2 font-auth-label">Category Icon</label>
+            <div className="grid grid-cols-4 sm:grid-cols-6 gap-2 max-h-36 overflow-y-auto p-1">
+              {AVAILABLE_ICONS.map((ic) => (
+                <button
+                  key={ic.name}
+                  type="button"
+                  onClick={() => setFormIcon(ic.name)}
+                  className={`p-2.5 rounded-2xl border flex flex-col items-center justify-center gap-1 transition-all ${
+                    formIcon === ic.name 
+                      ? 'border-[#6C5CE7] bg-[#6C5CE7]/10 text-[#6C5CE7] shadow-sm' 
+                      : 'border-[#EAE4F8] dark:border-slate-800 hover:border-[#6C5CE7]/40 text-[#7B7393] bg-[#F3F0FA] dark:bg-slate-950 hover:text-[#6C5CE7]'
+                  }`}
+                  title={ic.label}
+                >
+                  {renderIcon(ic.name, "w-4 h-4")}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Submit Buttons */}
+          <div className="flex items-center justify-end gap-3 pt-4 border-t border-[#EAE4F8] dark:border-slate-800">
+            <button
+              type="button"
+              onClick={() => setIsCreateOpen(false)}
+              className="px-4 py-2.5 rounded-2xl border border-[#EAE4F8] dark:border-slate-800 text-[#7B7393] font-bold hover:bg-[#F3F0FA] dark:hover:bg-slate-800 transition text-sm font-auth-body"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={formSubmitting}
+              className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-extrabold shadow-md shadow-orange-500/25 hover:scale-105 transition flex items-center gap-2 disabled:opacity-50 text-sm font-auth-heading"
+            >
+              {formSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
+              Create Category
+            </button>
+          </div>
+        </form>
+      </Modal>
 
       {/* EDIT CATEGORY MODAL */}
-      {isEditOpen && selectedCategory && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1E1235]/60 backdrop-blur-md">
-          <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl shadow-orange-500/10 border border-[#EAE4F8] space-y-5 text-[#1E1235]">
-            <div className="flex items-center justify-between pb-4 border-b border-[#EAE4F8]">
-              <div className="flex items-center gap-2.5">
-                <div className="w-10 h-10 rounded-2xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center">
-                  <Edit2 className="w-5 h-5" />
-                </div>
-                <div>
-                  <h2 className="text-lg font-extrabold text-[#1E1235] font-auth-heading">Edit Category</h2>
-                  <p className="text-sm text-[#7B7393] font-auth-body">Update category details and styling</p>
-                </div>
-              </div>
-              <button 
-                onClick={() => setIsEditOpen(false)}
-                className="p-1.5 text-[#7B7393] hover:text-[#1E1235] rounded-2xl hover:bg-[#F3F0FA] transition"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {formError && (
-              <div className="p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-sm flex items-center gap-2.5 font-auth-body">
-                <AlertCircle className="w-4 h-4 text-rose-500 shrink-0" />
-                <span>{formError}</span>
-              </div>
-            )}
-
-            <form onSubmit={handleEditSubmit} className="space-y-4 text-sm font-auth-body">
-              <div>
-                <label className="block font-extrabold text-[#1E1235] mb-1.5 font-auth-label">Category Name *</label>
-                <input
-                  type="text"
-                  required
-                  value={formName}
-                  onChange={(e) => setFormName(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-[#F3F0FA] border border-[#EAE4F8] rounded-2xl text-[#1E1235] placeholder:text-[#7B7393] focus:outline-none focus:ring-2 focus:ring-themePrimary/20 focus:border-themePrimary transition-all text-sm font-auth-body"
-                />
-              </div>
-
-              <div>
-                <label className="block font-extrabold text-[#1E1235] mb-1.5 font-auth-label">Category Description</label>
-                <textarea
-                  rows={3}
-                  value={formDescription}
-                  onChange={(e) => setFormDescription(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-[#F3F0FA] border border-[#EAE4F8] rounded-2xl text-[#1E1235] placeholder:text-[#7B7393] focus:outline-none focus:ring-2 focus:ring-themePrimary/20 focus:border-themePrimary transition-all text-sm resize-none font-auth-body"
-                />
-              </div>
-
-              {/* Color Selector */}
-              <div>
-                <label className="block font-extrabold text-[#1E1235] mb-2 font-auth-label">Category Badge Color</label>
-                <div className="flex flex-wrap gap-2.5">
-                  {COLOR_OPTIONS.map((c) => (
-                    <button
-                      key={c.value}
-                      type="button"
-                      onClick={() => setFormColor(c.value)}
-                      className={`w-8 h-8 rounded-full transition-transform flex items-center justify-center border-2 ${
-                        formColor === c.value ? 'scale-110 border-[#1E1235] shadow-sm' : 'border-transparent hover:scale-105'
-                      }`}
-                      style={{ backgroundColor: c.value }}
-                      title={c.name}
-                    >
-                      {formColor === c.value && <CheckCircle2 className="w-4 h-4 text-white drop-shadow-xs" />}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Icon Selector */}
-              <div>
-                <label className="block font-extrabold text-[#1E1235] mb-2 font-auth-label">Category Icon</label>
-                <div className="grid grid-cols-4 sm:grid-cols-6 gap-2 max-h-36 overflow-y-auto p-1">
-                  {AVAILABLE_ICONS.map((ic) => (
-                    <button
-                      key={ic.name}
-                      type="button"
-                      onClick={() => setFormIcon(ic.name)}
-                      className={`p-2.5 rounded-2xl border flex flex-col items-center justify-center gap-1 transition-all ${
-                        formIcon === ic.name 
-                          ? 'border-themePrimary bg-themePrimary/10 text-themePrimary shadow-sm' 
-                          : 'border-[#EAE4F8] hover:border-themePrimary/40 text-[#7B7393] bg-[#F3F0FA] hover:text-themePrimary'
-                      }`}
-                    >
-                      {renderIcon(ic.name, "w-4 h-4")}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Submit Buttons */}
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-[#EAE4F8]">
-                <button
-                  type="button"
-                  onClick={() => setIsEditOpen(false)}
-                  className="px-4 py-2.5 rounded-2xl border border-[#EAE4F8] text-[#7B7393] font-bold hover:bg-[#F3F0FA] transition text-sm font-auth-body"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={formSubmitting}
-                  className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-extrabold shadow-md shadow-orange-500/25 hover:scale-105 transition flex items-center gap-2 disabled:opacity-50 text-sm font-auth-heading"
-                >
-                  {formSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
-                  Save Changes
-                </button>
-              </div>
-            </form>
+      <Modal
+        isOpen={isEditOpen && Boolean(selectedCategory)}
+        onClose={() => setIsEditOpen(false)}
+        title="Edit Category"
+        subtitle="Update category details and styling"
+        icon={<Edit2 className="w-5 h-5 text-themePrimary" />}
+        maxWidth="max-w-lg"
+      >
+        {formError && (
+          <div className="p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-sm flex items-center gap-2.5 font-auth-body">
+            <AlertCircle className="w-4 h-4 text-rose-500 shrink-0" />
+            <span>{formError}</span>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* DELETE CONFIRMATION MODAL */}
-      {isDeleteOpen && selectedCategory && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1E1235]/60 backdrop-blur-md">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl shadow-[#6C5CE7]/10 border border-[#EAE4F8] space-y-5 text-[#1E1235]">
-            <div className="flex items-center gap-3">
-              <div className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 ${
-                selectedCategory.document_count > 0 ? 'bg-amber-50 text-amber-600 border border-amber-200' : 'bg-rose-50 text-rose-600 border border-rose-200'
-              }`}>
-                {selectedCategory.document_count > 0 ? <AlertTriangle className="w-6 h-6" /> : <Trash2 className="w-6 h-6" />}
-              </div>
-              <div>
-                <h2 className="text-lg font-extrabold text-[#1E1235]">
-                  {selectedCategory.document_count > 0 ? 'Cannot Delete Category' : 'Confirm Category Deletion'}
-                </h2>
-                <p className="text-sm text-[#7B7393]">Category: <span className="font-bold text-[#1E1235]">{selectedCategory.category_name}</span></p>
-              </div>
+        <form onSubmit={handleEditSubmit} className="space-y-4 text-sm font-auth-body">
+          <div>
+            <label className="block font-extrabold text-[#1E1235] dark:text-slate-300 mb-1.5 font-auth-label">Category Name *</label>
+            <input
+              type="text"
+              required
+              value={formName}
+              onChange={(e) => setFormName(e.target.value)}
+              className="w-full px-3.5 py-2.5 bg-[#F3F0FA] dark:bg-slate-950 border border-[#EAE4F8] dark:border-slate-800 rounded-2xl text-[#1E1235] dark:text-white placeholder:text-[#7B7393] focus:outline-none focus:border-themePrimary transition-all text-sm font-auth-body"
+            />
+          </div>
+
+          <div>
+            <label className="block font-extrabold text-[#1E1235] dark:text-slate-300 mb-1.5 font-auth-label">Category Description</label>
+            <textarea
+              rows={3}
+              value={formDescription}
+              onChange={(e) => setFormDescription(e.target.value)}
+              className="w-full px-3.5 py-2.5 bg-[#F3F0FA] dark:bg-slate-950 border border-[#EAE4F8] dark:border-slate-800 rounded-2xl text-[#1E1235] dark:text-white placeholder:text-[#7B7393] focus:outline-none focus:border-themePrimary transition-all text-sm resize-none font-auth-body"
+            />
+          </div>
+
+          {/* Color Selector */}
+          <div>
+            <label className="block font-extrabold text-[#1E1235] dark:text-slate-300 mb-2 font-auth-label">Category Badge Color</label>
+            <div className="flex flex-wrap gap-2.5">
+              {COLOR_OPTIONS.map((c) => (
+                <button
+                  key={c.value}
+                  type="button"
+                  onClick={() => setFormColor(c.value)}
+                  className={`w-8 h-8 rounded-full transition-transform flex items-center justify-center border-2 ${
+                    formColor === c.value ? 'scale-110 border-[#1E1235] dark:border-white shadow-sm' : 'border-transparent hover:scale-105'
+                  }`}
+                  style={{ backgroundColor: c.value }}
+                  title={c.name}
+                >
+                  {formColor === c.value && <CheckCircle2 className="w-4 h-4 text-white drop-shadow-xs" />}
+                </button>
+              ))}
             </div>
+          </div>
 
-            {/* Document Warning / Deletion Guard */}
+          {/* Icon Selector */}
+          <div>
+            <label className="block font-extrabold text-[#1E1235] dark:text-slate-300 mb-2 font-auth-label">Category Icon</label>
+            <div className="grid grid-cols-4 sm:grid-cols-6 gap-2 max-h-36 overflow-y-auto p-1">
+              {AVAILABLE_ICONS.map((ic) => (
+                <button
+                  key={ic.name}
+                  type="button"
+                  onClick={() => setFormIcon(ic.name)}
+                  className={`p-2.5 rounded-2xl border flex flex-col items-center justify-center gap-1 transition-all ${
+                    formIcon === ic.name 
+                      ? 'border-themePrimary bg-themePrimary/10 text-themePrimary shadow-sm' 
+                      : 'border-[#EAE4F8] dark:border-slate-800 hover:border-themePrimary/40 text-[#7B7393] bg-[#F3F0FA] dark:bg-slate-950 hover:text-themePrimary'
+                  }`}
+                >
+                  {renderIcon(ic.name, "w-4 h-4")}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Submit Buttons */}
+          <div className="flex items-center justify-end gap-3 pt-4 border-t border-[#EAE4F8] dark:border-slate-800">
+            <button
+              type="button"
+              onClick={() => setIsEditOpen(false)}
+              className="px-4 py-2.5 rounded-2xl border border-[#EAE4F8] dark:border-slate-800 text-[#7B7393] font-bold hover:bg-[#F3F0FA] dark:hover:bg-slate-800 transition text-sm font-auth-body"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={formSubmitting}
+              className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-extrabold shadow-md shadow-orange-500/25 hover:scale-105 transition flex items-center gap-2 disabled:opacity-50 text-sm font-auth-heading"
+            >
+              {formSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
+              Save Changes
+            </button>
+          </div>
+        </form>
+      </Modal>
+
+      {/* DELETE CONFIRMATION / GUARD MODAL */}
+      <Modal
+        isOpen={isDeleteOpen && Boolean(selectedCategory)}
+        onClose={() => setIsDeleteOpen(false)}
+        title={selectedCategory && selectedCategory.document_count > 0 ? 'Cannot Delete Category' : 'Confirm Category Deletion'}
+        subtitle={selectedCategory ? `Category: ${selectedCategory.category_name}` : ''}
+        icon={selectedCategory && selectedCategory.document_count > 0 ? <AlertTriangle className="w-5 h-5 text-amber-500" /> : <Trash2 className="w-5 h-5 text-rose-500" />}
+        maxWidth="max-w-md"
+      >
+        {selectedCategory && (
+          <div className="space-y-4">
             {selectedCategory.document_count > 0 ? (
               <div className="space-y-4">
-                <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-sm space-y-2">
-                  <div className="flex items-center gap-2 font-extrabold text-amber-700">
+                <div className="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900 text-amber-900 dark:text-amber-200 text-sm space-y-2 font-auth-body">
+                  <div className="flex items-center gap-2 font-extrabold text-amber-700 dark:text-amber-400">
                     <AlertTriangle className="w-4 h-4 shrink-0 text-amber-600" />
                     <span>Active Documents Assigned ({selectedCategory.document_count})</span>
                   </div>
-                  <p className="text-amber-800/80 leading-relaxed">
+                  <p className="leading-relaxed">
                     This category cannot be deleted because there are currently <strong>{selectedCategory.document_count} document(s)</strong> assigned to it.
                   </p>
-                  <p className="text-amber-800/80">
+                  <p>
                     Please reassign these documents to another category or remove them before deleting this category.
                   </p>
                 </div>
@@ -992,7 +966,7 @@ export default function CategoriesPage() {
                 <div className="flex items-center justify-end gap-3 pt-2">
                   <button
                     onClick={() => setIsDeleteOpen(false)}
-                    className="w-full py-2.5 rounded-2xl bg-[#1E1235] text-white font-extrabold hover:bg-[#2D1B69] transition text-sm"
+                    className="w-full py-2.5 rounded-2xl bg-[#1E1235] dark:bg-slate-800 text-white font-extrabold hover:bg-[#2D1B69] dark:hover:bg-slate-700 transition text-sm font-auth-heading cursor-pointer"
                   >
                     Got It
                   </button>
@@ -1000,22 +974,22 @@ export default function CategoriesPage() {
               </div>
             ) : (
               <div className="space-y-4">
-                <p className="text-sm text-[#7B7393] leading-relaxed">
-                  Are you sure you want to delete the category <strong className="text-[#1E1235]">&quot;{selectedCategory.category_name}&quot;</strong>? This action is permanent and cannot be undone.
+                <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-auth-body">
+                  Are you sure you want to delete the category <strong className="text-slate-900 dark:text-white">&quot;{selectedCategory.category_name}&quot;</strong>? This action is permanent and cannot be undone.
                 </p>
 
                 {formError && (
-                  <div className="p-3 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-sm flex items-center gap-2">
+                  <div className="p-3 rounded-2xl bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-sm flex items-center gap-2 font-auth-body">
                     <AlertCircle className="w-4 h-4 text-rose-500 shrink-0" />
                     <span>{formError}</span>
                   </div>
                 )}
 
-                <div className="flex items-center justify-end gap-3 pt-2 border-t border-[#EAE4F8]">
+                <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-200 dark:border-slate-800">
                   <button
                     type="button"
                     onClick={() => setIsDeleteOpen(false)}
-                    className="px-4 py-2.5 rounded-2xl border border-[#EAE4F8] text-[#7B7393] font-bold hover:bg-[#F3F0FA] transition text-sm"
+                    className="px-4 py-2.5 rounded-2xl border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition text-sm font-auth-body"
                   >
                     Cancel
                   </button>
@@ -1023,7 +997,7 @@ export default function CategoriesPage() {
                     type="button"
                     onClick={handleDeleteSubmit}
                     disabled={formSubmitting}
-                    className="px-5 py-2.5 rounded-2xl bg-rose-600 hover:bg-rose-500 text-white font-extrabold shadow-md shadow-rose-600/20 transition flex items-center gap-2 text-sm disabled:opacity-50 hover:scale-105"
+                    className="px-5 py-2.5 rounded-2xl bg-rose-600 hover:bg-rose-500 text-white font-extrabold shadow-md shadow-rose-600/20 transition flex items-center gap-2 text-sm disabled:opacity-50 font-auth-heading"
                   >
                     {formSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
                     Delete Category
@@ -1032,8 +1006,8 @@ export default function CategoriesPage() {
               </div>
             )}
           </div>
-        </div>
-      )}
+        )}
+      </Modal>
     </div>
   );
 }

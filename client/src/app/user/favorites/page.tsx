@@ -538,7 +538,7 @@ export default function FavoritesPage() {
     <div className="space-y-6 pb-12 relative min-h-screen" style={{ fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif" }}>
       {/* Toast Notification */}
       {toast && (
-        <div className={`fixed bottom-6 right-6 z-[999] flex items-center gap-3 px-5 py-3.5 rounded-2xl shadow-2xl border text-sm font-bold transition-all animate-pop-in ${
+        <div className={`fixed top-20 right-6 z-[100000] flex items-center gap-3 px-5 py-3.5 rounded-2xl shadow-2xl border text-sm font-bold transition-all animate-pop-in ${
           toast.type === 'error'
             ? 'bg-rose-50 border-rose-200 text-rose-700 dark:bg-rose-950 dark:border-rose-800 dark:text-rose-200'
             : 'bg-white border-slate-200 text-slate-900 shadow-xl dark:bg-slate-900 dark:border-slate-800 dark:text-white'

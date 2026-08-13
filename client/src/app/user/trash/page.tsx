@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import api from '@/lib/api';
 import { logActivity } from '@/lib/activityLogger';
+import ConfirmModal from '@/components/ui/ConfirmModal';
 
 export interface TrashedDocument {
   id: number | string;
@@ -211,7 +212,7 @@ export default function TrashPage() {
     <div className="space-y-6 pb-12 font-sans">
       {/* Toast Notification */}
       {toast && (
-        <div className={`fixed bottom-6 right-6 z-50 px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 border text-sm font-bold animate-pop-in ${
+        <div className={`fixed top-20 right-6 z-[100000] px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 border text-sm font-bold animate-pop-in ${
           toast.type === 'success' ? 'bg-emerald-950 text-emerald-300 border-emerald-800' : 'bg-rose-950 text-rose-300 border-rose-800'
         }`}>
           {toast.type === 'success' ? <CheckCircle2 className="w-4 h-4 text-emerald-400" /> : <AlertCircle className="w-4 h-4 text-rose-400" />}
@@ -361,112 +362,54 @@ export default function TrashPage() {
       )}
 
       {/* RESTORE CONFIRMATION MODAL */}
-      {isRestoreModalOpen && selectedDoc && (
-        <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-pop-in">
-          <div className="bg-white dark:bg-[#111827] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4 text-slate-900 dark:text-white text-sm">
-            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
-              <h3 className="text-lg font-extrabold text-emerald-600 dark:text-emerald-400 flex items-center gap-2">
-                <RotateCcw className="w-5 h-5" /> Restore Document?
-              </h3>
-              <button onClick={() => setIsRestoreModalOpen(false)} className="text-slate-400 hover:text-slate-900 dark:hover:text-white">
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
-              Are you sure you want to restore <strong className="text-slate-900 dark:text-white">&quot;{selectedDoc.title}&quot;</strong> back into your active workspace and My Documents folder?
-            </p>
-
-            <div className="flex justify-end gap-3 pt-2">
-              <button
-                onClick={() => setIsRestoreModalOpen(false)}
-                className="px-4 py-2.5 text-sm font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleRestore}
-                disabled={submitting}
-                className="px-5 py-2.5 text-sm font-extrabold text-white bg-emerald-600 hover:bg-emerald-500 rounded-xl shadow-md transition active:scale-95 flex items-center gap-1.5"
-              >
-                {submitting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <RotateCcw className="w-3.5 h-3.5" />} Restore Document
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ConfirmModal
+        isOpen={isRestoreModalOpen && Boolean(selectedDoc)}
+        onClose={() => setIsRestoreModalOpen(false)}
+        onConfirm={handleRestore}
+        title="Restore Document?"
+        description={
+          <>
+            Are you sure you want to restore <strong className="text-slate-900 dark:text-white">&quot;{selectedDoc?.title}&quot;</strong> back into your active workspace and My Documents folder?
+          </>
+        }
+        confirmText="Restore Document"
+        variant="success"
+        isLoading={submitting}
+        icon={<RotateCcw className="w-6 h-6 text-emerald-500" />}
+      />
 
       {/* PERMANENT DELETE MODAL */}
-      {isPermanentDeleteModalOpen && selectedDoc && (
-        <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-pop-in">
-          <div className="bg-white dark:bg-[#111827] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4 text-slate-900 dark:text-white text-sm">
-            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
-              <h3 className="text-lg font-extrabold text-rose-600 dark:text-rose-400 flex items-center gap-2">
-                <AlertTriangle className="w-5 h-5" /> Permanently Delete File?
-              </h3>
-              <button onClick={() => setIsPermanentDeleteModalOpen(false)} className="text-slate-400 hover:text-slate-900 dark:hover:text-white">
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
-              Are you sure you want to permanently delete <strong className="text-slate-900 dark:text-white">&quot;{selectedDoc.title}&quot;</strong>? This action cannot be undone.
-            </p>
-
-            <div className="flex justify-end gap-3 pt-2">
-              <button
-                onClick={() => setIsPermanentDeleteModalOpen(false)}
-                className="px-4 py-2.5 text-sm font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handlePermanentDelete}
-                disabled={submitting}
-                className="px-5 py-2.5 text-sm font-extrabold text-white bg-rose-600 hover:bg-rose-500 rounded-xl shadow-md transition active:scale-95 flex items-center gap-1.5"
-              >
-                {submitting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Trash2 className="w-3.5 h-3.5" />} Purge Permanently
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ConfirmModal
+        isOpen={isPermanentDeleteModalOpen && Boolean(selectedDoc)}
+        onClose={() => setIsPermanentDeleteModalOpen(false)}
+        onConfirm={handlePermanentDelete}
+        title="Permanently Delete File?"
+        description={
+          <>
+            Are you sure you want to permanently delete <strong className="text-slate-900 dark:text-white">&quot;{selectedDoc?.title}&quot;</strong>? This action cannot be undone.
+          </>
+        }
+        confirmText="Purge Permanently"
+        variant="danger"
+        isLoading={submitting}
+        icon={<AlertTriangle className="w-6 h-6 text-rose-500" />}
+      />
 
       {/* EMPTY TRASH CONFIRMATION MODAL */}
-      {isEmptyModalOpen && (
-        <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-pop-in">
-          <div className="bg-white dark:bg-[#111827] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-4 text-slate-900 dark:text-white text-sm">
-            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
-              <h3 className="text-lg font-extrabold text-rose-600 dark:text-rose-400 flex items-center gap-2">
-                <Trash className="w-5 h-5" /> Empty Entire Recycle Bin?
-              </h3>
-              <button onClick={() => setIsEmptyModalOpen(false)} className="text-slate-400 hover:text-slate-900 dark:hover:text-white">
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
-              Permanently purge all <strong className="text-slate-900 dark:text-white">{documents.length} document(s)</strong> currently in the Recycle Bin? All deleted files will be permanently erased from disk.
-            </p>
-
-            <div className="flex justify-end gap-3 pt-2">
-              <button
-                onClick={() => setIsEmptyModalOpen(false)}
-                className="px-4 py-2.5 text-sm font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleEmptyTrash}
-                disabled={submitting}
-                className="px-5 py-2.5 text-sm font-extrabold text-white bg-rose-600 hover:bg-rose-500 rounded-xl shadow-md transition active:scale-95 flex items-center gap-1.5"
-              >
-                {submitting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Trash className="w-3.5 h-3.5" />} Empty Bin
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ConfirmModal
+        isOpen={isEmptyModalOpen}
+        onClose={() => setIsEmptyModalOpen(false)}
+        onConfirm={handleEmptyTrash}
+        title="Empty Entire Recycle Bin?"
+        description={
+          <>
+            Permanently purge all <strong className="text-slate-900 dark:text-white">{documents.length} document(s)</strong> currently in the Recycle Bin? All deleted files will be permanently erased from disk.
+          </>
+        }
+        confirmText="Empty Recycle Bin"
+        variant="danger"
+        isLoading={submitting}
+      />
     </div>
   );
 }

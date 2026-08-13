@@ -7,6 +7,8 @@ import {
   X, AlertCircle, CheckCircle2, Loader2, RefreshCw, FolderGit2, GraduationCap, UserCheck, Folder, Upload, FileText, ChevronRight, Tag, ChevronDown, Check
 } from 'lucide-react';
 import api from '@/lib/api';
+import Modal from '@/components/ui/Modal';
+import ConfirmModal from '@/components/ui/ConfirmModal';
 
 export interface FolderItem {
   id: number;
@@ -320,11 +322,24 @@ export default function FoldersPage() {
     <div className="space-y-6 pb-12">
       {/* Toast */}
       {toast && (
-        <div className={`fixed bottom-6 right-6 z-50 px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 border text-sm font-bold animate-pop-in ${
-          toast.type === 'success' ? 'bg-emerald-950 text-emerald-300 border-emerald-800' : 'bg-rose-950 text-rose-300 border-rose-800'
+        <div className={`fixed top-20 right-6 z-[100000] flex items-center gap-3 px-5 py-4 rounded-2xl shadow-2xl animate-fade-in text-sm font-bold border transition-all duration-300 ${
+          toast.type === 'success'
+            ? 'bg-slate-900 text-white border-emerald-500/50 shadow-emerald-950/20 dark:bg-slate-900 dark:text-white dark:border-emerald-500/50'
+            : 'bg-slate-900 text-white border-rose-500/50 shadow-rose-950/20 dark:bg-slate-900 dark:text-white dark:border-rose-500/50'
         }`}>
-          {toast.type === 'success' ? <CheckCircle2 className="w-4 h-4 text-emerald-400" /> : <AlertCircle className="w-4 h-4 text-rose-400" />}
+          {toast.type === 'success' ? (
+            <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
+          ) : (
+            <AlertCircle className="w-5 h-5 text-rose-400 shrink-0" />
+          )}
           <span>{toast.message}</span>
+          <button
+            type="button"
+            onClick={() => setToast(null)}
+            className="ml-2 text-slate-400 hover:text-white transition-colors"
+          >
+            <X className="w-4 h-4" />
+          </button>
         </div>
       )}
 
@@ -458,301 +473,284 @@ export default function FoldersPage() {
       )}
 
       {/* CREATE MODAL WITH FILE ATTACHMENT */}
-      {isCreateOpen && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto">
-          <div className="bg-white dark:bg-[#111827] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-5 animate-pop-in my-auto text-slate-900 dark:text-white max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
-              <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                <FolderPlus className="w-4 h-4 text-indigo-600 dark:text-indigo-400" /> Create Workspace Folder
-              </h2>
-              <button onClick={() => setIsCreateOpen(false)} className="text-slate-400 hover:text-slate-700 dark:hover:text-white">
-                <X className="w-5 h-5" />
-              </button>
-            </div>
+      <Modal
+        isOpen={isCreateOpen}
+        onClose={() => setIsCreateOpen(false)}
+        title="Create Workspace Folder"
+        icon={<FolderPlus className="w-5 h-5 text-themePrimary" />}
+        maxWidth="max-w-md"
+      >
+        {formError && (
+          <div className="p-3 rounded-xl bg-rose-950/60 border border-rose-800 text-rose-300 text-sm flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
+            <span>{formError}</span>
+          </div>
+        )}
 
-            {formError && (
-              <div className="p-3 rounded-xl bg-rose-950/60 border border-rose-800 text-rose-300 text-sm flex items-center gap-2">
-                <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
-                <span>{formError}</span>
-              </div>
-            )}
+        <form onSubmit={handleCreateSubmit} className="space-y-4 text-sm">
+          <div>
+            <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Folder Name *</label>
+            <input
+              type="text"
+              required
+              value={formName}
+              onChange={(e) => setFormName(e.target.value)}
+              placeholder="e.g., 2026 Tax Return, Project Alpha Specs"
+              className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-themePrimary"
+            />
+          </div>
 
-            <form onSubmit={handleCreateSubmit} className="space-y-4 text-sm">
-              <div>
-                <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Folder Name *</label>
-                <input
-                  type="text"
-                  required
-                  value={formName}
-                  onChange={(e) => setFormName(e.target.value)}
-                  placeholder="e.g., 2026 Tax Return, Project Alpha Specs"
-                  className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-indigo-500"
-                />
-              </div>
+          <div>
+            <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Description (Optional)</label>
+            <textarea
+              rows={2}
+              value={formDescription}
+              onChange={(e) => setFormDescription(e.target.value)}
+              placeholder="Brief description of documents stored in this folder..."
+              className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-themePrimary resize-none"
+            />
+          </div>
 
-              <div>
-                <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Description (Optional)</label>
-                <textarea
-                  rows={2}
-                  value={formDescription}
-                  onChange={(e) => setFormDescription(e.target.value)}
-                  placeholder="Brief description of documents stored in this folder..."
-                  className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-indigo-500 resize-none"
-                />
-              </div>
+          {/* Category Selection — Custom Dropdown (always opens downward) */}
+          <div ref={catDropdownRef} className="relative">
+            <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1 flex items-center gap-1.5">
+              <Tag className="w-3.5 h-3.5 text-themePrimary" /> Document Category <span className="text-slate-400 font-normal">(Optional)</span>
+            </label>
+            {/* Trigger button */}
+            <button
+              type="button"
+              onClick={() => setCatDropdownOpen(!catDropdownOpen)}
+              className={`w-full flex items-center justify-between px-3.5 py-2.5 bg-slate-50 dark:bg-[#0b1120] border rounded-xl text-sm font-medium transition-all ${
+                catDropdownOpen
+                  ? 'border-themePrimary ring-1 ring-themePrimary/20'
+                  : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
+              }`}
+            >
+              <span className={formCategory && formCategory !== '__others__' ? 'text-slate-900 dark:text-white' : 'text-slate-400 dark:text-slate-500'}>
+                {formCategory && formCategory !== '__others__' ? formCategory : '— Select a category —'}
+              </span>
+              <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${catDropdownOpen ? 'rotate-180' : ''}`} />
+            </button>
 
-              {/* Category Selection — Custom Dropdown (always opens downward) */}
-              <div ref={catDropdownRef} className="relative">
-                <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1 flex items-center gap-1.5">
-                  <Tag className="w-3.5 h-3.5 text-themePrimary" /> Document Category <span className="text-slate-400 font-normal">(Optional)</span>
-                </label>
-                {/* Trigger button */}
+            {/* Dropdown list — always below */}
+            {catDropdownOpen && (
+              <div className="absolute left-0 right-0 top-full mt-1 z-50 bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl max-h-52 overflow-y-auto">
+                {/* No category option */}
                 <button
                   type="button"
-                  onClick={() => setCatDropdownOpen(!catDropdownOpen)}
-                  className={`w-full flex items-center justify-between px-3.5 py-2.5 bg-slate-50 dark:bg-[#0b1120] border rounded-xl text-sm font-medium transition-all ${
-                    catDropdownOpen
-                      ? 'border-themePrimary ring-1 ring-themePrimary/20'
-                      : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
+                  onClick={() => {
+                    setFormCategory('');
+                    setFormCustomCategory('');
+                    setCatDropdownOpen(false);
+                  }}
+                  className={`w-full flex items-center justify-between px-3.5 py-2.5 text-sm transition hover:bg-slate-50 dark:hover:bg-slate-800 ${
+                    !formCategory ? 'text-themePrimary font-bold' : 'text-slate-500 dark:text-slate-400'
                   }`}
                 >
-                  <span className={formCategory && formCategory !== '__others__' ? 'text-slate-900 dark:text-white' : 'text-slate-400 dark:text-slate-500'}>
-                    {formCategory && formCategory !== '__others__' ? formCategory : '— Select a category —'}
-                  </span>
-                  <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${catDropdownOpen ? 'rotate-180' : ''}`} />
+                  <span>— None —</span>
+                  {!formCategory && <Check className="w-3.5 h-3.5 text-themePrimary" />}
                 </button>
 
-                {/* Dropdown list — always below */}
-                {catDropdownOpen && (
-                  <div className="absolute left-0 right-0 top-full mt-1 z-50 bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl max-h-52 overflow-y-auto">
-                    {/* No category option */}
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setFormCategory('');
-                        setFormCustomCategory('');
-                        setCatDropdownOpen(false);
-                      }}
-                      className={`w-full flex items-center justify-between px-3.5 py-2.5 text-sm transition hover:bg-slate-50 dark:hover:bg-slate-800 ${
-                        !formCategory ? 'text-themePrimary font-bold' : 'text-slate-500 dark:text-slate-400'
-                      }`}
-                    >
-                      <span>— None —</span>
-                      {!formCategory && <Check className="w-3.5 h-3.5 text-themePrimary" />}
-                    </button>
-
-                    {availableCategories.map((cat) => (
-                      <button
-                        key={cat.id}
-                        type="button"
-                        onClick={() => {
-                          setFormCategory(cat.category_name);
-                          setFormCustomCategory('');
-                          if (cat.color) setFormColor(cat.color);
-                          setCatDropdownOpen(false);
-                        }}
-                        className={`w-full flex items-center justify-between px-3.5 py-2.5 text-sm transition hover:bg-slate-50 dark:hover:bg-slate-800 ${
-                          formCategory === cat.category_name ? 'text-themePrimary font-bold bg-orange-50 dark:bg-orange-950/20' : 'text-slate-700 dark:text-slate-300'
-                        }`}
-                      >
-                        <span className="flex items-center gap-2">
-                          <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: cat.color || '#6C5CE7' }} />
-                          {cat.category_name}
-                        </span>
-                        {formCategory === cat.category_name && <Check className="w-3.5 h-3.5 text-themePrimary" />}
-                      </button>
-                    ))}
-
-                    {/* Others option */}
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setFormCategory('__others__');
-                        setCatDropdownOpen(false);
-                      }}
-                      className={`w-full flex items-center justify-between px-3.5 py-2.5 text-sm border-t border-slate-100 dark:border-slate-800 transition hover:bg-slate-50 dark:hover:bg-slate-800 ${
-                        formCategory === '__others__' ? 'text-themePrimary font-bold' : 'text-slate-500 dark:text-slate-400'
-                      }`}
-                    >
-                      <span>+ Others (type manually)</span>
-                      {formCategory === '__others__' && <Check className="w-3.5 h-3.5 text-themePrimary" />}
-                    </button>
-                  </div>
-                )}
-
-                {formCategory === '__others__' && (
-                  <input
-                    type="text"
-                    value={formCustomCategory}
-                    onChange={(e) => setFormCustomCategory(e.target.value)}
-                    placeholder="Type your custom category name..."
-                    className="mt-2 w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-themePrimary text-sm"
-                    autoFocus
-                  />
-                )}
-                {formCategory && formCategory !== '__others__' && (
-                  <p className="mt-1.5 text-xs text-slate-500 dark:text-slate-400">
-                    ✓ Documents in this folder will default to <span className="font-semibold text-themePrimary">{formCategory}</span> category
-                  </p>
-                )}
-              </div>
-              <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 space-y-2">
-                <label className="block font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
-                  <Upload className="w-3.5 h-3.5 text-indigo-400" /> Attach Initial Document (Optional)
-                </label>
-                
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  className="hidden"
-                  onChange={(e) => {
-                    if (e.target.files && e.target.files[0]) {
-                      setFormInitialFile(e.target.files[0]);
-                    }
-                  }}
-                />
-
-                {formInitialFile ? (
-                  <div className="flex items-center justify-between p-2 rounded-xl bg-slate-900 border border-indigo-500/40 text-sm text-white">
-                    <div className="flex items-center gap-2 overflow-hidden">
-                      <FileText className="w-4 h-4 text-indigo-400 shrink-0" />
-                      <span className="truncate font-semibold">{formInitialFile.name}</span>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => setFormInitialFile(null)}
-                      className="text-slate-400 hover:text-rose-400 p-1"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-                  </div>
-                ) : (
+                {availableCategories.map((cat) => (
                   <button
+                    key={cat.id}
                     type="button"
-                    onClick={() => fileInputRef.current?.click()}
-                    className="w-full py-2.5 px-3 rounded-xl border border-dashed border-slate-700 hover:border-indigo-500 text-slate-400 hover:text-white transition flex items-center justify-center gap-2 text-sm font-semibold"
+                    onClick={() => {
+                      setFormCategory(cat.category_name);
+                      setFormCustomCategory('');
+                      if (cat.color) setFormColor(cat.color);
+                      setCatDropdownOpen(false);
+                    }}
+                    className={`w-full flex items-center justify-between px-3.5 py-2.5 text-sm transition hover:bg-slate-50 dark:hover:bg-slate-800 ${
+                      formCategory === cat.category_name ? 'text-themePrimary font-bold bg-orange-50 dark:bg-orange-950/20' : 'text-slate-700 dark:text-slate-300'
+                    }`}
                   >
-                    <Upload className="w-3.5 h-3.5 text-indigo-400" /> Select file to upload into this folder
+                    <span className="flex items-center gap-2">
+                      <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: cat.color || '#6C5CE7' }} />
+                      {cat.category_name}
+                    </span>
+                    {formCategory === cat.category_name && <Check className="w-3.5 h-3.5 text-themePrimary" />}
                   </button>
-                )}
-              </div>
+                ))}
 
-              <div>
-                <label className="block font-bold text-slate-300 mb-2">Folder Color</label>
-                <div className="flex flex-wrap gap-2">
-                  {COLOR_OPTIONS.map((c) => (
-                    <button
-                      key={c.value}
-                      type="button"
-                      onClick={() => setFormColor(c.value)}
-                      className={`w-7 h-7 rounded-full border-2 transition-transform ${formColor === c.value ? 'scale-110 border-white shadow-md' : 'border-transparent'}`}
-                      style={{ backgroundColor: c.value }}
-                    />
-                  ))}
-                </div>
-              </div>
-
-              <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-800">
-                <button type="button" onClick={() => setIsCreateOpen(false)} className="px-4 py-2 rounded-xl border border-slate-800 text-slate-400 font-semibold hover:text-white">
-                  Cancel
+                {/* Others option */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setFormCategory('__others__');
+                    setCatDropdownOpen(false);
+                  }}
+                  className={`w-full flex items-center justify-between px-3.5 py-2.5 text-sm border-t border-slate-100 dark:border-slate-800 transition hover:bg-slate-50 dark:hover:bg-slate-800 ${
+                    formCategory === '__others__' ? 'text-themePrimary font-bold' : 'text-slate-500 dark:text-slate-400'
+                  }`}
+                >
+                  <span>+ Others (type manually)</span>
+                  {formCategory === '__others__' && <Check className="w-3.5 h-3.5 text-themePrimary" />}
                 </button>
-                <button type="submit" disabled={formSubmitting} className="px-4 py-2 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 text-white font-bold flex items-center gap-2 shadow-lg shadow-orange-500/25">
-                  {formSubmitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />} Create Folder
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* EDIT MODAL */}
-      {isEditOpen && selectedFolder && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto">
-          <div className="bg-white dark:bg-[#111827] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-5 animate-pop-in my-auto text-slate-900 dark:text-white">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
-              <h2 className="text-lg font-bold text-slate-900 dark:text-white">Edit Folder</h2>
-              <button onClick={() => setIsEditOpen(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-white">
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {formError && (
-              <div className="p-3 rounded-xl bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-sm flex items-center gap-2">
-                <AlertCircle className="w-4 h-4 text-rose-500 dark:text-rose-400 shrink-0" />
-                <span>{formError}</span>
               </div>
             )}
 
-            <form onSubmit={handleEditSubmit} className="space-y-4 text-sm">
-              <div>
-                <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Folder Name *</label>
-                <input
-                  type="text"
-                  required
-                  value={formName}
-                  onChange={(e) => setFormName(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500"
-                />
-              </div>
-
-              <div>
-                <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Description</label>
-                <textarea
-                  rows={3}
-                  value={formDescription}
-                  onChange={(e) => setFormDescription(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 resize-none"
-                />
-              </div>
-
-              <div>
-                <label className="block font-bold text-slate-700 dark:text-slate-300 mb-2">Folder Color</label>
-                <div className="flex flex-wrap gap-2">
-                  {COLOR_OPTIONS.map((c) => (
-                    <button
-                      key={c.value}
-                      type="button"
-                      onClick={() => setFormColor(c.value)}
-                      className={`w-7 h-7 rounded-full border-2 transition-transform ${formColor === c.value ? 'scale-110 border-indigo-600 dark:border-white shadow-md' : 'border-transparent'}`}
-                      style={{ backgroundColor: c.value }}
-                    />
-                  ))}
-                </div>
-              </div>
-
-              <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-200 dark:border-slate-800">
-                <button type="button" onClick={() => setIsEditOpen(false)} className="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 font-semibold hover:text-slate-900 dark:hover:text-white">
-                  Cancel
-                </button>
-                <button type="submit" disabled={formSubmitting} className="px-4 py-2 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 text-white font-bold flex items-center gap-2 shadow-lg shadow-orange-500/25">
-                  {formSubmitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />} Save Changes
-                </button>
-              </div>
-            </form>
+            {formCategory === '__others__' && (
+              <input
+                type="text"
+                value={formCustomCategory}
+                onChange={(e) => setFormCustomCategory(e.target.value)}
+                placeholder="Type your custom category name..."
+                className="mt-2 w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-themePrimary text-sm"
+                autoFocus
+              />
+            )}
+            {formCategory && formCategory !== '__others__' && (
+              <p className="mt-1.5 text-xs text-slate-500 dark:text-slate-400">
+                ✓ Documents in this folder will default to <span className="font-semibold text-themePrimary">{formCategory}</span> category
+              </p>
+            )}
           </div>
-        </div>
-      )}
+          <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 space-y-2">
+            <label className="block font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+              <Upload className="w-3.5 h-3.5 text-indigo-400" /> Attach Initial Document (Optional)
+            </label>
+            
+            <input
+              type="file"
+              ref={fileInputRef}
+              className="hidden"
+              onChange={(e) => {
+                if (e.target.files && e.target.files[0]) {
+                  setFormInitialFile(e.target.files[0]);
+                }
+              }}
+            />
 
-      {/* DELETE MODAL */}
-      {isDeleteOpen && selectedFolder && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto">
-          <div className="bg-white dark:bg-[#111827] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-5 animate-pop-in my-auto text-slate-900 dark:text-white">
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white">Delete Folder</h2>
-            <p className="text-sm text-slate-600 dark:text-slate-400">
-              Are you sure you want to delete <strong className="text-slate-900 dark:text-white">&quot;{selectedFolder.folder_name}&quot;</strong>?
-            </p>
+            {formInitialFile ? (
+              <div className="flex items-center justify-between p-2 rounded-xl bg-slate-900 border border-indigo-500/40 text-sm text-white">
+                <div className="flex items-center gap-2 overflow-hidden">
+                  <FileText className="w-4 h-4 text-indigo-400 shrink-0" />
+                  <span className="truncate font-semibold">{formInitialFile.name}</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setFormInitialFile(null)}
+                  className="text-slate-400 hover:text-rose-400 p-1"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="w-full py-2.5 px-3 rounded-xl border border-dashed border-slate-700 hover:border-indigo-500 text-slate-400 hover:text-white transition flex items-center justify-center gap-2 text-sm font-semibold"
+              >
+                <Upload className="w-3.5 h-3.5 text-indigo-400" /> Select file to upload into this folder
+              </button>
+            )}
+          </div>
 
-            <div className="flex items-center justify-end gap-3 pt-2">
-              <button onClick={() => setIsDeleteOpen(false)} className="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 font-semibold text-sm hover:text-slate-900 dark:hover:text-white">
-                Cancel
-              </button>
-              <button onClick={handleDeleteSubmit} disabled={formSubmitting} className="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-sm flex items-center gap-2 shadow-lg shadow-rose-600/30">
-                {formSubmitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />} Delete Folder
-              </button>
+          <div>
+            <label className="block font-bold text-slate-300 mb-2">Folder Color</label>
+            <div className="flex flex-wrap gap-2">
+              {COLOR_OPTIONS.map((c) => (
+                <button
+                  key={c.value}
+                  type="button"
+                  onClick={() => setFormColor(c.value)}
+                  className={`w-7 h-7 rounded-full border-2 transition-transform ${formColor === c.value ? 'scale-110 border-white shadow-md' : 'border-transparent'}`}
+                  style={{ backgroundColor: c.value }}
+                />
+              ))}
             </div>
           </div>
-        </div>
-      )}
+
+          <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-800">
+            <button type="button" onClick={() => setIsCreateOpen(false)} className="px-4 py-2 rounded-xl border border-slate-800 text-slate-400 font-semibold hover:text-white">
+              Cancel
+            </button>
+            <button type="submit" disabled={formSubmitting} className="px-4 py-2 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 text-white font-bold flex items-center gap-2 shadow-lg shadow-orange-500/25">
+              {formSubmitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />} Create Folder
+            </button>
+          </div>
+        </form>
+      </Modal>
+
+      {/* EDIT MODAL */}
+      <Modal
+        isOpen={isEditOpen && Boolean(selectedFolder)}
+        onClose={() => setIsEditOpen(false)}
+        title="Edit Folder"
+        icon={<Edit2 className="w-5 h-5 text-themePrimary" />}
+        maxWidth="max-w-md"
+      >
+        {formError && (
+          <div className="p-3 rounded-xl bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-sm flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 text-rose-500 dark:text-rose-400 shrink-0" />
+            <span>{formError}</span>
+          </div>
+        )}
+
+        <form onSubmit={handleEditSubmit} className="space-y-4 text-sm">
+          <div>
+            <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Folder Name *</label>
+            <input
+              type="text"
+              required
+              value={formName}
+              onChange={(e) => setFormName(e.target.value)}
+              className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500"
+            />
+          </div>
+
+          <div>
+            <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1">Description</label>
+            <textarea
+              rows={3}
+              value={formDescription}
+              onChange={(e) => setFormDescription(e.target.value)}
+              className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 resize-none"
+            />
+          </div>
+
+          <div>
+            <label className="block font-bold text-slate-700 dark:text-slate-300 mb-2">Folder Color</label>
+            <div className="flex flex-wrap gap-2">
+              {COLOR_OPTIONS.map((c) => (
+                <button
+                  key={c.value}
+                  type="button"
+                  onClick={() => setFormColor(c.value)}
+                  className={`w-7 h-7 rounded-full border-2 transition-transform ${formColor === c.value ? 'scale-110 border-indigo-600 dark:border-white shadow-md' : 'border-transparent'}`}
+                  style={{ backgroundColor: c.value }}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-200 dark:border-slate-800">
+            <button type="button" onClick={() => setIsEditOpen(false)} className="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 font-semibold hover:text-slate-900 dark:hover:text-white">
+              Cancel
+            </button>
+            <button type="submit" disabled={formSubmitting} className="px-4 py-2 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 text-white font-bold flex items-center gap-2 shadow-lg shadow-orange-500/25">
+              {formSubmitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />} Save Changes
+            </button>
+          </div>
+        </form>
+      </Modal>
+
+      {/* DELETE CONFIRMATION MODAL */}
+      <ConfirmModal
+        isOpen={isDeleteOpen && Boolean(selectedFolder)}
+        onClose={() => setIsDeleteOpen(false)}
+        onConfirm={handleDeleteSubmit}
+        title="Delete Workspace Folder"
+        description={
+          <>
+            Are you sure you want to delete <strong className="text-slate-900 dark:text-white">&quot;{selectedFolder?.folder_name}&quot;</strong>? This action cannot be undone and will move associated files to trash.
+          </>
+        }
+        confirmText="Delete Folder"
+        variant="danger"
+        isLoading={formSubmitting}
+      />
     </div>
   );
 }

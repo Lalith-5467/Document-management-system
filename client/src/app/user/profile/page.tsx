@@ -630,7 +630,7 @@ export default function ProfilePage() {
 
       {/* Floating Toast Notification Popup */}
       {toast && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3.5 bg-slate-900 dark:bg-slate-800 text-white rounded-2xl shadow-2xl border border-slate-700 dark:border-slate-600 animate-in fade-in slide-in-from-bottom-5 duration-200 font-sans">
+        <div className="fixed top-20 right-6 z-[100000] flex items-center gap-3 px-5 py-3.5 bg-slate-900 dark:bg-slate-800 text-white rounded-2xl shadow-2xl border border-slate-700 dark:border-slate-600 animate-in fade-in slide-in-from-top-5 duration-200 font-sans">
           <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
           <span className="text-sm font-bold">{toast}</span>
         </div>

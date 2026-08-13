@@ -201,6 +201,10 @@ export default function EditDocumentModal({
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, []);
 
   const currentCategory = categories.find(c => String(c.id) === categoryId)?.category_name || initialDoc.category_name || 'General';

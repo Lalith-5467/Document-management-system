@@ -25,6 +25,27 @@ const config: Config = {
         '13px': ['13px', { lineHeight: '18px' }],
         '15px': ['15px', { lineHeight: '22px' }],
       },
+      keyframes: {
+        'slide-up-spring': {
+          '0%': { opacity: '0', transform: 'translateY(20px) scale(0.95)' },
+          '60%': { opacity: '1', transform: 'translateY(-4px) scale(1.01)' },
+          '80%': { transform: 'translateY(2px) scale(0.995)' },
+          '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
+        },
+        'slide-down-out': {
+          '0%': { opacity: '1', transform: 'translateY(0) scale(1)' },
+          '100%': { opacity: '0', transform: 'translateY(16px) scale(0.95)' },
+        },
+        'fab-bounce': {
+          '0%, 100%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.08)' },
+        },
+      },
+      animation: {
+        'slide-up-spring': 'slide-up-spring 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards',
+        'slide-down-out': 'slide-down-out 0.25s ease-in forwards',
+        'fab-bounce': 'fab-bounce 2s ease-in-out infinite',
+      },
       colors: {
         themePrimary: 'var(--theme-primary, #FF6B00)',
         themeSecondary: 'var(--theme-secondary, #1e293b)',

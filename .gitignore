@@ -4,6 +4,7 @@ client/.next/
 dist/
 build/
 *.log
+*.tsbuildinfo
 .env
 .env.local
 *.zip

@@ -24,6 +24,7 @@ import {
 } from '@/lib/validation';
 import DocumentPreviewModal from '@/components/dashboard/DocumentPreviewModal';
 import AnimatedCounter from '@/components/dashboard/AnimatedCounter';
+import Modal from '@/components/ui/Modal';
 
 // Custom Accessible Dropdown Component with Primary Orange Hover Styling
 function CustomSelectDropdown({
@@ -501,9 +502,10 @@ export default function UserWorkspacePage() {
       setNewFolderName('');
       setNewFolderDesc('');
       setCreateFolderModalOpen(false);
-      showToast(`Folder "${createdFolder.folder_name}" created!`);
+      showToast(`Folder "${createdFolder.folder_name}" created successfully!`, 'success');
     } catch {
       setCreateFolderModalOpen(false);
+      showToast('Failed to create folder. Please try again.', 'error');
     }
   };
 
@@ -525,9 +527,10 @@ export default function UserWorkspacePage() {
       setNewCatName('');
       setNewCatDesc('');
       setCreateCategoryModalOpen(false);
-      showToast(`Category "${newCat.category_name}" created!`);
+      showToast(`Category "${newCat.category_name}" created successfully!`, 'success');
     } catch {
       setCreateCategoryModalOpen(false);
+      showToast('Failed to create category. Please try again.', 'error');
     }
   };
 
@@ -605,11 +608,24 @@ export default function UserWorkspacePage() {
     <div className="space-y-8 pb-16 font-sans text-slate-900 dark:text-slate-100">
       {/* Toast Notification */}
       {toast && (
-        <div className={`fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3.5 rounded-2xl shadow-2xl animate-in fade-in duration-200 text-sm font-semibold border ${
-          toast.type === 'success' ? 'bg-white text-emerald-700 border-emerald-200' : 'bg-white text-rose-700 border-rose-200'
+        <div className={`fixed top-20 right-6 z-[100000] flex items-center gap-3 px-5 py-4 rounded-2xl shadow-2xl animate-fade-in text-sm font-bold border transition-all duration-300 ${
+          toast.type === 'success'
+            ? 'bg-slate-900 text-white border-emerald-500/50 shadow-emerald-950/20 dark:bg-slate-900 dark:text-white dark:border-emerald-500/50'
+            : 'bg-slate-900 text-white border-rose-500/50 shadow-rose-950/20 dark:bg-slate-900 dark:text-white dark:border-rose-500/50'
         }`}>
-          <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+          {toast.type === 'success' ? (
+            <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
+          ) : (
+            <AlertCircle className="w-5 h-5 text-rose-400 shrink-0" />
+          )}
           <span>{toast.message}</span>
+          <button
+            type="button"
+            onClick={() => setToast(null)}
+            className="ml-2 text-slate-400 hover:text-white transition-colors"
+          >
+            <X className="w-4 h-4" />
+          </button>
         </div>
       )}
 
@@ -879,517 +895,464 @@ export default function UserWorkspacePage() {
       </div>
 
       {/* ─── MODAL 1: UPLOAD DOCUMENT MODAL ───────────────────────── */}
-      {uploadModalOpen && renderPortal(
-        <div className="fixed inset-0 w-vw h-dvh min-h-screen z-[9990] flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-md animate-fade-in font-auth-body overflow-hidden">
-          <form
-            onSubmit={handleUploadSubmit}
-            noValidate
-            className="relative z-[9995] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl flex flex-col text-slate-900 dark:text-white animate-pop-in my-auto overflow-hidden"
-            style={{ width: 'min(620px, calc(100vw - 32px))', maxHeight: 'calc(100dvh - 32px)' }}
-          >
-            {/* Header (Fixed / Non-scrolling) */}
-            <div className="flex items-center justify-between p-5 sm:p-6 border-b border-slate-200 dark:border-slate-800 shrink-0">
-              <h2 className="text-lg font-black text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading">
-                <Upload className="w-5 h-5 text-themePrimary" /> Upload New Document
-              </h2>
-              <button
-                type="button"
-                onClick={() => { setUploadModalOpen(false); resetUploadForm(); }}
-                className="p-1.5 rounded-xl text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
-              >
-                <X className="w-5 h-5" />
-              </button>
+      <Modal
+        isOpen={uploadModalOpen}
+        onClose={() => { setUploadModalOpen(false); resetUploadForm(); }}
+        title="Upload New Document"
+        icon={<Upload className="w-5 h-5 text-themePrimary" />}
+        maxWidth="max-w-[620px]"
+      >
+        <form onSubmit={handleUploadSubmit} noValidate className="space-y-4">
+          {uploadError && (
+            <div className="p-3.5 rounded-2xl bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-sm flex items-center gap-2 animate-fade-in font-auth-body">
+              <AlertCircle className="w-4 h-4 text-rose-500 shrink-0" />
+              <span>{uploadError}</span>
             </div>
+          )}
 
-            {/* Body (Scrollable) */}
-            <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-4 text-sm font-auth-body min-h-0">
-              {uploadError && (
-                <div className="p-3.5 rounded-2xl bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-sm flex items-center gap-2 animate-fade-in font-auth-body">
-                  <AlertCircle className="w-4 h-4 text-rose-500 shrink-0" />
-                  <span>{uploadError}</span>
+          {/* File Attachment Dropzone */}
+          <div>
+            <label className="block font-bold uppercase text-slate-700 dark:text-slate-300 mb-1.5 font-auth-label text-xs">
+              File Attachment <span className="text-red-500">*</span>
+            </label>
+            <input
+              ref={fileInputRef}
+              type="file"
+              className="hidden"
+              accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.png,.jpg,.jpeg,.zip"
+              onChange={(e) => e.target.files?.[0] && handleUploadFileSelect(e.target.files[0])}
+            />
+            <div
+              onClick={() => fileInputRef.current?.click()}
+              className={`border-2 border-dashed rounded-2xl p-5 text-center cursor-pointer transition ${
+                uploadFile
+                  ? 'border-emerald-500 bg-emerald-50/20 dark:bg-emerald-950/20'
+                  : 'border-slate-200 dark:border-slate-800 hover:border-themePrimary bg-slate-50 dark:bg-slate-950'
+              }`}
+            >
+              {uploadFile ? (
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2.5 truncate">
+                    <FileText className="w-5 h-5 text-emerald-500 shrink-0" />
+                    <div className="truncate text-left">
+                      <p className="font-bold text-slate-900 dark:text-white truncate font-auth-heading text-sm">{uploadFile.name}</p>
+                      <p className="text-xs text-slate-500 font-auth-label">{formatFileSize(uploadFile.size)}</p>
+                    </div>
+                  </div>
+                  <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 shrink-0">Validated ✓</span>
+                </div>
+              ) : (
+                <div className="space-y-1">
+                  <Upload className="w-6 h-6 text-themePrimary mx-auto" />
+                  <p className="font-bold text-slate-900 dark:text-white font-auth-heading text-sm">Click or Drag & Drop File</p>
+                  <p className="text-xs text-slate-500 font-auth-label">PDF, DOCX, XLSX, PPTX, PNG, JPG, ZIP (Max 25 MB)</p>
                 </div>
               )}
-
-              {/* File Attachment Dropzone */}
-              <div>
-                <label className="block font-bold uppercase text-slate-700 dark:text-slate-300 mb-1.5 font-auth-label text-xs">
-                  File Attachment <span className="text-red-500">*</span>
-                </label>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  className="hidden"
-                  accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.png,.jpg,.jpeg,.zip"
-                  onChange={(e) => e.target.files?.[0] && handleUploadFileSelect(e.target.files[0])}
-                />
-                <div
-                  onClick={() => fileInputRef.current?.click()}
-                  className={`border-2 border-dashed rounded-2xl p-5 text-center cursor-pointer transition ${
-                    uploadFile
-                      ? 'border-emerald-500 bg-emerald-50/20 dark:bg-emerald-950/20'
-                      : 'border-slate-200 dark:border-slate-800 hover:border-themePrimary bg-slate-50 dark:bg-slate-950'
-                  }`}
-                >
-                  {uploadFile ? (
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2.5 truncate">
-                        <FileText className="w-5 h-5 text-emerald-500 shrink-0" />
-                        <div className="truncate text-left">
-                          <p className="font-bold text-slate-900 dark:text-white truncate font-auth-heading text-sm">{uploadFile.name}</p>
-                          <p className="text-xs text-slate-500 font-auth-label">{formatFileSize(uploadFile.size)}</p>
-                        </div>
-                      </div>
-                      <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 shrink-0">Validated ✓</span>
-                    </div>
-                  ) : (
-                    <div className="space-y-1">
-                      <Upload className="w-6 h-6 text-themePrimary mx-auto" />
-                      <p className="font-bold text-slate-900 dark:text-white font-auth-heading text-sm">Click or Drag & Drop File</p>
-                      <p className="text-xs text-slate-500 font-auth-label">PDF, DOCX, XLSX, PPTX, PNG, JPG, ZIP (Max 25 MB)</p>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Document Title */}
-              <div>
-                <div className="flex justify-between mb-1">
-                  <label className="font-bold uppercase text-slate-700 dark:text-slate-300 font-auth-label text-xs">Document Title *</label>
-                  <span className="text-xs text-slate-400">{uploadTitle.length}/100</span>
-                </div>
-                <input
-                  type="text"
-                  value={uploadTitle}
-                  onChange={(e) => setUploadTitle(e.target.value)}
-                  placeholder="e.g., Master_Transcript_2026"
-                  className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary font-auth-body text-sm"
-                />
-              </div>
-
-              {/* Category & Folder Dropdowns */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <CustomSelectDropdown
-                  label="Category Domain"
-                  required
-                  value={uploadCategory}
-                  onChange={(val) => setUploadCategory(val)}
-                  options={categoriesList.map(c => ({ label: c.category_name, value: c.category_name }))}
-                />
-
-                <CustomSelectDropdown
-                  label="Target Folder"
-                  value={uploadFolder}
-                  onChange={(val) => setUploadFolder(val)}
-                  options={[
-                    { label: '(No specific folder)', value: '' },
-                    ...folders.map(f => ({ label: f.folder_name, value: f.folder_name }))
-                  ]}
-                />
-              </div>
-
-              {/* Expiry Date (Mandatory) */}
-              <div>
-                <label className="block font-bold uppercase text-slate-700 dark:text-slate-300 mb-1 font-auth-label text-xs">
-                  Expiry Date <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="date"
-                  value={uploadExpiryDate}
-                  onChange={(e) => setUploadExpiryDate(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary font-auth-body text-sm cursor-pointer"
-                />
-              </div>
-
-              {/* Master Password Toggle */}
-              <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="font-bold text-slate-900 dark:text-white flex items-center gap-1.5 font-auth-heading text-sm">
-                    <Lock className="w-4 h-4 text-themePrimary" /> Protect with Password
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => setUploadIsPassword(!uploadIsPassword)}
-                    className={`w-10 h-5.5 rounded-full p-0.5 transition cursor-pointer ${
-                      uploadIsPassword ? 'bg-themePrimary' : 'bg-slate-300 dark:bg-slate-800'
-                    }`}
-                  >
-                    <div className={`w-4 h-4 rounded-full bg-white transition-transform ${uploadIsPassword ? 'translate-x-4' : ''}`} />
-                  </button>
-                </div>
-
-                {uploadIsPassword && (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2 animate-fade-in">
-                    <input
-                      type="password"
-                      placeholder="Master password"
-                      value={uploadPassword}
-                      onChange={(e) => setUploadPassword(e.target.value)}
-                      className="px-3.5 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-sm"
-                    />
-                    <input
-                      type="password"
-                      placeholder="Confirm password"
-                      value={uploadConfirmPassword}
-                      onChange={(e) => setUploadConfirmPassword(e.target.value)}
-                      className="px-3.5 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-sm"
-                    />
-                  </div>
-                )}
-              </div>
             </div>
+          </div>
 
-            {/* Footer (Fixed / Non-scrolling) */}
-            <div className="flex items-center justify-end gap-3 p-4 sm:p-5 border-t border-slate-200 dark:border-slate-800 shrink-0 bg-slate-50/60 dark:bg-slate-950/60 rounded-b-3xl">
+          {/* Document Title */}
+          <div>
+            <div className="flex justify-between mb-1">
+              <label className="font-bold uppercase text-slate-700 dark:text-slate-300 font-auth-label text-xs">Document Title *</label>
+              <span className="text-xs text-slate-400">{uploadTitle.length}/100</span>
+            </div>
+            <input
+              type="text"
+              value={uploadTitle}
+              onChange={(e) => setUploadTitle(e.target.value)}
+              placeholder="e.g., Master_Transcript_2026"
+              className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary font-auth-body text-sm"
+            />
+          </div>
+
+          {/* Category & Folder Dropdowns */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <CustomSelectDropdown
+              label="Category Domain"
+              required
+              value={uploadCategory}
+              onChange={(val) => setUploadCategory(val)}
+              options={categoriesList.map(c => ({ label: c.category_name, value: c.category_name }))}
+            />
+
+            <CustomSelectDropdown
+              label="Target Folder"
+              value={uploadFolder}
+              onChange={(val) => setUploadFolder(val)}
+              options={[
+                { label: '(No specific folder)', value: '' },
+                ...folders.map(f => ({ label: f.folder_name, value: f.folder_name }))
+              ]}
+            />
+          </div>
+
+          {/* Expiry Date (Mandatory) */}
+          <div>
+            <label className="block font-bold uppercase text-slate-700 dark:text-slate-300 mb-1 font-auth-label text-xs">
+              Expiry Date <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="date"
+              value={uploadExpiryDate}
+              onChange={(e) => setUploadExpiryDate(e.target.value)}
+              className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary font-auth-body text-sm cursor-pointer"
+            />
+          </div>
+
+          {/* Master Password Toggle */}
+          <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="font-bold text-slate-900 dark:text-white flex items-center gap-1.5 font-auth-heading text-sm">
+                <Lock className="w-4 h-4 text-themePrimary" /> Protect with Password
+              </span>
               <button
                 type="button"
-                onClick={() => { setUploadModalOpen(false); resetUploadForm(); }}
-                className="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 font-bold hover:text-slate-900 dark:hover:text-white transition cursor-pointer text-xs"
+                onClick={() => setUploadIsPassword(!uploadIsPassword)}
+                className={`w-10 h-5.5 rounded-full p-0.5 transition cursor-pointer ${
+                  uploadIsPassword ? 'bg-themePrimary' : 'bg-slate-300 dark:bg-slate-800'
+                }`}
               >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                disabled={uploadingInline}
-                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] text-white font-black shadow-lg shadow-orange-500/25 flex items-center gap-2 font-auth-heading cursor-pointer hover:brightness-110 active-press text-xs"
-              >
-                {uploadingInline && <Loader2 className="w-4 h-4 animate-spin" />} Save Document
+                <div className={`w-4 h-4 rounded-full bg-white transition-transform ${uploadIsPassword ? 'translate-x-4' : ''}`} />
               </button>
             </div>
-          </form>
-        </div>
-      )}
+
+            {uploadIsPassword && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2 animate-fade-in">
+                <input
+                  type="password"
+                  placeholder="Master password"
+                  value={uploadPassword}
+                  onChange={(e) => setUploadPassword(e.target.value)}
+                  className="px-3.5 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-sm"
+                />
+                <input
+                  type="password"
+                  placeholder="Confirm password"
+                  value={uploadConfirmPassword}
+                  onChange={(e) => setUploadConfirmPassword(e.target.value)}
+                  className="px-3.5 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-sm"
+                />
+              </div>
+            )}
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-200 dark:border-slate-800">
+            <button
+              type="button"
+              onClick={() => { setUploadModalOpen(false); resetUploadForm(); }}
+              className="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 font-bold hover:text-slate-900 dark:hover:text-white transition cursor-pointer text-xs"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={uploadingInline}
+              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] text-white font-black shadow-lg shadow-orange-500/25 flex items-center gap-2 font-auth-heading cursor-pointer hover:brightness-110 active-press text-xs"
+            >
+              {uploadingInline && <Loader2 className="w-4 h-4 animate-spin" />} Save Document
+            </button>
+          </div>
+        </form>
+      </Modal>
 
       {/* ─── MODAL 2: CREATE WORKSPACE FOLDER MODAL ─── */}
-      {createFolderModalOpen && renderPortal(
-        <div className="fixed inset-0 w-vw h-dvh min-h-screen z-[9990] flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-md animate-fade-in font-auth-body overflow-hidden">
-          <form
-            onSubmit={handleCreateFolder}
-            className="relative z-[9995] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl flex flex-col text-slate-900 dark:text-white animate-pop-in my-auto overflow-hidden"
-            style={{ width: 'min(480px, calc(100vw - 32px))', maxHeight: 'calc(100dvh - 32px)' }}
-          >
-            <div className="flex items-center justify-between p-5 border-b border-slate-200 dark:border-slate-800 shrink-0">
-              <h3 className="text-lg font-extrabold text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading">
-                <FolderPlus className="w-4.5 h-4.5 text-themePrimary" /> Create Workspace Folder
-              </h3>
-              <button type="button" onClick={() => setCreateFolderModalOpen(false)} className="p-1 text-slate-400 hover:text-slate-900 dark:hover:text-white"><X className="w-5 h-5" /></button>
-            </div>
+      <Modal
+        isOpen={createFolderModalOpen}
+        onClose={() => setCreateFolderModalOpen(false)}
+        title="Create Workspace Folder"
+        icon={<FolderPlus className="w-5 h-5 text-themePrimary" />}
+        maxWidth="max-w-md"
+      >
+        <form onSubmit={handleCreateFolder} className="space-y-4">
+          <div>
+            <label className="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1.5 font-auth-label uppercase">Folder Name</label>
+            <input
+              type="text"
+              required
+              placeholder="e.g., 2026 Tax Return, Project Alpha Specs"
+              value={newFolderName}
+              onChange={(e) => setNewFolderName(e.target.value)}
+              className="w-full px-4 py-3 text-sm bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-themePrimary font-auth-body"
+            />
+          </div>
 
-            <div className="flex-1 overflow-y-auto p-5 space-y-4 text-sm font-auth-body min-h-0">
-              <div>
-                <label className="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1.5 font-auth-label uppercase">Folder Name</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g., 2026 Tax Return, Project Alpha Specs"
-                  value={newFolderName}
-                  onChange={(e) => setNewFolderName(e.target.value)}
-                  className="w-full px-4 py-3 text-sm bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-themePrimary font-auth-body"
-                />
-              </div>
-            </div>
-
-            <div className="flex justify-end gap-3 p-4 border-t border-slate-200 dark:border-slate-800 shrink-0 bg-slate-50/60 dark:bg-slate-950/60 rounded-b-3xl">
-              <button
-                type="button"
-                onClick={() => setCreateFolderModalOpen(false)}
-                className="px-4 py-2.5 text-xs font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition font-auth-body cursor-pointer"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="px-5 py-2.5 text-xs font-black text-white bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] rounded-xl shadow-lg shadow-orange-500/25 hover:brightness-110 transition active-press font-auth-heading cursor-pointer"
-              >
-                Create Folder
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
+          <div className="flex justify-end gap-3 pt-3 border-t border-slate-200 dark:border-slate-800">
+            <button
+              type="button"
+              onClick={() => setCreateFolderModalOpen(false)}
+              className="px-4 py-2.5 text-xs font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition font-auth-body cursor-pointer"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-5 py-2.5 text-xs font-black text-white bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] rounded-xl shadow-lg shadow-orange-500/25 hover:brightness-110 transition active-press font-auth-heading cursor-pointer"
+            >
+              Create Folder
+            </button>
+          </div>
+        </form>
+      </Modal>
 
       {/* ─── MODAL 3: BROWSE CATEGORIES MODAL ───────────────────────── */}
-      {browseCategoriesModalOpen && renderPortal(
-        <div className="fixed inset-0 w-vw h-dvh min-h-screen z-[9990] flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-md animate-fade-in font-auth-body overflow-hidden">
-          <div
-            className="relative z-[9995] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl flex flex-col text-slate-900 dark:text-white animate-pop-in my-auto overflow-hidden"
-            style={{ width: 'min(640px, calc(100vw - 32px))', maxHeight: 'calc(100dvh - 32px)' }}
-          >
-            <div className="flex items-center justify-between p-5 border-b border-slate-200 dark:border-slate-800 shrink-0">
-              <h3 className="text-lg font-extrabold text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading">
-                <Tags className="w-5 h-5 text-themePrimary" /> Category Domains
-              </h3>
-              <button type="button" onClick={() => setBrowseCategoriesModalOpen(false)} className="p-1 text-slate-400 hover:text-slate-900 dark:hover:text-white"><X className="w-5 h-5" /></button>
-            </div>
-
-            <div className="flex-1 overflow-y-auto p-5 grid grid-cols-1 sm:grid-cols-2 gap-3 min-h-0">
-              {categoriesList.map(cat => (
-                <div key={cat.id} className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-2xl bg-orange-100 text-themePrimary dark:bg-orange-950 dark:text-orange-400 flex items-center justify-center font-bold">
-                      {cat.icon || '🏷️'}
-                    </div>
-                    <div>
-                      <p className="text-sm font-bold text-slate-900 dark:text-white font-auth-heading">{cat.category_name}</p>
-                      <p className="text-xs text-slate-500 font-auth-body">{cat.document_count || 0} documents</p>
-                    </div>
+      <Modal
+        isOpen={browseCategoriesModalOpen}
+        onClose={() => setBrowseCategoriesModalOpen(false)}
+        title="Category Domains"
+        icon={<Tags className="w-5 h-5 text-themePrimary" />}
+        maxWidth="max-w-[640px]"
+      >
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto pr-1">
+            {categoriesList.map(cat => (
+              <div key={cat.id} className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-2xl bg-orange-100 text-themePrimary dark:bg-orange-950 dark:text-orange-400 flex items-center justify-center font-bold">
+                    {cat.icon || '🏷️'}
                   </div>
-
-                  <Link
-                    href={`/user/documents?category_id=${cat.id}`}
-                    onClick={() => setBrowseCategoriesModalOpen(false)}
-                    className="px-3 py-1.5 text-xs font-bold text-themePrimary bg-orange-50 dark:bg-orange-950/60 border border-orange-200 dark:border-orange-900 rounded-xl hover:bg-orange-100 transition"
-                  >
-                    View →
-                  </Link>
+                  <div>
+                    <p className="text-sm font-bold text-slate-900 dark:text-white font-auth-heading">{cat.category_name}</p>
+                    <p className="text-xs text-slate-500 font-auth-body">{cat.document_count || 0} documents</p>
+                  </div>
                 </div>
-              ))}
-            </div>
 
-            <div className="p-4 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center text-sm shrink-0 bg-slate-50/60 dark:bg-slate-950/60 rounded-b-3xl">
-              <Link
-                href="/user/categories"
-                onClick={() => setBrowseCategoriesModalOpen(false)}
-                className="text-themePrimary font-bold hover:underline text-xs"
-              >
-                Go to Full Category Management →
-              </Link>
-              <button
-                type="button"
-                onClick={() => setBrowseCategoriesModalOpen(false)}
-                className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs cursor-pointer"
-              >
-                Close
-              </button>
-            </div>
+                <Link
+                  href={`/user/documents?category_id=${cat.id}`}
+                  onClick={() => setBrowseCategoriesModalOpen(false)}
+                  className="px-3 py-1.5 text-xs font-bold text-themePrimary bg-orange-50 dark:bg-orange-950/60 border border-orange-200 dark:border-orange-900 rounded-xl hover:bg-orange-100 transition"
+                >
+                  View →
+                </Link>
+              </div>
+            ))}
+          </div>
+
+          <div className="pt-3 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center text-sm">
+            <Link
+              href="/user/categories"
+              onClick={() => setBrowseCategoriesModalOpen(false)}
+              className="text-themePrimary font-bold hover:underline text-xs"
+            >
+              Go to Full Category Management →
+            </Link>
+            <button
+              type="button"
+              onClick={() => setBrowseCategoriesModalOpen(false)}
+              className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs cursor-pointer"
+            >
+              Close
+            </button>
           </div>
         </div>
-      )}
+      </Modal>
 
       {/* ─── MODAL 4: SEARCH FILES MODAL ─────────────────────────────── */}
-      {searchFilesModalOpen && renderPortal(
-        <div className="fixed inset-0 w-vw h-dvh min-h-screen z-[9990] flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-md animate-fade-in font-auth-body overflow-hidden">
-          <div
-            className="relative z-[9995] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl flex flex-col text-slate-900 dark:text-white animate-pop-in my-auto overflow-hidden"
-            style={{ width: 'min(640px, calc(100vw - 32px))', maxHeight: 'calc(100dvh - 32px)' }}
-          >
-            <div className="flex items-center justify-between p-5 border-b border-slate-200 dark:border-slate-800 shrink-0">
-              <h3 className="text-lg font-extrabold text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading">
-                <Search className="w-5 h-5 text-themePrimary" /> Search Workspace Files
-              </h3>
-              <button type="button" onClick={() => setSearchFilesModalOpen(false)} className="p-1 text-slate-400 hover:text-slate-900 dark:hover:text-white"><X className="w-5 h-5" /></button>
-            </div>
-
-            <div className="p-5 flex-1 overflow-y-auto space-y-4 min-h-0 font-auth-body">
-              {/* Live Search Input Bar */}
-              <div className="relative font-auth-body">
-                <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-                <input
-                  type="text"
-                  autoFocus
-                  placeholder="Type document title, keyword, folder, or format (e.g. frontend, proposal, tax, pdf)..."
-                  value={searchModalQuery}
-                  onChange={(e) => setSearchModalQuery(e.target.value)}
-                  className="w-full pl-10 pr-9 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl text-sm text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary focus:ring-2 focus:ring-orange-500/20 font-auth-body"
-                />
-                {searchModalQuery && (
-                  <button
-                    type="button"
-                    onClick={() => setSearchModalQuery('')}
-                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-white"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-                )}
-              </div>
-
-              {/* Quick File Format Chips */}
-              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs font-auth-body scrollbar-none">
-                <span className="text-slate-400 font-bold mr-1">Filter:</span>
-                {['', 'pdf', 'word', 'excel', 'images', 'zip'].map((ft) => (
-                  <button
-                    key={ft}
-                    type="button"
-                    onClick={() => setSearchModalFileType(ft)}
-                    className={`px-3 py-1 rounded-xl font-bold uppercase transition cursor-pointer ${
-                      searchModalFileType === ft
-                        ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-xs'
-                        : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
-                    }`}
-                  >
-                    {ft === '' ? 'All' : ft}
-                  </button>
-                ))}
-              </div>
-
-              {/* Results Stream */}
-              <div className="space-y-2 font-auth-body">
-                {filteredSearchDocs.length === 0 ? (
-                  <div className="text-center py-10 space-y-3 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-200 dark:border-slate-800 p-6">
-                    <Search className="w-10 h-10 text-orange-400 mx-auto" />
-                    <div>
-                      <p className="text-base font-bold text-slate-900 dark:text-white font-auth-heading">No files found for &quot;{searchModalQuery}&quot;</p>
-                      <p className="text-sm text-slate-500 mt-1 font-auth-body">Try searching terms like: <span className="text-themePrimary font-mono">proposal, resume, specs, tax, passport, aws</span></p>
-                    </div>
-                    <Link
-                      href={`/user/documents?q=${encodeURIComponent(searchModalQuery)}`}
-                      onClick={() => setSearchFilesModalOpen(false)}
-                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-themePrimary to-[#F97316] shadow-md shadow-orange-500/20 hover:brightness-110 font-auth-heading"
-                    >
-                      Search Full Documents Vault →
-                    </Link>
-                  </div>
-                ) : (
-                  filteredSearchDocs.map(doc => (
-                    <div key={doc.id} className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3 hover:border-themePrimary/40 transition">
-                      <div className="flex items-center gap-3 truncate">
-                        <div className="w-9 h-9 rounded-xl bg-orange-100 dark:bg-orange-950 text-themePrimary dark:text-orange-400 flex items-center justify-center font-bold text-sm shrink-0">
-                          📄
-                        </div>
-                        <div className="truncate">
-                          <p className="text-sm font-bold text-slate-900 dark:text-white truncate font-auth-heading">{doc.title}</p>
-                          <p className="text-xs text-slate-500 dark:text-slate-400 font-auth-body">
-                            {doc.category_name || 'General'} {doc.folder_name ? `• ${doc.folder_name}` : ''} • {doc.size || '1.5 MB'}
-                          </p>
-                        </div>
-                      </div>
-
-                      <button
-                        type="button"
-                        onClick={() => { setSearchFilesModalOpen(false); setPreviewDoc(doc); }}
-                        className="px-3.5 py-2 text-sm font-bold text-white bg-gradient-to-r from-themePrimary to-[#F97316] rounded-xl hover:brightness-110 shrink-0 font-auth-heading shadow-xs cursor-pointer"
-                      >
-                        View File
-                      </button>
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
-
-            <div className="p-4 border-t border-slate-200 dark:border-slate-800 flex justify-end shrink-0 bg-slate-50/60 dark:bg-slate-950/60 rounded-b-3xl">
+      <Modal
+        isOpen={searchFilesModalOpen}
+        onClose={() => setSearchFilesModalOpen(false)}
+        title="Search Workspace Files"
+        icon={<Search className="w-5 h-5 text-themePrimary" />}
+        maxWidth="max-w-[640px]"
+      >
+        <div className="space-y-4 font-auth-body">
+          {/* Live Search Input Bar */}
+          <div className="relative font-auth-body">
+            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+            <input
+              type="text"
+              autoFocus
+              placeholder="Type document title, keyword, folder, or format (e.g. frontend, proposal, tax, pdf)..."
+              value={searchModalQuery}
+              onChange={(e) => setSearchModalQuery(e.target.value)}
+              className="w-full pl-10 pr-9 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl text-sm text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary focus:ring-2 focus:ring-orange-500/20 font-auth-body"
+            />
+            {searchModalQuery && (
               <button
                 type="button"
-                onClick={() => setSearchFilesModalOpen(false)}
-                className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs cursor-pointer"
+                onClick={() => setSearchModalQuery('')}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-white"
               >
-                Close
+                <X className="w-4 h-4" />
               </button>
-            </div>
+            )}
+          </div>
+
+          {/* Quick File Format Chips */}
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs font-auth-body scrollbar-none">
+            <span className="text-slate-400 font-bold mr-1">Filter:</span>
+            {['', 'pdf', 'word', 'excel', 'images', 'zip'].map((ft) => (
+              <button
+                key={ft}
+                type="button"
+                onClick={() => setSearchModalFileType(ft)}
+                className={`px-3 py-1 rounded-xl font-bold uppercase transition cursor-pointer ${
+                  searchModalFileType === ft
+                    ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-xs'
+                    : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
+                }`}
+              >
+                {ft === '' ? 'All' : ft}
+              </button>
+            ))}
+          </div>
+
+          {/* Results Stream */}
+          <div className="space-y-2 font-auth-body max-h-[45vh] overflow-y-auto">
+            {filteredSearchDocs.length === 0 ? (
+              <div className="text-center py-10 space-y-3 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-200 dark:border-slate-800 p-6">
+                <Search className="w-10 h-10 text-orange-400 mx-auto" />
+                <div>
+                  <p className="text-base font-bold text-slate-900 dark:text-white font-auth-heading">No files found for &quot;{searchModalQuery}&quot;</p>
+                  <p className="text-sm text-slate-500 mt-1 font-auth-body">Try searching terms like: <span className="text-themePrimary font-mono">proposal, resume, specs, tax, passport, aws</span></p>
+                </div>
+                <Link
+                  href={`/user/documents?q=${encodeURIComponent(searchModalQuery)}`}
+                  onClick={() => setSearchFilesModalOpen(false)}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-themePrimary to-[#F97316] shadow-md shadow-orange-500/20 hover:brightness-110 font-auth-heading"
+                >
+                  Search Full Documents Vault →
+                </Link>
+              </div>
+            ) : (
+              filteredSearchDocs.map(doc => (
+                <div key={doc.id} className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3 hover:border-themePrimary/40 transition">
+                  <div className="flex items-center gap-3 truncate">
+                    <div className="w-9 h-9 rounded-xl bg-orange-100 dark:bg-orange-950 text-themePrimary dark:text-orange-400 flex items-center justify-center font-bold text-sm shrink-0">
+                      📄
+                    </div>
+                    <div className="truncate">
+                      <p className="text-sm font-bold text-slate-900 dark:text-white truncate font-auth-heading">{doc.title}</p>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 font-auth-body">
+                        {doc.category_name || 'General'} {doc.folder_name ? `• ${doc.folder_name}` : ''} • {doc.size || '1.5 MB'}
+                      </p>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => { setSearchFilesModalOpen(false); setPreviewDoc(doc); }}
+                    className="px-3.5 py-2 text-sm font-bold text-white bg-gradient-to-r from-themePrimary to-[#F97316] rounded-xl hover:brightness-110 shrink-0 font-auth-heading shadow-xs cursor-pointer"
+                  >
+                    View File
+                  </button>
+                </div>
+              ))
+            )}
+          </div>
+
+          <div className="pt-3 border-t border-slate-200 dark:border-slate-800 flex justify-end">
+            <button
+              type="button"
+              onClick={() => setSearchFilesModalOpen(false)}
+              className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs cursor-pointer"
+            >
+              Close
+            </button>
           </div>
         </div>
-      )}
+      </Modal>
 
       {/* ─── MODAL 5: VIEW FAVORITES MODAL ──────────────────────────── */}
-      {viewFavoritesModalOpen && renderPortal(
-        <div className="fixed inset-0 w-vw h-dvh min-h-screen z-[9990] flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-md animate-fade-in font-auth-body overflow-hidden">
-          <div
-            className="relative z-[9995] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl flex flex-col text-slate-900 dark:text-white animate-pop-in my-auto overflow-hidden"
-            style={{ width: 'min(640px, calc(100vw - 32px))', maxHeight: 'calc(100dvh - 32px)' }}
-          >
-            <div className="flex items-center justify-between p-5 border-b border-slate-200 dark:border-slate-800 shrink-0">
-              <h3 className="text-lg font-extrabold text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading">
-                <Star className="w-5 h-5 text-amber-500 fill-amber-500" /> Starred Favorites ({favoriteDocs.length})
-              </h3>
-              <button type="button" onClick={() => setViewFavoritesModalOpen(false)} className="p-1 text-slate-400 hover:text-slate-900 dark:hover:text-white"><X className="w-5 h-5" /></button>
-            </div>
-
-            <div className="flex-1 overflow-y-auto p-5 space-y-2 min-h-0">
-              {favoriteDocs.length === 0 ? (
-                <div className="text-center py-8 space-y-2 text-slate-500">
-                  <Star className="w-8 h-8 mx-auto text-slate-400" />
-                  <p className="text-sm font-bold font-auth-heading">No favorite documents yet</p>
-                  <p className="text-xs font-auth-body">Star any document card to pin it here for quick access.</p>
-                </div>
-              ) : (
-                favoriteDocs.map(doc => (
-                  <div key={doc.id} className="p-3.5 rounded-2xl bg-amber-50/40 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/60 flex items-center justify-between gap-3">
-                    <div className="flex items-center gap-3 truncate">
-                      <Star className="w-4 h-4 text-amber-500 fill-amber-500 shrink-0" />
-                      <div className="truncate">
-                        <p className="text-sm font-bold text-slate-900 dark:text-white truncate font-auth-heading">{doc.title}</p>
-                        <p className="text-xs text-slate-500 font-auth-body">{doc.category_name} • {doc.size || '1.8 MB'}</p>
-                      </div>
+      <Modal
+        isOpen={viewFavoritesModalOpen}
+        onClose={() => setViewFavoritesModalOpen(false)}
+        title={`Starred Favorites (${favoriteDocs.length})`}
+        icon={<Star className="w-5 h-5 text-amber-500 fill-amber-500" />}
+        maxWidth="max-w-[640px]"
+      >
+        <div className="space-y-4">
+          <div className="space-y-2 max-h-[50vh] overflow-y-auto">
+            {favoriteDocs.length === 0 ? (
+              <div className="text-center py-8 space-y-2 text-slate-500">
+                <Star className="w-8 h-8 mx-auto text-slate-400" />
+                <p className="text-sm font-bold font-auth-heading">No favorite documents yet</p>
+                <p className="text-xs font-auth-body">Star any document card to pin it here for quick access.</p>
+              </div>
+            ) : (
+              favoriteDocs.map(doc => (
+                <div key={doc.id} className="p-3.5 rounded-2xl bg-amber-50/40 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/60 flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-3 truncate">
+                    <Star className="w-4 h-4 text-amber-500 fill-amber-500 shrink-0" />
+                    <div className="truncate">
+                      <p className="text-sm font-bold text-slate-900 dark:text-white truncate font-auth-heading">{doc.title}</p>
+                      <p className="text-xs text-slate-500 font-auth-body">{doc.category_name} • {doc.size || '1.8 MB'}</p>
                     </div>
-
-                    <button
-                      type="button"
-                      onClick={() => { setViewFavoritesModalOpen(false); setPreviewDoc(doc); }}
-                      className="px-3.5 py-1.5 text-xs font-bold text-amber-700 bg-amber-100 hover:bg-amber-200 rounded-xl cursor-pointer"
-                    >
-                      Open File
-                    </button>
                   </div>
-                ))
-              )}
-            </div>
 
-            <div className="p-4 border-t border-slate-200 dark:border-slate-800 flex justify-end shrink-0 bg-slate-50/60 dark:bg-slate-950/60 rounded-b-3xl">
-              <button
-                type="button"
-                onClick={() => setViewFavoritesModalOpen(false)}
-                className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs cursor-pointer"
-              >
-                Close
-              </button>
-            </div>
+                  <button
+                    type="button"
+                    onClick={() => { setViewFavoritesModalOpen(false); setPreviewDoc(doc); }}
+                    className="px-3.5 py-1.5 text-xs font-bold text-amber-700 bg-amber-100 hover:bg-amber-200 rounded-xl cursor-pointer"
+                  >
+                    Open File
+                  </button>
+                </div>
+              ))
+            )}
+          </div>
+
+          <div className="pt-3 border-t border-slate-200 dark:border-slate-800 flex justify-end">
+            <button
+              type="button"
+              onClick={() => setViewFavoritesModalOpen(false)}
+              className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs cursor-pointer"
+            >
+              Close
+            </button>
           </div>
         </div>
-      )}
+      </Modal>
 
       {/* ─── MODAL 6: RESTORE FILES MODAL (RECYCLE BIN) ──────────────── */}
-      {restoreFilesModalOpen && renderPortal(
-        <div className="fixed inset-0 w-vw h-dvh min-h-screen z-[9990] flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-md animate-fade-in font-auth-body overflow-hidden">
-          <div
-            className="relative z-[9995] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl flex flex-col text-slate-900 dark:text-white animate-pop-in my-auto overflow-hidden"
-            style={{ width: 'min(640px, calc(100vw - 32px))', maxHeight: 'calc(100dvh - 32px)' }}
-          >
-            <div className="flex items-center justify-between p-5 border-b border-slate-200 dark:border-slate-800 shrink-0">
-              <h3 className="text-lg font-extrabold text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading">
-                <RefreshCw className="w-5 h-5 text-themePrimary" /> Recycle Bin & Restore
-              </h3>
-              <button type="button" onClick={() => setRestoreFilesModalOpen(false)} className="p-1 text-slate-400 hover:text-slate-900 dark:hover:text-white"><X className="w-5 h-5" /></button>
-            </div>
-
-            <div className="flex-1 overflow-y-auto p-5 space-y-2 min-h-0">
-              {trashItems.length === 0 ? (
-                <div className="text-center py-8 text-slate-500 text-sm font-bold font-auth-heading">
-                  Recycle bin is clean! No deleted files to restore.
-                </div>
-              ) : (
-                trashItems.map(item => (
-                  <div key={item.id} className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3">
-                    <div className="flex items-center gap-3 truncate">
-                      <Trash2 className="w-4 h-4 text-rose-500 shrink-0" />
-                      <div className="truncate">
-                        <p className="text-sm font-bold text-slate-900 dark:text-white truncate font-auth-heading">{item.title}</p>
-                        <p className="text-xs text-slate-500 font-auth-body">{item.category} • Deleted {item.deleted_at}</p>
-                      </div>
+      <Modal
+        isOpen={restoreFilesModalOpen}
+        onClose={() => setRestoreFilesModalOpen(false)}
+        title="Recycle Bin & Restore"
+        icon={<RefreshCw className="w-5 h-5 text-themePrimary" />}
+        maxWidth="max-w-[640px]"
+      >
+        <div className="space-y-4">
+          <div className="space-y-2 max-h-[50vh] overflow-y-auto">
+            {trashItems.length === 0 ? (
+              <div className="text-center py-8 text-slate-500 text-sm font-bold font-auth-heading">
+                Recycle bin is clean! No deleted files to restore.
+              </div>
+            ) : (
+              trashItems.map(item => (
+                <div key={item.id} className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-3 truncate">
+                    <Trash2 className="w-4 h-4 text-rose-500 shrink-0" />
+                    <div className="truncate">
+                      <p className="text-sm font-bold text-slate-900 dark:text-white truncate font-auth-heading">{item.title}</p>
+                      <p className="text-xs text-slate-500 font-auth-body">{item.category} • Deleted {item.deleted_at}</p>
                     </div>
-
-                    <button
-                      type="button"
-                      onClick={() => handleRestoreFile(item.id, item.title)}
-                      className="px-3.5 py-1.5 text-xs font-bold text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 rounded-xl flex items-center gap-1.5 cursor-pointer font-auth-heading shadow-xs"
-                    >
-                      <RotateCcw className="w-3.5 h-3.5" /> Restore File
-                    </button>
                   </div>
-                ))
-              )}
-            </div>
 
-            <div className="p-4 border-t border-slate-200 dark:border-slate-800 flex justify-end shrink-0 bg-slate-50/60 dark:bg-slate-950/60 rounded-b-3xl">
-              <button
-                type="button"
-                onClick={() => setRestoreFilesModalOpen(false)}
-                className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs cursor-pointer"
-              >
-                Close
-              </button>
-            </div>
+                  <button
+                    type="button"
+                    onClick={() => handleRestoreFile(item.id, item.title)}
+                    className="px-3.5 py-1.5 text-xs font-bold text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 rounded-xl flex items-center gap-1.5 cursor-pointer font-auth-heading shadow-xs"
+                  >
+                    <RotateCcw className="w-3.5 h-3.5" /> Restore File
+                  </button>
+                </div>
+              ))
+            )}
+          </div>
+
+          <div className="pt-3 border-t border-slate-200 dark:border-slate-800 flex justify-end">
+            <button
+              type="button"
+              onClick={() => setRestoreFilesModalOpen(false)}
+              className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs cursor-pointer"
+            >
+              Close
+            </button>
           </div>
         </div>
-      )}
+      </Modal>
 
       {/* ─── MODAL 7: FULL-SCREEN DOCUMENT PREVIEW MODAL ─────────────── */}
       {previewDoc && (

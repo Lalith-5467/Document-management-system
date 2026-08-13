@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
 import {
@@ -100,7 +100,7 @@ const DEFAULT_SETTINGS: WidgetSettings = {
   popoverBadge: 'DocVault',
   popoverTitle: 'Need Help?',
   popoverSubtitle: 'Chat with our AI assistant or browse guides',
-  hoverTooltip: 'Need Help? Chat & Support 💬',
+  hoverTooltip: 'Need Help? Chat & Support ðŸ’¬',
   themeColor: 'var(--theme-primary, #FF6B00)'
 };
 
@@ -114,6 +114,7 @@ const DEFAULT_BOT_RULES: BotRule[] = [
 
 export default function FloatingHelpCenter() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
   const [activeTab, setActiveTab] = useState<'chat' | 'faqs' | 'ticket'>('chat');
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedFaq, setExpandedFaq] = useState<number | null>(0);
@@ -127,7 +128,7 @@ export default function FloatingHelpCenter() {
   const [chatMessages, setChatMessages] = useState<Array<{ sender: 'bot' | 'user'; text: string; time: string }>>([
     {
       sender: 'bot',
-      text: '👋 Hi! Welcome to DocVault Support. I am your AI assistant. How can I help you manage your documents today?',
+      text: 'ðŸ‘‹ Hi! Welcome to DocVault Support. I am your AI assistant. How can I help you manage your documents today?',
       time: 'Just now'
     }
   ]);
@@ -152,6 +153,7 @@ export default function FloatingHelpCenter() {
 
   useEffect(() => {
     const handleOpenHelp = () => {
+      setIsClosing(false);
       setIsOpen(true);
       setActiveTab('chat');
     };
@@ -178,62 +180,62 @@ export default function FloatingHelpCenter() {
 
     // 1. Download
     if (q.includes('download') || q.includes('save file') || q.includes('export') || q.includes('get document') || q.includes('get file')) {
-      return '📥 To download a document: Go to "My Documents", locate your file, and click the "Download File" button or options menu (⋮). If password protected, enter your master password when prompted.';
+      return 'ðŸ“¥ To download a document: Go to "My Documents", locate your file, and click the "Download File" button or options menu (â‹®). If password protected, enter your master password when prompted.';
     }
 
     // 2. Upload / File Size / Formats
     if (q.includes('upload') || q.includes('add file') || q.includes('add document') || q.includes('size') || q.includes('format')) {
-      return '📤 To upload documents: Click "Upload Document" from the top header or left sidebar. Select or drop your file (PDF, Word, Excel, PowerPoint, Images, ZIP up to 25 MB), select a category & folder, and save.';
+      return 'ðŸ“¤ To upload documents: Click "Upload Document" from the top header or left sidebar. Select or drop your file (PDF, Word, Excel, PowerPoint, Images, ZIP up to 25 MB), select a category & folder, and save.';
     }
 
     // 3. Password / Encryption / Security
     if (q.includes('password') || q.includes('protect') || q.includes('encrypt') || q.includes('security') || q.includes('pin') || q.includes('lock')) {
-      return '🔒 Password & Security: DocVault encrypts all documents with AES-256 bit security. When uploading or editing, toggle "Protect document with a password" to set a custom master password (min 6 chars).';
+      return 'ðŸ”’ Password & Security: DocVault encrypts all documents with AES-256 bit security. When uploading or editing, toggle "Protect document with a password" to set a custom master password (min 6 chars).';
     }
 
     // 4. Expiry / Renewal / Reminders
     if (q.includes('expir') || q.includes('renew') || q.includes('remind') || q.includes('passport') || q.includes('visa') || q.includes('contract') || q.includes('date')) {
-      return '⏰ Expiry Reminders: Set a mandatory Expiry Date when uploading time-sensitive documents (Passports, Visas, Licenses). DocVault tracks these dates and displays expiration alerts on your workspace dashboard.';
+      return 'â° Expiry Reminders: Set a mandatory Expiry Date when uploading time-sensitive documents (Passports, Visas, Licenses). DocVault tracks these dates and displays expiration alerts on your workspace dashboard.';
     }
 
     // 5. Folders
     if (q.includes('folder') || q.includes('directory')) {
-      return '📁 Workspace Folders: You can group documents by creating folders. Click "+ New Folder" on the Upload page or navigate to Folder Management from the sidebar.';
+      return 'ðŸ“ Workspace Folders: You can group documents by creating folders. Click "+ New Folder" on the Upload page or navigate to Folder Management from the sidebar.';
     }
 
     // 6. Categories / Tags
     if (q.includes('category') || q.includes('tag') || q.includes('label')) {
-      return '🏷️ Category Domains: Categories help classify your documents (e.g., Personal, Academic, Resume, Financial). Select a category when uploading to easily filter documents across all folders.';
+      return 'ðŸ·ï¸ Category Domains: Categories help classify your documents (e.g., Personal, Academic, Resume, Financial). Select a category when uploading to easily filter documents across all folders.';
     }
 
     // 7. Favorites / Starred
     if (q.includes('favorite') || q.includes('star') || q.includes('bookmark')) {
-      return '⭐ Starred & Favorites: Click the Star icon on any document card or toggle "Mark as Favorite" during upload to add documents to your Favorites quick access tab.';
+      return 'â­ Starred & Favorites: Click the Star icon on any document card or toggle "Mark as Favorite" during upload to add documents to your Favorites quick access tab.';
     }
 
     // 8. Delete / Remove / Trash
     if (q.includes('delete') || q.includes('remove') || q.includes('trash') || q.includes('destroy')) {
-      return '🗑️ Deleting Documents: Open "My Documents", locate the target file, click options (⋮), and select "Delete". Deleted actions are logged in the activity audit system.';
+      return 'ðŸ—‘ï¸ Deleting Documents: Open "My Documents", locate the target file, click options (â‹®), and select "Delete". Deleted actions are logged in the activity audit system.';
     }
 
     // 9. Search & Filter
     if (q.includes('search') || q.includes('find') || q.includes('filter') || q.includes('look for')) {
-      return '🔍 Searching Documents: Use the top search bar in "My Documents" or Dashboard. You can search by document title, reference notes, category, or file format.';
+      return 'ðŸ” Searching Documents: Use the top search bar in "My Documents" or Dashboard. You can search by document title, reference notes, category, or file format.';
     }
 
     // 10. Admin & Portal
     if (q.includes('admin') || q.includes('portal') || q.includes('log') || q.includes('audit') || q.includes('users')) {
-      return '🛡️ Admin Portal: Administrators can view global system stats, storage utilization, user accounts, and real-time audit logs from the Admin Login (/admin-login).';
+      return 'ðŸ›¡ï¸ Admin Portal: Administrators can view global system stats, storage utilization, user accounts, and real-time audit logs from the Admin Login (/admin-login).';
     }
 
     // 11. Greetings
     if (q.includes('hi') || q.includes('hello') || q.includes('hey') || q.includes('greetings') || q.includes('who are you')) {
-      return '👋 Hello! I am DocVault AI Assistant 🤖. How can I assist you with your document uploads, master passwords, folders, or expiry dates today?';
+      return 'ðŸ‘‹ Hello! I am DocVault AI Assistant ðŸ¤–. How can I assist you with your document uploads, master passwords, folders, or expiry dates today?';
     }
 
     // 12. Account & Login
     if (q.includes('login') || q.includes('sign in') || q.includes('register') || q.includes('create account') || q.includes('create an account') || q.includes('new account') || q.includes('sign up') || q.includes('signup')) {
-      return '🔐 Account Access: You can sign in to your vault or create a new account by clicking the "Sign In" or "Get Started" buttons in the top navigation bar.';
+      return 'ðŸ” Account Access: You can sign in to your vault or create a new account by clicking the "Sign In" or "Get Started" buttons in the top navigation bar.';
     }
 
     // 13. Check Admin Custom Bot Rules
@@ -244,11 +246,11 @@ export default function FloatingHelpCenter() {
 
     // 14. Next / Continue / More
     if (q === 'next' || q.includes('next step') || q.includes('continue') || q.includes('tell me more') || q.includes('what else') || q.includes('then what')) {
-      return '➡️ If you are looking for what to do next, you can try exploring: Uploading documents, Creating folders, Setting Expiry reminders, or Encrypting files with passwords. You can also click the quick-action buttons below for help!';
+      return 'âž¡ï¸ If you are looking for what to do next, you can try exploring: Uploading documents, Creating folders, Setting Expiry reminders, or Encrypting files with passwords. You can also click the quick-action buttons below for help!';
     }
 
     // 15. Dynamic AI Fallback
-    return `💡 I'm currently unable to answer questions regarding "${query}". For step-by-step assistance, please check our FAQs tab or click the Ticket tab to message our support team!`;
+    return `ðŸ’¡ I'm currently unable to answer questions regarding "${query}". For step-by-step assistance, please check our FAQs tab or click the Ticket tab to message our support team!`;
   };
 
   const handleSendChatMessage = (e?: React.FormEvent, customText?: string) => {
@@ -294,16 +296,42 @@ export default function FloatingHelpCenter() {
     }, 4000);
   };
 
+  const handleClose = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsOpen(false);
+      setIsClosing(false);
+    }, 250);
+  };
+
+  const handleOpen = () => {
+    if (isOpen) {
+      handleClose();
+    } else {
+      setIsClosing(false);
+      setIsOpen(true);
+    }
+  };
+
   return (
-    <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end pointer-events-auto font-auth-body">
+    <div className="fixed bottom-6 right-6 z-[9999] flex flex-col items-end pointer-events-auto font-auth-body" style={{ maxHeight: 'calc(100dvh - 48px)' }}>
       
-      {/* PROFESSIONAL LIVE SUPPORT CHAT WINDOW */}
+      {/* PROFESSIONAL FLOATING CHAT WINDOW */}
       {isOpen && (
-        <div className="mb-4 w-88 sm:w-96 h-[500px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col animate-pop-in text-slate-900 dark:text-white transition-all duration-300 border-themePrimary/20">
+        <div
+          className={`mb-4 w-[370px] sm:w-[400px] bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl overflow-hidden flex flex-col text-slate-900 dark:text-white transition-all duration-300 ${
+            isClosing ? 'animate-slide-down-out' : 'animate-slide-up-spring'
+          }`}
+          style={{
+            height: 'min(520px, calc(100dvh - 120px))',
+            boxShadow: '0 25px 60px -12px rgba(0, 0, 0, 0.25), 0 10px 20px -8px rgba(255, 107, 0, 0.12), 0 0 0 1px rgba(255, 107, 0, 0.05)',
+          }}
+        >
           
           {/* CHAT WINDOW HEADER */}
-          <div className="p-4 bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] text-white flex items-center justify-between shadow-md relative overflow-hidden">
-            <div className="absolute -right-8 -top-8 w-24 h-24 bg-white/10 rounded-full blur-xl pointer-events-none" />
+          <div className="p-4 bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] text-white flex items-center justify-between shadow-md relative overflow-hidden shrink-0">
+            <div className="absolute -right-8 -top-8 w-28 h-28 bg-white/8 rounded-full blur-2xl pointer-events-none" />
+            <div className="absolute -left-6 -bottom-6 w-20 h-20 bg-white/5 rounded-full blur-xl pointer-events-none" />
             
             <div className="flex items-center gap-3 relative z-10">
               <div className="relative">
@@ -330,9 +358,16 @@ export default function FloatingHelpCenter() {
 
             <div className="flex items-center gap-1 relative z-10">
               <button
-                onClick={() => setIsOpen(false)}
+                onClick={handleClose}
                 className="p-1.5 rounded-xl text-white/80 hover:text-white hover:bg-white/20 transition-colors cursor-pointer"
-                title="Minimize Chat"
+                title="Close"
+              >
+                <Minus className="w-4 h-4" />
+              </button>
+              <button
+                onClick={handleClose}
+                className="p-1.5 rounded-xl text-white/80 hover:text-white hover:bg-white/20 transition-colors cursor-pointer"
+                title="Close Chat"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -340,12 +375,12 @@ export default function FloatingHelpCenter() {
           </div>
 
           {/* TAB NAVIGATION STRIP */}
-          <div className="flex items-center justify-around bg-slate-100 dark:bg-slate-800/60 p-1 border-b border-slate-200 dark:border-slate-800 text-xs font-bold font-auth-heading">
+          <div className="flex items-center justify-around bg-slate-50 dark:bg-slate-800/60 p-1.5 border-b border-slate-200 dark:border-slate-800 text-xs font-bold font-auth-heading shrink-0">
             <button
               onClick={() => setActiveTab('chat')}
-              className={`flex-1 py-1.5 rounded-xl text-center transition-all flex items-center justify-center gap-1.5 ${
+              className={`flex-1 py-2 rounded-xl text-center transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                 activeTab === 'chat'
-                  ? 'bg-white dark:bg-slate-900 text-themePrimary shadow-xs'
+                  ? 'bg-white dark:bg-slate-900 text-themePrimary shadow-sm'
                   : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
@@ -353,9 +388,9 @@ export default function FloatingHelpCenter() {
             </button>
             <button
               onClick={() => setActiveTab('faqs')}
-              className={`flex-1 py-1.5 rounded-xl text-center transition-all flex items-center justify-center gap-1.5 ${
+              className={`flex-1 py-2 rounded-xl text-center transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                 activeTab === 'faqs'
-                  ? 'bg-white dark:bg-slate-900 text-themePrimary shadow-xs'
+                  ? 'bg-white dark:bg-slate-900 text-themePrimary shadow-sm'
                   : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
@@ -363,9 +398,9 @@ export default function FloatingHelpCenter() {
             </button>
             <button
               onClick={() => setActiveTab('ticket')}
-              className={`flex-1 py-1.5 rounded-xl text-center transition-all flex items-center justify-center gap-1.5 ${
+              className={`flex-1 py-2 rounded-xl text-center transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                 activeTab === 'ticket'
-                  ? 'bg-white dark:bg-slate-900 text-themePrimary shadow-xs'
+                  ? 'bg-white dark:bg-slate-900 text-themePrimary shadow-sm'
                   : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
@@ -415,19 +450,19 @@ export default function FloatingHelpCenter() {
                   onClick={() => handleSendChatMessage(undefined, 'How to upload documents?')}
                   className="px-2.5 py-1 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-themePrimary hover:text-themePrimary whitespace-nowrap transition cursor-pointer font-auth-body"
                 >
-                  📤 How to upload?
+                  ðŸ“¤ How to upload?
                 </button>
                 <button
                   onClick={() => handleSendChatMessage(undefined, 'Is my file encrypted?')}
                   className="px-2.5 py-1 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-themePrimary hover:text-themePrimary whitespace-nowrap transition cursor-pointer font-auth-body"
                 >
-                  🔒 Encrypted storage
+                  ðŸ”’ Encrypted storage
                 </button>
                 <button
                   onClick={() => handleSendChatMessage(undefined, 'How do expiry dates work?')}
                   className="px-2.5 py-1 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-themePrimary hover:text-themePrimary whitespace-nowrap transition cursor-pointer font-auth-body"
                 >
-                  ⏰ Expiry alerts
+                  â° Expiry alerts
                 </button>
               </div>
 
@@ -547,7 +582,7 @@ export default function FloatingHelpCenter() {
           )}
 
           {/* CHAT FOOTER */}
-          <div className="px-3 py-2 bg-slate-100 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-[10px] text-slate-500 dark:text-slate-400 font-auth-label">
+          <div className="px-3 py-2 bg-slate-100 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-[10px] text-slate-500 dark:text-slate-400 font-auth-label shrink-0">
             <span className="flex items-center gap-1">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" /> AES-256 Encrypted Support
             </span>
@@ -556,30 +591,52 @@ export default function FloatingHelpCenter() {
         </div>
       )}
 
-      {/* FLOATING BEACON CHAT BUTTON */}
+      {/* FLOATING ACTION BUTTON (FAB) */}
       <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="relative group p-3.5 sm:p-4 rounded-full bg-gradient-to-tr from-themePrimary to-[#F97316] text-white shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 border-2 border-white dark:border-slate-800 flex items-center justify-center cursor-pointer"
+        onClick={handleOpen}
+        className={`relative group w-14 h-14 sm:w-[60px] sm:h-[60px] rounded-full bg-gradient-to-tr from-themePrimary to-[#F97316] text-white shadow-2xl hover:shadow-orange-500/40 hover:scale-110 active:scale-95 transition-all duration-300 border-2 border-white/90 dark:border-slate-800 flex items-center justify-center cursor-pointer ${
+          !isOpen ? 'animate-fab-bounce' : ''
+        }`}
         aria-label="Open Live Chat Support"
         title={settings.hoverTooltip}
+        style={{
+          boxShadow: isOpen
+            ? '0 8px 25px -4px rgba(255, 107, 0, 0.4), 0 4px 10px -2px rgba(0, 0, 0, 0.15)'
+            : '0 12px 35px -6px rgba(255, 107, 0, 0.5), 0 6px 14px -4px rgba(0, 0, 0, 0.2)',
+        }}
       >
-        {/* Pulsing Outer Ring */}
-        <span className="animate-ping absolute inset-0 rounded-full bg-themePrimary opacity-75 pointer-events-none" />
-        <span className="absolute -inset-1 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 opacity-40 blur-sm group-hover:opacity-80 transition-opacity animate-pulse pointer-events-none" />
+        {/* Pulsing Outer Ring â€” only when closed */}
+        {!isOpen && (
+          <>
+            <span className="animate-ping absolute inset-0 rounded-full bg-themePrimary opacity-60 pointer-events-none" />
+            <span className="absolute -inset-1 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 opacity-30 blur-sm group-hover:opacity-70 transition-opacity pointer-events-none" />
+          </>
+        )}
 
         {/* Online Status Dot */}
-        <span className="absolute top-0.5 right-0.5 flex h-3.5 w-3.5">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-80" />
-          <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500 border-2 border-white dark:border-slate-900" />
-        </span>
+        {!isOpen && (
+          <span className="absolute top-0 right-0 flex h-3.5 w-3.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-80" />
+            <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500 border-2 border-white dark:border-slate-900" />
+          </span>
+        )}
 
-        {/* Icon */}
-        <MessageCircle className="w-6 h-6 sm:w-7 sm:h-7 relative z-10 text-white fill-white/10 group-hover:rotate-6 transition-transform" />
+        {/* Icon â€” morphs between chat and close */}
+        <div className="relative z-10 transition-transform duration-300">
+          {isOpen ? (
+            <X className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
+          ) : (
+            <MessageCircle className="w-6 h-6 sm:w-7 sm:h-7 text-white fill-white/10 group-hover:rotate-6 transition-transform" />
+          )}
+        </div>
 
-        {/* Tooltip on hover */}
-        <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-xl bg-slate-900 text-white text-xs font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-md hidden sm:block font-auth-heading">
-          {settings.hoverTooltip}
-        </span>
+        {/* Tooltip on hover â€” only when closed */}
+        {!isOpen && (
+          <span className="absolute right-full mr-4 top-1/2 -translate-y-1/2 px-3.5 py-2 rounded-xl bg-slate-900 text-white text-xs font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-lg hidden sm:block font-auth-heading">
+            {settings.hoverTooltip}
+            <span className="absolute left-full top-1/2 -translate-y-1/2 border-[6px] border-transparent border-l-slate-900" />
+          </span>
+        )}
       </button>
     </div>
   );
