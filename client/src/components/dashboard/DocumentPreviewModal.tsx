@@ -379,7 +379,7 @@ export default function DocumentPreviewModal({ documentId, document: documentPro
         {/* Main Body Area (Soft Light Background) */}
         <div className="flex-1 flex overflow-hidden relative">
           {/* Main Viewer Display */}
-          <div className="flex-1 bg-slate-100/70 overflow-auto flex items-center justify-center p-4">
+          <div className="flex-1 bg-slate-100/70 overflow-y-auto flex items-start justify-center p-4 sm:p-6">
             {loading ? (
               <div className="text-center space-y-3">
                 <Loader2 className="w-10 h-10 text-themePrimary animate-spin mx-auto" />
@@ -546,7 +546,7 @@ function ExcelViewer({ doc, zoomLevel, handleDownloadClick, formatFileSize, form
 
   return (
     <div 
-      className="w-full max-w-4xl my-auto transition-all"
+      className="w-full max-w-4xl transition-all my-2"
       style={{ transform: `scale(${zoomLevel / 100})`, transformOrigin: 'top center' }}
     >
       <div className="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-2xl font-mono text-xs text-slate-900">
@@ -667,7 +667,7 @@ function PowerPointViewer({ doc, slidesData, textContent, zoomLevel, handleDownl
 
   return (
     <div 
-      className="w-full max-w-4xl my-auto transition-all font-sans"
+      className="w-full max-w-4xl transition-all font-sans my-2"
       style={{ transform: `scale(${zoomLevel / 100})`, transformOrigin: 'top center' }}
     >
       <div className="bg-white border border-slate-200/90 rounded-3xl overflow-hidden shadow-2xl text-xs text-slate-900">
@@ -926,7 +926,7 @@ function WordViewer({ doc, textContent, extractedHtml, zoomLevel, handleDownload
 
   return (
     <div 
-      className="w-full max-w-4xl my-auto transition-all font-sans"
+      className="w-full max-w-4xl transition-all font-sans my-2"
       style={{ transform: `scale(${zoomLevel / 100})`, transformOrigin: 'top center' }}
     >
       <div className="bg-white text-slate-900 rounded-3xl overflow-hidden shadow-2xl relative border border-slate-200/90 font-sans">
@@ -957,7 +957,7 @@ function WordViewer({ doc, textContent, extractedHtml, zoomLevel, handleDownload
         </div>
 
         {/* Main Authentic A4 Document Canvas Sheet */}
-        <div className="p-6 sm:p-10 max-h-[70vh] overflow-y-auto bg-slate-100/60 font-sans font-auth-body">
+        <div className="p-4 sm:p-8 bg-slate-100/60 font-sans font-auth-body">
           {/* A4 Paper Container */}
           <div className="max-w-3xl mx-auto bg-white border border-slate-200/90 rounded-2xl p-8 sm:p-12 shadow-xl space-y-6">
             
