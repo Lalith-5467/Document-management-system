@@ -455,12 +455,10 @@ export default function MyDocumentsPage() {
     showToast(willFavorite ? '⭐ Added to Favorites!' : 'Removed from Favorites');
     logActivity(willFavorite ? 'FAVORITE_ADD' : 'FAVORITE_REMOVE', doc.title, `${willFavorite ? 'Starred' : 'Unstarred'} document "${doc.title}"`);
 
-    try {
-      await api.patch(`/documents/${doc.id}/favorite`);
-      await api.post(`/favorites/${doc.id}`).catch(() => null);
-    } catch {
-      // Keep optimistic state for client smooth UX
-    }
+    // Fire backend update non-blockingly
+    api.patch(`/documents/${doc.id}/favorite`).catch(() => {
+      api.post(`/favorites/${doc.id}`).catch(() => null);
+    });
   };
 
   const handleDownload = async (doc: DocumentItem) => {
@@ -499,11 +497,9 @@ export default function MyDocumentsPage() {
       localStorage.setItem('dms_user_documents', JSON.stringify(updated));
     }
     logActivity('RENAME', newTitle, `Renamed document "${selectedDoc.title}" to "${newTitle}"`);
-    try {
-      await api.patch(`/documents/${selectedDoc.id}/rename`, { title: newTitle }).catch(async () => {
-        await api.put(`/documents/${selectedDoc.id}`, { title: newTitle }).catch(() => null);
-      });
-    } catch (err) {}
+    api.patch(`/documents/${selectedDoc.id}/rename`, { title: newTitle }).catch(() => {
+      api.put(`/documents/${selectedDoc.id}`, { title: newTitle }).catch(() => null);
+    });
     showToast('Document renamed successfully!');
     setActiveModal(null);
     setSubmitting(false);
@@ -526,11 +522,9 @@ export default function MyDocumentsPage() {
       localStorage.setItem('dms_user_documents', JSON.stringify(updated));
     }
     logActivity('MOVE', selectedDoc.title, `Moved document "${selectedDoc.title}" to folder "${folderName}"`);
-    try {
-      await api.patch(`/documents/${selectedDoc.id}/move`, { folder_id: folderVal }).catch(async () => {
-        await api.put(`/documents/${selectedDoc.id}`, { folder_id: folderVal }).catch(() => null);
-      });
-    } catch (err) {}
+    api.patch(`/documents/${selectedDoc.id}/move`, { folder_id: folderVal }).catch(() => {
+      api.put(`/documents/${selectedDoc.id}`, { folder_id: folderVal }).catch(() => null);
+    });
     showToast('Document moved to folder successfully!');
     setActiveModal(null);
     setSubmitting(false);
@@ -560,11 +554,9 @@ export default function MyDocumentsPage() {
       localStorage.setItem('dms_trash_documents', JSON.stringify(updatedTrash));
     }
     logActivity('DELETE', selectedDoc.title, `Moved document "${selectedDoc.title}" to Recycle Bin`);
-    try {
-      await api.delete(`/documents/${selectedDoc.id}`).catch(async () => {
-        await api.patch(`/documents/${selectedDoc.id}/archive`).catch(() => null);
-      });
-    } catch (err) {}
+    api.delete(`/documents/${selectedDoc.id}`).catch(() => {
+      api.patch(`/documents/${selectedDoc.id}/archive`).catch(() => null);
+    });
     showToast('Document moved to Recycle Bin.');
     setActiveModal(null);
     setSubmitting(false);

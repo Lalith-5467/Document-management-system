@@ -24,7 +24,7 @@ const ROUTE_LABELS: Record<string, string> = {
   upload: 'Upload Document',
   favorites: 'Favorites',
   trash: 'Recycle Bin',
-  expiry: 'Expiry Notifications',
+  expiry: 'Expiry Reminders',
   calendar: 'Calendar View',
   themes: 'Themes',
   security: 'Security',

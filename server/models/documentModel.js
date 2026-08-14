@@ -442,13 +442,33 @@ class DocumentModel {
     }
 
     /**
+     * Verify document password
+     */
+    static async verifyPassword(id, password) {
+        if (!id || !password) return false;
+        const doc = await this.findById(id);
+        if (!doc) return false;
+        if (!doc.is_password_protected) return true;
+        if (!doc.password_hash) return false;
+        try {
+            const bcrypt = require('bcryptjs');
+            return bcrypt.compareSync(String(password), doc.password_hash);
+        } catch (e) {
+            return false;
+        }
+    }
+
+    /**
      * Create / Upload new document
      */
-    static async create({ userId, category_id, folder_id, title, description, file_name, file_path, file_size, mime_type, is_favorite = 0, expiry_date = null }) {
+    static async create({ userId, category_id, folder_id, title, description, file_name, file_path, file_size, mime_type, is_favorite = 0, is_password_protected = 0, password = null, expiry_date = null }) {
         const catId = Number(category_id) || 8;
         const foldId = folder_id ? Number(folder_id) : null;
         const docTitle = title || file_name;
         const isFav = Number(is_favorite) ? 1 : 0;
+        const isProtected = Number(is_password_protected) ? 1 : 0;
+        const bcrypt = require('bcryptjs');
+        const passwordHash = (isProtected && password) ? bcrypt.hashSync(String(password), 10) : null;
         const { sqliteDb } = require('../config/db');
 
         const newDoc = {
@@ -464,6 +484,8 @@ class DocumentModel {
             mime_type,
             is_favorite: isFav,
             is_archived: 0,
+            is_password_protected: isProtected,
+            password_hash: passwordHash,
             expiry_date: expiry_date,
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
@@ -475,8 +497,8 @@ class DocumentModel {
         try {
             if (sqliteDb) {
                 const res = await sqliteDb.run(
-                    `INSERT INTO documents (user_id, category_id, folder_id, title, description, file_name, file_path, file_size, mime_type, is_favorite, expiry_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-                    [Number(userId), catId, foldId, docTitle, description || '', file_name, file_path, file_size, mime_type, isFav, expiry_date]
+                    `INSERT INTO documents (user_id, category_id, folder_id, title, description, file_name, file_path, file_size, mime_type, is_favorite, is_password_protected, password_hash, expiry_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                    [Number(userId), catId, foldId, docTitle, description || '', file_name, file_path, file_size, mime_type, isFav, isProtected, passwordHash, expiry_date]
                 );
                 if (res && res.lastID) {
                     newDoc.id = res.lastID;
@@ -486,8 +508,8 @@ class DocumentModel {
                 }
             } else if (pool) {
                 const [result] = await pool.execute(
-                    `INSERT INTO documents (user_id, category_id, folder_id, title, description, file_name, file_path, file_size, mime_type, is_favorite, expiry_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-                    [Number(userId), catId, foldId, docTitle, description || '', file_name, file_path, file_size, mime_type, isFav, expiry_date]
+                    `INSERT INTO documents (user_id, category_id, folder_id, title, description, file_name, file_path, file_size, mime_type, is_favorite, is_password_protected, password_hash, expiry_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                    [Number(userId), catId, foldId, docTitle, description || '', file_name, file_path, file_size, mime_type, isFav, isProtected, passwordHash, expiry_date]
                 );
                 if (result && result.insertId) {
                     newDoc.id = result.insertId;

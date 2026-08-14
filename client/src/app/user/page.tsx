@@ -215,14 +215,20 @@ export default function UserWorkspacePage() {
   const fetchWorkspaceData = async () => {
     setLoading(true);
     try {
-      // 1. Fetch User Documents to calculate exact total files & favorites
+      // Fetch all workspace endpoints concurrently in parallel
+      const [docRes, folderRes, catRes, summaryRes] = await Promise.all([
+        api.get('/documents').catch(() => null),
+        api.get('/folders').catch(() => null),
+        api.get('/categories').catch(() => null),
+        api.get('/dashboard/summary').catch(() => null)
+      ]);
+
+      // 1. Process Documents
       let fetchedDocs: any[] = [];
-      const docRes = await api.get('/documents').catch(() => null);
       if (docRes?.data?.success && Array.isArray(docRes.data.documents)) {
         fetchedDocs = docRes.data.documents;
       }
 
-      // Read local uploads
       let storedDocs: any[] = [];
       if (typeof window !== 'undefined') {
         const saved = localStorage.getItem('dms_user_documents');
@@ -250,9 +256,8 @@ export default function UserWorkspacePage() {
         setRecentUploads(sampleDocs);
       }
 
-      // 2. Fetch Folders
+      // 2. Process Folders
       let userFolders: any[] = [];
-      const folderRes = await api.get('/folders').catch(() => null);
       if (folderRes?.data?.folders && folderRes.data.folders.length > 0) {
         userFolders = folderRes.data.folders;
       } else if (typeof window !== 'undefined') {
@@ -275,9 +280,8 @@ export default function UserWorkspacePage() {
         setFolders(userFolders);
       }
 
-      // 3. Fetch Categories
+      // 3. Process Categories
       let userCategories: any[] = [];
-      const catRes = await api.get('/categories').catch(() => null);
       if (catRes?.data?.categories && catRes.data.categories.length > 0) {
         userCategories = catRes.data.categories;
         setCategoriesList(userCategories);
@@ -292,8 +296,6 @@ export default function UserWorkspacePage() {
         ];
         setCategoriesList(userCategories);
       }
-
-      const summaryRes = await api.get('/dashboard/summary').catch(() => null);
       const totalDocsCount = allMergedDocs.length || (summaryRes?.data?.stats?.totalDocuments ?? 4);
       const favDocsCount = allMergedDocs.filter(d => Boolean(d.is_favorite)).length || (summaryRes?.data?.stats?.favoriteDocuments ?? 1);
       const totalFoldersCount = (summaryRes?.data?.stats?.totalFolders && summaryRes.data.stats.totalFolders > 0)

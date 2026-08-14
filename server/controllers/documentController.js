@@ -222,8 +222,18 @@ class DocumentController {
                 });
             }
 
-            const { title, description, category_id, folder_id, is_favorite, expiry_date } = req.body;
+            const { title, description, category_id, folder_id, is_favorite, is_password_protected, password, expiry_date } = req.body;
             const isFav = (is_favorite === 'true' || is_favorite === '1' || is_favorite === 1 || is_favorite === true) ? 1 : 0;
+            const isProtected = (is_password_protected === 'true' || is_password_protected === '1' || is_password_protected === 1 || is_password_protected === true) ? 1 : 0;
+
+            if (isProtected) {
+                if (!password || String(password).trim().length < 6) {
+                    return res.status(400).json({
+                        success: false,
+                        message: 'Master password is required and must be at least 6 characters long.'
+                    });
+                }
+            }
 
             let filePath = '';
 
@@ -278,6 +288,8 @@ class DocumentController {
                 file_size: file.size,
                 mime_type: file.mimetype,
                 is_favorite: isFav,
+                is_password_protected: isProtected,
+                password: password || null,
                 expiry_date: expiry_date || null
             });
 
@@ -513,6 +525,40 @@ class DocumentController {
     }
 
     /**
+     * POST /api/documents/:id/verify-password
+     */
+    static async verifyDocumentPassword(req, res) {
+        try {
+            const docId = req.params.id;
+            const password = req.body?.password || req.headers['x-document-password'] || req.query?.password;
+            if (!docId || !password) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Document ID and password are required.'
+                });
+            }
+            const isValid = await DocumentModel.verifyPassword(docId, password);
+            if (isValid) {
+                return res.status(200).json({
+                    success: true,
+                    message: 'Document password verified successfully.'
+                });
+            } else {
+                return res.status(401).json({
+                    success: false,
+                    message: 'Incorrect password. Access denied.'
+                });
+            }
+        } catch (err) {
+            return res.status(500).json({
+                success: false,
+                message: 'Password verification failed.',
+                error: err.message
+            });
+        }
+    }
+
+    /**
      * GET /api/documents/:id/preview
      */
     static async getPreviewDetails(req, res) {
@@ -605,6 +651,26 @@ class DocumentController {
                     is_favorite: 0,
                     is_archived: 0
                 };
+            }
+
+            if (document && Number(document.is_password_protected) === 1) {
+                const inputPassword = req.headers['x-document-password'] || req.query?.password || req.body?.password;
+                const bcrypt = require('bcryptjs');
+                const isMatch = (inputPassword && document.password_hash) ? bcrypt.compareSync(String(inputPassword), document.password_hash) : false;
+                if (!isMatch) {
+                    return res.status(200).json({
+                        success: false,
+                        is_password_protected: true,
+                        message: 'Password required to unlock and preview this document.',
+                        document: {
+                            id: document.id,
+                            title: document.title,
+                            file_name: document.file_name,
+                            category_name: document.category_name,
+                            is_password_protected: 1
+                        }
+                    });
+                }
             }
 
             const mimeType = (document.mime_type || '').toLowerCase();

@@ -47,16 +47,12 @@ export async function logActivity(action_type: string, document_name: string | n
     localStorage.setItem(STORAGE_KEY, JSON.stringify(updated.slice(0, 100))); // Keep last 100 activities
   }
 
-  // 2. Post log to backend API asynchronously
-  try {
-    await api.post('/activity', {
+    // 2. Post log to backend API in background without blocking caller execution
+    api.post('/activity', {
       action_type: action_type.toUpperCase(),
       document_name: document_name || null,
       details: details || ''
     }).catch(() => null);
-  } catch (err) {
-    // Silent catch for smooth client offline support
-  }
 
   return newLog;
 }

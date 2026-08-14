@@ -16,6 +16,7 @@ router.get('/trash', DocumentController.getTrashDocuments);
 router.post('/upload', upload.single('document'), DocumentController.uploadDocument);
 
 // GET download & preview & stream files
+router.post('/:id/verify-password', DocumentController.verifyDocumentPassword);
 router.get('/:id/download', DocumentController.downloadDocument);
 router.get('/:id/preview', DocumentController.getPreviewDetails);
 router.get('/:id/stream', DocumentController.streamDocumentFile);

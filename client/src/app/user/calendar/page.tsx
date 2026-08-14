@@ -97,29 +97,28 @@ export default function DocumentCalendarPage() {
       if (res.data?.success && Array.isArray(res.data.documents)) {
         syncExpiryNotifications(res.data.documents);
         const todayDate = new Date();
-        const dynamicEvents: CalendarDocEvent[] = res.data.documents
-          .filter((doc: any) => doc.expiry_date != null)
-          .map((doc: any) => {
-            const expStr = doc.expiry_date;
-            const dateObj = new Date(expStr);
-            const diffDays = Math.ceil((dateObj.getTime() - todayDate.getTime()) / (1000 * 60 * 60 * 24));
-            
-            let status: 'valid' | 'expiring_soon' | 'expired' = 'valid';
-            if (diffDays <= 0) status = 'expired';
-            else if (diffDays <= 30) status = 'expiring_soon';
-            
-            return {
-              id: doc.id,
-              title: doc.title || doc.file_name,
-              category: doc.category_name || 'General Document',
-              expiryDate: expStr.split('T')[0],
-              year: dateObj.getFullYear(),
-              month: dateObj.getMonth(),
-              dayOfMonth: dateObj.getDate(),
-              daysRemaining: diffDays,
-              status
-            };
-          });
+        const dynamicEvents: CalendarDocEvent[] = res.data.documents.map((doc: any) => {
+          const rawDate = (doc.expiry_date && String(doc.expiry_date).trim()) || doc.created_at || new Date().toISOString();
+          const expStr = String(rawDate).split('T')[0];
+          const dateObj = new Date(expStr);
+          const diffDays = Math.ceil((dateObj.getTime() - todayDate.getTime()) / (1000 * 60 * 60 * 24));
+          
+          let status: 'valid' | 'expiring_soon' | 'expired' = 'valid';
+          if (diffDays <= 0) status = 'expired';
+          else if (diffDays <= 30) status = 'expiring_soon';
+          
+          return {
+            id: doc.id,
+            title: doc.title || doc.file_name,
+            category: doc.category_name || 'General Document',
+            expiryDate: expStr,
+            year: dateObj.getFullYear(),
+            month: dateObj.getMonth(),
+            dayOfMonth: dateObj.getDate(),
+            daysRemaining: diffDays,
+            status
+          };
+        });
         setEvents(dynamicEvents);
       }
     } catch (e) {

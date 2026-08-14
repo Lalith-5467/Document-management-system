@@ -67,27 +67,28 @@ export default function ExpiryRemindersPage() {
         const res = await api.get('/documents?limit=1000');
         if (res.data?.success && Array.isArray(res.data.documents)) {
           syncExpiryNotifications(res.data.documents);
-          const items = res.data.documents
-            .filter((d: any) => d.expiry_date != null)
-            .map((d: any) => {
-              const eDate = new Date(d.expiry_date);
-              const now = new Date();
-              const diffDays = Math.ceil((eDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-              
-              let status: 'valid' | 'expiring_soon' | 'expired' = 'valid';
-              if (diffDays <= 0) status = 'expired';
-              else if (diffDays <= 30) status = 'expiring_soon';
+          const items = res.data.documents.map((d: any) => {
+            const rawDate = (d.expiry_date && String(d.expiry_date).trim()) || d.created_at || new Date().toISOString();
+            const expDateStr = String(rawDate).split('T')[0];
+            const eDate = new Date(expDateStr);
+            const now = new Date();
+            now.setHours(0, 0, 0, 0);
+            const diffDays = Math.ceil((eDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+            
+            let status: 'valid' | 'expiring_soon' | 'expired' = 'valid';
+            if (diffDays <= 0) status = 'expired';
+            else if (diffDays <= 30) status = 'expiring_soon';
 
-              return {
-                id: d.id,
-                title: d.title || d.file_name,
-                category: d.category_name || 'General Document',
-                expiryDate: d.expiry_date,
-                daysRemaining: diffDays,
-                status: status,
-                fileSize: formatFileSize(d.file_size || 0)
-              };
-            });
+            return {
+              id: d.id,
+              title: d.title || d.file_name,
+              category: d.category_name || 'General Document',
+              expiryDate: expDateStr,
+              daysRemaining: diffDays,
+              status: status,
+              fileSize: formatFileSize(d.file_size || 0)
+            };
+          });
           setDocs(items);
         }
       } catch (err) {
@@ -172,15 +173,6 @@ export default function ExpiryRemindersPage() {
           <span>{toastMessage}</span>
         </div>
       )}
-
-      {/* Navigation Breadcrumb */}
-      <div className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium">
-        <Link href="/user" className="hover:text-themePrimary dark:hover:text-orange-400 transition-colors font-medium">
-          Vault Collections
-        </Link>
-        <ChevronRight className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 shrink-0" />
-        <span className="font-semibold text-slate-900 dark:text-white">Expiry Reminders</span>
-      </div>
 
       {/* PAGE HEADER */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
@@ -279,76 +271,100 @@ export default function ExpiryRemindersPage() {
       </div>
 
       {/* DOCUMENT EXPIRY CARDS GRID */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {filteredDocs.map((doc) => {
-          const isExpired = doc.status === 'expired';
-          const isWarning = doc.status === 'expiring_soon';
-
-          return (
-            <div
-              key={doc.id}
-              className={`bg-white dark:bg-[#19102E] border rounded-3xl p-5 space-y-4 shadow-sm hover:shadow-xl transition-all card-hover-subtle relative ${
-                isExpired
-                  ? 'border-rose-300 dark:border-rose-900/60'
-                  : isWarning
-                  ? 'border-amber-300 dark:border-amber-900/60'
-                  : 'border-[#EAE4F8] dark:border-[#2D1F47]'
-              }`}
+      {filteredDocs.length === 0 ? (
+        <div className="bg-white dark:bg-[#19102E] border border-[#EAE4F8] dark:border-[#2D1F47] rounded-3xl p-10 text-center space-y-4 shadow-sm flex flex-col items-center justify-center min-h-[280px]">
+          <div className="w-16 h-16 rounded-3xl bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800 flex items-center justify-center text-amber-500 shadow-inner">
+            <Clock className="w-8 h-8" />
+          </div>
+          <div className="max-w-md space-y-1">
+            <h3 className="text-lg font-black text-[#1E1235] dark:text-white">No Expiry Documents Found</h3>
+            <p className="text-sm text-[#7B7393] dark:text-[#A39BB8] font-medium leading-relaxed">
+              {searchQuery || activeTab !== 'all'
+                ? 'No documents match your current filter or search criteria.'
+                : 'None of your documents currently have an expiry date set. Upload time-sensitive documents (Passports, Visas, Licenses, Contracts) with an Expiry Date to track them here.'}
+            </p>
+          </div>
+          <div className="pt-2 flex items-center gap-3">
+            <Link
+              href="/user/upload"
+              className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-black text-sm shadow-md shadow-orange-500/25 hover:scale-105 transition"
             >
-              <div className="flex items-start justify-between">
-                <span
-                  className={`px-2.5 py-1 rounded-full text-xs font-black uppercase border ${
-                    isExpired
-                      ? 'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/60 dark:text-rose-300'
-                      : isWarning
-                      ? 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/60 dark:text-amber-300'
-                      : 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300'
-                  }`}
-                >
-                  {isExpired
-                    ? `🔴 Your ${doc.title.split('.')[0].substring(0, 15)} was expired`
+              Upload Document with Expiry Date
+            </Link>
+          </div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {filteredDocs.map((doc) => {
+            const isExpired = doc.status === 'expired';
+            const isWarning = doc.status === 'expiring_soon';
+
+            return (
+              <div
+                key={doc.id}
+                className={`bg-white dark:bg-[#19102E] border rounded-3xl p-5 space-y-4 shadow-sm hover:shadow-xl transition-all card-hover-subtle relative ${
+                  isExpired
+                    ? 'border-rose-300 dark:border-rose-900/60'
                     : isWarning
-                    ? `🟡 ${doc.daysRemaining} Days Remaining`
-                    : '🟢 Valid'}
-                </span>
+                    ? 'border-amber-300 dark:border-amber-900/60'
+                    : 'border-[#EAE4F8] dark:border-[#2D1F47]'
+                }`}
+              >
+                <div className="flex items-start justify-between">
+                  <span
+                    className={`px-2.5 py-1 rounded-full text-xs font-black uppercase border ${
+                      isExpired
+                        ? 'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/60 dark:text-rose-300'
+                        : isWarning
+                        ? 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/60 dark:text-amber-300'
+                        : 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300'
+                    }`}
+                  >
+                    {isExpired
+                      ? `🔴 Your ${doc.title.split('.')[0].substring(0, 15)} was expired`
+                      : isWarning
+                      ? `🟡 ${doc.daysRemaining} Days Remaining`
+                      : '🟢 Valid'}
+                  </span>
 
-                <span className="text-xs text-[#7B7393] font-mono">{doc.fileSize}</span>
+                  <span className="text-xs text-[#7B7393] font-mono">{doc.fileSize}</span>
+                </div>
+
+                <div>
+                  <h3 className="text-base font-black text-[#1E1235] dark:text-white truncate" title={doc.title}>
+                    {doc.title}
+                  </h3>
+                  <p className="text-sm text-[#7B7393] font-medium mt-0.5">{doc.category}</p>
+                </div>
+
+                <div className="p-3 rounded-2xl bg-[#F3F0FA] dark:bg-[#1F143A] border border-[#EAE4F8] dark:border-[#2D1F47] flex items-center justify-between text-sm font-mono">
+                  <span className="text-[#7B7393]">Expiry Date:</span>
+                  <span className="font-bold text-[#1E1235] dark:text-white">{doc.expiryDate}</span>
+                </div>
+
+                <div className="pt-2 border-t border-[#F3F0FA] dark:border-[#2D1F47] flex items-center justify-between">
+                  <button
+                    onClick={() => {
+                      logActivity('PREVIEW', doc.title, `Viewed document preview for "${doc.title}"`);
+                      setPreviewModalDocId(doc.id);
+                    }}
+                    className="px-3 py-1.5 rounded-xl border border-[#EAE4F8] dark:border-[#2D1F47] text-[#7B7393] hover:text-[#1E1235] dark:hover:text-white text-sm font-bold transition flex items-center gap-1"
+                  >
+                    <Eye className="w-3.5 h-3.5" /> View
+                  </button>
+
+                  <button
+                    onClick={() => { setRenewModalDoc(doc); setNewExpiryDate(doc.expiryDate); }}
+                    className="px-4 py-1.5 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white text-sm font-black shadow-md shadow-orange-500/25 hover:scale-105 transition flex items-center gap-1.5"
+                  >
+                    <RefreshCw className="w-3.5 h-3.5" /> Renew Now
+                  </button>
+                </div>
               </div>
-
-              <div>
-                <h3 className="text-base font-black text-[#1E1235] dark:text-white truncate" title={doc.title}>
-                  {doc.title}
-                </h3>
-                <p className="text-sm text-[#7B7393] font-medium mt-0.5">{doc.category}</p>
-              </div>
-
-              <div className="p-3 rounded-2xl bg-[#F3F0FA] dark:bg-[#1F143A] border border-[#EAE4F8] dark:border-[#2D1F47] flex items-center justify-between text-sm font-mono">
-                <span className="text-[#7B7393]">Expiry Date:</span>
-                <span className="font-bold text-[#1E1235] dark:text-white">{doc.expiryDate}</span>
-              </div>
-
-              <div className="pt-2 border-t border-[#F3F0FA] dark:border-[#2D1F47] flex items-center justify-between">
-                <button
-                  onClick={() => {
-                    logActivity('PREVIEW', doc.title, `Viewed document preview for "${doc.title}"`);
-                    setPreviewModalDocId(doc.id);
-                  }}
-                  className="px-3 py-1.5 rounded-xl border border-[#EAE4F8] dark:border-[#2D1F47] text-[#7B7393] hover:text-[#1E1235] dark:hover:text-white text-sm font-bold transition flex items-center gap-1"
-                >
-                  <Eye className="w-3.5 h-3.5" /> View
-                </button>
-
-                <button
-                  onClick={() => { setRenewModalDoc(doc); setNewExpiryDate(doc.expiryDate); }}
-                  className="px-4 py-1.5 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white text-sm font-black shadow-md shadow-orange-500/25 hover:scale-105 transition flex items-center gap-1.5"
-                >
-                  <RefreshCw className="w-3.5 h-3.5" /> Renew Now
-                </button>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
 
       {/* RENEW MODAL */}
       {renewModalDoc && (

@@ -120,18 +120,23 @@ async function testConnection() {
  */
 const pool = {
     async execute(sql, params = []) {
-        // Periodically retry MySQL if it was previously down (every 30 seconds)
+        // Periodically retry MySQL in background if it was previously down (every 60 seconds)
         if (useSQLite) {
             const now = Date.now();
-            if (now - lastMySQLRetry > 30000) {
+            if (now - lastMySQLRetry > 60000) {
                 lastMySQLRetry = now;
-                try {
-                    const conn = await mysqlPool.getConnection();
+                // Run connection test in background without blocking query execution
+                Promise.race([
+                    mysqlPool.getConnection(),
+                    new Promise((_, reject) => setTimeout(() => reject(new Error('MySQL Connect Timeout')), 500))
+                ]).then(conn => {
                     conn.release();
                     useSQLite = false;
                     console.log('✅ MySQL reconnected!');
                     syncMySQLToSQLite().catch(() => {});
-                } catch (e) { /* still down */ }
+                }).catch(() => {
+                    // Still offline, retain SQLite
+                });
             }
         }
 

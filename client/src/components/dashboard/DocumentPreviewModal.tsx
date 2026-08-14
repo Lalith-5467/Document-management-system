@@ -57,37 +57,67 @@ export default function DocumentPreviewModal({ documentId, document: documentPro
   const [isFullScreen, setIsFullScreen] = useState<boolean>(false);
   const [showInfoPanel, setShowInfoPanel] = useState<boolean>(false);
 
+  const [isPasswordLocked, setIsPasswordLocked] = useState<boolean>(Boolean(initialData?.is_password_protected));
+  const [inputPassword, setInputPassword] = useState<string>('');
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [verifyingPassword, setVerifyingPassword] = useState<boolean>(false);
+  const [unlockedPassword, setUnlockedPassword] = useState<string | null>(null);
+
   useEffect(() => {
     const freshData = documentProp || initialDocument || null;
     if (freshData) {
       setDoc(freshData);
+      if (freshData.is_password_protected && !unlockedPassword) {
+        setIsPasswordLocked(true);
+      }
     }
-    fetchPreviewData();
+    fetchPreviewData(unlockedPassword || undefined);
   }, [targetId, documentId, documentProp, initialDocument]);
 
   const [slidesData, setSlidesData] = useState<any[] | null>(null);
   const [extractedHtml, setExtractedHtml] = useState<string>('');
 
-  const fetchPreviewData = async () => {
+  const fetchPreviewData = async (pwd?: string) => {
     const activeId = targetId || documentId;
     if (!activeId) return;
 
     setLoading(true);
     setError(null);
+    setPasswordError(null);
     setSlidesData(null);
     setTextContent('');
     setExtractedHtml('');
+
     try {
       const params: any = {};
       if (doc?.file_name) params.file_name = doc.file_name;
       if (doc?.title) params.title = doc.title;
       if (doc?.file_path) params.file_path = doc.file_path;
       if (doc?.category_name) params.category_name = doc.category_name;
+      if (pwd) params.password = pwd;
 
-      const res = await api.get(`/documents/${activeId}/preview`, { params });
+      const headers: any = {};
+      if (pwd) headers['x-document-password'] = pwd;
+
+      const res = await api.get(`/documents/${activeId}/preview`, { params, headers });
+
+      if (res.data?.is_password_protected && !pwd) {
+        setIsPasswordLocked(true);
+        setLoading(false);
+        return;
+      }
+
       if (res.data && res.data.document) {
         const fetchedDoc = res.data.document;
         setDoc(prev => ({ ...(prev || {}), ...fetchedDoc }));
+
+        if (fetchedDoc.is_password_protected && !pwd) {
+          setIsPasswordLocked(true);
+          setLoading(false);
+          return;
+        }
+
+        setIsPasswordLocked(false);
         setCanPreview(true);
 
         if (res.data.slidesData && Array.isArray(res.data.slidesData)) {
@@ -105,7 +135,7 @@ export default function DocumentPreviewModal({ documentId, document: documentPro
           const fileName = (fetchedDoc.file_name || fetchedDoc.title || '').toLowerCase();
           if (fileName.endsWith('.txt') || fetchedDoc.mime_type?.includes('text/plain')) {
             try {
-              const textRes = await api.get(`/documents/${activeId}/stream`, { responseType: 'text', params });
+              const textRes = await api.get(`/documents/${activeId}/stream`, { responseType: 'text', params, headers });
               setTextContent(textRes.data);
             } catch (e) {
               setTextContent('No text content available to preview.');
@@ -118,12 +148,45 @@ export default function DocumentPreviewModal({ documentId, document: documentPro
     } catch (err: any) {
       if (initialData) {
         setDoc(initialData);
-        setCanPreview(true);
+        if (initialData.is_password_protected && !pwd) {
+          setIsPasswordLocked(true);
+        } else {
+          setCanPreview(true);
+        }
       } else {
         setError('Failed to load document details for preview.');
       }
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleUnlockPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!inputPassword) return;
+
+    if (inputPassword.length < 6) {
+      setPasswordError('Master password must be at least 6 characters.');
+      return;
+    }
+
+    setVerifyingPassword(true);
+    setPasswordError(null);
+
+    try {
+      const activeId = targetId || documentId;
+      const res = await api.post(`/documents/${activeId}/verify-password`, { password: inputPassword });
+      if (res.data?.success) {
+        setUnlockedPassword(inputPassword);
+        setIsPasswordLocked(false);
+        fetchPreviewData(inputPassword);
+      } else {
+        setPasswordError(res.data?.message || 'Incorrect document password.');
+      }
+    } catch (err: any) {
+      setPasswordError(err.response?.data?.message || 'Incorrect document password.');
+    } finally {
+      setVerifyingPassword(false);
     }
   };
 
@@ -244,7 +307,8 @@ export default function DocumentPreviewModal({ documentId, document: documentPro
     if (doc.file_path.startsWith('/uploads') || doc.file_path.startsWith('uploads')) {
       return `${baseUrl}${doc.file_path.startsWith('/') ? '' : '/'}${doc.file_path}`;
     }
-    return `${baseUrl}/api/documents/${doc.id}/stream${typeof window !== 'undefined' && localStorage.getItem('dms_token') ? `?token=${localStorage.getItem('dms_token')}` : '?token=demo_token'}`;
+    const pwdParam = unlockedPassword ? `&password=${encodeURIComponent(unlockedPassword)}` : '';
+    return `${baseUrl}/api/documents/${doc.id}/stream${typeof window !== 'undefined' && localStorage.getItem('dms_token') ? `?token=${localStorage.getItem('dms_token')}` : '?token=demo_token'}${pwdParam}`;
   };
 
   const [downloadState, setDownloadState] = useState<'idle' | 'downloading' | 'done'>('idle');
@@ -389,7 +453,51 @@ export default function DocumentPreviewModal({ documentId, document: documentPro
         <div className="flex-1 flex min-h-0 overflow-hidden relative">
           {/* Main Viewer Display */}
           <div className="flex-1 bg-slate-100/70 overflow-y-auto min-h-0 flex items-start justify-center p-4 sm:p-6">
-            {loading ? (
+            {isPasswordLocked ? (
+              <div className="my-auto text-center space-y-5 max-w-md w-full p-8 bg-white rounded-3xl border border-slate-200 shadow-2xl animate-pop-in">
+                <div className="w-16 h-16 rounded-3xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 mx-auto shadow-inner">
+                  <ShieldCheck className="w-8 h-8" />
+                </div>
+                <div className="space-y-1">
+                  <h3 className="text-lg font-black text-slate-900 tracking-tight">Protected Document</h3>
+                  <p className="text-xs text-slate-500 font-medium">
+                    This document is encrypted with master password protection. Enter the password to unlock and preview.
+                  </p>
+                </div>
+                <form onSubmit={handleUnlockPassword} className="space-y-4 pt-2">
+                  <div>
+                    <input
+                      type="password"
+                      required
+                      autoFocus
+                      value={inputPassword}
+                      onChange={(e) => setInputPassword(e.target.value)}
+                      placeholder="Enter master password (min. 6 characters)"
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-bold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-themePrimary focus:bg-white transition"
+                    />
+                    <p className="text-[11px] text-slate-400 font-medium mt-1 text-left">
+                      Password must be at least 6 characters.
+                    </p>
+                    {passwordError && (
+                      <p className="text-xs text-rose-500 font-bold mt-2 text-left">{passwordError}</p>
+                    )}
+                  </div>
+                  <button
+                    type="submit"
+                    disabled={verifyingPassword}
+                    className="w-full py-3 rounded-2xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-black text-sm shadow-md shadow-orange-500/25 hover:scale-[1.02] transition flex items-center justify-center gap-2"
+                  >
+                    {verifyingPassword ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" /> Verifying...
+                      </>
+                    ) : (
+                      'Unlock & View Document'
+                    )}
+                  </button>
+                </form>
+              </div>
+            ) : loading ? (
               <div className="text-center space-y-3">
                 <Loader2 className="w-10 h-10 text-themePrimary animate-spin mx-auto" />
                 <p className="text-xs text-slate-600 font-medium">Loading document stream preview...</p>

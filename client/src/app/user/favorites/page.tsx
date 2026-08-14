@@ -337,22 +337,21 @@ export default function FavoritesPage() {
     setLoading(true);
     let combined: FavoriteDocument[] = [];
 
-    // Source 1: API /favorites
     try {
-      const res = await api.get('/favorites');
-      const apiFavs = res.data?.favorites || (Array.isArray(res.data) ? res.data : []);
+      const [res1, res2] = await Promise.all([
+        api.get('/favorites').catch(() => null),
+        api.get('/documents', { params: { is_favorite: 1, limit: 100 } }).catch(() => null)
+      ]);
+
+      const apiFavs = res1?.data?.favorites || (Array.isArray(res1?.data) ? res1.data : []);
       if (Array.isArray(apiFavs) && apiFavs.length > 0) {
         combined = [...combined, ...apiFavs];
       }
-    } catch (err) {}
 
-    // Source 2: API /documents?is_favorite=1
-    try {
-      const res2 = await api.get('/documents', { params: { is_favorite: 1, limit: 100 } });
-      const docs = res2.data?.documents || (Array.isArray(res2.data) ? res2.data : []);
+      const docs = res2?.data?.documents || (Array.isArray(res2?.data) ? res2.data : []);
       const favDocs = docs.filter((d: any) => Number(d.is_favorite) === 1 || d.is_favorite === true);
       combined = [...combined, ...favDocs];
-    } catch (err2) {}
+    } catch (err) {}
 
     // Source 3: localStorage 'dms_favorites_list'
     if (typeof window !== 'undefined') {
@@ -499,17 +498,13 @@ export default function FavoritesPage() {
     }
 
     showToast('Removed from favorites.');
+    api.patch(`/documents/${docId}/favorite`, { is_favorite: 0 }).catch(() => {
+      api.delete(`/favorites/${docId}`).catch(() => null);
+    });
 
-    try {
-      await api.patch(`/documents/${docId}/favorite`, { is_favorite: 0 });
-      await api.delete(`/favorites/${docId}`).catch(() => null);
-    } catch {
-      // Optimistic update retained
-    } finally {
-      setActionLoading(false);
-      setShowRemoveModal(false);
-      setSelectedDoc(null);
-    }
+    setActionLoading(false);
+    setShowRemoveModal(false);
+    setSelectedDoc(null);
   };
 
   const handleDownload = (doc: FavoriteDocument) => {

@@ -64,6 +64,8 @@ CREATE TABLE IF NOT EXISTS documents (
     mime_type VARCHAR(100) NOT NULL,
     is_favorite TINYINT(1) DEFAULT 0,
     is_archived TINYINT(1) DEFAULT 0,
+    is_password_protected TINYINT(1) DEFAULT 0,
+    password_hash VARCHAR(255) NULL,
     expiry_date DATE NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

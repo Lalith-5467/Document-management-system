@@ -93,6 +93,8 @@ async function initSqlite() {
             mime_type TEXT NOT NULL,
             is_favorite INTEGER DEFAULT 0,
             is_archived INTEGER DEFAULT 0,
+            is_password_protected INTEGER DEFAULT 0,
+            password_hash TEXT NULL,
             expiry_date TEXT NULL,
             deleted_at TEXT NULL,
             created_at TEXT DEFAULT CURRENT_TIMESTAMP,
@@ -184,6 +186,19 @@ async function initSqlite() {
             created_at TEXT DEFAULT CURRENT_TIMESTAMP,
             updated_at TEXT DEFAULT CURRENT_TIMESTAMP
         );
+
+        CREATE INDEX IF NOT EXISTS idx_documents_user_id ON documents(user_id);
+        CREATE INDEX IF NOT EXISTS idx_documents_category_id ON documents(category_id);
+        CREATE INDEX IF NOT EXISTS idx_documents_folder_id ON documents(folder_id);
+        CREATE INDEX IF NOT EXISTS idx_documents_is_favorite ON documents(is_favorite);
+        CREATE INDEX IF NOT EXISTS idx_documents_deleted_at ON documents(deleted_at);
+        CREATE INDEX IF NOT EXISTS idx_documents_created_at ON documents(created_at);
+        CREATE INDEX IF NOT EXISTS idx_activity_logs_user_id ON activity_logs(user_id);
+        CREATE INDEX IF NOT EXISTS idx_activity_logs_created_at ON activity_logs(created_at);
+        CREATE INDEX IF NOT EXISTS idx_favorites_user_doc ON favorites(user_id, document_id);
+        CREATE INDEX IF NOT EXISTS idx_folders_user_id ON folders(user_id);
+        CREATE INDEX IF NOT EXISTS idx_categories_user_id ON categories(user_id);
+        CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
     `);
 
     // Safely add missing columns to existing databases
@@ -210,6 +225,8 @@ async function initSqlite() {
         "ALTER TABLE users ADD COLUMN city TEXT NULL",
         "ALTER TABLE documents ADD COLUMN deleted_at TEXT NULL",
         "ALTER TABLE documents ADD COLUMN expiry_date TEXT NULL",
+        "ALTER TABLE documents ADD COLUMN is_password_protected INTEGER DEFAULT 0",
+        "ALTER TABLE documents ADD COLUMN password_hash TEXT NULL",
         "ALTER TABLE categories ADD COLUMN is_active INTEGER DEFAULT 1"
     ];
 
