@@ -55,7 +55,7 @@ function Skeleton({ className }: { className?: string }) {
 }
 
 // ─── Section Header ──────────────────────────────────
-function SectionTitle({ icon: Icon, title, subtitle, color = 'text-themePrimary', action }: any) {
+function SectionTitle({ icon: Icon, title, subtitle, color = 'text-[#1B664B]', action }: any) {
   return (
     <div className="flex items-center justify-between mb-5">
       <div>
@@ -74,27 +74,27 @@ function StatCard({ title, value, icon: Icon, gradient, badge, href, onClick, lo
   return (
     <div
       onClick={onClick}
-      className="group relative p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 hover:border-orange-500/40 bg-white dark:bg-slate-900 overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-orange-500/10 block text-left w-full active-press cursor-pointer select-none"
+      className="group relative p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 hover:border-[#1B664B] bg-white dark:bg-slate-900 overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-950/20 block text-left w-full active-press cursor-pointer select-none"
     >
       {/* Dynamic ambient glow orb */}
       <div className={`absolute -top-6 -right-6 w-28 h-28 rounded-full opacity-10 blur-2xl transition-all duration-500 group-hover:opacity-25 group-hover:scale-125 bg-gradient-to-tr ${gradient}`} />
       
       <div className="relative z-10 space-y-3">
         <div className="flex items-center justify-between">
-          <div className={`w-11 h-11 rounded-2xl bg-gradient-to-tr ${gradient} flex items-center justify-center shadow-md shadow-orange-500/20 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300`}>
+          <div className={`w-11 h-11 rounded-2xl bg-gradient-to-tr ${gradient} flex items-center justify-center shadow-md shadow-emerald-950/20 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300`}>
             <Icon className="w-5 h-5 text-white" />
           </div>
           {href ? (
             <Link
               href={href}
               onClick={(e) => e.stopPropagation()}
-              className="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-400 group-hover:text-themePrimary group-hover:border-orange-200 hover:bg-orange-50 dark:hover:bg-slate-700 transition-all shrink-0"
+              className="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-400 group-hover:text-[#1B664B] group-hover:border-[#1B664B] hover:bg-[#E8F5F0] dark:hover:bg-slate-700 transition-all shrink-0"
               title="Open full page"
             >
               <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </Link>
           ) : (
-            <div className="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-400 group-hover:text-themePrimary group-hover:border-orange-200 transition-colors">
+            <div className="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-400 group-hover:text-[#1B664B] group-hover:border-[#1B664B] transition-colors">
               <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </div>
           )}
@@ -105,11 +105,11 @@ function StatCard({ title, value, icon: Icon, gradient, badge, href, onClick, lo
           {loading ? (
             <Skeleton className="h-8 w-24 rounded-lg bg-slate-100 dark:bg-slate-800" />
           ) : (
-            <div className="text-2xl font-black text-slate-900 dark:text-white tracking-tight group-hover:text-themePrimary transition-colors font-auth-heading">
+            <div className="text-2xl font-black text-slate-900 dark:text-white tracking-tight group-hover:text-[#1B664B] transition-colors font-auth-heading">
               {isNumeric ? <AnimatedCounter value={value} /> : value}
             </div>
           )}
-          {badge && <p className="text-[10px] font-semibold text-slate-500 dark:text-slate-400 mt-1.5 flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-themePrimary animate-pulse" /> {badge}</p>}
+          {badge && <p className="text-[10px] font-semibold text-slate-500 dark:text-slate-400 mt-1.5 flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-[#1B664B] animate-pulse" /> {badge}</p>}
         </div>
       </div>
     </div>
@@ -117,16 +117,16 @@ function StatCard({ title, value, icon: Icon, gradient, badge, href, onClick, lo
 }
 
 // ─── Quick Action Card ───────────────────────────────
-function QuickAction({ icon: Icon, label, description, onClick, color = 'from-themePrimary to-[#F97316]' }: any) {
+function QuickAction({ icon: Icon, label, description, onClick, color = 'from-[#1B664B] to-[#14523C]' }: any) {
   return (
     <button
       onClick={onClick}
-      className="group relative p-4 rounded-2xl border border-slate-200/80 dark:border-slate-800 hover:border-orange-500/40 bg-white dark:bg-slate-900 text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-orange-500/10 w-full active:scale-95 cursor-pointer"
+      className="group relative p-4 rounded-2xl border border-slate-200/80 dark:border-slate-800 hover:border-[#1B664B] bg-white dark:bg-slate-900 text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-950/20 w-full active:scale-95 cursor-pointer"
     >
-      <div className={`w-10 h-10 rounded-xl bg-gradient-to-tr ${color} flex items-center justify-center mb-3 shadow-md shadow-orange-500/20 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300`}>
+      <div className={`w-10 h-10 rounded-xl bg-gradient-to-tr ${color} flex items-center justify-center mb-3 shadow-md shadow-emerald-950/20 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300`}>
         <Icon className="w-4.5 h-4.5 text-white" />
       </div>
-      <p className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-themePrimary transition-colors font-auth-heading">{label}</p>
+      <p className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-[#1B664B] transition-colors font-auth-heading">{label}</p>
       <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">{description}</p>
     </button>
   );
@@ -179,7 +179,7 @@ export default function AdminDashboardPage() {
     { title: 'Total Users', value: stats?.totalUsers ?? '...', icon: Users, gradient: 'from-blue-600 to-indigo-600', badge: 'Registered accounts', section: 'users', href: '/admin/users' },
     { title: 'Total Documents', value: stats?.totalDocuments ?? '...', icon: FileText, gradient: 'from-emerald-600 to-teal-600', badge: 'Active files in system', section: 'documents', href: '/admin/documents' },
     { title: 'Categories', value: stats?.totalCategories ?? '...', icon: Tags, gradient: 'from-violet-600 to-purple-600', badge: 'Active taxonomies', section: 'categories', href: '/admin/categories' },
-    { title: 'Total Folders', value: stats?.totalFolders ?? '...', icon: FolderOpen, gradient: 'from-amber-500 to-orange-600', badge: 'User directories', section: 'folders', href: '/admin/folders' },
+    { title: 'Total Folders', value: stats?.totalFolders ?? '...', icon: FolderOpen, gradient: 'from-[#1B664B] to-[#14523C]', badge: 'User directories', section: 'folders', href: '/admin/folders' },
     { title: 'Storage Used', value: fmtBytes(stats?.storageUsedBytes ?? 0), icon: HardDrive, gradient: 'from-cyan-600 to-blue-700', badge: 'Disk space occupied', section: 'reports', href: '/admin/reports' },
     { title: 'Uploads Today', value: stats?.uploadedTodayCount ?? '...', icon: Upload, gradient: 'from-rose-600 to-pink-600', badge: '24-hour activity', section: 'documents', href: '/admin/documents' },
     { title: 'This Month', value: stats?.uploadedThisMonth ?? '...', icon: TrendingUp, gradient: 'from-indigo-600 to-blue-600', badge: 'Monthly uploads', section: 'reports', href: '/admin/reports' },
@@ -192,14 +192,14 @@ export default function AdminDashboardPage() {
 
       {/* ── Page Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-xs relative overflow-hidden animate-fade-in-up stagger-1">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-0 right-0 w-64 h-64 bg-[#E8F5F0]0/5 rounded-full blur-3xl pointer-events-none" />
 
         <div className="space-y-1 relative z-10">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-xl bg-gradient-to-tr from-themePrimary to-[#F97316] flex items-center justify-center shadow-md shadow-orange-500/25">
+            <div className="w-7 h-7 rounded-xl bg-[#1B664B] flex items-center justify-center shadow-md shadow-emerald-950/20">
               <Zap className="w-4 h-4 text-white animate-pulse" />
             </div>
-            <span className="text-xs font-black uppercase tracking-wider text-themePrimary font-sans">
+            <span className="text-xs font-black uppercase tracking-wider text-[#1B664B] font-sans">
               ADMIN CONTROL CENTER
             </span>
           </div>
@@ -215,7 +215,7 @@ export default function AdminDashboardPage() {
           onClick={fetchStats}
           className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200/80 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-xs font-extrabold text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white shadow-2xs transition-all active:scale-95 shrink-0 font-auth-heading cursor-pointer"
         >
-          <RefreshCw className={`w-3.5 h-3.5 text-themePrimary ${statsLoading ? 'animate-spin' : ''}`} /> Refresh All
+          <RefreshCw className={`w-3.5 h-3.5 text-[#1B664B] ${statsLoading ? 'animate-spin' : ''}`} /> Refresh All
         </button>
       </div>
 
@@ -248,7 +248,7 @@ export default function AdminDashboardPage() {
             onClick={() => setActiveSection(sec.id)}
             className={`shrink-0 px-4 py-2.5 rounded-2xl text-xs font-bold transition-all duration-200 whitespace-nowrap active:scale-95 cursor-pointer font-auth-heading ${
               activeSection === sec.id
-                ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/20 border border-orange-400/30'
+                ? 'bg-[#1B664B] text-white shadow-md shadow-emerald-950/20 border border-[#D1EBE1]'
                 : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-white dark:bg-slate-900 hover:bg-slate-100/80 dark:hover:bg-slate-800 border border-slate-200/80 dark:border-slate-800'
             }`}
           >
@@ -280,7 +280,7 @@ export default function AdminDashboardPage() {
 function QuickActionsSection({ showToast, setActiveSection }: any) {
   const actions = [
     { icon: Users, label: 'Add User', description: 'Create new user account', color: 'from-blue-600 to-indigo-600', onClick: () => setActiveSection('users') },
-    { icon: FolderOpen, label: 'New Folder', description: 'Create system folder', color: 'from-amber-500 to-orange-600', onClick: () => setActiveSection('folders') },
+    { icon: FolderOpen, label: 'New Folder', description: 'Create system folder', color: 'from-[#1B664B] to-[#14523C]', onClick: () => setActiveSection('folders') },
     { icon: Tags, label: 'New Category', description: 'Add document category', color: 'from-violet-600 to-purple-600', onClick: () => setActiveSection('categories') },
     { icon: Globe, label: 'Edit Landing Page', description: 'Update CMS content', color: 'from-emerald-600 to-teal-600', onClick: () => setActiveSection('cms') },
     { icon: BarChart3, label: 'View Reports', description: 'Analytics & insights', color: 'from-cyan-600 to-blue-600', onClick: () => setActiveSection('reports') },
@@ -291,7 +291,7 @@ function QuickActionsSection({ showToast, setActiveSection }: any) {
 
   return (
     <div>
-      <SectionTitle icon={Zap} title="Quick Actions" subtitle="Jump to any module instantly" color="text-amber-400" />
+      <SectionTitle icon={Zap} title="Quick Actions" subtitle="Jump to any module instantly" color="text-[#1B664B]" />
       <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
         {actions.map((a, i) => <QuickAction key={i} {...a} />)}
       </div>
@@ -308,7 +308,7 @@ function OverviewSection({ stats, loading }: { stats: any; loading: boolean }) {
       {/* Recent Uploads */}
       <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs">
         <SectionTitle icon={Upload} title="Recent System Uploads" subtitle="Latest documents added" color="text-emerald-500"
-          action={<Link href="/admin/documents" className="text-2xs font-bold text-themePrimary hover:underline flex items-center gap-1">View all <ChevronRight className="w-3 h-3" /></Link>}
+          action={<Link href="/admin/documents" className="text-2xs font-bold text-[#1B664B] hover:underline flex items-center gap-1">View all <ChevronRight className="w-3 h-3" /></Link>}
         />
         {loading ? (
           <div className="space-y-2">{Array(4).fill(0).map((_, i) => <Skeleton key={i} className="h-12 bg-slate-100" />)}</div>
@@ -335,7 +335,7 @@ function OverviewSection({ stats, loading }: { stats: any; loading: boolean }) {
       {/* Top Downloads */}
       <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs">
         <SectionTitle icon={Download} title="Most Downloaded" subtitle="Highest-traffic documents" color="text-cyan-500"
-          action={<Link href="/admin/reports" className="text-2xs font-bold text-themePrimary hover:underline flex items-center gap-1">Reports <ChevronRight className="w-3 h-3" /></Link>}
+          action={<Link href="/admin/reports" className="text-2xs font-bold text-[#1B664B] hover:underline flex items-center gap-1">Reports <ChevronRight className="w-3 h-3" /></Link>}
         />
         {loading ? (
           <div className="space-y-2">{Array(4).fill(0).map((_, i) => <Skeleton key={i} className="h-12 bg-slate-100" />)}</div>
@@ -359,8 +359,8 @@ function OverviewSection({ stats, loading }: { stats: any; loading: boolean }) {
 
       {/* Most Active Users */}
       <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs">
-        <SectionTitle icon={Award} title="Most Active Users" subtitle="Users with highest engagement" color="text-amber-500"
-          action={<Link href="/admin/users" className="text-2xs font-bold text-themePrimary hover:underline flex items-center gap-1">Manage <ChevronRight className="w-3 h-3" /></Link>}
+        <SectionTitle icon={Award} title="Most Active Users" subtitle="Users with highest engagement" color="text-[#1B664B]"
+          action={<Link href="/admin/users" className="text-2xs font-bold text-[#1B664B] hover:underline flex items-center gap-1">Manage <ChevronRight className="w-3 h-3" /></Link>}
         />
         {loading ? (
           <div className="space-y-2">{Array(4).fill(0).map((_, i) => <Skeleton key={i} className="h-12 bg-slate-100" />)}</div>
@@ -370,14 +370,14 @@ function OverviewSection({ stats, loading }: { stats: any; loading: boolean }) {
           <div className="space-y-2">
             {stats.activeUsers.slice(0, 5).map((u: any, i: number) => (
               <div key={u.id} className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 hover:bg-slate-100/80 border border-slate-100 transition">
-                <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-themePrimary to-[#F97316] text-white font-black text-xs flex items-center justify-center shrink-0 shadow-2xs">
+                <div className="w-7 h-7 rounded-lg bg-[#1B664B] text-white font-black text-xs flex items-center justify-center shrink-0 shadow-2xs">
                   {(u.full_name || 'U').charAt(0).toUpperCase()}
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-xs font-bold text-slate-900 truncate font-auth-heading">{u.full_name}</p>
                   <p className="text-2xs text-slate-500 truncate">{u.email}</p>
                 </div>
-                <span className="text-2xs font-mono font-bold text-amber-600 shrink-0">{u.activity_count} actions</span>
+                <span className="text-2xs font-mono font-bold text-[#1B664B] shrink-0">{u.activity_count} actions</span>
               </div>
             ))}
           </div>
@@ -405,13 +405,13 @@ function MonthlyMiniChart() {
 
   return (
     <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs">
-      <SectionTitle icon={TrendingUp} title="Monthly Upload Trends" subtitle="Last 6 months" color="text-themePrimary" />
+      <SectionTitle icon={TrendingUp} title="Monthly Upload Trends" subtitle="Last 6 months" color="text-[#1B664B]" />
       {loading ? <Skeleton className="h-32 bg-slate-100" /> : (
         <div className="flex items-end gap-2 h-32 mt-2">
           {data.map((m: any, i: number) => (
             <div key={i} className="flex-1 flex flex-col items-center gap-1 h-full justify-end">
               <span className="text-2xs text-slate-500 font-mono font-bold">{m.count}</span>
-              <div className="w-full rounded-t-lg bg-gradient-to-t from-themePrimary to-[#F97316] transition-all min-h-[4px]"
+              <div className="w-full rounded-t-lg bg-gradient-to-t from-[#1B664B] to-[#14523C] transition-all min-h-[4px]"
                 style={{ height: `${Math.max(4, (m.count / max) * 100)}px` }}
               />
               <span className="text-[9px] text-slate-500 font-mono">{m.label}</span>
@@ -512,13 +512,13 @@ function UsersSection({ showToast }: { showToast: any }) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <SectionTitle icon={Users} title="User Management" subtitle={`${users.length} users loaded`} color="text-themePrimary" />
+        <SectionTitle icon={Users} title="User Management" subtitle={`${users.length} users loaded`} color="text-[#1B664B]" />
         <div className="flex items-center gap-2">
           <div className="relative">
             <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-            <input value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} placeholder="Search users..." className="pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-themePrimary w-44 font-medium" />
+            <input value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} placeholder="Search users..." className="pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1B664B] w-44 font-medium" />
           </div>
-          <button onClick={() => { setForm({ full_name: '', email: '', password: '', user_type: 'individual' }); setModal({ type: 'create' }); }} className="flex items-center gap-2 px-3 py-2 rounded-xl bg-themePrimary hover:bg-[#EA580C] text-white text-xs font-bold shadow-md shadow-orange-500/20 transition cursor-pointer">
+          <button onClick={() => { setForm({ full_name: '', email: '', password: '', user_type: 'individual' }); setModal({ type: 'create' }); }} className="flex items-center gap-2 px-3 py-2 rounded-xl bg-[#1B664B] hover:bg-[#14523C] text-white text-xs font-bold shadow-md shadow-emerald-950/20 transition cursor-pointer">
             <Plus className="w-3.5 h-3.5" /> Add User
           </button>
         </div>
@@ -543,21 +543,21 @@ function UsersSection({ showToast }: { showToast: any }) {
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {users.map(u => (
-                  <tr key={u.id} className={`group hover:bg-orange-50/20 transition-all duration-200 bg-white ${u.is_blocked ? 'opacity-50' : ''}`}>
+                  <tr key={u.id} className={`group hover:bg-[#E8F5F0] transition-all duration-200 bg-white ${u.is_blocked ? 'opacity-50' : ''}`}>
                     <td className="py-4 px-5">
                       <div className="flex items-center gap-3">
-                        <div className={`w-9 h-9 rounded-2xl font-black text-xs flex items-center justify-center text-white shrink-0 shadow-md group-hover:scale-105 transition-transform ${u.user_type === 'admin' ? 'bg-gradient-to-tr from-themePrimary to-[#F97316]' : 'bg-blue-600'}`}>
+                        <div className={`w-9 h-9 rounded-2xl font-black text-xs flex items-center justify-center text-white shrink-0 shadow-md group-hover:scale-105 transition-transform ${u.user_type === 'admin' ? 'bg-[#1B664B]' : 'bg-blue-600'}`}>
                           {(u.full_name || 'U').charAt(0).toUpperCase()}
                         </div>
                         <div>
-                          <p className="font-black text-slate-900 text-sm font-auth-heading group-hover:text-themePrimary transition-colors">{u.full_name}</p>
+                          <p className="font-black text-slate-900 text-sm font-auth-heading group-hover:text-[#1B664B] transition-colors">{u.full_name}</p>
                           <p className="text-xs text-slate-500 font-medium">{u.email}</p>
                         </div>
                       </div>
                     </td>
                     <td className="py-4 px-5">
                       <span className={`px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider border shadow-2xs ${
-                        u.user_type === 'admin' ? 'bg-orange-50 text-themePrimary border-orange-200' :
+                        u.user_type === 'admin' ? 'bg-[#E8F5F0] text-[#1B664B] border-[#D1EBE1]' :
                         u.user_type === 'professional' ? 'bg-purple-50 text-purple-700 border-purple-200' :
                         u.user_type === 'student' ? 'bg-blue-50 text-blue-700 border-blue-200' :
                         'bg-slate-100 text-slate-700 border-slate-200'
@@ -572,7 +572,7 @@ function UsersSection({ showToast }: { showToast: any }) {
                     </td>
                     <td className="py-4 px-5">
                       {u.is_blocked
-                        ? <span className="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase text-orange-700 bg-orange-50 border border-orange-200 shadow-2xs">Blocked</span>
+                        ? <span className="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase text-[#1B664B] bg-[#E8F5F0] border border-[#D1EBE1] shadow-2xs">Blocked</span>
                         : u.is_active !== 0
                           ? <span className="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase text-emerald-700 bg-emerald-50 border border-emerald-200 shadow-2xs">Active</span>
                           : <span className="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase text-rose-700 bg-rose-50 border border-rose-200 shadow-2xs">Inactive</span>
@@ -580,13 +580,13 @@ function UsersSection({ showToast }: { showToast: any }) {
                     </td>
                     <td className="py-4 px-5 text-right">
                       <div className="inline-flex items-center gap-1 bg-slate-50 p-1 rounded-xl border border-slate-200/80">
-                        <button onClick={() => { setForm({ full_name: u.full_name, email: u.email, password: '', user_type: u.user_type || 'individual' }); setModal({ type: 'edit-user', user: u }); }} className="p-1.5 rounded-lg text-slate-500 hover:text-amber-600 hover:bg-white transition cursor-pointer" title="Edit User">
+                        <button onClick={() => { setForm({ full_name: u.full_name, email: u.email, password: '', user_type: u.user_type || 'individual' }); setModal({ type: 'edit-user', user: u }); }} className="p-1.5 rounded-lg text-slate-500 hover:text-[#1B664B] hover:bg-white transition cursor-pointer" title="Edit User">
                           <Edit2 className="w-3.5 h-3.5" />
                         </button>
                         <button onClick={() => handleToggleActive(u)} className="p-1.5 rounded-lg text-slate-500 hover:text-emerald-600 hover:bg-white transition cursor-pointer" title={u.is_active ? 'Deactivate' : 'Activate'}>
                           {u.is_active !== 0 ? <UserX className="w-3.5 h-3.5" /> : <UserCheck className="w-3.5 h-3.5" />}
                         </button>
-                        <button onClick={() => handleToggleBlock(u)} className="p-1.5 rounded-lg text-slate-500 hover:text-orange-600 hover:bg-white transition cursor-pointer" title={u.is_blocked ? 'Unblock' : 'Block'}>
+                        <button onClick={() => handleToggleBlock(u)} className="p-1.5 rounded-lg text-slate-500 hover:text-[#1B664B] hover:bg-white transition cursor-pointer" title={u.is_blocked ? 'Unblock' : 'Block'}>
                           {u.is_blocked ? <Shield className="w-3.5 h-3.5" /> : <ShieldOff className="w-3.5 h-3.5" />}
                         </button>
                         <button onClick={() => { setNewPwd(''); setModal({ type: 'reset-pwd', user: u }); }} className="p-1.5 rounded-lg text-slate-500 hover:text-purple-600 hover:bg-white transition cursor-pointer" title="Reset Password">
@@ -615,7 +615,7 @@ function UsersSection({ showToast }: { showToast: any }) {
       </div>
 
       <div className="flex justify-end">
-        <Link href="/admin/users" className="text-xs font-bold text-themePrimary hover:underline flex items-center gap-1 transition">Full User Management <ChevronRight className="w-3.5 h-3.5" /></Link>
+        <Link href="/admin/users" className="text-xs font-bold text-[#1B664B] hover:underline flex items-center gap-1 transition">Full User Management <ChevronRight className="w-3.5 h-3.5" /></Link>
       </div>
 
       {/* Create User Modal */}
@@ -627,12 +627,12 @@ function UsersSection({ showToast }: { showToast: any }) {
                 <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">{label as string}</label>
                 <input required type={type as string} placeholder={ph as string} value={(form as any)[key as string]}
                   onChange={e => setForm(f => ({ ...f, [key as string]: e.target.value }))}
-                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-themePrimary" />
+                  className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1B664B]" />
               </div>
             ))}
             <div>
               <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">Role</label>
-              <select value={form.user_type} onChange={e => setForm(f => ({ ...f, user_type: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary cursor-pointer">
+              <select value={form.user_type} onChange={e => setForm(f => ({ ...f, user_type: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-[#1B664B] cursor-pointer">
                 {['individual', 'student', 'professional', 'admin'].map(r => (
                   <option key={r} value={r} className="bg-white text-slate-900 py-1">
                     {r.charAt(0).toUpperCase() + r.slice(1)}
@@ -658,15 +658,15 @@ function UsersSection({ showToast }: { showToast: any }) {
           }} className="space-y-3">
             <div>
               <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">Full Name</label>
-              <input required type="text" value={form.full_name} onChange={e => setForm(f => ({ ...f, full_name: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary" />
+              <input required type="text" value={form.full_name} onChange={e => setForm(f => ({ ...f, full_name: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-[#1B664B]" />
             </div>
             <div>
               <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">Email Address</label>
-              <input required type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary" />
+              <input required type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-[#1B664B]" />
             </div>
             <div>
               <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">Role</label>
-              <select value={form.user_type} onChange={e => setForm(f => ({ ...f, user_type: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary cursor-pointer">
+              <select value={form.user_type} onChange={e => setForm(f => ({ ...f, user_type: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-[#1B664B] cursor-pointer">
                 {['individual', 'student', 'professional', 'admin'].map(r => (
                   <option key={r} value={r} className="bg-white text-slate-900 py-1">
                     {r.charAt(0).toUpperCase() + r.slice(1)}
@@ -674,7 +674,7 @@ function UsersSection({ showToast }: { showToast: any }) {
                 ))}
               </select>
             </div>
-            <ModalActions onCancel={() => setModal(null)} submitting={submitting} label="Save Changes" color="bg-themePrimary hover:bg-[#EA580C]" />
+            <ModalActions onCancel={() => setModal(null)} submitting={submitting} label="Save Changes" color="bg-[#1B664B] hover:bg-[#14523C]" />
           </form>
         </Modal>
       )}
@@ -685,7 +685,7 @@ function UsersSection({ showToast }: { showToast: any }) {
           <form onSubmit={handleResetPwd} className="space-y-3">
             <div>
               <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">New Password</label>
-              <input required type="password" value={newPwd} onChange={e => setNewPwd(e.target.value)} placeholder="Minimum 6 characters" className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary" />
+              <input required type="password" value={newPwd} onChange={e => setNewPwd(e.target.value)} placeholder="Minimum 6 characters" className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-[#1B664B]" />
             </div>
             <ModalActions onCancel={() => setModal(null)} submitting={submitting} label="Reset Password" color="bg-violet-600 hover:bg-violet-500" />
           </form>
@@ -781,7 +781,7 @@ function DocumentsSection({ showToast }: { showToast: any }) {
         <div className="flex items-center gap-2">
           <div className="relative">
             <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-            <input value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} placeholder="Search documents..." className="pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-themePrimary w-44" />
+            <input value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} placeholder="Search documents..." className="pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1B664B] w-44" />
           </div>
           <Link href="/admin/documents" className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-bold text-slate-700 transition">
             Full View <ChevronRight className="w-3.5 h-3.5" />
@@ -830,7 +830,7 @@ function DocumentsSection({ showToast }: { showToast: any }) {
                         <button onClick={() => setModal({ type: 'view-doc', doc })} className="p-1.5 rounded-lg text-slate-400 hover:text-cyan-600 hover:bg-cyan-50 transition cursor-pointer" title="View Details">
                           <Eye className="w-4 h-4" />
                         </button>
-                        <button onClick={() => { setEditForm({ title: doc.title, description: doc.description || '', category_name: doc.category_name || 'General' }); setModal({ type: 'edit-doc', doc }); }} className="p-1.5 rounded-lg text-slate-400 hover:text-amber-600 hover:bg-amber-50 transition cursor-pointer" title="Edit Document">
+                        <button onClick={() => { setEditForm({ title: doc.title, description: doc.description || '', category_name: doc.category_name || 'General' }); setModal({ type: 'edit-doc', doc }); }} className="p-1.5 rounded-lg text-slate-400 hover:text-[#1B664B] hover:bg-[#E8F5F0] transition cursor-pointer" title="Edit Document">
                           <Edit2 className="w-4 h-4" />
                         </button>
                         <button onClick={() => setModal({ type: 'delete-doc', doc })} className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition cursor-pointer" title="Move to Trash">
@@ -891,7 +891,7 @@ function DocumentsSection({ showToast }: { showToast: any }) {
               <label className="text-[10px] font-bold uppercase text-slate-500 block mb-1">Description</label>
               <textarea rows={2} value={editForm.description} onChange={e => setEditForm(f => ({ ...f, description: e.target.value }))} className="w-full px-3 py-2 bg-white/5 border border-white/8 rounded-xl text-xs text-white focus:outline-none focus:border-amber-500/50 resize-none" />
             </div>
-            <ModalActions onCancel={() => setModal(null)} submitting={submitting} label="Save Changes" color="bg-amber-600 hover:bg-amber-500" />
+            <ModalActions onCancel={() => setModal(null)} submitting={submitting} label="Save Changes" color="bg-amber-600 hover:bg-[#E8F5F0]" />
           </form>
         </Modal>
       )}
@@ -916,7 +916,7 @@ function CategoriesSection({ showToast }: { showToast: any }) {
   const [modal, setModal] = useState<any>(null);
   const [submitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({ category_name: '', description: '', color: '#3B82F6', icon_name: 'FolderOpen' });
-  const COLORS = ['#3B82F6', '#10B981', '#8B5CF6', '#F59E0B', '#EF4444', '#EC4899', '#06B6D4', '#84CC16'];
+  const COLORS = ['#3B82F6', '#10B981', '#8B5CF6', '#1B664B', '#EF4444', '#EC4899', '#06B6D4', '#84CC16'];
 
   const fetchCategoriesList = async () => {
     setLoading(true);
@@ -956,7 +956,7 @@ function CategoriesSection({ showToast }: { showToast: any }) {
     const initialCats = [
       { id: 1, category_name: 'Personal Identity & Passports', description: 'National IDs, Passports, Visas, Driver Licenses, Birth Certificates', color: '#3B82F6', icon_name: 'UserCheck', document_count: 5 },
       { id: 2, category_name: 'Academic Records & Diplomas', description: 'Degrees, Transcripts, Semester Marksheets, Diplomas, Board Certificates', color: '#10B981', icon_name: 'GraduationCap', document_count: 6 },
-      { id: 3, category_name: 'Career & Employment Assets', description: 'Resume versions, CVs, Offer & Relieving Letters, Pay Slips, Portfolios', color: '#F59E0B', icon_name: 'FileText', document_count: 4 },
+      { id: 3, category_name: 'Career & Employment Assets', description: 'Resume versions, CVs, Offer & Relieving Letters, Pay Slips, Portfolios', color: '#1B664B', icon_name: 'FileText', document_count: 4 },
       { id: 4, category_name: 'Projects & Technical Specs', description: 'BRDs, Architecture Diagrams, Code Specs, Technical Proposals', color: '#8B5CF6', icon_name: 'FolderGit2', document_count: 3 },
       { id: 5, category_name: 'Certificates & Achievements', description: 'Professional Certifications, Cloud Credentials, Training Badges', color: '#EC4899', icon_name: 'Award', document_count: 2 },
       { id: 6, category_name: 'Client Requirements & Contracts', description: 'Client BRDs, SOW Agreements, NDAs, Service Contracts', color: '#06B6D4', icon_name: 'Briefcase', document_count: 3 },
@@ -1074,24 +1074,24 @@ function CategoriesSection({ showToast }: { showToast: any }) {
             return (
               <div
                 key={cat.id}
-                className={`group relative p-5 rounded-3xl border border-slate-200 bg-white shadow-2xs hover:shadow-xl hover:shadow-orange-500/10 hover:border-themePrimary hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between overflow-hidden cursor-pointer ${!isActive ? 'opacity-60' : ''}`}
+                className={`group relative p-5 rounded-3xl border border-slate-200 bg-white shadow-2xs hover:shadow-xl hover:shadow-emerald-950/20 hover:border-[#1B664B] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between overflow-hidden cursor-pointer ${!isActive ? 'opacity-60' : ''}`}
               >
-                {/* Top Orange Hover Accent Bar */}
-                <div className="absolute top-0 left-0 right-0 h-1 bg-transparent group-hover:bg-gradient-to-r group-hover:from-themePrimary group-hover:to-[#F97316] transition-all duration-300" />
+                {/* Top Green Hover Accent Bar */}
+                <div className="absolute top-0 left-0 right-0 h-1 bg-transparent group-hover:bg-gradient-to-r group-hover:from-[#1B664B] group-hover:to-[#1B664B] transition-all duration-300" />
 
                 <div>
                   <div className="flex items-center justify-between">
                     <div
-                      className="w-11 h-11 rounded-2xl flex items-center justify-center text-white shadow-md font-bold transition-transform duration-300 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-orange-500/20"
-                      style={{ backgroundColor: cat.color || 'var(--theme-primary, #FF6B00)' }}
+                      className="w-11 h-11 rounded-2xl flex items-center justify-center text-white shadow-md font-bold transition-transform duration-300 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-emerald-950/20"
+                      style={{ backgroundColor: cat.color || 'var(--theme-primary, #1B664B)' }}
                     >
                       <Tags className="w-5 h-5 text-white" />
                     </div>
                     <div className="flex items-center gap-1 bg-slate-50 p-1 rounded-xl border border-slate-200/80">
-                      <button onClick={() => handleToggle(cat)} className="p-1.5 rounded-lg text-slate-500 hover:text-themePrimary hover:bg-orange-50 transition cursor-pointer" title={isActive ? 'Disable' : 'Enable'}>
+                      <button onClick={() => handleToggle(cat)} className="p-1.5 rounded-lg text-slate-500 hover:text-[#1B664B] hover:bg-[#E8F5F0] transition cursor-pointer" title={isActive ? 'Disable' : 'Enable'}>
                         {isActive ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                       </button>
-                      <button onClick={() => { setForm({ category_name: cat.category_name, description: cat.description || '', color: cat.color || '#3B82F6', icon_name: cat.icon_name || 'Folder' }); setModal({ type: 'edit', cat }); }} className="p-1.5 rounded-lg text-slate-500 hover:text-themePrimary hover:bg-orange-50 transition cursor-pointer" title="Edit Category">
+                      <button onClick={() => { setForm({ category_name: cat.category_name, description: cat.description || '', color: cat.color || '#3B82F6', icon_name: cat.icon_name || 'Folder' }); setModal({ type: 'edit', cat }); }} className="p-1.5 rounded-lg text-slate-500 hover:text-[#1B664B] hover:bg-[#E8F5F0] transition cursor-pointer" title="Edit Category">
                         <Edit2 className="w-3.5 h-3.5" />
                       </button>
                       <button onClick={() => setModal({ type: 'delete', cat })} className="p-1.5 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition cursor-pointer" title="Delete Category">
@@ -1100,7 +1100,7 @@ function CategoriesSection({ showToast }: { showToast: any }) {
                     </div>
                   </div>
                   <div className="mt-4 space-y-1">
-                    <h4 className="text-sm font-black text-slate-900 line-clamp-1 font-auth-heading tracking-tight group-hover:text-themePrimary transition-colors duration-300">
+                    <h4 className="text-sm font-black text-slate-900 line-clamp-1 font-auth-heading tracking-tight group-hover:text-[#1B664B] transition-colors duration-300">
                       {cat.category_name}
                     </h4>
                     <p className="text-xs text-slate-600 line-clamp-2 font-medium leading-relaxed">
@@ -1110,8 +1110,8 @@ function CategoriesSection({ showToast }: { showToast: any }) {
                 </div>
 
                 <div className="pt-3.5 border-t border-slate-100 mt-4 flex items-center justify-between">
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-100 group-hover:bg-orange-50 group-hover:border-orange-200 border border-slate-200 text-xs font-mono font-bold text-slate-700 group-hover:text-themePrimary transition-colors duration-300">
-                    <FileText className="w-3.5 h-3.5 text-slate-400 group-hover:text-themePrimary" />
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-100 group-hover:bg-[#E8F5F0] group-hover:border-[#1B664B] border border-slate-200 text-xs font-mono font-bold text-slate-700 group-hover:text-[#1B664B] transition-colors duration-300">
+                    <FileText className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#1B664B]" />
                     {cat.document_count || 0} docs
                   </span>
                   <span className={`text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-md border ${isActive ? 'text-emerald-700 bg-emerald-50 border-emerald-200' : 'text-slate-500 bg-slate-100 border-slate-200'}`}>
@@ -1167,7 +1167,7 @@ function FoldersSection({ showToast }: { showToast: any }) {
   const [modal, setModal] = useState<any>(null);
   const [submitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({ folder_name: '', description: '', color: '#3B82F6' });
-  const COLORS = ['#3B82F6', '#10B981', '#8B5CF6', '#F59E0B', '#EF4444', '#EC4899', '#06B6D4', '#84CC16'];
+  const COLORS = ['#3B82F6', '#10B981', '#8B5CF6', '#1B664B', '#EF4444', '#EC4899', '#06B6D4', '#84CC16'];
 
   const saveFoldersState = (newFolders: any[]) => {
     setFolders(newFolders);
@@ -1287,8 +1287,8 @@ function FoldersSection({ showToast }: { showToast: any }) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <SectionTitle icon={FolderOpen} title="Folder Management" subtitle={`${folders.length} folders`} color="text-themePrimary" />
-        <button onClick={() => { setForm({ folder_name: '', description: '', color: '#3B82F6' }); setModal({ type: 'create' }); }} className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-themePrimary hover:bg-[#EA580C] text-white text-xs font-bold shadow-md shadow-orange-500/20 transition cursor-pointer">
+        <SectionTitle icon={FolderOpen} title="Folder Management" subtitle={`${folders.length} folders`} color="text-[#1B664B]" />
+        <button onClick={() => { setForm({ folder_name: '', description: '', color: '#3B82F6' }); setModal({ type: 'create' }); }} className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#1B664B] hover:bg-[#14523C] text-white text-xs font-bold shadow-md shadow-emerald-950/20 transition cursor-pointer">
           <Plus className="w-3.5 h-3.5" /> New Folder
         </button>
       </div>
@@ -1300,23 +1300,23 @@ function FoldersSection({ showToast }: { showToast: any }) {
           {folders.map(f => (
             <div
               key={f.id}
-              className="group relative p-5 rounded-3xl border border-slate-200 bg-white shadow-2xs hover:shadow-xl hover:shadow-orange-500/10 hover:border-themePrimary hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between overflow-hidden cursor-pointer"
+              className="group relative p-5 rounded-3xl border border-slate-200 bg-white shadow-2xs hover:shadow-xl hover:shadow-emerald-950/20 hover:border-[#1B664B] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between overflow-hidden cursor-pointer"
             >
-              {/* Top Orange Hover Accent Bar */}
-              <div className="absolute top-0 left-0 right-0 h-1 bg-transparent group-hover:bg-gradient-to-r group-hover:from-themePrimary group-hover:to-[#F97316] transition-all duration-300" />
+              {/* Top Green Hover Accent Bar */}
+              <div className="absolute top-0 left-0 right-0 h-1 bg-transparent group-hover:bg-gradient-to-r group-hover:from-[#1B664B] group-hover:to-[#1B664B] transition-all duration-300" />
 
               <div>
                 <div className="flex items-center justify-between">
                   <div
-                    className="w-11 h-11 rounded-2xl flex items-center justify-center text-white shadow-md font-bold transition-transform duration-300 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-orange-500/20"
-                    style={{ backgroundColor: f.color || 'var(--theme-primary, #FF6B00)' }}
+                    className="w-11 h-11 rounded-2xl flex items-center justify-center text-white shadow-md font-bold transition-transform duration-300 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-emerald-950/20"
+                    style={{ backgroundColor: f.color || 'var(--theme-primary, #1B664B)' }}
                   >
                     <FolderOpen className="w-5 h-5 text-white" />
                   </div>
                   <div className="flex items-center gap-1 bg-slate-50 p-1 rounded-xl border border-slate-200/80">
                     <button
                       onClick={() => { setForm({ folder_name: f.folder_name, description: f.description || '', color: f.color || '#3B82F6' }); setModal({ type: 'edit', folder: f }); }}
-                      className="p-1.5 rounded-lg text-slate-500 hover:text-themePrimary hover:bg-white transition cursor-pointer"
+                      className="p-1.5 rounded-lg text-slate-500 hover:text-[#1B664B] hover:bg-white transition cursor-pointer"
                       title="Edit Folder"
                     >
                       <Edit2 className="w-3.5 h-3.5" />
@@ -1332,7 +1332,7 @@ function FoldersSection({ showToast }: { showToast: any }) {
                 </div>
 
                 <div className="mt-4 space-y-1">
-                  <h4 className="text-sm font-black text-slate-900 line-clamp-1 font-auth-heading tracking-tight group-hover:text-themePrimary transition-colors duration-300">
+                  <h4 className="text-sm font-black text-slate-900 line-clamp-1 font-auth-heading tracking-tight group-hover:text-[#1B664B] transition-colors duration-300">
                     {f.folder_name}
                   </h4>
                   <p className="text-xs text-slate-600 line-clamp-2 font-medium leading-relaxed">
@@ -1342,8 +1342,8 @@ function FoldersSection({ showToast }: { showToast: any }) {
               </div>
 
               <div className="pt-3.5 border-t border-slate-100 mt-4 flex items-center justify-between">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-100 group-hover:bg-orange-50 group-hover:border-orange-200 border border-slate-200 text-xs font-mono font-bold text-slate-700 group-hover:text-themePrimary transition-colors duration-300">
-                  <FileText className="w-3.5 h-3.5 text-slate-400 group-hover:text-themePrimary" />
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-100 group-hover:bg-[#E8F5F0] group-hover:border-[#1B664B] border border-slate-200 text-xs font-mono font-bold text-slate-700 group-hover:text-[#1B664B] transition-colors duration-300">
+                  <FileText className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#1B664B]" />
                   {f.document_count || 0} docs
                 </span>
                 <span className="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-md border border-slate-200 bg-slate-100 text-slate-600">
@@ -1360,11 +1360,11 @@ function FoldersSection({ showToast }: { showToast: any }) {
           <form onSubmit={handleSubmit} className="space-y-3">
             <div>
               <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">Folder Name</label>
-              <input required type="text" value={form.folder_name} onChange={e => setForm(f => ({ ...f, folder_name: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-themePrimary" placeholder="e.g. Tax Documents 2026" />
+              <input required type="text" value={form.folder_name} onChange={e => setForm(f => ({ ...f, folder_name: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1B664B]" placeholder="e.g. Tax Documents 2026" />
             </div>
             <div>
               <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">Description</label>
-              <textarea rows={2} value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-themePrimary resize-none" />
+              <textarea rows={2} value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1B664B] resize-none" />
             </div>
             <div>
               <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-2">Color Accent</label>
@@ -1372,7 +1372,7 @@ function FoldersSection({ showToast }: { showToast: any }) {
                 {COLORS.map(c => <button key={c} type="button" onClick={() => setForm(f => ({ ...f, color: c }))} className={`w-7 h-7 rounded-full transition cursor-pointer ${form.color === c ? 'ring-2 ring-themePrimary ring-offset-2' : ''}`} style={{ backgroundColor: c }} />)}
               </div>
             </div>
-            <ModalActions onCancel={() => setModal(null)} submitting={submitting} label={modal.type === 'create' ? 'Create Folder' : 'Save Changes'} color="bg-themePrimary hover:bg-[#EA580C]" />
+            <ModalActions onCancel={() => setModal(null)} submitting={submitting} label={modal.type === 'create' ? 'Create Folder' : 'Save Changes'} color="bg-[#1B664B] hover:bg-[#14523C]" />
           </form>
         </Modal>
       )}
@@ -1404,7 +1404,7 @@ function ActivitySection({ showToast }: { showToast: any }) {
   const ACTION_COLORS: Record<string, string> = {
     LOGIN: 'text-emerald-400', LOGOUT: 'text-slate-400', UPLOAD: 'text-blue-400',
     DOWNLOAD: 'text-cyan-400', DELETE: 'text-rose-400', RESTORE: 'text-violet-400',
-    UPDATE: 'text-amber-400', CREATE_FOLDER: 'text-orange-400', CREATE_CATEGORY: 'text-pink-400',
+    UPDATE: 'text-[#1B664B]', CREATE_FOLDER: 'text-[#1B664B]', CREATE_CATEGORY: 'text-pink-400',
   };
 
   const ACTION_ICONS: Record<string, any> = {
@@ -1465,8 +1465,8 @@ function ActivitySection({ showToast }: { showToast: any }) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-         <SectionTitle icon={Activity} title="Activity Log Management" subtitle="View and manage system audit trails" color="text-themePrimary" />
-         <button onClick={() => { setForm({ action_type: 'LOGIN', details: '', user_name: 'Admin' }); setModal({ type: 'create' }); }} className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-themePrimary hover:bg-[#EA580C] text-white text-xs font-bold shadow-md shadow-orange-500/20 transition cursor-pointer">
+         <SectionTitle icon={Activity} title="Activity Log Management" subtitle="View and manage system audit trails" color="text-[#1B664B]" />
+         <button onClick={() => { setForm({ action_type: 'LOGIN', details: '', user_name: 'Admin' }); setModal({ type: 'create' }); }} className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#1B664B] hover:bg-[#14523C] text-white text-xs font-bold shadow-md shadow-emerald-950/20 transition cursor-pointer">
            <Plus className="w-3.5 h-3.5" /> Add Log
          </button>
       </div>
@@ -1474,9 +1474,9 @@ function ActivitySection({ showToast }: { showToast: any }) {
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
           <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-          <input value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} placeholder="Search activity logs..." className="pl-9 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-themePrimary w-full" />
+          <input value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} placeholder="Search activity logs..." className="pl-9 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1B664B] w-full" />
         </div>
-        <select value={filter} onChange={e => { setFilter(e.target.value); setPage(1); }} className="px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:border-themePrimary cursor-pointer">
+        <select value={filter} onChange={e => { setFilter(e.target.value); setPage(1); }} className="px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:border-[#1B664B] cursor-pointer">
           {['ALL', 'LOGIN', 'LOGOUT', 'UPLOAD', 'DOWNLOAD', 'DELETE', 'RESTORE', 'UPDATE', 'CREATE_FOLDER', 'CREATE_CATEGORY'].map(a => <option key={a} value={a}>{a === 'ALL' ? 'All Actions' : a}</option>)}
         </select>
         <button onClick={handleExport} className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200/80 text-xs font-extrabold text-slate-800 flex items-center gap-2 transition cursor-pointer shadow-2xs">
@@ -1494,18 +1494,18 @@ function ActivitySection({ showToast }: { showToast: any }) {
             {logs.map(log => {
               const Icon = ACTION_ICONS[log.action_type] || Activity;
               return (
-                <div key={log.id} className="group flex items-center gap-3.5 px-5 py-3.5 hover:bg-orange-50/20 transition-all duration-200">
+                <div key={log.id} className="group flex items-center gap-3.5 px-5 py-3.5 hover:bg-[#E8F5F0] transition-all duration-200">
                   <div className="w-9 h-9 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
-                    <Icon className="w-4 h-4 text-themePrimary" />
+                    <Icon className="w-4 h-4 text-[#1B664B]" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-black text-slate-900 font-auth-heading group-hover:text-themePrimary transition-colors">{log.user_name || 'System'}</span>
+                      <span className="text-xs font-black text-slate-900 font-auth-heading group-hover:text-[#1B664B] transition-colors">{log.user_name || 'System'}</span>
                       <span className={`text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md border ${
                         log.action_type === 'LOGIN' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
                         log.action_type === 'UPLOAD' ? 'bg-blue-50 text-blue-700 border-blue-200' :
                         log.action_type === 'DELETE' ? 'bg-rose-50 text-rose-700 border-rose-200' :
-                        log.action_type === 'CREATE_FOLDER' ? 'bg-orange-50 text-themePrimary border-orange-200' :
+                        log.action_type === 'CREATE_FOLDER' ? 'bg-[#E8F5F0] text-[#1B664B] border-[#D1EBE1]' :
                         'bg-slate-100 text-slate-700 border-slate-200'
                       }`}>
                         {log.action_type?.replace(/_/g, ' ')}
@@ -1520,7 +1520,7 @@ function ActivitySection({ showToast }: { showToast: any }) {
                     <div className="flex items-center gap-1 bg-slate-50 p-1 rounded-xl border border-slate-200/80">
                       <button
                         onClick={() => { setForm({ action_type: log.action_type || 'LOGIN', details: log.details || '', user_name: log.user_name || '' }); setModal({ type: 'edit', log }); }}
-                        className="p-1.5 rounded-lg text-slate-500 hover:text-themePrimary hover:bg-white transition cursor-pointer"
+                        className="p-1.5 rounded-lg text-slate-500 hover:text-[#1B664B] hover:bg-white transition cursor-pointer"
                         title="Edit Log"
                       >
                         <Edit2 className="w-3.5 h-3.5" />
@@ -1559,19 +1559,19 @@ function ActivitySection({ showToast }: { showToast: any }) {
           <form onSubmit={handleSubmit} className="space-y-3">
             <div>
               <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">User Name</label>
-              <input required type="text" value={form.user_name} onChange={e => setForm(f => ({ ...f, user_name: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-themePrimary" placeholder="e.g. Admin System" />
+              <input required type="text" value={form.user_name} onChange={e => setForm(f => ({ ...f, user_name: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1B664B]" placeholder="e.g. Admin System" />
             </div>
             <div>
               <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">Action Type</label>
-              <select value={form.action_type} onChange={e => setForm(f => ({ ...f, action_type: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary">
+              <select value={form.action_type} onChange={e => setForm(f => ({ ...f, action_type: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-[#1B664B]">
                 {['LOGIN', 'LOGOUT', 'UPLOAD', 'DOWNLOAD', 'DELETE', 'RESTORE', 'UPDATE', 'CREATE_FOLDER', 'CREATE_CATEGORY'].map(a => <option key={a} value={a}>{a}</option>)}
               </select>
             </div>
             <div>
               <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">Details</label>
-              <textarea rows={2} required value={form.details} onChange={e => setForm(f => ({ ...f, details: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-themePrimary resize-none" placeholder="e.g. Uploaded confidential document" />
+              <textarea rows={2} required value={form.details} onChange={e => setForm(f => ({ ...f, details: e.target.value }))} className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1B664B] resize-none" placeholder="e.g. Uploaded confidential document" />
             </div>
-            <ModalActions onCancel={() => setModal(null)} submitting={submitting} label={modal.type === 'create' ? 'Create Log' : 'Save Changes'} color="bg-themePrimary hover:bg-[#EA580C]" />
+            <ModalActions onCancel={() => setModal(null)} submitting={submitting} label={modal.type === 'create' ? 'Create Log' : 'Save Changes'} color="bg-[#1B664B] hover:bg-[#14523C]" />
           </form>
         </Modal>
       )}
@@ -1613,9 +1613,9 @@ function ReportsSection() {
           { label: 'Total Documents', value: reports?.totalDocuments ?? '0', icon: FileText },
           { label: 'Storage Used', value: fmtBytes(reports?.totalStorageBytes ?? 0), icon: HardDrive },
         ].map((k, i) => (
-          <div key={i} className="group p-5 rounded-3xl border border-slate-200 bg-white shadow-2xs hover:shadow-lg hover:border-themePrimary transition-all duration-300 flex items-center gap-4 cursor-pointer">
-            <div className="w-12 h-12 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-center text-themePrimary group-hover:scale-110 group-hover:bg-orange-50 transition-all shrink-0">
-              <k.icon className="w-6 h-6 text-themePrimary" />
+          <div key={i} className="group p-5 rounded-3xl border border-slate-200 bg-white shadow-2xs hover:shadow-lg hover:border-[#1B664B] transition-all duration-300 flex items-center gap-4 cursor-pointer">
+            <div className="w-12 h-12 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-center text-[#1B664B] group-hover:scale-110 group-hover:bg-[#E8F5F0] transition-all shrink-0">
+              <k.icon className="w-6 h-6 text-[#1B664B]" />
             </div>
             <div>
               <p className="text-xs font-black text-slate-500 uppercase tracking-wider">{k.label}</p>
@@ -1627,14 +1627,14 @@ function ReportsSection() {
 
       {/* Monthly Chart */}
       <div className="p-6 rounded-3xl border border-slate-200 bg-white shadow-2xs">
-        <SectionTitle icon={TrendingUp} title="Monthly Uploads" subtitle="Last 6 months document vault activity" color="text-themePrimary" />
+        <SectionTitle icon={TrendingUp} title="Monthly Uploads" subtitle="Last 6 months document vault activity" color="text-[#1B664B]" />
         {loading ? <Skeleton className="h-40 mt-4 bg-slate-100 rounded-2xl" /> : (
           <div className="flex items-end gap-4 h-44 mt-4 pt-4 border-t border-slate-100">
             {(reports?.monthlyUploads || []).map((m: any, i: number) => (
               <div key={i} className="flex-1 flex flex-col items-center gap-2 h-full justify-end group cursor-pointer">
-                <span className="text-xs text-slate-800 font-mono font-bold group-hover:text-themePrimary transition-colors">{m.count}</span>
+                <span className="text-xs text-slate-800 font-mono font-bold group-hover:text-[#1B664B] transition-colors">{m.count}</span>
                 <div
-                  className="w-full rounded-t-xl bg-gradient-to-t from-themePrimary to-[#F97316] group-hover:from-[#EA580C] group-hover:to-themePrimary min-h-[6px] transition-all duration-300 shadow-md shadow-orange-500/10"
+                  className="w-full rounded-t-xl bg-gradient-to-t from-[#1B664B] to-[#14523C] group-hover:from-[#14523C] group-hover:to-[#1B664B] min-h-[6px] transition-all duration-300 shadow-md shadow-emerald-950/20"
                   style={{ height: `${Math.max(6, (m.count / maxM) * 100)}%` }}
                 />
                 <span className="text-xs text-slate-500 font-bold uppercase tracking-wider">{m.label}</span>
@@ -1647,20 +1647,20 @@ function ReportsSection() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         {/* Category Breakdown */}
         <div className="p-6 rounded-3xl border border-slate-200 bg-white shadow-2xs">
-          <SectionTitle icon={BarChart3} title="Category Distribution" subtitle="Document counts per classification category" color="text-themePrimary" />
+          <SectionTitle icon={BarChart3} title="Category Distribution" subtitle="Document counts per classification category" color="text-[#1B664B]" />
           {loading ? <div className="space-y-3 mt-4">{Array(5).fill(0).map((_, i) => <Skeleton key={i} className="h-8 bg-slate-100" />)}</div> : (
             <div className="space-y-4 mt-4 pt-4 border-t border-slate-100">
               {(reports?.categoryBreakdown || []).slice(0, 8).map((c: any, i: number) => (
                 <div key={i} className="space-y-1.5">
                   <div className="flex items-center justify-between text-xs">
                     <div className="flex items-center gap-2">
-                      <span className="w-2.5 h-2.5 rounded-full inline-block shrink-0 shadow-2xs" style={{ backgroundColor: c.color || 'var(--theme-primary, #FF6B00)' }} />
+                      <span className="w-2.5 h-2.5 rounded-full inline-block shrink-0 shadow-2xs" style={{ backgroundColor: c.color || 'var(--theme-primary, #1B664B)' }} />
                       <span className="text-slate-900 font-black font-auth-heading truncate max-w-[180px]">{c.category_name}</span>
                     </div>
                     <span className="text-slate-600 font-mono font-bold">{c.document_count} docs</span>
                   </div>
                   <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
-                    <div className="h-2 rounded-full transition-all duration-500" style={{ width: `${Math.max(3, (c.document_count / maxC) * 100)}%`, backgroundColor: c.color || 'var(--theme-primary, #FF6B00)' }} />
+                    <div className="h-2 rounded-full transition-all duration-500" style={{ width: `${Math.max(3, (c.document_count / maxC) * 100)}%`, backgroundColor: c.color || 'var(--theme-primary, #1B664B)' }} />
                   </div>
                 </div>
               ))}
@@ -1670,17 +1670,17 @@ function ReportsSection() {
 
         {/* Top Downloads */}
         <div className="p-6 rounded-3xl border border-slate-200 bg-white shadow-2xs">
-          <SectionTitle icon={Download} title="Top Downloads" subtitle="Most frequently accessed document vaults" color="text-themePrimary" />
+          <SectionTitle icon={Download} title="Top Downloads" subtitle="Most frequently accessed document vaults" color="text-[#1B664B]" />
           {loading ? <div className="space-y-2 mt-4">{Array(5).fill(0).map((_, i) => <Skeleton key={i} className="h-12 bg-slate-100" />)}</div> : (
             <div className="space-y-2.5 mt-4 pt-4 border-t border-slate-100">
               {(reports?.topDownloads || []).slice(0, 6).map((d: any, i: number) => (
-                <div key={d.id} className="flex items-center gap-3 p-3 rounded-2xl bg-slate-50 hover:bg-orange-50/40 border border-slate-200/60 transition group cursor-pointer">
+                <div key={d.id} className="flex items-center gap-3 p-3 rounded-2xl bg-slate-50 hover:bg-[#E8F5F0] border border-slate-200/60 transition group cursor-pointer">
                   <span className="text-xs font-mono font-bold text-slate-500 w-5">#{i + 1}</span>
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs font-black text-slate-900 font-auth-heading group-hover:text-themePrimary transition-colors truncate">{d.title}</p>
+                    <p className="text-xs font-black text-slate-900 font-auth-heading group-hover:text-[#1B664B] transition-colors truncate">{d.title}</p>
                     <p className="text-xs text-slate-500 font-medium">{d.owner_name}</p>
                   </div>
-                  <span className="px-2.5 py-1 rounded-full bg-orange-50 text-themePrimary border border-orange-200 text-xs font-mono font-black shrink-0">
+                  <span className="px-2.5 py-1 rounded-full bg-[#E8F5F0] text-[#1B664B] border border-[#D1EBE1] text-xs font-mono font-black shrink-0">
                     {d.download_count}x
                   </span>
                 </div>
@@ -1715,20 +1715,20 @@ function SystemSection() {
     { label: 'Backend Server', status: 'Online', detail: 'Node.js + Express.js', color: 'text-emerald-700 bg-emerald-50 border-emerald-200', dot: 'bg-emerald-500' },
     { label: 'Database Engine', status: 'Connected', detail: 'SQLite (MySQL fallback)', color: 'text-emerald-700 bg-emerald-50 border-emerald-200', dot: 'bg-emerald-500' },
     { label: 'Authentication', status: 'Active', detail: 'JWT Bearer Tokens', color: 'text-blue-700 bg-blue-50 border-blue-200', dot: 'bg-blue-500' },
-    { label: 'File Storage', status: 'Mounted', detail: 'Local /uploads directory', color: 'text-amber-700 bg-amber-50 border-amber-200', dot: 'bg-amber-500' },
+    { label: 'File Storage', status: 'Mounted', detail: 'Local /uploads directory', color: 'text-[#1B664B] bg-[#E8F5F0] border-[#D1EBE1]', dot: 'bg-[#E8F5F0]0' },
     { label: 'API Gateway', status: 'Healthy', detail: 'Express Router on :5000', color: 'text-emerald-700 bg-emerald-50 border-emerald-200', dot: 'bg-emerald-500' },
     { label: 'CORS Policy', status: 'Configured', detail: 'Dynamic origin whitelist', color: 'text-purple-700 bg-purple-50 border-purple-200', dot: 'bg-purple-500' },
   ];
 
   return (
     <div className="space-y-6">
-      <SectionTitle icon={Server} title="System Health Monitor" subtitle="Real-time server & infrastructure status" color="text-themePrimary" />
+      <SectionTitle icon={Server} title="System Health Monitor" subtitle="Real-time server & infrastructure status" color="text-[#1B664B]" />
 
       {/* Server Time */}
       <div className="p-6 rounded-3xl border border-slate-200 bg-white shadow-2xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-orange-50 border border-orange-200 flex items-center justify-center shrink-0">
-            <Clock className="w-6 h-6 text-themePrimary" />
+          <div className="w-12 h-12 rounded-2xl bg-[#E8F5F0] border border-[#D1EBE1] flex items-center justify-center shrink-0">
+            <Clock className="w-6 h-6 text-[#1B664B]" />
           </div>
           <div>
             <p className="text-xs font-black uppercase tracking-wider text-slate-500">Live Server Clock</p>
@@ -1747,14 +1747,14 @@ function SystemSection() {
       {/* Status Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {items.map((item, i) => (
-          <div key={i} className="group p-5 rounded-3xl border border-slate-200 bg-white shadow-2xs hover:shadow-lg hover:border-themePrimary transition-all duration-300 cursor-pointer">
+          <div key={i} className="group p-5 rounded-3xl border border-slate-200 bg-white shadow-2xs hover:shadow-lg hover:border-[#1B664B] transition-all duration-300 cursor-pointer">
             <div className="flex items-center justify-between mb-3">
               <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-extrabold uppercase border shadow-2xs ${item.color}`}>
                 <span className={`w-2 h-2 rounded-full ${item.dot} animate-pulse`} />
                 {item.status}
               </span>
             </div>
-            <h4 className="text-sm font-black text-slate-900 font-auth-heading tracking-tight group-hover:text-themePrimary transition-colors">{item.label}</h4>
+            <h4 className="text-sm font-black text-slate-900 font-auth-heading tracking-tight group-hover:text-[#1B664B] transition-colors">{item.label}</h4>
             <p className="text-xs text-slate-600 font-medium mt-1">{item.detail}</p>
           </div>
         ))}
@@ -1774,8 +1774,8 @@ function SystemSection() {
             { name: 'bcryptjs', type: 'Password Hashing' },
             { name: 'MVC Pattern', type: 'Modular Architecture' },
           ].map((t, i) => (
-            <div key={i} className="p-4 rounded-2xl border border-slate-200/80 bg-slate-50 hover:bg-orange-50/40 hover:border-orange-200 transition-all duration-300 cursor-pointer group">
-              <p className="text-xs font-black text-slate-900 font-auth-heading group-hover:text-themePrimary transition-colors">{t.name}</p>
+            <div key={i} className="p-4 rounded-2xl border border-slate-200/80 bg-slate-50 hover:bg-[#E8F5F0] hover:border-[#1B664B] transition-all duration-300 cursor-pointer group">
+              <p className="text-xs font-black text-slate-900 font-auth-heading group-hover:text-[#1B664B] transition-colors">{t.name}</p>
               <p className="text-xs text-slate-500 font-medium mt-0.5">{t.type}</p>
             </div>
           ))}
@@ -1802,11 +1802,11 @@ function Modal({ title, children, onClose }: any) {
   );
 }
 
-function ModalActions({ onCancel, onConfirm, submitting, label, color = 'bg-themePrimary hover:bg-[#EA580C]' }: any) {
+function ModalActions({ onCancel, onConfirm, submitting, label, color = 'bg-[#1B664B] hover:bg-[#14523C]' }: any) {
   return (
     <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100 dark:border-slate-800 mt-4">
       <button type="button" onClick={onCancel} className="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-700 dark:text-slate-200 transition cursor-pointer active:scale-95">Cancel</button>
-      <button type={onConfirm ? 'button' : 'submit'} onClick={onConfirm} disabled={submitting} className={`px-5 py-2.5 rounded-xl ${color} text-white font-extrabold text-xs flex items-center gap-2 shadow-md shadow-orange-500/20 disabled:opacity-50 transition cursor-pointer active:scale-95`}>
+      <button type={onConfirm ? 'button' : 'submit'} onClick={onConfirm} disabled={submitting} className={`px-5 py-2.5 rounded-xl ${color} text-white font-extrabold text-xs flex items-center gap-2 shadow-md shadow-emerald-950/20 disabled:opacity-50 transition cursor-pointer active:scale-95`}>
         {submitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />}{label}
       </button>
     </div>
@@ -1817,7 +1817,7 @@ function FieldInput({ label, value, onChange, type = 'text', placeholder }: { la
   return (
     <div>
       <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">{label}</label>
-      <input type={type} value={value} onChange={(e: any) => onChange(e.target.value)} placeholder={placeholder || ''} className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary placeholder-slate-400" />
+      <input type={type} value={value} onChange={(e: any) => onChange(e.target.value)} placeholder={placeholder || ''} className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-[#1B664B] placeholder-slate-400" />
     </div>
   );
 }
@@ -1826,7 +1826,7 @@ function FieldArea({ label, value, onChange, rows = 3 }: { label: string; value:
   return (
     <div>
       <label className="text-[10px] font-extrabold uppercase text-slate-600 block mb-1">{label}</label>
-      <textarea rows={rows} value={value} onChange={(e: any) => onChange(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 focus:outline-none focus:border-themePrimary resize-none" />
+      <textarea rows={rows} value={value} onChange={(e: any) => onChange(e.target.value)} className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-900 focus:outline-none focus:border-[#1B664B] resize-none" />
     </div>
   );
 }

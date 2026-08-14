@@ -89,7 +89,7 @@ export default function PaymentModal() {
 
   return createPortal(
     <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 sm:p-6 bg-slate-950/75 backdrop-blur-md overflow-y-auto">
-      <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl shadow-orange-500/10 border border-slate-200 dark:border-slate-800 relative space-y-6 m-auto max-h-[90vh] overflow-y-auto animate-pop-in">
+      <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl shadow-emerald-950/20 border border-slate-200 dark:border-slate-800 relative space-y-6 m-auto max-h-[90vh] overflow-y-auto animate-pop-in">
         {/* Close Button */}
         {!processing && !success && (
           <button
@@ -123,13 +123,13 @@ export default function PaymentModal() {
           <>
             {/* Header */}
             <div className="flex items-center gap-3">
-              <div className="w-11 h-11 rounded-2xl bg-orange-50 dark:bg-orange-950/60 text-themePrimary border border-orange-200 dark:border-orange-900/60 flex items-center justify-center shrink-0">
+              <div className="w-11 h-11 rounded-2xl bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] border border-[#D1EBE1] dark:border-emerald-900/60 flex items-center justify-center shrink-0">
                 <CreditCard className="w-5 h-5" />
               </div>
               <div>
                 <h3 className="text-lg font-black text-slate-900 dark:text-white">Secure Checkout</h3>
                 <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
-                  Upgrading to <strong className="text-themePrimary">{plan.name}</strong>
+                  Upgrading to <strong className="text-[#1B664B]">{plan.name}</strong>
                 </p>
               </div>
             </div>
@@ -178,7 +178,7 @@ export default function PaymentModal() {
                   required
                   value={cardName || realName}
                   onChange={(e) => setCardName(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl text-xs font-semibold focus:outline-none focus:border-themePrimary"
+                  className="w-full px-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl text-xs font-semibold focus:outline-none focus:border-[#1B664B]"
                   placeholder={realName || 'Your full name'}
                 />
               </div>
@@ -193,7 +193,7 @@ export default function PaymentModal() {
                     required
                     value={cardNumber}
                     onChange={(e) => setCardNumber(e.target.value)}
-                    className="w-full pl-4 pr-10 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl text-xs font-mono font-semibold focus:outline-none focus:border-themePrimary"
+                    className="w-full pl-4 pr-10 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl text-xs font-mono font-semibold focus:outline-none focus:border-[#1B664B]"
                     placeholder="4532 •••• •••• 9012"
                   />
                   <CreditCard className="w-4 h-4 text-slate-400 absolute right-3.5 top-1/2 -translate-y-1/2" />
@@ -210,7 +210,7 @@ export default function PaymentModal() {
                     required
                     value={expiry}
                     onChange={(e) => setExpiry(e.target.value)}
-                    className="w-full px-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl text-xs font-mono font-semibold focus:outline-none focus:border-themePrimary"
+                    className="w-full px-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl text-xs font-mono font-semibold focus:outline-none focus:border-[#1B664B]"
                     placeholder="MM/YY"
                   />
                 </div>
@@ -224,7 +224,7 @@ export default function PaymentModal() {
                     maxLength={4}
                     value={cvv}
                     onChange={(e) => setCvv(e.target.value)}
-                    className="w-full px-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl text-xs font-mono font-semibold focus:outline-none focus:border-themePrimary"
+                    className="w-full px-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl text-xs font-mono font-semibold focus:outline-none focus:border-[#1B664B]"
                     placeholder="•••"
                   />
                 </div>
@@ -249,12 +249,12 @@ export default function PaymentModal() {
                     value={promoCode}
                     onChange={(e) => setPromoCode(e.target.value)}
                     placeholder="Enter DOCVAULT20 or FREEPRO"
-                    className="flex-1 px-3.5 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl text-xs uppercase font-bold focus:outline-none focus:border-themePrimary"
+                    className="flex-1 px-3.5 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl text-xs uppercase font-bold focus:outline-none focus:border-[#1B664B]"
                   />
                   <button
                     type="button"
                     onClick={handleApplyPromo}
-                    className="px-4 py-2 rounded-2xl bg-themePrimary text-white font-extrabold text-xs hover:bg-[#E05E00] shadow-sm transition"
+                    className="px-4 py-2 rounded-2xl bg-[#1B664B] text-white font-extrabold text-xs hover:bg-[#E05E00] shadow-sm transition"
                   >
                     Apply
                   </button>
@@ -270,7 +270,7 @@ export default function PaymentModal() {
                       setDiscountPercent(20);
                       setPromoApplied(true);
                     }}
-                    className="px-2 py-0.5 rounded-lg bg-orange-100 dark:bg-orange-950 text-themePrimary dark:text-orange-300 text-[10px] font-black hover:scale-105 transition"
+                    className="px-2 py-0.5 rounded-lg bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] dark:text-emerald-400 text-[10px] font-black hover:scale-105 transition"
                   >
                     DOCVAULT20 (-20%)
                   </button>
@@ -298,7 +298,7 @@ export default function PaymentModal() {
               <button
                 type="submit"
                 disabled={processing}
-                className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] text-white font-black text-xs shadow-lg shadow-orange-500/25 hover:scale-[1.02] active:scale-98 transition flex items-center justify-center gap-2 disabled:opacity-50"
+                className="w-full py-3.5 rounded-2xl bg-[#1B664B] hover:bg-[#14523C] active:bg-[#0F402E] text-white font-black text-xs shadow-md hover:scale-[1.02] active:scale-98 transition flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 {processing ? (
                   <>

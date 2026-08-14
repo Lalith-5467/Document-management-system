@@ -56,7 +56,7 @@ export default function AdminStoragePage() {
         <div className={`fixed top-20 right-6 z-[100000] text-white text-sm font-semibold px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-2 animate-in fade-in slide-in-from-top-3 ${
           toastMsg.type === 'success' ? 'bg-slate-900 dark:bg-slate-800 border border-slate-700' : 'bg-rose-600'
         }`}>
-          {toastMsg.type === 'success' ? <CheckCircle2 className="w-4 h-4 text-emerald-400" /> : <AlertCircle className="w-4 h-4 text-amber-300" />}
+          {toastMsg.type === 'success' ? <CheckCircle2 className="w-4 h-4 text-emerald-400" /> : <AlertCircle className="w-4 h-4 text-[#1B664B]" />}
           <span>{toastMsg.text}</span>
         </div>
       )}
@@ -64,7 +64,7 @@ export default function AdminStoragePage() {
       {/* Header */}
       <div className="pb-4 border-b border-slate-100 dark:border-slate-800">
         <h1 className="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading">
-          <HardDrive className="w-6 h-6 text-themePrimary" /> Storage Policy
+          <HardDrive className="w-6 h-6 text-[#1B664B]" /> Storage Policy
         </h1>
         <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">Manage default storage quotas, file restrictions, and retention limits.</p>
       </div>
@@ -74,7 +74,7 @@ export default function AdminStoragePage() {
         {/* Quotas & Uploads */}
         <div className="bg-white dark:bg-[#111827] rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xs p-6 space-y-6">
           <div className="flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
-            <Database className="w-4 h-4 text-themePrimary" />
+            <Database className="w-4 h-4 text-[#1B664B]" />
             <h2 className="text-sm font-black text-slate-900 dark:text-white font-auth-heading">Quotas & Upload Limits</h2>
           </div>
 
@@ -89,7 +89,7 @@ export default function AdminStoragePage() {
                 max={1000}
                 value={policy.defaultQuotaGB}
                 onChange={e => setPolicy({ ...policy, defaultQuotaGB: parseInt(e.target.value) || 10 })}
-                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary transition"
+                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-[#1B664B] transition"
               />
               <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium mt-1">Amount of storage given to new users by default.</p>
             </div>
@@ -104,7 +104,7 @@ export default function AdminStoragePage() {
                 max={5000}
                 value={policy.maxFileSizeMB}
                 onChange={e => setPolicy({ ...policy, maxFileSizeMB: parseInt(e.target.value) || 50 })}
-                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary transition"
+                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-[#1B664B] transition"
               />
               <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium mt-1">Maximum size allowed per individual file upload.</p>
             </div>
@@ -117,7 +117,7 @@ export default function AdminStoragePage() {
                 type="text"
                 value={policy.allowedExtensions}
                 onChange={e => setPolicy({ ...policy, allowedExtensions: e.target.value })}
-                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-mono font-bold text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary transition"
+                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-mono font-bold text-slate-900 dark:text-white focus:outline-none focus:border-[#1B664B] transition"
                 placeholder=".pdf, .docx, .png"
               />
               <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium mt-1">Comma-separated list of allowed file extensions. Leave empty to allow all types.</p>
@@ -128,7 +128,7 @@ export default function AdminStoragePage() {
         {/* Retention */}
         <div className="bg-white dark:bg-[#111827] rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xs p-6 space-y-6">
           <div className="flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
-            <Trash2 className="w-4 h-4 text-themePrimary" />
+            <Trash2 className="w-4 h-4 text-[#1B664B]" />
             <h2 className="text-sm font-black text-slate-900 dark:text-white font-auth-heading">Retention & Recycle Bin</h2>
           </div>
 
@@ -143,7 +143,7 @@ export default function AdminStoragePage() {
                 max={365}
                 value={policy.recycleBinDays}
                 onChange={e => setPolicy({ ...policy, recycleBinDays: parseInt(e.target.value) || 30 })}
-                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary transition"
+                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-[#1B664B] transition"
                 disabled={!policy.autoEmptyBin}
               />
               <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium mt-1">Number of days to keep deleted files before permanent deletion.</p>
@@ -155,7 +155,7 @@ export default function AdminStoragePage() {
                   type="checkbox" 
                   checked={policy.autoEmptyBin}
                   onChange={e => setPolicy({ ...policy, autoEmptyBin: e.target.checked })}
-                  className="w-4 h-4 text-themePrimary focus:ring-themePrimary border-slate-300 rounded cursor-pointer"
+                  className="w-4 h-4 text-[#1B664B] focus:ring-themePrimary border-slate-300 rounded cursor-pointer"
                 />
                 <div>
                   <div className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
@@ -172,7 +172,7 @@ export default function AdminStoragePage() {
           <button
             type="submit"
             disabled={submitting}
-            className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-black text-xs shadow-md shadow-orange-500/20 hover:opacity-90 hover:scale-105 transition disabled:opacity-70 cursor-pointer"
+            className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-[#1B664B] text-white font-black text-xs shadow-md shadow-emerald-950/20 hover:opacity-90 hover:scale-105 transition disabled:opacity-70 cursor-pointer"
           >
             <Save className="w-4 h-4" />
             {submitting ? 'Saving...' : 'Save Storage Policy'}

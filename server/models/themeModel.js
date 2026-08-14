@@ -26,12 +26,12 @@ class ThemeModel {
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
         const params = [
-            data.theme_name, data.primary_color || '#FF6B00', data.secondary_color || '#1e293b',
-            data.background_color || '#ffffff', data.sidebar_color || '#ffffff',
+            data.theme_name, data.primary_color || '#1B664B', data.secondary_color || '#14523C',
+            data.background_color || '#E8F5F0', data.sidebar_color || '#ffffff',
             data.header_color || '#ffffff', data.card_color || '#ffffff',
-            data.button_color || '#FF6B00', data.button_text_color || '#ffffff',
-            data.text_color || '#0f172a', data.border_color || '#e2e8f0',
-            data.hover_color || '#f1f5f9', data.success_color || '#10b981',
+            data.button_color || '#1B664B', data.button_text_color || '#ffffff',
+            data.text_color || '#17211B', data.border_color || '#D1EBE1',
+            data.hover_color || '#14523C', data.success_color || '#1B664B',
             data.warning_color || '#f59e0b', data.error_color || '#ef4444',
             data.is_active !== undefined ? data.is_active : 1,
             data.is_default !== undefined ? data.is_default : 0

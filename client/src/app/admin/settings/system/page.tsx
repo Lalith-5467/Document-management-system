@@ -161,7 +161,7 @@ export default function AdminSettingsPage() {
     <div className="max-w-4xl space-y-8 pb-12 text-slate-900 dark:text-white font-sans">
       {/* Toast Alert */}
       {toastMsg && (
-        <div className="fixed top-20 right-6 z-[100000] flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white border border-themePrimary/30 shadow-2xl text-xs font-semibold animate-pop-in">
+        <div className="fixed top-20 right-6 z-[100000] flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white border border-[#1B664B]/30 shadow-2xl text-xs font-semibold animate-pop-in">
           <span>{toastMsg.text}</span>
         </div>
       )}
@@ -170,7 +170,7 @@ export default function AdminSettingsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
         <div>
           <h1 className="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading">
-            <Settings className="w-6 h-6 text-themePrimary" />
+            <Settings className="w-6 h-6 text-[#1B664B]" />
             <span>Admin System Settings & Backup</span>
           </h1>
           <p className="text-xs text-slate-500 dark:text-slate-400 font-medium mt-1">
@@ -181,7 +181,7 @@ export default function AdminSettingsPage() {
         <div className="flex items-center gap-2.5">
           <button
             onClick={() => setIsBackupModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-black text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:opacity-90 shadow-md shadow-orange-500/20 hover:scale-105 transition cursor-pointer">
+            className="flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-black text-white bg-[#1B664B] hover:opacity-90 shadow-md shadow-emerald-950/20 hover:scale-105 transition cursor-pointer">
             <Download className="w-3.5 h-3.5" /> Backup DB
           </button>
 
@@ -204,7 +204,7 @@ export default function AdminSettingsPage() {
 
       {loading ? (
         <div className="bg-white dark:bg-[#111827] p-12 rounded-3xl border border-slate-200 dark:border-slate-800 text-center space-y-3 shadow-2xs">
-          <Loader2 className="w-8 h-8 text-themePrimary animate-spin mx-auto" />
+          <Loader2 className="w-8 h-8 text-[#1B664B] animate-spin mx-auto" />
           <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Fetching system information & parameters...</p>
         </div>
       ) : (
@@ -213,7 +213,7 @@ export default function AdminSettingsPage() {
           <div className="bg-white dark:bg-[#111827] rounded-3xl border border-slate-200 dark:border-slate-800 p-6 shadow-2xs space-y-5">
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
               <h2 className="text-sm font-black text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading">
-                <Cpu className="w-4 h-4 text-themePrimary" /> System Specs & Environment Information
+                <Cpu className="w-4 h-4 text-[#1B664B]" /> System Specs & Environment Information
               </h2>
             </div>
 
@@ -241,7 +241,7 @@ export default function AdminSettingsPage() {
           <form onSubmit={handleSaveConfig} className="bg-white dark:bg-[#111827] rounded-3xl border border-slate-200 dark:border-slate-800 p-6 shadow-2xs space-y-6">
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
               <h2 className="text-sm font-black text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading">
-                <HardDrive className="w-4 h-4 text-themePrimary" /> Storage & File Limit Controls
+                <HardDrive className="w-4 h-4 text-[#1B664B]" /> Storage & File Limit Controls
               </h2>
             </div>
 
@@ -295,7 +295,7 @@ export default function AdminSettingsPage() {
                       onClick={() => toggleFileType(item.ext)}
                       className={`p-3.5 rounded-2xl border text-left transition flex items-center justify-between cursor-pointer ${
                         isChecked
-                          ? 'border-themePrimary bg-orange-50/60 dark:bg-orange-950/40 text-slate-900 dark:text-white font-extrabold'
+                          ? 'border-[#1B664B] bg-[#E8F5F0] dark:bg-emerald-950/60 text-slate-900 dark:text-white font-extrabold'
                           : 'border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#0B1120] text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60'
                       }`}
                     >
@@ -303,7 +303,7 @@ export default function AdminSettingsPage() {
                         <div className="text-xs uppercase font-black font-auth-heading">{item.ext}</div>
                         <div className="text-[10px] text-slate-500 dark:text-slate-400 font-medium truncate">{item.label}</div>
                       </div>
-                      {isChecked && <Check className="w-4 h-4 text-themePrimary shrink-0" />}
+                      {isChecked && <Check className="w-4 h-4 text-[#1B664B] shrink-0" />}
                     </button>
                   );
                 })}
@@ -315,7 +315,7 @@ export default function AdminSettingsPage() {
               <button
                 type="submit"
                 disabled={savingConfig}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-black text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:opacity-90 shadow-md shadow-orange-500/20 hover:scale-105 transition cursor-pointer">
+                className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-black text-white bg-[#1B664B] hover:opacity-90 shadow-md shadow-emerald-950/20 hover:scale-105 transition cursor-pointer">
                 {savingConfig ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin" />
@@ -337,7 +337,7 @@ export default function AdminSettingsPage() {
       {isBackupModalOpen && (
         <div className="fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4 animate-pop-in">
           <div className="bg-white dark:bg-slate-900 w-full max-w-md p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl space-y-5 text-slate-900 dark:text-white">
-            <div className="w-12 h-12 rounded-2xl bg-orange-50 dark:bg-orange-950/60 text-themePrimary flex items-center justify-center border border-orange-200 dark:border-orange-900/60">
+            <div className="w-12 h-12 rounded-2xl bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] flex items-center justify-center border border-[#D1EBE1] dark:border-emerald-900/60">
               <Database className="w-6 h-6" />
             </div>
 
@@ -361,7 +361,7 @@ export default function AdminSettingsPage() {
                 type="button"
                 onClick={handleDownloadBackup}
                 disabled={isDownloadingBackup}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-black text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:opacity-90 shadow-md shadow-orange-500/20 transition cursor-pointer">
+                className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-black text-white bg-[#1B664B] hover:opacity-90 shadow-md shadow-emerald-950/20 transition cursor-pointer">
                 {isDownloadingBackup ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin" />
@@ -383,7 +383,7 @@ export default function AdminSettingsPage() {
       {isRestoreModalOpen && (
         <div className="fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-4 animate-pop-in">
           <div className="bg-white dark:bg-slate-900 w-full max-w-md p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl space-y-5 text-slate-900 dark:text-white">
-            <div className="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center border border-amber-200 dark:border-amber-900/60">
+            <div className="w-12 h-12 rounded-2xl bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] dark:text-[#1B664B] flex items-center justify-center border border-[#D1EBE1] dark:border-amber-900/60">
               <Upload className="w-6 h-6" />
             </div>
 
@@ -406,9 +406,9 @@ export default function AdminSettingsPage() {
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="w-full p-4 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 hover:bg-orange-50/40 dark:hover:bg-slate-700 text-center transition space-y-1 cursor-pointer"
+                className="w-full p-4 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 hover:bg-[#E8F5F0] dark:hover:bg-slate-700 text-center transition space-y-1 cursor-pointer"
               >
-                <Upload className="w-5 h-5 text-themePrimary mx-auto" />
+                <Upload className="w-5 h-5 text-[#1B664B] mx-auto" />
                 <p className="text-xs font-extrabold text-slate-900 dark:text-white">
                   {selectedRestoreFile ? selectedRestoreFile.name : 'Choose JSON Backup File'}
                 </p>
@@ -432,7 +432,7 @@ export default function AdminSettingsPage() {
                 type="button"
                 onClick={handleRestoreDatabase}
                 disabled={isRestoring || !selectedRestoreFile}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-black text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:opacity-90 shadow-md shadow-orange-500/20 transition cursor-pointer">
+                className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-black text-white bg-[#1B664B] hover:opacity-90 shadow-md shadow-emerald-950/20 transition cursor-pointer">
                 {isRestoring ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin" />

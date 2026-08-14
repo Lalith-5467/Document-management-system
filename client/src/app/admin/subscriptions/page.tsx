@@ -291,7 +291,7 @@ export default function AdminSubscriptionsPage() {
     <div className="space-y-8 pb-16 text-slate-900 font-sans">
       {/* Toast Alert */}
       {toastMessage && (
-        <div className="fixed top-20 right-6 z-[100000] flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-white text-slate-900 border border-themePrimary/30 shadow-2xl shadow-orange-500/10 text-xs font-semibold animate-pop-in">
+        <div className="fixed top-20 right-6 z-[100000] flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-white text-slate-900 border border-[#1B664B]/30 shadow-2xl shadow-emerald-950/20 text-xs font-semibold animate-pop-in">
           <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
           <span>{toastMessage}</span>
         </div>
@@ -340,7 +340,7 @@ export default function AdminSubscriptionsPage() {
             onClick={() => setActiveTab(t.id as any)}
             className={`px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer ${
               activeTab === t.id
-                ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/20'
+                ? 'bg-[#1B664B] text-white shadow-md shadow-emerald-950/20'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
             }`}
           >
@@ -362,7 +362,7 @@ export default function AdminSubscriptionsPage() {
             </div>
             <button
               onClick={() => setShowCreatePlanModal(true)}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-black text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:opacity-90 shadow-md shadow-orange-500/20 hover:scale-105 transition cursor-pointer">
+              className="flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-black text-white bg-[#1B664B] hover:opacity-90 shadow-md shadow-emerald-950/20 hover:scale-105 transition cursor-pointer">
               <Plus className="w-4 h-4" /> Create New Plan
             </button>
           </div>
@@ -371,10 +371,10 @@ export default function AdminSubscriptionsPage() {
             {plans.map((plan) => (
               <div
                 key={plan.id}
-                className="p-6 rounded-3xl bg-white border border-slate-200 space-y-4 relative flex flex-col justify-between hover:border-themePrimary/50 transition-all shadow-xs"
+                className="p-6 rounded-3xl bg-white border border-slate-200 space-y-4 relative flex flex-col justify-between hover:border-[#1B664B]/50 transition-all shadow-xs"
               >
                 {plan.badge && (
-                  <span className="absolute -top-3 right-6 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-xs">
+                  <span className="absolute -top-3 right-6 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-[#1B664B] text-white shadow-xs">
                     {plan.badge}
                   </span>
                 )}
@@ -392,7 +392,7 @@ export default function AdminSubscriptionsPage() {
                   <p className="text-2xs font-bold text-slate-500 uppercase tracking-wider font-mono">Quota: {plan.storageLimitGb} GB</p>
                   {plan.features.map((feat, idx) => (
                     <div key={idx} className="flex items-center gap-2 text-xs text-slate-700 font-medium">
-                      <Check className="w-3.5 h-3.5 text-themePrimary shrink-0" />
+                      <Check className="w-3.5 h-3.5 text-[#1B664B] shrink-0" />
                       <span>{feat}</span>
                     </div>
                   ))}
@@ -403,7 +403,7 @@ export default function AdminSubscriptionsPage() {
                     onClick={() => setEditingPlan(plan)}
                     className="flex-1 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition flex items-center justify-center gap-1.5 cursor-pointer"
                   >
-                    <Edit3 className="w-3.5 h-3.5 text-themePrimary" /> Edit Plan
+                    <Edit3 className="w-3.5 h-3.5 text-[#1B664B]" /> Edit Plan
                   </button>
                   <button
                     onClick={() => handleDeletePlan(plan.id)}
@@ -431,7 +431,7 @@ export default function AdminSubscriptionsPage() {
             </div>
             <button
               onClick={() => setShowCreatePromoModal(true)}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-black text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:opacity-90 shadow-md shadow-orange-500/20 hover:scale-105 transition cursor-pointer">
+              className="flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-black text-white bg-[#1B664B] hover:opacity-90 shadow-md shadow-emerald-950/20 hover:scale-105 transition cursor-pointer">
               <Plus className="w-4 h-4" /> Create Promo Code
             </button>
           </div>
@@ -450,7 +450,7 @@ export default function AdminSubscriptionsPage() {
               <tbody className="divide-y divide-slate-100">
                 {promos.map((promo) => (
                   <tr key={promo.id} className="hover:bg-slate-100/40 transition">
-                    <td className="py-3.5 px-4 font-mono font-black text-orange-400">
+                    <td className="py-3.5 px-4 font-mono font-black text-[#1B664B]">
                       🏷️ {promo.code}
                     </td>
                     <td className="py-3.5 px-4 font-black text-slate-900">
@@ -496,7 +496,7 @@ export default function AdminSubscriptionsPage() {
       {activeTab === 'trial' && (
         <div className="p-6 rounded-3xl bg-white border border-slate-200 shadow-xs space-y-4 animate-pop-in">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-orange-500/10 border border-orange-500/30 text-orange-400 flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-2xl bg-[#E8F5F0]0/10 border border-[#D1EBE1] text-[#1B664B] flex items-center justify-center shrink-0">
               <Gift className="w-5 h-5" />
             </div>
             <div>
@@ -515,7 +515,7 @@ export default function AdminSubscriptionsPage() {
                   type="number"
                   value={trialForm.defaultTrialDays}
                   onChange={(e) => setTrialForm({ ...trialForm, defaultTrialDays: Number(e.target.value) })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 font-bold text-slate-900 focus:outline-none focus:border-themePrimary"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 font-bold text-slate-900 focus:outline-none focus:border-[#1B664B]"
                 />
               </div>
 
@@ -525,7 +525,7 @@ export default function AdminSubscriptionsPage() {
                   type="number"
                   value={trialForm.extensionBonusDays}
                   onChange={(e) => setTrialForm({ ...trialForm, extensionBonusDays: Number(e.target.value) })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 font-bold text-slate-900 focus:outline-none focus:border-themePrimary"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 font-bold text-slate-900 focus:outline-none focus:border-[#1B664B]"
                 />
               </div>
             </div>
@@ -536,7 +536,7 @@ export default function AdminSubscriptionsPage() {
                 type="text"
                 value={trialForm.bannerTitle}
                 onChange={(e) => setTrialForm({ ...trialForm, bannerTitle: e.target.value })}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 font-bold text-slate-900 focus:outline-none focus:border-themePrimary"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 font-bold text-slate-900 focus:outline-none focus:border-[#1B664B]"
               />
             </div>
 
@@ -546,13 +546,13 @@ export default function AdminSubscriptionsPage() {
                 rows={2}
                 value={trialForm.bannerSubtitle}
                 onChange={(e) => setTrialForm({ ...trialForm, bannerSubtitle: e.target.value })}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-themePrimary resize-none"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs text-slate-900 focus:outline-none focus:border-[#1B664B] resize-none"
               />
             </div>
 
             <button
               type="submit"
-              className="flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-black text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:opacity-90 shadow-md shadow-orange-500/20 hover:scale-105 transition cursor-pointer">
+              className="flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-black text-white bg-[#1B664B] hover:opacity-90 shadow-md shadow-emerald-950/20 hover:scale-105 transition cursor-pointer">
               Save Trial & Banner Configurations
             </button>
           </form>
@@ -575,7 +575,7 @@ export default function AdminSubscriptionsPage() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search user or email..."
-                  className="pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 text-xs font-medium text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-themePrimary"
+                  className="pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 text-xs font-medium text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-[#1B664B]"
                 />
               </div>
 
@@ -594,7 +594,7 @@ export default function AdminSubscriptionsPage() {
 
               <button
                 onClick={() => setShowCreateUserSubModal(true)}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-black text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:opacity-90 shadow-md shadow-orange-500/20 hover:scale-105 transition cursor-pointer">
+                className="flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-black text-white bg-[#1B664B] hover:opacity-90 shadow-md shadow-emerald-950/20 hover:scale-105 transition cursor-pointer">
                 <UserPlus className="w-4 h-4" /> Assign Sub
               </button>
             </div>
@@ -624,7 +624,7 @@ export default function AdminSubscriptionsPage() {
                     <td className="py-3.5 px-4 font-bold text-blue-400">{u.planName}</td>
                     <td className="py-3.5 px-4">
                       <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase border ${
-                        u.status === 'active' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' : 'bg-amber-500/10 text-amber-400 border-amber-500/30'
+                        u.status === 'active' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' : 'bg-[#E8F5F0]0/10 text-[#1B664B] border-amber-500/30'
                       }`}>
                         {u.status}
                       </span>
@@ -683,7 +683,7 @@ export default function AdminSubscriptionsPage() {
                   placeholder="e.g. Developer Pro"
                   value={newPlanForm.name}
                   onChange={e => setNewPlanForm({ ...newPlanForm, name: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:border-[#1B664B]"
                 />
               </div>
 
@@ -695,7 +695,7 @@ export default function AdminSubscriptionsPage() {
                     required
                     value={newPlanForm.priceMonthly}
                     onChange={e => setNewPlanForm({ ...newPlanForm, priceMonthly: Number(e.target.value) })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:border-[#1B664B]"
                   />
                 </div>
                 <div>
@@ -705,7 +705,7 @@ export default function AdminSubscriptionsPage() {
                     required
                     value={newPlanForm.priceYearly}
                     onChange={e => setNewPlanForm({ ...newPlanForm, priceYearly: Number(e.target.value) })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:border-[#1B664B]"
                   />
                 </div>
               </div>
@@ -717,7 +717,7 @@ export default function AdminSubscriptionsPage() {
                   placeholder="Optional badge label"
                   value={newPlanForm.badge}
                   onChange={e => setNewPlanForm({ ...newPlanForm, badge: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:border-[#1B664B]"
                 />
               </div>
 
@@ -728,7 +728,7 @@ export default function AdminSubscriptionsPage() {
                   required
                   value={newPlanForm.storageLimitGb}
                   onChange={e => setNewPlanForm({ ...newPlanForm, storageLimitGb: Number(e.target.value) })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:border-[#1B664B]"
                 />
               </div>
 
@@ -739,11 +739,11 @@ export default function AdminSubscriptionsPage() {
                   placeholder="First 7 Days Free&#10;Unlimited Uploads&#10;OCR Search"
                   value={newPlanForm.featuresText}
                   onChange={e => setNewPlanForm({ ...newPlanForm, featuresText: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-medium text-slate-900 focus:outline-none focus:border-themePrimary resize-none"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-medium text-slate-900 focus:outline-none focus:border-[#1B664B] resize-none"
                 />
               </div>
 
-              <button type="submit" className="flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-black text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:opacity-90 shadow-md shadow-orange-500/20 hover:scale-105 transition cursor-pointer">
+              <button type="submit" className="flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-black text-white bg-[#1B664B] hover:opacity-90 shadow-md shadow-emerald-950/20 hover:scale-105 transition cursor-pointer">
                 Create Pricing Card
               </button>
             </form>
@@ -769,7 +769,7 @@ export default function AdminSubscriptionsPage() {
                   placeholder="e.g. SPECIAL50"
                   value={newPromoForm.code}
                   onChange={e => setNewPromoForm({ ...newPromoForm, code: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary uppercase font-mono"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:border-[#1B664B] uppercase font-mono"
                 />
               </div>
 
@@ -780,7 +780,7 @@ export default function AdminSubscriptionsPage() {
                   required
                   value={newPromoForm.discountPct}
                   onChange={e => setNewPromoForm({ ...newPromoForm, discountPct: Number(e.target.value) })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:border-[#1B664B]"
                 />
               </div>
 
@@ -791,11 +791,11 @@ export default function AdminSubscriptionsPage() {
                   placeholder="e.g. 50% OFF for early adopters"
                   value={newPromoForm.description}
                   onChange={e => setNewPromoForm({ ...newPromoForm, description: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-medium text-slate-900 focus:outline-none focus:border-themePrimary"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-medium text-slate-900 focus:outline-none focus:border-[#1B664B]"
                 />
               </div>
 
-              <button type="submit" className="flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-black text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:opacity-90 shadow-md shadow-orange-500/20 hover:scale-105 transition cursor-pointer">
+              <button type="submit" className="flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-black text-white bg-[#1B664B] hover:opacity-90 shadow-md shadow-emerald-950/20 hover:scale-105 transition cursor-pointer">
                 Save Promo Code
               </button>
             </form>
@@ -820,7 +820,7 @@ export default function AdminSubscriptionsPage() {
                   required
                   value={editingPlan.name}
                   onChange={e => setEditingPlan({ ...editingPlan, name: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:border-[#1B664B]"
                 />
               </div>
 
@@ -832,7 +832,7 @@ export default function AdminSubscriptionsPage() {
                     required
                     value={editingPlan.priceMonthly}
                     onChange={e => setEditingPlan({ ...editingPlan, priceMonthly: Number(e.target.value) })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:border-[#1B664B]"
                   />
                 </div>
                 <div>
@@ -842,7 +842,7 @@ export default function AdminSubscriptionsPage() {
                     required
                     value={editingPlan.priceYearly}
                     onChange={e => setEditingPlan({ ...editingPlan, priceYearly: Number(e.target.value) })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:border-[#1B664B]"
                   />
                 </div>
               </div>
@@ -853,7 +853,7 @@ export default function AdminSubscriptionsPage() {
                   type="text"
                   value={editingPlan.badge || ''}
                   onChange={e => setEditingPlan({ ...editingPlan, badge: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:border-[#1B664B]"
                 />
               </div>
 
@@ -864,7 +864,7 @@ export default function AdminSubscriptionsPage() {
                   required
                   value={editingPlan.storageLimitGb}
                   onChange={e => setEditingPlan({ ...editingPlan, storageLimitGb: Number(e.target.value) })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:border-[#1B664B]"
                 />
               </div>
 
@@ -874,11 +874,11 @@ export default function AdminSubscriptionsPage() {
                   rows={4}
                   value={editingPlan.features.join('\n')}
                   onChange={e => setEditingPlan({ ...editingPlan, features: e.target.value.split('\n').filter(Boolean) })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-medium text-slate-900 focus:outline-none focus:border-themePrimary resize-none"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-medium text-slate-900 focus:outline-none focus:border-[#1B664B] resize-none"
                 />
               </div>
 
-              <button type="submit" className="flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-black text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:opacity-90 shadow-md shadow-orange-500/20 hover:scale-105 transition cursor-pointer">
+              <button type="submit" className="flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-black text-white bg-[#1B664B] hover:opacity-90 shadow-md shadow-emerald-950/20 hover:scale-105 transition cursor-pointer">
                 Save Plan Changes
               </button>
             </form>

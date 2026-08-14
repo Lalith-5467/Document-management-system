@@ -51,7 +51,7 @@ export default function PasswordUnlockModal({
       onClose={onClose}
       title={documentTitle}
       subtitle="🔒 Protected Document"
-      icon={<Lock className="w-5 h-5 text-themePrimary" />}
+      icon={<Lock className="w-5 h-5 text-[#1B664B]" />}
       maxWidth="max-w-md"
     >
       <div className="space-y-4">
@@ -78,7 +78,7 @@ export default function PasswordUnlockModal({
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-4 pr-10 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-xs font-mono font-bold text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary"
+                className="w-full pl-4 pr-10 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-xs font-mono font-bold text-slate-900 dark:text-white focus:outline-none focus:border-[#1B664B]"
               />
               <button
                 type="button"
@@ -97,7 +97,7 @@ export default function PasswordUnlockModal({
                 if (onResetPassword) onResetPassword();
                 else alert('Password reset link sent to your registered email address.');
               }}
-              className="text-[11px] font-extrabold text-themePrimary dark:text-orange-400 hover:underline"
+              className="text-[11px] font-extrabold text-[#1B664B] dark:text-emerald-400 hover:underline"
             >
               Forgot / Reset Password?
             </button>
@@ -114,7 +114,7 @@ export default function PasswordUnlockModal({
             <button
               type="submit"
               disabled={loading}
-              className="px-6 py-2.5 rounded-2xl bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] text-white font-black text-xs shadow-lg shadow-orange-500/25 hover:scale-105 transition flex items-center gap-2"
+              className="px-6 py-2.5 rounded-2xl bg-[#1B664B] hover:bg-[#14523C] active:bg-[#0F402E] text-white font-black text-xs shadow-md transition flex items-center gap-2"
             >
               <Unlock className="w-4 h-4" /> Unlock Document
             </button>

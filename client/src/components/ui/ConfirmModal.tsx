@@ -37,29 +37,29 @@ export default function ConfirmModal({
         return {
           iconBg: 'bg-rose-500/10 text-rose-500 dark:bg-rose-500/20 dark:text-rose-400',
           defaultIcon: <Trash2 className="w-6 h-6 text-rose-500" />,
-          buttonBg: 'bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white shadow-lg shadow-rose-600/25',
+          buttonBg: 'bg-rose-600 hover:bg-rose-700 text-white shadow-md',
           defaultConfirmText: 'Delete'
         };
       case 'warning':
         return {
-          iconBg: 'bg-amber-500/10 text-amber-500 dark:bg-amber-500/20 dark:text-amber-400',
-          defaultIcon: <AlertTriangle className="w-6 h-6 text-amber-500" />,
-          buttonBg: 'bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white shadow-lg shadow-amber-600/25',
+          iconBg: 'bg-[#E8F5F0]0/10 text-[#1B664B] dark:bg-[#E8F5F0]0/20 dark:text-[#1B664B]',
+          defaultIcon: <AlertTriangle className="w-6 h-6 text-[#1B664B]" />,
+          buttonBg: 'bg-amber-600 hover:bg-[#E8F5F0] text-white shadow-md',
           defaultConfirmText: 'Proceed'
         };
       case 'success':
         return {
-          iconBg: 'bg-emerald-500/10 text-emerald-500 dark:bg-emerald-500/20 dark:text-emerald-400',
-          defaultIcon: <CheckCircle2 className="w-6 h-6 text-emerald-500" />,
-          buttonBg: 'bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white shadow-lg shadow-emerald-600/25',
+          iconBg: 'bg-[#E8F5F0] text-[#1B664B] dark:bg-emerald-950/40 dark:text-emerald-400',
+          defaultIcon: <CheckCircle2 className="w-6 h-6 text-[#1B664B]" />,
+          buttonBg: 'bg-[#1B664B] hover:bg-[#14523C] active:bg-[#0F402E] text-white shadow-md',
           defaultConfirmText: 'Confirm'
         };
       case 'info':
       default:
         return {
-          iconBg: 'bg-themePrimary/10 text-themePrimary dark:bg-themePrimary/20',
-          defaultIcon: <Info className="w-6 h-6 text-themePrimary" />,
-          buttonBg: 'bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 text-white shadow-lg shadow-orange-500/25',
+          iconBg: 'bg-[#E8F5F0] text-[#1B664B] dark:bg-emerald-950/40',
+          defaultIcon: <Info className="w-6 h-6 text-[#1B664B]" />,
+          buttonBg: 'bg-[#1B664B] hover:bg-[#14523C] active:bg-[#0F402E] text-white shadow-md',
           defaultConfirmText: 'Confirm'
         };
     }

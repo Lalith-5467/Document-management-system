@@ -16,7 +16,8 @@ const ROUTE_LABELS: Record<string, string> = {
   activity: 'Activity Logs',
   notifications: 'Notifications',
   reports: 'Reports',
-  subscriptions: 'Subscriptions',
+  subscription: 'Subscription & Billing',
+  subscriptions: 'Subscription & Billing',
   billing: 'Billing & CRM',
   support: 'Help & Support',
   profile: 'Profile',
@@ -59,7 +60,7 @@ export default function Breadcrumbs({ className = '' }: { className?: string }) 
   let currentPath = rootHref;
   filterSegments.forEach((seg) => {
     // Add professional parent category breadcrumbs for nested section grouping
-    if (seg === 'profile' || seg === 'settings' || seg === 'billing' || seg === 'subscriptions') {
+    if (seg === 'profile' || seg === 'settings' || seg === 'billing' || seg === 'subscription' || seg === 'subscriptions') {
       if (!items.some(i => i.name === 'User Account')) {
         items.push({ name: 'User Account', href: '/user/profile' });
       }
@@ -98,7 +99,7 @@ export default function Breadcrumbs({ className = '' }: { className?: string }) 
             ) : (
               <Link
                 href={item.href}
-                className="text-slate-500 dark:text-slate-400 hover:text-themePrimary dark:hover:text-themePrimary transition-colors font-medium"
+                className="text-slate-500 dark:text-slate-400 hover:text-[#1B664B] dark:hover:text-[#1B664B] transition-colors font-medium"
               >
                 <span>{item.name}</span>
               </Link>

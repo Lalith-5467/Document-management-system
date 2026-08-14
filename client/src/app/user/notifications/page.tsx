@@ -103,8 +103,8 @@ export default function NotificationsCenterPage() {
     switch (type) {
       case 'expiry':
         return {
-          icon: <Clock className="w-4.5 h-4.5 text-amber-500" />,
-          bg: 'bg-amber-50 dark:bg-amber-950/60 border-amber-200 dark:border-amber-900/60 text-amber-700 dark:text-amber-300',
+          icon: <Clock className="w-4.5 h-4.5 text-[#1B664B]" />,
+          bg: 'bg-[#E8F5F0] dark:bg-emerald-950/60 border-[#D1EBE1] dark:border-amber-900/60 text-[#1B664B] dark:text-[#1B664B]',
           label: 'Expiry Notice'
         };
       case 'warning':
@@ -187,7 +187,7 @@ export default function NotificationsCenterPage() {
               onClick={() => setActiveTab(tab.id as any)}
               className={`px-3 py-1.5 rounded-xl text-sm font-bold transition-all flex items-center gap-1.5 whitespace-nowrap ${
                 activeTab === tab.id
-                  ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md'
+                  ? 'bg-[#1B664B] text-white shadow-md'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
@@ -209,7 +209,7 @@ export default function NotificationsCenterPage() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search notifications..."
-            className="w-full pl-9 pr-3.5 py-2 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-themePrimary"
+            className="w-full pl-9 pr-3.5 py-2 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-[#1B664B]"
           />
         </div>
       </div>
@@ -217,7 +217,7 @@ export default function NotificationsCenterPage() {
       {/* Notifications List */}
       {filteredNotifications.length === 0 ? (
         <div className="bg-white dark:bg-slate-900 p-16 rounded-3xl border border-slate-200 dark:border-slate-800 text-center space-y-4 shadow-lg max-w-md mx-auto">
-          <div className="w-14 h-14 rounded-2xl bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 flex items-center justify-center mx-auto border border-orange-200 dark:border-orange-900/60">
+          <div className="w-14 h-14 rounded-2xl bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] dark:text-emerald-400 flex items-center justify-center mx-auto border border-[#D1EBE1] dark:border-emerald-900/60">
             <Bell className="w-7 h-7" />
           </div>
           <div>
@@ -238,7 +238,7 @@ export default function NotificationsCenterPage() {
                 style={{ animationDelay: `${(idx % 10) * 50}ms` }}
                 className={`p-4 rounded-3xl border transition-all shadow-xs hover:shadow-md hover:-translate-y-0.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 animate-fade-in ${
                   !notif.is_read
-                    ? 'bg-orange-50/40 dark:bg-orange-950/20 border-themePrimary/40 dark:border-orange-900/60'
+                    ? 'bg-[#E8F5F0]/60 dark:bg-emerald-950/20 border-[#D1EBE1] dark:border-emerald-900/60'
                     : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800'
                 }`}
               >
@@ -254,7 +254,7 @@ export default function NotificationsCenterPage() {
                       </span>
                       <h4 className="text-sm font-black text-slate-900 dark:text-white">{notif.title}</h4>
                       {!notif.is_read && (
-                        <span className="w-2 h-2 rounded-full bg-themePrimary animate-pulse" />
+                        <span className="w-2 h-2 rounded-full bg-[#1B664B] animate-pulse" />
                       )}
                     </div>
                     <p className="text-sm text-slate-600 dark:text-slate-300 font-medium leading-relaxed">
@@ -283,7 +283,7 @@ export default function NotificationsCenterPage() {
                         handleMarkAsRead(notif.id);
                         router.push(notif.link!);
                       }}
-                      className="px-4 py-2 text-sm font-bold text-white bg-gradient-to-r from-themePrimary to-[#F97316] rounded-xl shadow-md shadow-orange-500/20 hover:scale-105 transition flex items-center justify-center gap-1.5"
+                      className="px-4 py-2 text-sm font-bold text-white bg-[#1B664B] hover:bg-[#14523C] active:bg-[#0F402E] rounded-xl shadow-md transition flex items-center justify-center gap-1.5"
                     >
                       <span>View</span> <ExternalLink className="w-3.5 h-3.5" />
                     </button>

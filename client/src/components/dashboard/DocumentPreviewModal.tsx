@@ -359,7 +359,7 @@ export default function DocumentPreviewModal({ documentId, document: documentPro
         <div className="h-16 bg-white px-4 sm:px-6 flex items-center justify-between border-b border-slate-200 text-slate-900 shrink-0 font-sans">
           {/* File Title & Extension Badge */}
           <div className="flex items-center gap-3 overflow-hidden min-w-0">
-            <div className="h-9 px-2.5 rounded-xl bg-orange-50 text-themePrimary border border-orange-200 flex items-center justify-center font-black text-xs shrink-0 font-mono uppercase tracking-wider">
+            <div className="h-9 px-2.5 rounded-xl bg-[#E8F5F0] text-[#1B664B] border border-[#D1EBE1] flex items-center justify-center font-black text-xs shrink-0 font-mono uppercase tracking-wider">
               {getExtLabel()}
             </div>
             <div className="truncate min-w-0">
@@ -412,7 +412,7 @@ export default function DocumentPreviewModal({ documentId, document: documentPro
             <button
               onClick={() => setShowInfoPanel(!showInfoPanel)}
               className={`p-2 rounded-xl border text-xs transition cursor-pointer ${
-                showInfoPanel ? 'bg-themePrimary text-white border-orange-500' : 'border-slate-200 text-slate-700 hover:bg-slate-100 hover:text-slate-900'
+                showInfoPanel ? 'bg-[#1B664B] text-white border-[#1B664B]' : 'border-slate-200 text-slate-700 hover:bg-slate-100 hover:text-slate-900'
               }`}
               title="Toggle Document Info Panel"
             >
@@ -431,7 +431,7 @@ export default function DocumentPreviewModal({ documentId, document: documentPro
             {/* Download Button */}
             <button
               onClick={handleDownloadClick}
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 text-white text-xs font-extrabold shadow-md shadow-orange-500/25 transition cursor-pointer font-auth-heading"
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#1B664B] hover:bg-[#14523C] active:bg-[#0F402E] text-white text-xs font-extrabold shadow-md transition cursor-pointer font-auth-heading"
               title="Download File"
             >
               <Download className="w-4 h-4" />
@@ -455,7 +455,7 @@ export default function DocumentPreviewModal({ documentId, document: documentPro
           <div className="flex-1 bg-slate-100/70 overflow-y-auto min-h-0 flex items-start justify-center p-4 sm:p-6">
             {isPasswordLocked ? (
               <div className="my-auto text-center space-y-5 max-w-md w-full p-8 bg-white rounded-3xl border border-slate-200 shadow-2xl animate-pop-in">
-                <div className="w-16 h-16 rounded-3xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 mx-auto shadow-inner">
+                <div className="w-16 h-16 rounded-3xl bg-[#E8F5F0] border border-[#D1EBE1] flex items-center justify-center text-[#1B664B] mx-auto shadow-inner">
                   <ShieldCheck className="w-8 h-8" />
                 </div>
                 <div className="space-y-1">
@@ -473,7 +473,7 @@ export default function DocumentPreviewModal({ documentId, document: documentPro
                       value={inputPassword}
                       onChange={(e) => setInputPassword(e.target.value)}
                       placeholder="Enter master password (min. 6 characters)"
-                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-bold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-themePrimary focus:bg-white transition"
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-bold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#1B664B] focus:bg-white transition"
                     />
                     <p className="text-[11px] text-slate-400 font-medium mt-1 text-left">
                       Password must be at least 6 characters.
@@ -485,7 +485,7 @@ export default function DocumentPreviewModal({ documentId, document: documentPro
                   <button
                     type="submit"
                     disabled={verifyingPassword}
-                    className="w-full py-3 rounded-2xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-black text-sm shadow-md shadow-orange-500/25 hover:scale-[1.02] transition flex items-center justify-center gap-2"
+                    className="w-full py-3 rounded-2xl bg-[#1B664B] text-white font-black text-sm shadow-md shadow-emerald-950/20 hover:scale-[1.02] transition flex items-center justify-center gap-2"
                   >
                     {verifyingPassword ? (
                       <>
@@ -499,7 +499,7 @@ export default function DocumentPreviewModal({ documentId, document: documentPro
               </div>
             ) : loading ? (
               <div className="text-center space-y-3">
-                <Loader2 className="w-10 h-10 text-themePrimary animate-spin mx-auto" />
+                <Loader2 className="w-10 h-10 text-[#1B664B] animate-spin mx-auto" />
                 <p className="text-xs text-slate-600 font-medium">Loading document stream preview...</p>
               </div>
             ) : error ? (
@@ -509,7 +509,7 @@ export default function DocumentPreviewModal({ documentId, document: documentPro
                 <p className="text-xs text-slate-500">{error}</p>
                 <button
                   onClick={handleDownloadClick}
-                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-bold text-xs inline-flex items-center gap-1.5 shadow-md shadow-orange-500/25"
+                  className="px-4 py-2 rounded-xl bg-[#1B664B] text-white font-bold text-xs inline-flex items-center gap-1.5 shadow-md shadow-emerald-950/20"
                 >
                   <Download className="w-4 h-4" /> Download File
                 </button>
@@ -585,7 +585,7 @@ export default function DocumentPreviewModal({ documentId, document: documentPro
             <div className="w-80 bg-white border-l border-slate-200 p-5 overflow-y-auto space-y-5 shrink-0 animate-in slide-in-from-right duration-200 text-slate-900">
               <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                 <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2 font-auth-heading">
-                  <Info className="w-4 h-4 text-themePrimary" /> Document Details
+                  <Info className="w-4 h-4 text-[#1B664B]" /> Document Details
                 </h3>
                 <button onClick={() => setShowInfoPanel(false)} className="text-slate-400 hover:text-slate-800 cursor-pointer">
                   <X className="w-4 h-4" />
@@ -606,7 +606,7 @@ export default function DocumentPreviewModal({ documentId, document: documentPro
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <span className="text-[10px] font-black uppercase tracking-wider text-slate-400 block mb-1 font-mono">File Type</span>
-                    <span className="inline-block px-2.5 py-1 rounded-lg bg-orange-50 text-themePrimary border border-orange-200 text-2xs font-mono font-bold">
+                    <span className="inline-block px-2.5 py-1 rounded-lg bg-[#E8F5F0] text-[#1B664B] border border-[#D1EBE1] text-2xs font-mono font-bold">
                       {getExtLabel()}
                     </span>
                   </div>
@@ -748,7 +748,7 @@ function ExcelViewer({ doc, zoomLevel, handleDownloadClick, formatFileSize, form
 
           <button
             onClick={handleDownloadClick}
-            className="px-4 py-2 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-black hover:brightness-110 shadow-md transition flex items-center gap-2 cursor-pointer font-sans"
+            className="px-4 py-2 rounded-xl bg-[#1B664B] text-white font-black hover:brightness-110 shadow-md transition flex items-center gap-2 cursor-pointer font-sans"
           >
             <Download className="w-3.5 h-3.5" /> Download Spreadsheet (.xlsx)
           </button>
@@ -792,7 +792,7 @@ function PowerPointViewer({ doc, slidesData, textContent, zoomLevel, handleDownl
         {/* Top Toolbar Header */}
         <div className="bg-white border-b border-slate-200/80 px-6 py-3.5 flex flex-wrap items-center justify-between gap-3 shadow-2xs">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 text-white font-bold flex items-center justify-center text-xs shadow-md shadow-orange-500/20 font-auth-heading">
+            <div className="w-9 h-9 rounded-xl bg-[#1B664B] text-white font-bold flex items-center justify-center text-xs shadow-md font-auth-heading">
               P
             </div>
             <div>
@@ -804,7 +804,7 @@ function PowerPointViewer({ doc, slidesData, textContent, zoomLevel, handleDownl
                 <span>•</span>
                 <span className="font-mono">{formatFileSize(doc?.file_size || 500000)}</span>
                 <span>•</span>
-                <span className="font-mono font-bold text-orange-600">{totalSlides} Slides</span>
+                <span className="font-mono font-bold text-[#1B664B]">{totalSlides} Slides</span>
               </p>
             </div>
           </div>
@@ -816,7 +816,7 @@ function PowerPointViewer({ doc, slidesData, textContent, zoomLevel, handleDownl
                 type="button"
                 onClick={() => setViewMode('slides')}
                 className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
-                  viewMode === 'slides' ? 'bg-white text-orange-700 font-bold shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+                  viewMode === 'slides' ? 'bg-white text-[#1B664B] font-bold shadow-2xs' : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
                 Visual Slide Deck ({totalSlides})
@@ -825,7 +825,7 @@ function PowerPointViewer({ doc, slidesData, textContent, zoomLevel, handleDownl
                 type="button"
                 onClick={() => setViewMode('full')}
                 className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
-                  viewMode === 'full' ? 'bg-white text-orange-700 font-bold shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+                  viewMode === 'full' ? 'bg-white text-[#1B664B] font-bold shadow-2xs' : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
                 All Slides List
@@ -863,8 +863,8 @@ function PowerPointViewer({ doc, slidesData, textContent, zoomLevel, handleDownl
             <div className="max-w-3xl mx-auto bg-white border border-slate-200/90 rounded-2xl p-8 sm:p-12 shadow-xl space-y-6">
               <div className="border-b border-slate-100 pb-5 flex justify-between items-start">
                 <div className="space-y-1.5">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-50 text-orange-700 text-xs font-bold font-auth-heading tracking-wide border border-orange-100">
-                    <ShieldCheck className="w-3.5 h-3.5 text-orange-600" /> POWERPOINT PRESENTATION DECK ({totalSlides} SLIDES)
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E8F5F0] text-[#1B664B] text-xs font-bold font-auth-heading tracking-wide border border-[#D1EBE1]">
+                    <ShieldCheck className="w-3.5 h-3.5 text-[#1B664B]" /> POWERPOINT PRESENTATION DECK ({totalSlides} SLIDES)
                   </span>
                   <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight font-auth-heading pt-1">
                     {doc?.title || 'Presentation Specification Deck'}
@@ -883,9 +883,9 @@ function PowerPointViewer({ doc, slidesData, textContent, zoomLevel, handleDownl
               <div className="space-y-6">
                 {slideList.map((sItem: any, idx: number) => (
                   <div key={idx} className="p-6 rounded-2xl bg-slate-50/80 border border-slate-200/80 space-y-3 shadow-2xs">
-                    <div className="flex items-center justify-between text-xs text-orange-700 font-bold border-b border-slate-200/80 pb-2.5 font-auth-heading">
+                    <div className="flex items-center justify-between text-xs text-[#1B664B] font-bold border-b border-slate-200/80 pb-2.5 font-auth-heading">
                       <span className="flex items-center gap-2">
-                        <span className="px-2 py-0.5 rounded bg-orange-100 text-orange-800 text-[11px] font-mono">SLIDE {String(sItem.slideNumber || idx + 1).padStart(2, '0')}</span>
+                        <span className="px-2 py-0.5 rounded bg-[#E8F5F0] text-[#1B664B] text-[11px] font-mono">SLIDE {String(sItem.slideNumber || idx + 1).padStart(2, '0')}</span>
                         <span className="text-sm font-extrabold text-slate-900">{sItem.title || `SLIDE ${idx + 1}`}</span>
                       </span>
                       <span className="text-[11px] text-slate-400 font-normal font-mono">DocVault Deck</span>
@@ -895,7 +895,7 @@ function PowerPointViewer({ doc, slidesData, textContent, zoomLevel, handleDownl
                         <ul className="space-y-2 font-sans text-xs sm:text-sm text-slate-800">
                           {sItem.bullets.map((b: string, bIdx: number) => (
                             <li key={bIdx} className="flex items-start gap-2.5">
-                              <span className="w-2 h-2 rounded-full bg-orange-500 mt-1.5 shrink-0" />
+                              <span className="w-2 h-2 rounded-full bg-[#1B664B] mt-1.5 shrink-0" />
                               <span className="leading-relaxed">{b}</span>
                             </li>
                           ))}
@@ -926,13 +926,13 @@ function PowerPointViewer({ doc, slidesData, textContent, zoomLevel, handleDownl
             <div className="w-full aspect-[16/9] min-h-[360px] max-h-[50vh] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-950 rounded-2xl border border-slate-700/80 p-8 sm:p-10 flex flex-col justify-between relative overflow-hidden shadow-2xl">
               
               {/* Background Ambient Glow */}
-              <div className="absolute top-0 right-0 w-80 h-80 bg-orange-500/15 rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
               <div className="absolute bottom-0 left-0 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
 
               {/* Slide Header Pill */}
               <div className="flex items-center justify-between border-b border-slate-700/60 pb-4 relative z-10">
                 <div className="flex items-center gap-2">
-                  <span className="px-3 py-1 rounded-full bg-orange-500/20 text-orange-400 text-xs font-bold font-mono border border-orange-500/30 uppercase">
+                  <span className="px-3 py-1 rounded-full bg-[#1B664B]/20 text-emerald-400 text-xs font-bold font-mono border border-[#1B664B]/30 uppercase">
                     SLIDE {String(slide).padStart(2, '0')} / {String(totalSlides).padStart(2, '0')}
                   </span>
                   <span className="text-xs text-slate-400 font-medium truncate max-w-[300px]">
@@ -940,7 +940,7 @@ function PowerPointViewer({ doc, slidesData, textContent, zoomLevel, handleDownl
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
-                  <Presentation className="w-4 h-4 text-orange-400" />
+                  <Presentation className="w-4 h-4 text-emerald-400" />
                   <span>16:9 Widescreen Deck</span>
                 </div>
               </div>
@@ -948,7 +948,7 @@ function PowerPointViewer({ doc, slidesData, textContent, zoomLevel, handleDownl
               {/* Slide Body Visual Content */}
               <div className="my-auto relative z-10 max-h-[36vh] overflow-y-auto space-y-4 py-2">
                 <div className="space-y-3">
-                  <span className="inline-block px-3 py-1 rounded-md bg-orange-500/20 text-orange-300 text-xs font-mono font-bold tracking-wider uppercase border border-orange-500/30">
+                  <span className="inline-block px-3 py-1 rounded-md bg-[#1B664B]/20 text-emerald-300 text-xs font-mono font-bold tracking-wider uppercase border border-[#1B664B]/30">
                     SLIDE {String(slide).padStart(2, '0')} — {(slideList[slide - 1]?.title) || `Slide ${slide}`}
                   </span>
                   <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight font-auth-heading leading-tight">
@@ -959,7 +959,7 @@ function PowerPointViewer({ doc, slidesData, textContent, zoomLevel, handleDownl
                       <ul className="space-y-2.5 font-sans text-xs sm:text-sm text-slate-200">
                         {slideList[slide - 1].bullets.map((b: string, bIdx: number) => (
                           <li key={bIdx} className="flex items-start gap-2.5">
-                            <span className="w-2 h-2 rounded-full bg-orange-400 mt-1.5 shrink-0" />
+                            <span className="w-2 h-2 rounded-full bg-emerald-400 mt-1.5 shrink-0" />
                             <span className="leading-relaxed">{b}</span>
                           </li>
                         ))}
@@ -982,7 +982,7 @@ function PowerPointViewer({ doc, slidesData, textContent, zoomLevel, handleDownl
                   <span>Slide {slide} of {totalSlides}</span>
                   <button
                     onClick={handleDownloadClick}
-                    className="px-3 py-1.5 rounded-lg bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs flex items-center gap-1.5 transition shadow-sm cursor-pointer"
+                    className="px-3 py-1.5 rounded-lg bg-[#1B664B] hover:bg-[#14523C] active:bg-[#0F402E] text-white font-bold text-xs flex items-center gap-1.5 transition shadow-sm cursor-pointer"
                   >
                     <Download className="w-3.5 h-3.5" /> Download (.pptx)
                   </button>
@@ -1003,15 +1003,15 @@ function PowerPointViewer({ doc, slidesData, textContent, zoomLevel, handleDownl
                       onClick={() => setSlide(sNum)}
                       className={`shrink-0 w-40 h-24 rounded-xl p-2.5 transition-all text-left flex flex-col justify-between cursor-pointer border ${
                         isActive
-                          ? 'bg-gradient-to-br from-orange-500/20 to-amber-500/20 border-orange-500 ring-2 ring-orange-500/40 shadow-lg scale-102'
+                          ? 'bg-[#1B664B]/20 border-[#1B664B] ring-2 ring-[#1B664B]/40 shadow-lg scale-102'
                           : 'bg-slate-800/90 border-slate-700/80 hover:bg-slate-800 hover:border-slate-600'
                       }`}
                     >
                       <div className="flex items-center justify-between">
-                        <span className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded ${isActive ? 'bg-orange-500 text-white' : 'bg-slate-700 text-slate-300'}`}>
+                        <span className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded ${isActive ? 'bg-[#1B664B] text-white' : 'bg-slate-700 text-slate-300'}`}>
                           #{sNum}
                         </span>
-                        {isActive && <span className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-ping" />}
+                        {isActive && <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />}
                       </div>
                       <p className="text-[11px] font-bold text-slate-200 truncate font-auth-heading mt-1">
                         {sItem.title || `Slide ${sNum}`}

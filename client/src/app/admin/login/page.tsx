@@ -148,25 +148,25 @@ export default function AdminLoginPage() {
       <div className="absolute top-6 left-6 z-20">
         <Link
           href="/"
-          className="inline-flex items-center gap-2.5 px-6 py-2.5 rounded-full bg-white/95 backdrop-blur-md border border-slate-200 hover:border-orange-300 hover:bg-orange-50/60 text-slate-700 hover:text-slate-900 text-xs font-bold shadow-xs hover:shadow-md hover:shadow-orange-500/10 transition-all duration-300 group cursor-pointer hover:-translate-y-0.5 whitespace-nowrap"
+          className="inline-flex items-center gap-2.5 px-6 py-2.5 rounded-full bg-white/95 backdrop-blur-md border border-slate-200 hover:border-[#1B664B] hover:bg-[#E8F5F0] text-slate-700 hover:text-slate-900 text-xs font-bold shadow-xs hover:shadow-md hover:shadow-emerald-950/20 transition-all duration-300 group cursor-pointer hover:-translate-y-0.5 whitespace-nowrap"
         >
-          <ArrowLeft className="w-4 h-4 text-themePrimary group-hover:-translate-x-1 transition-transform duration-300 shrink-0" />
+          <ArrowLeft className="w-4 h-4 text-[#1B664B] group-hover:-translate-x-1 transition-transform duration-300 shrink-0" />
           <span>Back to Home Page</span>
         </Link>
       </div>
 
       {/* Background Glowing Gradients */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-themePrimary/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#F97316]/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#1B664B]/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#1B664B]/10 rounded-full blur-3xl pointer-events-none" />
 
       {/* Header Badge */}
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center z-10 space-y-3">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-themePrimary to-[#F97316] text-white shadow-xl shadow-orange-500/25 ring-4 ring-orange-500/10 transform hover:scale-105 transition-transform duration-300">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#1B664B] text-white shadow-xl shadow-emerald-950/20 ring-4 ring-emerald-500/20 transform hover:scale-105 transition-transform duration-300">
           <ShieldCheck className="w-9 h-9 text-white" />
         </div>
         <div>
           <h2 className="text-3xl font-black text-slate-900 tracking-tight">
-            DocVault <span className="text-themePrimary">Admin Center</span>
+            DocVault <span className="text-[#1B664B]">Admin Center</span>
           </h2>
           <p className="mt-1 text-sm font-medium text-slate-500">
             Secure Master Portal for Enterprise Operations & Infrastructure
@@ -211,7 +211,7 @@ export default function AdminLoginPage() {
                     if (errors.email) setErrors({ ...errors, email: '' });
                   }}
                   placeholder="Enter email address..."
-                  className={`w-full pl-10 pr-4 py-3 bg-slate-50 border ${errors.email ? 'border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20' : 'border-slate-200 focus:border-themePrimary focus:bg-white focus:ring-2 focus:ring-orange-500/20'} rounded-2xl text-sm font-bold text-slate-900 placeholder:font-normal placeholder-slate-400 focus:outline-none transition-all`}
+                  className={`w-full pl-10 pr-4 py-3 bg-slate-50 border ${errors.email ? 'border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20' : 'border-slate-200 focus:border-[#1B664B] focus:bg-white focus:ring-2 focus:ring-emerald-500/20'} rounded-2xl text-sm font-bold text-slate-900 placeholder:font-normal placeholder-slate-400 focus:outline-none transition-all`}
                 />
               </div>
               {errors.email && (
@@ -239,7 +239,7 @@ export default function AdminLoginPage() {
                     if (errors.password) setErrors({ ...errors, password: '' });
                   }}
                   placeholder="Enter password..."
-                  className={`w-full pl-10 pr-11 py-3 bg-slate-50 border ${errors.password ? 'border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20' : 'border-slate-200 focus:border-themePrimary focus:bg-white focus:ring-2 focus:ring-orange-500/20'} rounded-2xl text-sm font-bold text-slate-900 placeholder:font-normal placeholder-slate-400 focus:outline-none transition-all`}
+                  className={`w-full pl-10 pr-11 py-3 bg-slate-50 border ${errors.password ? 'border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20' : 'border-slate-200 focus:border-[#1B664B] focus:bg-white focus:ring-2 focus:ring-emerald-500/20'} rounded-2xl text-sm font-bold text-slate-900 placeholder:font-normal placeholder-slate-400 focus:outline-none transition-all`}
                 />
                 <button
                   type="button"
@@ -273,7 +273,7 @@ export default function AdminLoginPage() {
                   value={securityPin}
                   onChange={(e) => setSecurityPin(e.target.value)}
                   placeholder="Enter PIN code..."
-                  className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 focus:border-themePrimary focus:bg-white focus:ring-2 focus:ring-orange-500/20 rounded-2xl text-sm font-bold text-slate-900 placeholder:font-normal placeholder-slate-400 focus:outline-none transition-all font-mono tracking-widest"
+                  className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 focus:border-[#1B664B] focus:bg-white focus:ring-2 focus:ring-emerald-500/20 rounded-2xl text-sm font-bold text-slate-900 placeholder:font-normal placeholder-slate-400 focus:outline-none transition-all font-mono tracking-widest"
                 />
               </div>
             </div>
@@ -285,14 +285,14 @@ export default function AdminLoginPage() {
                   type="checkbox"
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
-                  className="w-4 h-4 rounded border-slate-300 bg-slate-50 text-themePrimary focus:ring-themePrimary accent-themePrimary cursor-pointer"
+                  className="w-4 h-4 rounded border-slate-300 bg-slate-50 text-[#1B664B] focus:ring-themePrimary accent-themePrimary cursor-pointer"
                 />
                 <span className="text-xs font-medium text-slate-600 group-hover:text-slate-900 transition">
                   Keep admin session active
                 </span>
               </label>
 
-              <Link href="/login" className="text-xs font-bold text-slate-500 hover:text-themePrimary transition">
+              <Link href="/login" className="text-xs font-bold text-slate-500 hover:text-[#1B664B] transition">
                 User Login Portal
               </Link>
             </div>
@@ -301,7 +301,7 @@ export default function AdminLoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 text-white font-black text-sm flex items-center justify-center gap-2 shadow-lg shadow-orange-500/25 active:scale-[0.99] transition-all cursor-pointer"
+              className="w-full py-3.5 px-4 rounded-2xl bg-[#1B664B] hover:brightness-110 text-white font-black text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/20 active:scale-[0.99] transition-all cursor-pointer"
             >
               {loading ? (
                 <>

@@ -24,8 +24,8 @@ export default function StatCard({
   const schemeClasses = {
     blue: 'bg-blue-50/80 text-blue-600 border-blue-200/80 group-hover:bg-blue-100/80 group-hover:border-blue-300',
     emerald: 'bg-emerald-50/80 text-emerald-600 border-emerald-200/80 group-hover:bg-emerald-100/80 group-hover:border-emerald-300',
-    purple: 'bg-orange-50/80 text-themePrimary border-orange-200/80 group-hover:bg-orange-100/80 group-hover:border-orange-300',
-    amber: 'bg-amber-50/80 text-amber-600 border-amber-200/80 group-hover:bg-amber-100/80 group-hover:border-amber-300',
+    purple: 'bg-[#E8F5F0] text-[#1B664B] border-[#D1EBE1] group-hover:bg-[#D1EBE1] group-hover:border-[#1B664B]',
+    amber: 'bg-[#E8F5F0] text-[#1B664B] border-[#D1EBE1] group-hover:bg-[#D1EBE1] group-hover:border-[#1B664B]',
     cyan: 'bg-cyan-50/80 text-cyan-600 border-cyan-200/80 group-hover:bg-cyan-100/80 group-hover:border-cyan-300',
     rose: 'bg-rose-50/80 text-rose-600 border-rose-200/80 group-hover:bg-rose-100/80 group-hover:border-rose-300',
   };
@@ -36,7 +36,7 @@ export default function StatCard({
       className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800/80 shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 space-y-3 flex flex-col justify-between group cursor-default relative overflow-hidden animate-fade-in"
     >
       {/* Subtle hover accent light */}
-      <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-orange-500/5 to-transparent rounded-bl-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-emerald-500/5 to-transparent rounded-bl-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
       <div className="flex items-center justify-between relative z-10">
         <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 group-hover:text-slate-800 dark:group-hover:text-slate-200 transition-colors">

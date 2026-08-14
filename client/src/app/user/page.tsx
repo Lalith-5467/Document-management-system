@@ -26,7 +26,7 @@ import DocumentPreviewModal from '@/components/dashboard/DocumentPreviewModal';
 import AnimatedCounter from '@/components/dashboard/AnimatedCounter';
 import Modal from '@/components/ui/Modal';
 
-// Custom Accessible Dropdown Component with Primary Orange Hover Styling
+// Custom Accessible Dropdown Component with Primary Green Hover Styling
 function CustomSelectDropdown({
   label,
   value,
@@ -67,12 +67,12 @@ function CustomSelectDropdown({
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary font-auth-body text-sm cursor-pointer flex items-center justify-between gap-2 transition hover:border-themePrimary/60"
+        className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-[#1B664B] font-auth-body text-sm cursor-pointer flex items-center justify-between gap-2 transition hover:border-[#1B664B]/60"
       >
         <span className="truncate">
           {selectedOption ? selectedOption.label : placeholder}
         </span>
-        <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform ${open ? 'rotate-180 text-themePrimary' : ''}`} />
+        <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform ${open ? 'rotate-180 text-[#1B664B]' : ''}`} />
       </button>
 
       {open && (
@@ -89,8 +89,8 @@ function CustomSelectDropdown({
                 }}
                 className={`w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center justify-between cursor-pointer ${
                   isSelected
-                    ? 'bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] text-white shadow-md shadow-orange-500/20'
-                    : 'text-slate-700 dark:text-slate-200 hover:bg-orange-50 dark:hover:bg-orange-950/60 hover:text-themePrimary'
+                    ? 'bg-[#1B664B] text-white shadow-md shadow-emerald-950/20'
+                    : 'text-slate-700 dark:text-slate-200 hover:bg-[#E8F5F0] dark:hover:bg-[#E8F5F0] hover:text-[#1B664B]'
                 }`}
               >
                 <span className="truncate">{opt.label}</span>
@@ -271,7 +271,7 @@ export default function UserWorkspacePage() {
         setFolders(userFolders);
       } else {
         userFolders = [
-          { id: 1, folder_name: 'Resume', color: '#F59E0B', document_count: 3 },
+          { id: 1, folder_name: 'Resume', color: '#1B664B', document_count: 3 },
           { id: 2, folder_name: 'Personal', color: '#3B82F6', document_count: 1 },
           { id: 3, folder_name: 'Academic', color: '#10B981', document_count: 0 },
           { id: 4, folder_name: 'Projects', color: '#8B5CF6', document_count: 0 },
@@ -287,10 +287,10 @@ export default function UserWorkspacePage() {
         setCategoriesList(userCategories);
       } else {
         userCategories = [
-          { id: 1, category_name: 'Personal Documents', icon: '👤', color: 'var(--theme-primary, #FF6B00)', document_count: 12 },
+          { id: 1, category_name: 'Personal Documents', icon: '👤', color: 'var(--theme-primary, #1B664B)', document_count: 12 },
           { id: 2, category_name: 'Academic Documents', icon: '🎓', color: '#8B5CF6', document_count: 8 },
           { id: 3, category_name: 'Resume & CV', icon: '📄', color: '#EC4899', document_count: 5 },
-          { id: 4, category_name: 'Certificates', icon: '🏆', color: '#F59E0B', document_count: 7 },
+          { id: 4, category_name: 'Certificates', icon: '🏆', color: '#1B664B', document_count: 7 },
           { id: 5, category_name: 'Project Documents', icon: '💻', color: '#10B981', document_count: 14 },
           { id: 6, category_name: 'Financial Documents', icon: '💵', color: '#14B8A6', document_count: 6 }
         ];
@@ -481,14 +481,14 @@ export default function UserWorkspacePage() {
       const res = await api.post('/folders', {
         folder_name: newFolderName.trim(),
         description: newFolderDesc.trim(),
-        color: 'var(--theme-primary, #FF6B00)'
+        color: 'var(--theme-primary, #1B664B)'
       }).catch(() => null);
 
       const createdFolder = res?.data?.folder || {
         id: Date.now(),
         folder_name: newFolderName.trim(),
         description: newFolderDesc.trim(),
-        color: 'var(--theme-primary, #FF6B00)',
+        color: 'var(--theme-primary, #1B664B)',
         document_count: 0,
         created_at: new Date().toISOString()
       };
@@ -520,7 +520,7 @@ export default function UserWorkspacePage() {
         id: Date.now(),
         category_name: newCatName.trim(),
         description: newCatDesc.trim(),
-        color: 'var(--theme-primary, #FF6B00)',
+        color: 'var(--theme-primary, #1B664B)',
         icon: '🏷️',
         document_count: 0
       };
@@ -632,18 +632,18 @@ export default function UserWorkspacePage() {
       )}
 
       {/* HEADER HERO BANNER with Staggered Entrance */}
-      <div className="bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] rounded-3xl p-6 sm:p-8 text-white shadow-xl shadow-orange-500/20 relative overflow-hidden animate-fade-in-up stagger-1">
+      <div className="bg-[#1B664B] rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden animate-fade-in-up stagger-1">
         <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-white/10 transform skew-x-12 pointer-events-none" />
         
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-3">
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/20 text-white text-xs font-bold backdrop-blur-md border border-white/30 font-auth-heading tracking-wide animate-badge-sparkle">
-              <Sparkles className="w-3.5 h-3.5 text-amber-300" /> AES-256 Verified Vault Workspace
+              <Sparkles className="w-3.5 h-3.5 text-emerald-200" /> AES-256 Verified Vault Workspace
             </div>
             <h1 className="text-2xl sm:text-3xl lg:text-[40px] font-bold text-white tracking-tight font-auth-heading leading-tight">
               Welcome back, {(user?.full_name || 'User').trim()}! 👋
             </h1>
-            <p className="text-orange-100/90 text-sm sm:text-[15px] max-w-xl leading-relaxed font-normal">
+            <p className="text-emerald-100/90 text-sm sm:text-[15px] max-w-xl leading-relaxed font-normal">
               Manage, categorize, and encrypt your documents securely with 100ms real-time access.
             </p>
           </div>
@@ -654,16 +654,16 @@ export default function UserWorkspacePage() {
               onClick={() => setUploadModalOpen(true)}
               className="group relative overflow-hidden inline-flex items-center justify-center gap-2.5 bg-white hover:bg-slate-50 text-slate-900 font-bold px-6 py-3.5 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 text-sm active:scale-95 cursor-pointer border border-white/90 hover:-translate-y-0.5 whitespace-nowrap shrink-0 min-w-max"
             >
-              <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-orange-500/10 to-transparent transition-transform duration-1000 ease-in-out" />
-              <Upload className="w-4.5 h-4.5 text-themePrimary group-hover:-translate-y-0.5 transition-transform duration-200 shrink-0 relative z-10" /> 
-              <span className="font-extrabold font-auth-heading text-themePrimary relative z-10">Upload Document</span>
+              <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 ease-in-out" />
+              <Upload className="w-4.5 h-4.5 text-[#1B664B] group-hover:-translate-y-0.5 transition-transform duration-200 shrink-0 relative z-10" /> 
+              <span className="font-extrabold font-auth-heading text-[#1B664B] relative z-10">Upload Document</span>
             </button>
             <button
               type="button"
               onClick={() => setCreateFolderModalOpen(true)}
               className="group relative overflow-hidden inline-flex items-center justify-center gap-2.5 bg-white/20 hover:bg-white/30 text-white font-bold px-6 py-3.5 rounded-2xl backdrop-blur-md border border-white/40 shadow-md transition-all duration-300 text-sm active:scale-95 cursor-pointer hover:-translate-y-0.5 whitespace-nowrap shrink-0 min-w-max"
             >
-              <FolderPlus className="w-4.5 h-4.5 text-amber-300 group-hover:rotate-12 transition-transform duration-200 shrink-0" /> 
+              <FolderPlus className="w-4.5 h-4.5 text-[#1B664B] group-hover:rotate-12 transition-transform duration-200 shrink-0" /> 
               <span className="font-bold font-auth-heading text-white">Create Folder</span>
             </button>
           </div>
@@ -676,7 +676,7 @@ export default function UserWorkspacePage() {
               <FileText className="w-5 h-5 text-white" />
             </div>
             <div>
-              <p className="text-orange-100/80 text-xs font-medium uppercase tracking-wider font-mono">Total Files</p>
+              <p className="text-emerald-100/90 text-xs font-medium uppercase tracking-wider font-mono">Total Files</p>
               <p className="text-2xl lg:text-[32px] font-bold text-white font-auth-heading leading-tight">
                 <AnimatedCounter value={stats.totalDocuments} />
               </p>
@@ -688,7 +688,7 @@ export default function UserWorkspacePage() {
               <FolderClosed className="w-5 h-5 text-white" />
             </div>
             <div>
-              <p className="text-orange-100/80 text-xs font-medium uppercase tracking-wider font-mono">Folders</p>
+              <p className="text-emerald-100/90 text-xs font-medium uppercase tracking-wider font-mono">Folders</p>
               <p className="text-2xl lg:text-[32px] font-bold text-white font-auth-heading leading-tight">
                 <AnimatedCounter value={stats.totalFolders} />
               </p>
@@ -700,7 +700,7 @@ export default function UserWorkspacePage() {
               <Tags className="w-5 h-5 text-white" />
             </div>
             <div>
-              <p className="text-orange-100/80 text-xs font-medium uppercase tracking-wider font-mono">Categories</p>
+              <p className="text-emerald-100/90 text-xs font-medium uppercase tracking-wider font-mono">Categories</p>
               <p className="text-2xl lg:text-[32px] font-bold text-white font-auth-heading leading-tight">
                 <AnimatedCounter value={stats.totalCategories} />
               </p>
@@ -709,10 +709,10 @@ export default function UserWorkspacePage() {
 
           <div className="flex items-center gap-3.5 group cursor-default">
             <div className="w-10 h-10 rounded-2xl bg-white/20 border border-white/30 flex items-center justify-center text-white shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
-              <Star className="w-5 h-5 fill-amber-300 text-amber-300" />
+              <Star className="w-5 h-5 fill-emerald-200 text-emerald-200" />
             </div>
             <div>
-              <p className="text-orange-100/80 text-xs font-medium uppercase tracking-wider font-mono">Favorites</p>
+              <p className="text-emerald-100/90 text-xs font-medium uppercase tracking-wider font-mono">Favorites</p>
               <p className="text-2xl lg:text-[32px] font-bold text-white font-auth-heading leading-tight">
                 <AnimatedCounter value={stats.favoriteDocuments} />
               </p>
@@ -724,7 +724,7 @@ export default function UserWorkspacePage() {
       {/* QUICK ACTIONS SECTION (Staggered Entrance & Smooth Lift) */}
       <div className="space-y-4 animate-fade-in-up stagger-2">
         <h3 className="text-lg lg:text-[20px] font-semibold text-slate-900 dark:text-white flex items-center gap-2.5 font-auth-heading tracking-tight">
-          <Zap className="w-5 h-5 text-amber-500 fill-amber-500/20" /> Quick Actions
+          <Zap className="w-5 h-5 text-[#1B664B]" /> Quick Actions
         </h3>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
@@ -732,12 +732,12 @@ export default function UserWorkspacePage() {
           <button
             type="button"
             onClick={() => setUploadModalOpen(true)}
-            className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 p-5 rounded-3xl flex flex-col items-center justify-center text-center shadow-xs hover:shadow-xl hover:-translate-y-1.5 hover:border-themePrimary/50 transition-all duration-300 group cursor-pointer active:scale-95 min-h-[140px]"
+            className="card-animated bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 p-5 rounded-3xl flex flex-col items-center justify-center text-center shadow-xs group cursor-pointer min-h-[140px]"
           >
-            <div className="w-12 h-12 rounded-2xl bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 border border-orange-200 dark:border-orange-900 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-200">
+            <div className="w-12 h-12 rounded-2xl bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] dark:text-emerald-400 border border-[#D1EBE1] dark:border-emerald-900 flex items-center justify-center mb-3 card-icon-bounce">
               <Upload className="w-5 h-5" />
             </div>
-            <p className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-themePrimary transition-colors font-auth-heading">Upload Document</p>
+            <p className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-[#1B664B] transition-colors font-auth-heading">Upload Document</p>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-normal">Vault your files</p>
           </button>
 
@@ -745,12 +745,12 @@ export default function UserWorkspacePage() {
           <button
             type="button"
             onClick={() => setCreateFolderModalOpen(true)}
-            className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 p-5 rounded-3xl flex flex-col items-center justify-center text-center shadow-xs hover:shadow-xl hover:-translate-y-1.5 hover:border-themePrimary/50 transition-all duration-300 group cursor-pointer active:scale-95 min-h-[140px]"
+            className="card-animated bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 p-5 rounded-3xl flex flex-col items-center justify-center text-center shadow-xs group cursor-pointer min-h-[140px]"
           >
-            <div className="w-12 h-12 rounded-2xl bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 border border-orange-200 dark:border-orange-900 flex items-center justify-center mb-3 group-hover:rotate-90 transition-transform duration-300">
+            <div className="w-12 h-12 rounded-2xl bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] dark:text-emerald-400 border border-[#D1EBE1] dark:border-emerald-900 flex items-center justify-center mb-3 card-icon-bounce">
               <FolderPlus className="w-5 h-5" />
             </div>
-            <p className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-themePrimary transition-colors font-auth-heading">Create Folder</p>
+            <p className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-[#1B664B] transition-colors font-auth-heading">Create Folder</p>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-normal">Organize workspace</p>
           </button>
 
@@ -758,12 +758,12 @@ export default function UserWorkspacePage() {
           <button
             type="button"
             onClick={() => setBrowseCategoriesModalOpen(true)}
-            className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 p-5 rounded-3xl flex flex-col items-center justify-center text-center shadow-xs hover:shadow-xl hover:-translate-y-1.5 hover:border-themePrimary/50 transition-all duration-300 group cursor-pointer active:scale-95 min-h-[140px]"
+            className="card-animated bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 p-5 rounded-3xl flex flex-col items-center justify-center text-center shadow-xs group cursor-pointer min-h-[140px]"
           >
-            <div className="w-12 h-12 rounded-2xl bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 border border-orange-200 dark:border-orange-900 flex items-center justify-center mb-3 group-hover:-rotate-45 transition-transform duration-300">
+            <div className="w-12 h-12 rounded-2xl bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] dark:text-emerald-400 border border-[#D1EBE1] dark:border-emerald-900 flex items-center justify-center mb-3 card-icon-bounce">
               <Tags className="w-5 h-5" />
             </div>
-            <p className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-themePrimary transition-colors font-auth-heading">Browse Categories</p>
+            <p className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-[#1B664B] transition-colors font-auth-heading">Browse Categories</p>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-normal">Taxonomy view</p>
           </button>
 
@@ -771,12 +771,12 @@ export default function UserWorkspacePage() {
           <button
             type="button"
             onClick={() => setSearchFilesModalOpen(true)}
-            className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 p-5 rounded-3xl flex flex-col items-center justify-center text-center shadow-xs hover:shadow-xl hover:-translate-y-1.5 hover:border-themePrimary/50 transition-all duration-300 group cursor-pointer active:scale-95 min-h-[140px]"
+            className="card-animated bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 p-5 rounded-3xl flex flex-col items-center justify-center text-center shadow-xs group cursor-pointer min-h-[140px]"
           >
-            <div className="w-12 h-12 rounded-2xl bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 border border-orange-200 dark:border-orange-900 flex items-center justify-center mb-3 group-hover:scale-115 transition-transform duration-200">
+            <div className="w-12 h-12 rounded-2xl bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] dark:text-emerald-400 border border-[#D1EBE1] dark:border-emerald-900 flex items-center justify-center mb-3 card-icon-bounce">
               <Search className="w-5 h-5" />
             </div>
-            <p className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-themePrimary transition-colors font-auth-heading">Search Files</p>
+            <p className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-[#1B664B] transition-colors font-auth-heading">Search Files</p>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-normal">Find documents</p>
           </button>
 
@@ -784,12 +784,12 @@ export default function UserWorkspacePage() {
           <button
             type="button"
             onClick={() => setViewFavoritesModalOpen(true)}
-            className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 p-5 rounded-3xl flex flex-col items-center justify-center text-center shadow-xs hover:shadow-xl hover:-translate-y-1.5 hover:border-amber-400/50 transition-all duration-300 group cursor-pointer active:scale-95 min-h-[140px]"
+            className="card-animated bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 p-5 rounded-3xl flex flex-col items-center justify-center text-center shadow-xs group cursor-pointer min-h-[140px]"
           >
-            <div className="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-950/60 text-amber-500 dark:text-amber-400 border border-amber-200 dark:border-amber-900 flex items-center justify-center mb-3 group-hover:rotate-180 transition-transform duration-500">
-              <Star className="w-5 h-5 fill-amber-500" />
+            <div className="w-12 h-12 rounded-2xl bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] dark:text-emerald-400 border border-[#D1EBE1] dark:border-emerald-900 flex items-center justify-center mb-3 card-icon-bounce">
+              <Star className="w-5 h-5 fill-[#1B664B]" />
             </div>
-            <p className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-amber-600 transition-colors font-auth-heading">View Favorites</p>
+            <p className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-[#1B664B] transition-colors font-auth-heading">View Favorites</p>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-normal">Saved items</p>
           </button>
 
@@ -797,12 +797,12 @@ export default function UserWorkspacePage() {
           <button
             type="button"
             onClick={() => setRestoreFilesModalOpen(true)}
-            className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 p-5 rounded-3xl flex flex-col items-center justify-center text-center shadow-xs hover:shadow-xl hover:-translate-y-1.5 hover:border-themePrimary/50 transition-all duration-300 group cursor-pointer active:scale-95 min-h-[140px]"
+            className="card-animated bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 p-5 rounded-3xl flex flex-col items-center justify-center text-center shadow-xs group cursor-pointer min-h-[140px]"
           >
-            <div className="w-12 h-12 rounded-2xl bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 border border-orange-200 dark:border-orange-900 flex items-center justify-center mb-3 group-hover:rotate-[360deg] transition-transform duration-700">
+            <div className="w-12 h-12 rounded-2xl bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] dark:text-emerald-400 border border-[#D1EBE1] dark:border-emerald-900 flex items-center justify-center mb-3 card-icon-bounce">
               <RefreshCw className="w-5 h-5" />
             </div>
-            <p className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-themePrimary transition-colors font-auth-heading">Restore Files</p>
+            <p className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-[#1B664B] transition-colors font-auth-heading">Restore Files</p>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-normal">Recycle bin</p>
           </button>
         </div>
@@ -814,9 +814,9 @@ export default function UserWorkspacePage() {
         <div className="lg:col-span-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-xl space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-extrabold text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading">
-              <FileText className="w-5 h-5 text-themePrimary" /> Recent Uploaded Documents
+              <FileText className="w-5 h-5 text-[#1B664B]" /> Recent Uploaded Documents
             </h3>
-            <Link href="/user/documents" className="text-sm font-bold text-themePrimary hover:underline flex items-center gap-1 font-auth-body group">
+            <Link href="/user/documents" className="text-sm font-bold text-[#1B664B] hover:underline flex items-center gap-1 font-auth-body group">
               <span>View All</span> <span className="group-hover:translate-x-0.5 transition-transform">→</span>
             </Link>
           </div>
@@ -827,14 +827,14 @@ export default function UserWorkspacePage() {
                 key={doc.id}
                 style={{ animationDelay: `${(idx % 6) * 50}ms` }}
                 onClick={() => setPreviewDoc(doc)}
-                className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3 hover:border-themePrimary/60 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer group active:scale-[0.99] animate-fade-in"
+                className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3 hover:border-[#1B664B]/60 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer group active:scale-[0.99] animate-fade-in"
               >
                 <div className="flex items-center gap-3 truncate">
-                  <div className="w-9 h-9 rounded-xl bg-orange-100 text-themePrimary dark:bg-orange-950 dark:text-orange-400 flex items-center justify-center font-bold text-sm shrink-0 group-hover:scale-110 transition-transform">
+                  <div className="w-9 h-9 rounded-xl bg-[#E8F5F0] text-[#1B664B] dark:bg-emerald-950 dark:text-emerald-400 flex items-center justify-center font-bold text-sm shrink-0 group-hover:scale-110 transition-transform">
                     📄
                   </div>
                   <div className="truncate">
-                    <p className="text-sm font-bold text-slate-900 dark:text-white truncate font-auth-heading group-hover:text-themePrimary transition-colors">{doc.title}</p>
+                    <p className="text-sm font-bold text-slate-900 dark:text-white truncate font-auth-heading group-hover:text-[#1B664B] transition-colors">{doc.title}</p>
                     <p className="text-xs text-slate-500 dark:text-slate-400 font-auth-body">
                       {doc.category_name} • {doc.size || '1.5 MB'}
                     </p>
@@ -845,7 +845,7 @@ export default function UserWorkspacePage() {
                   <button
                     type="button"
                     onClick={(e) => { e.stopPropagation(); setPreviewDoc(doc); }}
-                    className="p-2 text-slate-400 hover:text-themePrimary hover:bg-orange-50 dark:hover:bg-orange-950/60 rounded-xl transition-all hover:scale-110 active:scale-90 cursor-pointer"
+                    className="p-2 text-slate-400 hover:text-[#1B664B] hover:bg-[#E8F5F0] dark:hover:bg-[#E8F5F0] rounded-xl transition-all hover:scale-110 active:scale-90 cursor-pointer"
                     title="Preview Document"
                   >
                     <Eye className="w-4 h-4" />
@@ -859,7 +859,7 @@ export default function UserWorkspacePage() {
         {/* Storage Widget */}
         <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-xl space-y-4">
           <h3 className="text-lg font-extrabold text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading">
-            <HardDrive className="w-5 h-5 text-themePrimary" /> Storage Overview
+            <HardDrive className="w-5 h-5 text-[#1B664B]" /> Storage Overview
           </h3>
 
           {(() => {
@@ -879,11 +879,11 @@ export default function UserWorkspacePage() {
               <div className="space-y-3 pt-2">
                 <div className="flex justify-between text-sm font-bold text-slate-700 dark:text-slate-300 font-auth-body">
                   <span>{formatSize(usedBytes)} Used</span>
-                  <span className="text-themePrimary">{pctStr}%</span>
+                  <span className="text-[#1B664B]">{pctStr}%</span>
                 </div>
                 <div className="w-full h-3 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden border border-slate-200 dark:border-slate-700">
                   <div
-                    className="h-full bg-gradient-to-r from-themePrimary to-[#F97316] rounded-full transition-all duration-1000 ease-out"
+                    className="h-full bg-[#1B664B] rounded-full transition-all duration-1000 ease-out"
                     style={{ width: `${Math.max(usedBytes > 0 ? 2 : 0, pctVal)}%` }}
                   />
                 </div>
@@ -901,7 +901,7 @@ export default function UserWorkspacePage() {
         isOpen={uploadModalOpen}
         onClose={() => { setUploadModalOpen(false); resetUploadForm(); }}
         title="Upload New Document"
-        icon={<Upload className="w-5 h-5 text-themePrimary" />}
+        icon={<Upload className="w-5 h-5 text-[#1B664B]" />}
         maxWidth="max-w-[620px]"
       >
         <form onSubmit={handleUploadSubmit} noValidate className="space-y-4">
@@ -929,7 +929,7 @@ export default function UserWorkspacePage() {
               className={`border-2 border-dashed rounded-2xl p-5 text-center cursor-pointer transition ${
                 uploadFile
                   ? 'border-emerald-500 bg-emerald-50/20 dark:bg-emerald-950/20'
-                  : 'border-slate-200 dark:border-slate-800 hover:border-themePrimary bg-slate-50 dark:bg-slate-950'
+                  : 'border-slate-200 dark:border-slate-800 hover:border-[#1B664B] bg-slate-50 dark:bg-slate-950'
               }`}
             >
               {uploadFile ? (
@@ -945,7 +945,7 @@ export default function UserWorkspacePage() {
                 </div>
               ) : (
                 <div className="space-y-1">
-                  <Upload className="w-6 h-6 text-themePrimary mx-auto" />
+                  <Upload className="w-6 h-6 text-[#1B664B] mx-auto" />
                   <p className="font-bold text-slate-900 dark:text-white font-auth-heading text-sm">Click or Drag & Drop File</p>
                   <p className="text-xs text-slate-500 font-auth-label">PDF, DOCX, XLSX, PPTX, PNG, JPG, ZIP (Max 25 MB)</p>
                 </div>
@@ -964,7 +964,7 @@ export default function UserWorkspacePage() {
               value={uploadTitle}
               onChange={(e) => setUploadTitle(e.target.value)}
               placeholder="e.g., Master_Transcript_2026"
-              className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary font-auth-body text-sm"
+              className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-[#1B664B] font-auth-body text-sm"
             />
           </div>
 
@@ -998,7 +998,7 @@ export default function UserWorkspacePage() {
               type="date"
               value={uploadExpiryDate}
               onChange={(e) => setUploadExpiryDate(e.target.value)}
-              className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary font-auth-body text-sm cursor-pointer"
+              className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-[#1B664B] font-auth-body text-sm cursor-pointer"
             />
           </div>
 
@@ -1006,13 +1006,13 @@ export default function UserWorkspacePage() {
           <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-2">
             <div className="flex items-center justify-between">
               <span className="font-bold text-slate-900 dark:text-white flex items-center gap-1.5 font-auth-heading text-sm">
-                <Lock className="w-4 h-4 text-themePrimary" /> Protect with Password
+                <Lock className="w-4 h-4 text-[#1B664B]" /> Protect with Password
               </span>
               <button
                 type="button"
                 onClick={() => setUploadIsPassword(!uploadIsPassword)}
                 className={`w-10 h-5.5 rounded-full p-0.5 transition cursor-pointer ${
-                  uploadIsPassword ? 'bg-themePrimary' : 'bg-slate-300 dark:bg-slate-800'
+                  uploadIsPassword ? 'bg-[#1B664B]' : 'bg-slate-300 dark:bg-slate-800'
                 }`}
               >
                 <div className={`w-4 h-4 rounded-full bg-white transition-transform ${uploadIsPassword ? 'translate-x-4' : ''}`} />
@@ -1051,7 +1051,7 @@ export default function UserWorkspacePage() {
             <button
               type="submit"
               disabled={uploadingInline}
-              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] text-white font-black shadow-lg shadow-orange-500/25 flex items-center gap-2 font-auth-heading cursor-pointer hover:brightness-110 active-press text-xs"
+              className="px-5 py-2.5 rounded-xl bg-[#1B664B] text-white font-black shadow-lg shadow-emerald-950/20 flex items-center gap-2 font-auth-heading cursor-pointer hover:brightness-110 active-press text-xs"
             >
               {uploadingInline && <Loader2 className="w-4 h-4 animate-spin" />} Save Document
             </button>
@@ -1064,7 +1064,7 @@ export default function UserWorkspacePage() {
         isOpen={createFolderModalOpen}
         onClose={() => setCreateFolderModalOpen(false)}
         title="Create Workspace Folder"
-        icon={<FolderPlus className="w-5 h-5 text-themePrimary" />}
+        icon={<FolderPlus className="w-5 h-5 text-[#1B664B]" />}
         maxWidth="max-w-md"
       >
         <form onSubmit={handleCreateFolder} className="space-y-4">
@@ -1076,7 +1076,7 @@ export default function UserWorkspacePage() {
               placeholder="e.g., 2026 Tax Return, Project Alpha Specs"
               value={newFolderName}
               onChange={(e) => setNewFolderName(e.target.value)}
-              className="w-full px-4 py-3 text-sm bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-themePrimary font-auth-body"
+              className="w-full px-4 py-3 text-sm bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-[#1B664B] font-auth-body"
             />
           </div>
 
@@ -1090,7 +1090,7 @@ export default function UserWorkspacePage() {
             </button>
             <button
               type="submit"
-              className="px-5 py-2.5 text-xs font-black text-white bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] rounded-xl shadow-lg shadow-orange-500/25 hover:brightness-110 transition active-press font-auth-heading cursor-pointer"
+              className="px-5 py-2.5 text-xs font-black text-white bg-[#1B664B] rounded-xl shadow-lg shadow-emerald-950/20 hover:brightness-110 transition active-press font-auth-heading cursor-pointer"
             >
               Create Folder
             </button>
@@ -1103,7 +1103,7 @@ export default function UserWorkspacePage() {
         isOpen={browseCategoriesModalOpen}
         onClose={() => setBrowseCategoriesModalOpen(false)}
         title="Category Domains"
-        icon={<Tags className="w-5 h-5 text-themePrimary" />}
+        icon={<Tags className="w-5 h-5 text-[#1B664B]" />}
         maxWidth="max-w-[640px]"
       >
         <div className="space-y-4">
@@ -1111,7 +1111,7 @@ export default function UserWorkspacePage() {
             {categoriesList.map(cat => (
               <div key={cat.id} className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-orange-100 text-themePrimary dark:bg-orange-950 dark:text-orange-400 flex items-center justify-center font-bold">
+                  <div className="w-10 h-10 rounded-2xl bg-[#E8F5F0] text-[#1B664B] dark:bg-emerald-950/60 dark:text-[#1B664B] flex items-center justify-center font-bold">
                     {cat.icon || '🏷️'}
                   </div>
                   <div>
@@ -1123,7 +1123,7 @@ export default function UserWorkspacePage() {
                 <Link
                   href={`/user/documents?category_id=${cat.id}`}
                   onClick={() => setBrowseCategoriesModalOpen(false)}
-                  className="px-3 py-1.5 text-xs font-bold text-themePrimary bg-orange-50 dark:bg-orange-950/60 border border-orange-200 dark:border-orange-900 rounded-xl hover:bg-orange-100 transition"
+                  className="px-3 py-1.5 text-xs font-bold text-[#1B664B] bg-[#E8F5F0] dark:bg-emerald-950/60 border border-[#D1EBE1] dark:border-emerald-900/60 rounded-xl hover:bg-[#E8F5F0] transition"
                 >
                   View →
                 </Link>
@@ -1135,7 +1135,7 @@ export default function UserWorkspacePage() {
             <Link
               href="/user/categories"
               onClick={() => setBrowseCategoriesModalOpen(false)}
-              className="text-themePrimary font-bold hover:underline text-xs"
+              className="text-[#1B664B] font-bold hover:underline text-xs"
             >
               Go to Full Category Management →
             </Link>
@@ -1155,7 +1155,7 @@ export default function UserWorkspacePage() {
         isOpen={searchFilesModalOpen}
         onClose={() => setSearchFilesModalOpen(false)}
         title="Search Workspace Files"
-        icon={<Search className="w-5 h-5 text-themePrimary" />}
+        icon={<Search className="w-5 h-5 text-[#1B664B]" />}
         maxWidth="max-w-[640px]"
       >
         <div className="space-y-4 font-auth-body">
@@ -1168,7 +1168,7 @@ export default function UserWorkspacePage() {
               placeholder="Type document title, keyword, folder, or format (e.g. frontend, proposal, tax, pdf)..."
               value={searchModalQuery}
               onChange={(e) => setSearchModalQuery(e.target.value)}
-              className="w-full pl-10 pr-9 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl text-sm text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary focus:ring-2 focus:ring-orange-500/20 font-auth-body"
+              className="w-full pl-10 pr-9 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl text-sm text-slate-900 dark:text-white focus:outline-none focus:border-[#1B664B] focus:ring-2 focus:ring-emerald-500/20 font-auth-body"
             />
             {searchModalQuery && (
               <button
@@ -1191,7 +1191,7 @@ export default function UserWorkspacePage() {
                 onClick={() => setSearchModalFileType(ft)}
                 className={`px-3 py-1 rounded-xl font-bold uppercase transition cursor-pointer ${
                   searchModalFileType === ft
-                    ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-xs'
+                    ? 'bg-[#1B664B] text-white shadow-xs'
                     : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
                 }`}
               >
@@ -1204,24 +1204,24 @@ export default function UserWorkspacePage() {
           <div className="space-y-2 font-auth-body max-h-[45vh] overflow-y-auto">
             {filteredSearchDocs.length === 0 ? (
               <div className="text-center py-10 space-y-3 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-200 dark:border-slate-800 p-6">
-                <Search className="w-10 h-10 text-orange-400 mx-auto" />
+                <Search className="w-10 h-10 text-[#1B664B] mx-auto" />
                 <div>
                   <p className="text-base font-bold text-slate-900 dark:text-white font-auth-heading">No files found for &quot;{searchModalQuery}&quot;</p>
-                  <p className="text-sm text-slate-500 mt-1 font-auth-body">Try searching terms like: <span className="text-themePrimary font-mono">proposal, resume, specs, tax, passport, aws</span></p>
+                  <p className="text-sm text-slate-500 mt-1 font-auth-body">Try searching terms like: <span className="text-[#1B664B] font-mono">proposal, resume, specs, tax, passport, aws</span></p>
                 </div>
                 <Link
                   href={`/user/documents?q=${encodeURIComponent(searchModalQuery)}`}
                   onClick={() => setSearchFilesModalOpen(false)}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-themePrimary to-[#F97316] shadow-md shadow-orange-500/20 hover:brightness-110 font-auth-heading"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-bold text-white bg-[#1B664B] shadow-md shadow-emerald-950/20 hover:brightness-110 font-auth-heading"
                 >
                   Search Full Documents Vault →
                 </Link>
               </div>
             ) : (
               filteredSearchDocs.map(doc => (
-                <div key={doc.id} className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3 hover:border-themePrimary/40 transition">
+                <div key={doc.id} className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3 hover:border-[#1B664B]/40 transition">
                   <div className="flex items-center gap-3 truncate">
-                    <div className="w-9 h-9 rounded-xl bg-orange-100 dark:bg-orange-950 text-themePrimary dark:text-orange-400 flex items-center justify-center font-bold text-sm shrink-0">
+                    <div className="w-9 h-9 rounded-xl bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] dark:text-[#1B664B] flex items-center justify-center font-bold text-sm shrink-0">
                       📄
                     </div>
                     <div className="truncate">
@@ -1235,7 +1235,7 @@ export default function UserWorkspacePage() {
                   <button
                     type="button"
                     onClick={() => { setSearchFilesModalOpen(false); setPreviewDoc(doc); }}
-                    className="px-3.5 py-2 text-sm font-bold text-white bg-gradient-to-r from-themePrimary to-[#F97316] rounded-xl hover:brightness-110 shrink-0 font-auth-heading shadow-xs cursor-pointer"
+                    className="px-3.5 py-2 text-sm font-bold text-white bg-[#1B664B] rounded-xl hover:brightness-110 shrink-0 font-auth-heading shadow-xs cursor-pointer"
                   >
                     View File
                   </button>
@@ -1261,7 +1261,7 @@ export default function UserWorkspacePage() {
         isOpen={viewFavoritesModalOpen}
         onClose={() => setViewFavoritesModalOpen(false)}
         title={`Starred Favorites (${favoriteDocs.length})`}
-        icon={<Star className="w-5 h-5 text-amber-500 fill-amber-500" />}
+        icon={<Star className="w-5 h-5 text-[#1B664B] fill-[#1B664B]" />}
         maxWidth="max-w-[640px]"
       >
         <div className="space-y-4">
@@ -1274,9 +1274,9 @@ export default function UserWorkspacePage() {
               </div>
             ) : (
               favoriteDocs.map(doc => (
-                <div key={doc.id} className="p-3.5 rounded-2xl bg-amber-50/40 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/60 flex items-center justify-between gap-3">
+                <div key={doc.id} className="p-3.5 rounded-2xl bg-[#E8F5F0] dark:bg-emerald-950/60 border border-[#D1EBE1] dark:border-amber-900/60 flex items-center justify-between gap-3">
                   <div className="flex items-center gap-3 truncate">
-                    <Star className="w-4 h-4 text-amber-500 fill-amber-500 shrink-0" />
+                    <Star className="w-4 h-4 text-[#1B664B] fill-[#1B664B] shrink-0" />
                     <div className="truncate">
                       <p className="text-sm font-bold text-slate-900 dark:text-white truncate font-auth-heading">{doc.title}</p>
                       <p className="text-xs text-slate-500 font-auth-body">{doc.category_name} • {doc.size || '1.8 MB'}</p>
@@ -1286,7 +1286,7 @@ export default function UserWorkspacePage() {
                   <button
                     type="button"
                     onClick={() => { setViewFavoritesModalOpen(false); setPreviewDoc(doc); }}
-                    className="px-3.5 py-1.5 text-xs font-bold text-amber-700 bg-amber-100 hover:bg-amber-200 rounded-xl cursor-pointer"
+                    className="px-3.5 py-1.5 text-xs font-bold text-[#1B664B] bg-[#E8F5F0] hover:bg-[#E8F5F0] rounded-xl cursor-pointer"
                   >
                     Open File
                   </button>
@@ -1312,7 +1312,7 @@ export default function UserWorkspacePage() {
         isOpen={restoreFilesModalOpen}
         onClose={() => setRestoreFilesModalOpen(false)}
         title="Recycle Bin & Restore"
-        icon={<RefreshCw className="w-5 h-5 text-themePrimary" />}
+        icon={<RefreshCw className="w-5 h-5 text-[#1B664B]" />}
         maxWidth="max-w-[640px]"
       >
         <div className="space-y-4">
@@ -1335,7 +1335,7 @@ export default function UserWorkspacePage() {
                   <button
                     type="button"
                     onClick={() => handleRestoreFile(item.id, item.title)}
-                    className="px-3.5 py-1.5 text-xs font-bold text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 rounded-xl flex items-center gap-1.5 cursor-pointer font-auth-heading shadow-xs"
+                    className="px-3.5 py-1.5 text-xs font-bold text-white bg-[#1B664B] hover:brightness-110 rounded-xl flex items-center gap-1.5 cursor-pointer font-auth-heading shadow-xs"
                   >
                     <RotateCcw className="w-3.5 h-3.5" /> Restore File
                   </button>

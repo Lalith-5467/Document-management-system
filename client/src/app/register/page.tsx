@@ -67,7 +67,7 @@ const InputField = ({ icon: Icon, label, required, error, value, ...props }: any
     <div className={`relative mb-4 group w-full ${error ? 'animate-shake-subtle' : ''}`}>
       {Icon && (
         <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-6 h-6 flex items-center justify-center transition-all duration-200 pointer-events-none">
-          <Icon className={`w-5 h-5 transition-all duration-200 ${error ? 'text-red-400' : 'text-slate-400 group-hover:text-[#D96B00] group-focus-within:text-[#FF6B00] group-focus-within:scale-110'}`} />
+          <Icon className={`w-5 h-5 transition-all duration-200 ${error ? 'text-red-400' : 'text-slate-400 group-hover:text-[#D96B00] group-focus-within:text-[#1B664B] group-focus-within:scale-110'}`} />
         </div>
       )}
       <div className="relative">
@@ -78,11 +78,11 @@ const InputField = ({ icon: Icon, label, required, error, value, ...props }: any
           className={`peer w-full h-[56px] ${Icon ? 'pl-12' : 'pl-4'} pr-4 pt-5 pb-1 bg-white border ${
             error 
               ? 'border-red-300 focus:border-red-400 focus:ring-4 focus:ring-red-500/15' 
-              : 'border-[#E6E0D4] hover:border-[#DFD2BA] hover:bg-[#FFFDF8] focus:border-[#FF6B00] focus:ring-4 focus:ring-orange-500/15 focus:bg-white'
+              : 'border-[#E6E0D4] hover:border-[#DFD2BA] hover:bg-[#FFFDF8] focus:border-[#1B664B] focus:ring-4 focus:ring-emerald-500/20 focus:bg-white'
           } rounded-[16px] text-[15px] text-slate-900 focus:outline-none transition-all duration-200 font-medium cream-hover-input`}
         />
         <label className={`absolute left-${Icon ? '12' : '4'} text-slate-400 pointer-events-none transition-all duration-200 font-medium ${
-          isFilled ? 'top-2 text-[11px] text-slate-400' : 'top-1/2 -translate-y-1/2 text-[15px] peer-focus:top-2 peer-focus:text-[11px] peer-focus:text-[#FF6B00]'
+          isFilled ? 'top-2 text-[11px] text-slate-400' : 'top-1/2 -translate-y-1/2 text-[15px] peer-focus:top-2 peer-focus:text-[11px] peer-focus:text-[#1B664B]'
         }`}>
           {label} {required && <span className="text-red-500">*</span>}
         </label>
@@ -116,7 +116,7 @@ const SelectField = ({ icon: Icon, label, options, required, error, value, onCha
     <div className={`relative mb-4 group w-full ${error ? 'animate-shake-subtle' : ''}`} ref={dropdownRef}>
       {Icon && (
         <div className="absolute left-4 top-7 -translate-y-1/2 z-10 w-6 h-6 flex items-center justify-center transition-all duration-200 pointer-events-none">
-          <Icon className={`w-5 h-5 transition-all duration-200 ${error ? 'text-red-400' : isOpen ? 'text-[#FF6B00] scale-110' : 'text-slate-400 group-hover:text-[#D96B00]'}`} />
+          <Icon className={`w-5 h-5 transition-all duration-200 ${error ? 'text-red-400' : isOpen ? 'text-[#1B664B] scale-110' : 'text-slate-400 group-hover:text-[#D96B00]'}`} />
         </div>
       )}
       <div className="relative cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
@@ -125,19 +125,19 @@ const SelectField = ({ icon: Icon, label, options, required, error, value, onCha
             error 
               ? 'border-red-300 ring-4 ring-red-500/15' 
               : isOpen
-                ? 'border-[#FF6B00] ring-4 ring-orange-500/15 bg-white shadow-xs'
+                ? 'border-[#1B664B] ring-4 ring-emerald-500/20 bg-white shadow-xs'
                 : 'border-[#E6E0D4] hover:border-[#DFD2BA] hover:bg-[#FFFDF8]'
           } rounded-[16px] text-[15px] ${value ? 'text-slate-900 font-semibold' : 'text-transparent'} transition-all duration-200 font-medium cream-hover-input flex items-center justify-between select-none`}
         >
           <span className="truncate">{value || ' '}</span>
         </div>
         <label className={`absolute left-${Icon ? '12' : '4'} text-slate-400 pointer-events-none transition-all duration-200 font-medium ${
-          isFilled || isOpen ? 'top-2 text-[11px] text-[#FF6B00] font-semibold' : 'top-1/2 -translate-y-1/2 text-[15px]'
+          isFilled || isOpen ? 'top-2 text-[11px] text-[#1B664B] font-semibold' : 'top-1/2 -translate-y-1/2 text-[15px]'
         }`}>
           {label} {required && <span className="text-red-500">*</span>}
         </label>
         <div className={`absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none transition-transform duration-300 ${
-          isOpen ? 'rotate-180 text-[#FF6B00]' : 'text-slate-400 group-hover:text-[#D96B00]'
+          isOpen ? 'rotate-180 text-[#1B664B]' : 'text-slate-400 group-hover:text-[#D96B00]'
         }`}>
           <ChevronDown className="w-5 h-5 stroke-[2.5]" />
         </div>
@@ -146,7 +146,7 @@ const SelectField = ({ icon: Icon, label, options, required, error, value, onCha
       {/* Custom Floating Options Dropdown Menu */}
       {isOpen && (
         <div className="absolute left-0 right-0 top-[62px] z-50 bg-white border border-[#E8E1D5] rounded-[20px] shadow-[0_15px_45px_rgba(40,30,15,0.15)] py-2 max-h-[240px] overflow-y-auto animate-pop-in scrollbar-thin">
-          <div className="px-4 py-2 text-[11px] font-bold text-[#FF6B00] uppercase tracking-wider border-b border-slate-100 bg-[#FFFDF8] mb-1">
+          <div className="px-4 py-2 text-[11px] font-bold text-[#1B664B] uppercase tracking-wider border-b border-slate-100 bg-[#FFFDF8] mb-1">
             Select {label}
           </div>
           {options.map((opt: string) => {
@@ -160,8 +160,8 @@ const SelectField = ({ icon: Icon, label, options, required, error, value, onCha
                 }}
                 className={`px-4 py-3 text-[14px] font-medium cursor-pointer transition-all duration-150 flex items-center justify-between ${
                   isSelected
-                    ? 'bg-gradient-to-r from-[#FF6B00] to-[#E05500] text-white font-bold'
-                    : 'text-slate-700 hover:bg-[#FF6B00] hover:text-white'
+                    ? 'bg-gradient-to-r from-[#1B664B] to-[#E05500] text-white font-bold'
+                    : 'text-slate-700 hover:bg-[#1B664B] hover:text-white'
                 }`}
               >
                 <span>{opt}</span>
@@ -208,14 +208,14 @@ const CountryCodeSelect = ({ value, onChange }: any) => {
       <div 
         onClick={() => setIsOpen(!isOpen)}
         className={`w-full h-[56px] pl-3.5 pr-7 bg-white border ${
-          isOpen ? 'border-[#FF6B00] ring-4 ring-orange-500/15' : 'border-[#E6E0D4] hover:border-[#DFD2BA] hover:bg-[#FFFDF8]'
+          isOpen ? 'border-[#1B664B] ring-4 ring-emerald-500/20' : 'border-[#E6E0D4] hover:border-[#DFD2BA] hover:bg-[#FFFDF8]'
         } rounded-[16px] text-[15px] font-bold text-slate-800 flex items-center justify-between cursor-pointer select-none transition-all duration-300 cream-hover-input`}
       >
         <div className="flex items-center gap-1.5">
-          <Globe className={`w-4 h-4 ${isOpen ? 'text-[#FF6B00]' : 'text-slate-400 group-hover:text-[#D96B00]'}`} />
+          <Globe className={`w-4 h-4 ${isOpen ? 'text-[#1B664B]' : 'text-slate-400 group-hover:text-[#D96B00]'}`} />
           <span>{value}</span>
         </div>
-        <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-300 absolute right-2.5 top-1/2 -translate-y-1/2 ${isOpen ? 'rotate-180 text-[#FF6B00]' : ''}`} />
+        <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-300 absolute right-2.5 top-1/2 -translate-y-1/2 ${isOpen ? 'rotate-180 text-[#1B664B]' : ''}`} />
       </div>
 
       {isOpen && (
@@ -229,8 +229,8 @@ const CountryCodeSelect = ({ value, onChange }: any) => {
               }}
               className={`px-3.5 py-2.5 text-[13px] font-bold cursor-pointer transition-colors ${
                 value === opt.code
-                  ? 'bg-[#FF6B00] text-white'
-                  : 'text-slate-700 hover:bg-[#FF6B00] hover:text-white'
+                  ? 'bg-[#1B664B] text-white'
+                  : 'text-slate-700 hover:bg-[#1B664B] hover:text-white'
               }`}
             >
               {opt.label}
@@ -491,20 +491,20 @@ export default function RegisterPage() {
     if (/[^A-Za-z0-9\s]/.test(password)) score++;
     
     if (score < 3) return { label: 'Weak', color: 'text-red-500', bg: 'bg-red-500', w: 'w-1/3' };
-    if (score < 5) return { label: 'Medium', color: 'text-orange-500', bg: 'bg-orange-500', w: 'w-2/3' };
+    if (score < 5) return { label: 'Medium', color: 'text-[#1B664B]', bg: 'bg-[#E8F5F0]0', w: 'w-2/3' };
     return { label: 'Strong', color: 'text-emerald-500', bg: 'bg-emerald-500', w: 'w-full' };
   };
 
   if (successMsg) {
     return (
-      <div className="min-h-screen w-full bg-gradient-to-br from-[#FAF8F4] via-[#F4F1EA] to-[#ECE7DF] flex items-center justify-center p-4 font-sans">
-        <div className="w-full max-w-md bg-white/95 backdrop-blur-xl rounded-[32px] p-10 text-center shadow-[0_20px_60px_rgba(40,30,15,0.06)] border border-[#E8E1D5]">
-          <div className="w-20 h-20 bg-[#FAF4E6] text-[#D96B00] rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
+      <div className="min-h-screen w-full bg-white flex items-center justify-center p-4 font-sans">
+        <div className="w-full max-w-md bg-white rounded-[32px] p-10 text-center shadow-xl border border-slate-200">
+          <div className="w-16 h-16 bg-[#F0FDF4] text-[#16A34A] rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
             <CheckCircle2 className="w-10 h-10" />
           </div>
           <h2 className="text-3xl font-bold text-slate-900 mb-2">Welcome Aboard!</h2>
           <p className="text-slate-500 mb-8 font-medium">Your DocVault account has been created securely.</p>
-          <Link href="/login" className="block w-full py-4 rounded-[16px] text-white font-bold bg-gradient-to-r from-[#FF6B00] via-[#F76400] to-[#E05500] hover:brightness-105 shadow-lg shadow-orange-500/25 transition-all duration-300">
+          <Link href="/login" className="block w-full py-4 rounded-[16px] text-white font-bold bg-[#1B664B] hover:bg-[#14523C] active:bg-[#0F402E] shadow-md transition-all duration-300">
             Access Your Vault →
           </Link>
         </div>
@@ -513,33 +513,28 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-[#FAF8F4] via-[#F4F1EA] to-[#ECE7DF] flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 font-sans relative overflow-hidden animate-fade-up">
+    <div className="min-h-screen w-full bg-white flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 font-sans relative overflow-hidden animate-fade-up">
       <style dangerouslySetInnerHTML={{ __html: customStyles }} />
       
-      {/* Professional Top Left Back Button with Cream Hover */}
+      {/* Professional Top Left Back Button */}
       <div className="absolute top-6 left-6 z-20">
         <Link
           href="/"
-          className="inline-flex items-center gap-2.5 px-6 py-2.5 rounded-full bg-white/95 backdrop-blur-md border border-[#E6E0D4] hover:border-[#DFD2BA] hover:bg-[#FFFDF5] text-slate-700 hover:text-slate-900 text-xs font-bold shadow-xs hover:shadow-md hover:shadow-[#DFD2BA]/30 transition-all duration-300 group cursor-pointer font-auth-heading hover:-translate-y-0.5 whitespace-nowrap"
+          className="inline-flex items-center gap-2.5 px-6 py-2.5 rounded-full bg-white border border-slate-200 hover:border-[#1B664B] hover:bg-[#E8F5F0] text-slate-700 hover:text-slate-900 text-xs font-bold shadow-xs hover:shadow-md transition-all duration-300 group cursor-pointer font-auth-heading hover:-translate-y-0.5 whitespace-nowrap"
         >
-          <ArrowLeft className="w-4 h-4 text-[#FF6B00] group-hover:-translate-x-1 transition-transform duration-300 shrink-0" />
+          <ArrowLeft className="w-4 h-4 text-[#1B664B] group-hover:-translate-x-1 transition-transform duration-300 shrink-0" />
           <span>Back to Home Page</span>
         </Link>
       </div>
 
-      {/* Ambient Warm Cream & Soft Glowing Spheres */}
-      <div className="absolute top-10 left-1/4 w-96 h-96 bg-[#F5EAD6]/60 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-10 right-1/4 w-[500px] h-[500px] bg-orange-500/6 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-[#FAF2E4]/40 rounded-full blur-3xl pointer-events-none" />
-      
-      {/* Main Centered Card Container with Smooth Float Entrance */}
-      <div className="w-full max-w-[480px] bg-white/95 backdrop-blur-xl rounded-[32px] shadow-[0_25px_70px_rgba(40,30,15,0.06)] hover:shadow-[0_30px_80px_rgba(40,30,15,0.09)] border border-[#E8E1D5] relative z-10 flex flex-col my-8 animate-card-float transition-shadow duration-500">
+      {/* Main Centered Card Container */}
+      <div className="w-full max-w-[480px] bg-white rounded-[32px] shadow-xl border border-slate-200 relative z-10 flex flex-col my-8 animate-card-float transition-shadow duration-500">
         <div className="p-8 sm:p-10">
           
           {/* Header */}
           <div className="text-center space-y-3 mb-8">
             <Link href="/" className="inline-flex items-center justify-center mb-2 group">
-              <div className="w-14 h-14 rounded-[22px] bg-[#FF6500] flex items-center justify-center text-white shadow-[0_12px_30px_rgba(255,101,0,0.35)] group-hover:scale-110 group-hover:shadow-[0_16px_35px_rgba(255,101,0,0.45)] transition-all duration-300">
+              <div className="w-14 h-14 rounded-[22px] bg-[#1B664B] flex items-center justify-center text-white shadow-md group-hover:scale-110 transition-all duration-300">
                 <ShieldCheck className="w-7 h-7 stroke-[2.2] group-hover:rotate-6 transition-transform duration-300" />
               </div>
             </Link>
@@ -551,7 +546,7 @@ export default function RegisterPage() {
             </p>
           </div>
 
-          {/* Step Indicator with Cream & Orange Progress */}
+          {/* Step Indicator with Green Progress */}
           <div className="flex items-center justify-center mb-9 max-w-sm mx-auto">
             <div className="flex items-center w-full">
               {[
@@ -567,22 +562,22 @@ export default function RegisterPage() {
                     <div className="flex flex-col items-center relative z-10">
                       <div className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 ${
                         isCurrent 
-                          ? 'bg-gradient-to-br from-[#FF6B00] to-[#E05500] text-white shadow-md shadow-orange-500/25 ring-4 ring-[#FAF4E8] scale-110' 
+                          ? 'bg-[#1B664B] text-white shadow-md ring-4 ring-[#E8F5F0] scale-110' 
                           : isDone 
-                            ? 'bg-[#FAF4E6] text-[#D96B00] border border-[#EADECA]' 
-                            : 'bg-[#F5F2EC] text-slate-400 border border-[#EBE7DF]'
+                            ? 'bg-[#E8F5F0] text-[#1B664B] border border-[#D1EBE1]' 
+                            : 'bg-slate-100 text-slate-400 border border-slate-200'
                       }`}>
                         {isDone ? <Check className="w-4 h-4 stroke-[3] animate-check-pop" /> : item.step}
                       </div>
                       <span className={`text-[10px] font-semibold mt-1.5 transition-colors ${
-                        isCurrent ? 'text-[#FF6B00] font-bold' : isDone ? 'text-slate-700' : 'text-slate-400'
+                        isCurrent ? 'text-[#1B664B] font-bold' : isDone ? 'text-slate-700' : 'text-slate-400'
                       }`}>
                         {item.label}
                       </span>
                     </div>
                     {idx < 3 && (
                       <div className={`flex-1 h-0.5 mx-1 -mt-4 transition-all duration-300 ${
-                        currentStep > item.step ? 'bg-gradient-to-r from-[#FF6B00] to-[#EADECA]' : 'bg-[#EBE7DF]'
+                        currentStep > item.step ? 'bg-[#1B664B]' : 'bg-slate-200'
                       }`} />
                     )}
                   </React.Fragment>
@@ -617,14 +612,14 @@ export default function RegisterPage() {
                         onClick={() => setUserType(role.id)}
                         className={`relative p-5 rounded-[20px] cursor-pointer transition-all duration-300 flex flex-row items-center gap-4 group ${
                           isSelected 
-                            ? 'bg-gradient-to-r from-[#FF6B00] via-[#F76400] to-[#E05500] text-white border-transparent shadow-lg shadow-orange-500/25 scale-[1.01]' 
-                            : 'bg-white/90 border border-[#E6E0D4] hover:bg-[#FFFDF5] hover:border-[#DFD0B8] text-slate-900 shadow-xs hover:shadow-md hover:shadow-[#DFD0B8]/30 hover:-translate-y-0.5'
+                            ? 'bg-[#1B664B] text-white border-transparent shadow-lg scale-[1.01]' 
+                            : 'bg-white border border-slate-200 hover:bg-[#E8F5F0] hover:border-[#1B664B] text-slate-900 shadow-xs hover:shadow-md hover:-translate-y-0.5'
                         }`}
                       >
                         <div className={`w-11 h-11 rounded-[14px] flex items-center justify-center transition-all duration-300 ${
                           isSelected 
                             ? 'bg-white/20 text-white' 
-                            : 'bg-[#FAF5EC] text-slate-600 group-hover:bg-[#F5EBD9] group-hover:text-[#D96B00]'
+                            : 'bg-[#E8F5F0] text-slate-600 group-hover:bg-[#D1EBE1] group-hover:text-[#1B664B]'
                         }`}>
                           <role.icon className="w-5 h-5 stroke-[2.2]" />
                         </div>
@@ -632,7 +627,7 @@ export default function RegisterPage() {
                           <h3 className={`text-[15px] font-bold tracking-tight ${isSelected ? 'text-white' : 'text-slate-900 group-hover:text-slate-900'}`}>
                             {role.title}
                           </h3>
-                          <p className={`text-[12px] mt-0.5 font-medium ${isSelected ? 'text-orange-100' : 'text-slate-500 group-hover:text-slate-600'}`}>
+                          <p className={`text-[12px] mt-0.5 font-medium ${isSelected ? 'text-emerald-100' : 'text-slate-500 group-hover:text-slate-600'}`}>
                             {role.desc}
                           </p>
                         </div>
@@ -641,7 +636,7 @@ export default function RegisterPage() {
                             ? 'border-white bg-white' 
                             : 'border-slate-300 group-hover:border-[#D96B00] group-hover:bg-[#FFFDF5]'
                         }`}>
-                          {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-[#FF6B00]" />}
+                          {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-[#1B664B]" />}
                         </div>
                         <input type="radio" name="accountType" className="hidden" checked={isSelected} readOnly />
                       </label>
@@ -694,19 +689,19 @@ export default function RegisterPage() {
                           type="button"
                           onClick={handleSendOtp}
                           disabled={otpSending || !email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)}
-                          className="w-full py-2.5 px-4 rounded-[14px] text-xs font-bold text-[#FF6B00] bg-[#FAF5EC] border border-[#EADECA] hover:bg-[#FF6B00] hover:text-white hover:border-[#FF6B00] transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-xs"
+                          className="w-full py-2.5 px-4 rounded-[14px] text-xs font-bold text-[#1B664B] bg-[#FAF5EC] border border-[#EADECA] hover:bg-[#1B664B] hover:text-white hover:border-[#1B664B] transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-xs"
                         >
                           {otpSending ? <><Loader2 className="w-4 h-4 animate-spin" /> Sending OTP Email...</> : <><Mail className="w-4 h-4" /> Send Verification Code to Email</>}
                         </button>
                       ) : (
                         <div className="p-5 rounded-[22px] bg-gradient-to-br from-[#FFFDF8] via-[#FAF6EE] to-[#F5EBD9] border border-[#E8DCC4] shadow-[0_10px_30px_rgba(215,195,160,0.2)] animate-slide-up space-y-4 relative overflow-hidden">
                           {/* Ambient background glow accent */}
-                          <div className="absolute -top-12 -right-12 w-28 h-28 bg-[#FF6B00]/8 rounded-full blur-xl pointer-events-none" />
+                          <div className="absolute -top-12 -right-12 w-28 h-28 bg-[#1B664B]/8 rounded-full blur-xl pointer-events-none" />
 
                           {/* Header */}
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2.5">
-                              <div className="w-8 h-8 rounded-[12px] bg-gradient-to-br from-[#FF6B00] to-[#E05500] text-white flex items-center justify-center shadow-xs">
+                              <div className="w-8 h-8 rounded-[12px] bg-gradient-to-br from-[#1B664B] to-[#E05500] text-white flex items-center justify-center shadow-xs">
                                 <ShieldCheck className="w-4.5 h-4.5 stroke-[2.2]" />
                               </div>
                               <div>
@@ -724,14 +719,14 @@ export default function RegisterPage() {
                               {otpTimer > 0 ? (
                                 <div className="px-2.5 py-1 rounded-full bg-[#FAF0E0] border border-[#E5D7BF] text-[#D96B00] text-[11px] font-bold flex items-center gap-1 shadow-2xs">
                                   <span>Resend in</span>
-                                  <span className="font-extrabold text-[#FF6B00]">{otpTimer}s</span>
+                                  <span className="font-extrabold text-[#1B664B]">{otpTimer}s</span>
                                 </div>
                               ) : (
                                 <button
                                   type="button"
                                   onClick={handleSendOtp}
                                   disabled={otpSending}
-                                  className="px-3 py-1 rounded-full bg-white border border-[#DFD2BA] text-[#FF6B00] hover:bg-[#FF6B00] hover:text-white text-[11px] font-bold transition-all duration-200 shadow-2xs"
+                                  className="px-3 py-1 rounded-full bg-white border border-[#DFD2BA] text-[#1B664B] hover:bg-[#1B664B] hover:text-white text-[11px] font-bold transition-all duration-200 shadow-2xs"
                                 >
                                   {otpSending ? "Sending..." : "Resend Code"}
                                 </button>
@@ -748,7 +743,7 @@ export default function RegisterPage() {
                                 value={emailOtp}
                                 onChange={(e) => setEmailOtp(e.target.value.replace(/\D/g, ''))}
                                 placeholder="6-DIGIT CODE"
-                                className="w-full h-[50px] px-4 bg-white border border-[#DFD2BA] focus:border-[#FF6B00] focus:ring-4 focus:ring-orange-500/12 focus:bg-white rounded-[16px] text-center text-[18px] font-extrabold tracking-[8px] text-slate-900 placeholder:text-slate-300 placeholder:tracking-normal placeholder:text-[12px] placeholder:font-semibold focus:outline-none transition-all duration-300 shadow-inner"
+                                className="w-full h-[50px] px-4 bg-white border border-[#DFD2BA] focus:border-[#1B664B] focus:ring-4 focus:ring-emerald-500/20 focus:bg-white rounded-[16px] text-center text-[18px] font-extrabold tracking-[8px] text-slate-900 placeholder:text-slate-300 placeholder:tracking-normal placeholder:text-[12px] placeholder:font-semibold focus:outline-none transition-all duration-300 shadow-inner"
                               />
                             </div>
                             
@@ -756,7 +751,7 @@ export default function RegisterPage() {
                               type="button"
                               onClick={handleVerifyOtp}
                               disabled={otpVerifying || emailOtp.length < 4}
-                              className="h-[50px] px-5 rounded-[16px] font-bold text-[13px] text-white bg-gradient-to-r from-[#FF6B00] via-[#F76400] to-[#E05500] hover:brightness-105 shadow-md shadow-orange-500/25 hover:shadow-lg hover:shadow-orange-500/35 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 flex items-center justify-center gap-1.5 shrink-0 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                              className="h-[50px] px-5 rounded-[16px] font-bold text-[13px] text-white bg-gradient-to-r from-[#1B664B] via-[#F76400] to-[#E05500] hover:brightness-105 shadow-md shadow-emerald-950/20 hover:shadow-lg hover:shadow-emerald-950/20 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 flex items-center justify-center gap-1.5 shrink-0 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                             >
                               {otpVerifying ? (
                                 <>
@@ -797,7 +792,7 @@ export default function RegisterPage() {
                       <CountryCodeSelect value={countryCode} onChange={setCountryCode} />
                       <div className="relative flex-1">
                         <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-6 h-6 flex items-center justify-center transition-all duration-300 pointer-events-none">
-                          <Phone className={`w-5 h-5 transition-colors duration-300 ${errors.mobileNumber ? 'text-red-400' : 'text-slate-400 group-hover:text-[#D96B00] group-focus-within:text-[#FF6B00]'}`} />
+                          <Phone className={`w-5 h-5 transition-colors duration-300 ${errors.mobileNumber ? 'text-red-400' : 'text-slate-400 group-hover:text-[#D96B00] group-focus-within:text-[#1B664B]'}`} />
                         </div>
                         <div className="relative">
                           <input 
@@ -808,11 +803,11 @@ export default function RegisterPage() {
                             className={`peer w-full h-[56px] pl-12 pr-4 pt-5 pb-1 bg-white border ${
                               errors.mobileNumber 
                                 ? 'border-red-300 focus:border-red-400 focus:ring-4 focus:ring-red-500/15' 
-                                : 'border-[#E6E0D4] hover:border-[#DFD2BA] hover:bg-[#FFFDF8] focus:border-[#FF6B00] focus:ring-4 focus:ring-orange-500/15 focus:bg-white'
+                                : 'border-[#E6E0D4] hover:border-[#DFD2BA] hover:bg-[#FFFDF8] focus:border-[#1B664B] focus:ring-4 focus:ring-emerald-500/20 focus:bg-white'
                             } rounded-[16px] text-[15px] font-medium focus:outline-none transition-all duration-300 disabled:bg-slate-50 disabled:text-slate-400 cream-hover-input`} 
                           />
                           <label className={`absolute left-12 text-slate-400 pointer-events-none transition-all duration-300 font-medium ${
-                            mobileNumber.length > 0 ? 'top-2 text-[11px] text-slate-400' : 'top-1/2 -translate-y-1/2 text-[15px] peer-focus:top-2 peer-focus:text-[11px] peer-focus:text-[#FF6B00]'
+                            mobileNumber.length > 0 ? 'top-2 text-[11px] text-slate-400' : 'top-1/2 -translate-y-1/2 text-[15px] peer-focus:top-2 peer-focus:text-[11px] peer-focus:text-[#1B664B]'
                           }`}>
                             Mobile Number <span className="text-red-500">*</span>
                           </label>
@@ -869,7 +864,7 @@ export default function RegisterPage() {
                 <div className="flex flex-col gap-4">
                   <div className="relative group">
                     <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-6 h-6 flex items-center justify-center transition-all duration-300 pointer-events-none">
-                      <Lock className={`w-5 h-5 transition-colors duration-300 ${errors.password ? 'text-red-400' : 'text-slate-400 group-hover:text-[#D96B00] group-focus-within:text-[#FF6B00]'}`} />
+                      <Lock className={`w-5 h-5 transition-colors duration-300 ${errors.password ? 'text-red-400' : 'text-slate-400 group-hover:text-[#D96B00] group-focus-within:text-[#1B664B]'}`} />
                     </div>
                     <div className="relative">
                       <input 
@@ -880,11 +875,11 @@ export default function RegisterPage() {
                         className={`peer w-full h-[56px] pl-12 pr-12 pt-5 pb-1 bg-white border ${
                           errors.password 
                             ? 'border-red-300 focus:border-red-400 focus:ring-4 focus:ring-red-500/15' 
-                            : 'border-[#E6E0D4] hover:border-[#DFD2BA] hover:bg-[#FFFDF8] focus:border-[#FF6B00] focus:ring-4 focus:ring-orange-500/15 focus:bg-white'
+                            : 'border-[#E6E0D4] hover:border-[#DFD2BA] hover:bg-[#FFFDF8] focus:border-[#1B664B] focus:ring-4 focus:ring-emerald-500/20 focus:bg-white'
                         } rounded-[16px] text-[15px] font-medium focus:outline-none transition-all duration-300 cream-hover-input`} 
                       />
                       <label className={`absolute left-12 text-slate-400 pointer-events-none transition-all duration-300 font-medium ${
-                        password.length > 0 ? 'top-2 text-[11px] text-slate-400' : 'top-1/2 -translate-y-1/2 text-[15px] peer-focus:top-2 peer-focus:text-[11px] peer-focus:text-[#FF6B00]'
+                        password.length > 0 ? 'top-2 text-[11px] text-slate-400' : 'top-1/2 -translate-y-1/2 text-[15px] peer-focus:top-2 peer-focus:text-[11px] peer-focus:text-[#1B664B]'
                       }`}>
                         Password <span className="text-red-500">*</span>
                       </label>
@@ -897,7 +892,7 @@ export default function RegisterPage() {
 
                   <div className="relative group">
                     <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-6 h-6 flex items-center justify-center transition-all duration-300 pointer-events-none">
-                      <Lock className={`w-5 h-5 transition-colors duration-300 ${errors.confirmPassword ? 'text-red-400' : 'text-slate-400 group-hover:text-[#D96B00] group-focus-within:text-[#FF6B00]'}`} />
+                      <Lock className={`w-5 h-5 transition-colors duration-300 ${errors.confirmPassword ? 'text-red-400' : 'text-slate-400 group-hover:text-[#D96B00] group-focus-within:text-[#1B664B]'}`} />
                     </div>
                     <div className="relative">
                       <input 
@@ -908,11 +903,11 @@ export default function RegisterPage() {
                         className={`peer w-full h-[56px] pl-12 pr-12 pt-5 pb-1 bg-white border ${
                           errors.confirmPassword 
                             ? 'border-red-300 focus:border-red-400 focus:ring-4 focus:ring-red-500/15' 
-                            : 'border-[#E6E0D4] hover:border-[#DFD2BA] hover:bg-[#FFFDF8] focus:border-[#FF6B00] focus:ring-4 focus:ring-orange-500/15 focus:bg-white'
+                            : 'border-[#E6E0D4] hover:border-[#DFD2BA] hover:bg-[#FFFDF8] focus:border-[#1B664B] focus:ring-4 focus:ring-emerald-500/20 focus:bg-white'
                         } rounded-[16px] text-[15px] font-medium focus:outline-none transition-all duration-300 cream-hover-input`} 
                       />
                       <label className={`absolute left-12 text-slate-400 pointer-events-none transition-all duration-300 font-medium ${
-                        confirmPassword.length > 0 ? 'top-2 text-[11px] text-slate-400' : 'top-1/2 -translate-y-1/2 text-[15px] peer-focus:top-2 peer-focus:text-[11px] peer-focus:text-[#FF6B00]'
+                        confirmPassword.length > 0 ? 'top-2 text-[11px] text-slate-400' : 'top-1/2 -translate-y-1/2 text-[15px] peer-focus:top-2 peer-focus:text-[11px] peer-focus:text-[#1B664B]'
                       }`}>
                         Confirm Password <span className="text-red-500">*</span>
                       </label>
@@ -963,9 +958,8 @@ export default function RegisterPage() {
               <button 
                 type="button" 
                 onClick={handleNext} 
-                className="group relative overflow-hidden flex-1 h-[54px] rounded-[16px] font-bold text-[15px] text-white bg-gradient-to-r from-[#FF6B00] via-[#F76400] to-[#E05500] hover:scale-[1.01] active:scale-[0.98] shadow-lg shadow-orange-500/25 hover:shadow-xl hover:shadow-orange-500/35 transition-all duration-300 flex justify-center items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none cursor-pointer"
+                className="group relative overflow-hidden flex-1 h-[54px] rounded-[16px] font-bold text-[15px] text-white bg-[#1B664B] hover:bg-[#14523C] active:bg-[#0F402E] shadow-md transition-all duration-300 flex justify-center items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none cursor-pointer"
               >
-                <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-1000 ease-in-out" />
                 <div className="relative z-10 flex items-center gap-2">
                   <span>Continue</span>
                   <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
@@ -976,9 +970,8 @@ export default function RegisterPage() {
                 type="button" 
                 onClick={handleSubmit} 
                 disabled={loading || !userType} 
-                className="group relative overflow-hidden flex-1 h-[54px] rounded-[16px] font-bold text-[15px] text-white bg-gradient-to-r from-[#FF6B00] via-[#F76400] to-[#E05500] hover:scale-[1.01] active:scale-[0.98] shadow-lg shadow-orange-500/25 hover:shadow-xl hover:shadow-orange-500/35 transition-all duration-300 flex justify-center items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none cursor-pointer"
+                className="group relative overflow-hidden flex-1 h-[54px] rounded-[16px] font-bold text-[15px] text-white bg-[#1B664B] hover:bg-[#14523C] active:bg-[#0F402E] shadow-md transition-all duration-300 flex justify-center items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none cursor-pointer"
               >
-                <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-1000 ease-in-out" />
                 {loading ? (
                   <div className="relative z-10 flex items-center gap-2">
                     <Loader2 className="w-5 h-5 animate-spin" />
@@ -995,7 +988,7 @@ export default function RegisterPage() {
           </div>
 
           <div className="mt-8 text-center text-[14px] text-slate-500 font-medium">
-            Already have an account? <Link href="/login" className="font-bold text-[#FF6B00] hover:text-[#D96000] hover:underline underline-offset-4 ml-1 transition-colors">Sign In</Link>
+            Already have an account? <Link href="/login" className="font-bold text-[#1B664B] hover:text-[#D96000] hover:underline underline-offset-4 ml-1 transition-colors">Sign In</Link>
           </div>
         </div>
       </div>

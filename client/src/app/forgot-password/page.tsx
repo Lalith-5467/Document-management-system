@@ -154,7 +154,7 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-[#FAF8F4] via-[#F4F1EA] to-[#ECE7DF] flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 font-sans relative overflow-hidden selection:bg-[#FF6B00] selection:text-white">
+    <div className="min-h-screen w-full bg-gradient-to-br from-[#FAF8F4] via-[#F4F1EA] to-[#ECE7DF] flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 font-sans relative overflow-hidden selection:bg-[#1B664B] selection:text-white">
       
       {/* Professional Top Left Back Button with Cream Hover */}
       <div className="absolute top-6 left-6 z-20">
@@ -162,35 +162,23 @@ export default function ForgotPasswordPage() {
           href="/login"
           className="inline-flex items-center gap-2.5 px-6 py-2.5 rounded-full bg-white/95 backdrop-blur-md border border-[#E6E0D4] hover:border-[#DFD2BA] hover:bg-[#FFFDF5] text-slate-700 hover:text-slate-900 text-xs font-bold shadow-xs hover:shadow-md hover:shadow-[#DFD2BA]/30 transition-all duration-300 group cursor-pointer font-auth-heading hover:-translate-y-0.5 whitespace-nowrap"
         >
-          <ArrowLeft className="w-4 h-4 text-[#FF6B00] group-hover:-translate-x-1 transition-transform duration-300 shrink-0" />
+          <ArrowLeft className="w-4 h-4 text-[#1B664B] group-hover:-translate-x-1 transition-transform duration-300 shrink-0" />
           <span>Back to Sign In</span>
         </Link>
       </div>
 
-      {/* Ambient Warm Cream & Soft Glowing Spheres */}
-      <div className="absolute top-10 left-1/4 w-96 h-96 bg-[#F5EAD6]/60 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-10 right-1/4 w-[500px] h-[500px] bg-orange-500/6 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-[#FAF2E4]/40 rounded-full blur-3xl pointer-events-none" />
-
-      {/* Centered Card Container */}
-      <main className="w-full max-w-[500px] bg-white/95 backdrop-blur-xl rounded-[32px] p-8 sm:p-10 shadow-[0_25px_70px_rgba(40,30,15,0.06)] border border-[#E8E1D5] relative z-10 my-auto">
+      <main className="w-full max-w-[460px] bg-white rounded-3xl p-6 sm:p-10 shadow-xl border border-slate-200 relative z-10 my-auto animate-pop-in">
         
-        {/* Top DocVault Logo Badge */}
-        <div className="text-center mb-6">
-          <Link href="/" className="inline-flex items-center justify-center group">
-            <div className="p-2 sm:p-2.5 rounded-[26px] sm:rounded-[28px] bg-gradient-to-b from-[#FFF2E8] to-[#FFE7D5] ring-4 ring-[#FF6B00]/10 border border-[#FF6B00]/20 shadow-[0_4px_20px_rgba(255,107,0,0.12)] group-hover:scale-105 group-hover:ring-[#FF6B00]/20 group-hover:shadow-[0_8px_30px_rgba(255,107,0,0.22)] transition-all duration-300">
-              <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-[18px] sm:rounded-[20px] bg-gradient-to-br from-[#FF7A00] via-[#FF6500] to-[#EE5800] flex items-center justify-center text-white shadow-[0_10px_25px_rgba(255,101,0,0.35)]">
-                <ShieldCheck className="w-7 h-7 sm:w-7.5 sm:h-7.5 stroke-[2.3] text-white drop-shadow-xs" />
+        <div className="flex justify-center mb-6">
+          <Link href="/" className="group">
+            <div className="p-2 sm:p-2.5 rounded-[26px] sm:rounded-[28px] bg-[#F0FDF4] border border-[#D1FAE5] shadow-xs group-hover:scale-105 transition-all duration-300">
+              <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-[18px] sm:rounded-[20px] bg-[#1B664B] flex items-center justify-center text-white shadow-md">
+                <ShieldCheck className="w-7 h-7 sm:w-7.5 sm:h-7.5 stroke-[2.3] text-white" />
               </div>
             </div>
           </Link>
         </div>
-          
-          {/* Subtle Ambient Background Accent */}
-          <div className="absolute -right-16 -top-16 w-48 h-48 bg-orange-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute -left-16 -bottom-16 w-48 h-48 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
 
-          {/* Stepper Pill Indicator */}
           {step !== 'success' && (
             <div className="flex items-center justify-between gap-2 mb-8 pb-5 border-b border-slate-100">
               {[
@@ -203,10 +191,10 @@ export default function ForgotPasswordPage() {
                 return (
                   <div key={s.id} className="flex-1 text-center">
                     <div className={`h-1.5 rounded-full transition-all duration-300 mb-2 ${
-                      isActive ? 'bg-[#FF6B00]' : isPassed ? 'bg-emerald-500' : 'bg-slate-200'
+                      isActive ? 'bg-[#1B664B]' : isPassed ? 'bg-[#1B664B]' : 'bg-slate-200'
                     }`} />
                     <span className={`text-[11px] font-bold font-mono tracking-wider uppercase ${
-                      isActive ? 'text-[#FF6B00]' : isPassed ? 'text-emerald-600' : 'text-slate-400'
+                      isActive ? 'text-[#1B664B]' : isPassed ? 'text-[#1B664B]' : 'text-slate-400'
                     }`}>
                       {s.label}
                     </span>
@@ -216,54 +204,28 @@ export default function ForgotPasswordPage() {
             </div>
           )}
 
-          {/* Alert Message Box */}
           {errorMsg && (
-            <div className="mb-6 p-4 rounded-2xl bg-rose-50 border border-rose-200/90 text-rose-700 text-xs font-semibold space-y-2 animate-in fade-in duration-200 shadow-sm">
-              <div className="flex items-center gap-3">
-                <AlertCircle className="w-5 h-5 shrink-0 text-rose-600" />
-                <span className="flex-1 leading-relaxed">{errorMsg}</span>
-              </div>
-              {errorMsg.includes('not registered') && (
-                <div className="pt-2 border-t border-rose-200/60 flex items-center justify-between gap-2">
-                  <span className="text-[11px] text-rose-600 font-medium">Don&apos;t have a DocVault account yet?</span>
-                  <Link
-                    href="/register"
-                    className="px-3 py-1 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-[11px] font-bold shadow-xs transition-all inline-flex items-center gap-1 shrink-0"
-                  >
-                    <span>Register Now</span>
-                    <ArrowRight className="w-3 h-3" />
-                  </Link>
-                </div>
-              )}
+            <div className="mb-6 p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold flex items-start gap-2.5 shadow-2xs animate-fade-in">
+              <AlertCircle className="w-4 h-4 text-rose-500 shrink-0 mt-0.5" />
+              <span className="flex-1 leading-relaxed">{errorMsg}</span>
             </div>
           )}
 
-          {successMsg && step !== 'success' && (
-            <div className="mb-6 p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold flex items-center gap-3 animate-in fade-in duration-200">
-              <CheckCircle2 className="w-5 h-5 shrink-0 text-emerald-600" />
-              <span>{successMsg}</span>
-            </div>
-          )}
-
-          {/* STEP 1: Enter Registered Email */}
           {step === 'email' && (
             <div className="space-y-6">
               <div className="text-center space-y-2">
-                <div className="w-14 h-14 rounded-2xl bg-orange-50 border border-orange-200 text-[#FF6B00] flex items-center justify-center mx-auto shadow-sm shadow-orange-500/15">
-                  <KeyRound className="w-7 h-7" />
-                </div>
-                <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight font-auth-heading pt-2">
-                  Forgot Password?
+                <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight font-auth-heading">
+                  Reset Password
                 </h1>
                 <p className="text-xs sm:text-sm text-slate-500 max-w-sm mx-auto leading-relaxed">
-                  Enter your registered account email and we'll send a 6-digit OTP code to reset your password.
+                  Enter your registered account email address. We'll send a 6-digit verification code to reset your password.
                 </p>
               </div>
 
               <form onSubmit={handleSendOtp} className="space-y-5">
                 <div>
                   <label className="block text-[12px] font-bold uppercase tracking-wider text-slate-700 mb-2 font-auth-heading">
-                    Registered Email Address <span className="text-red-500">*</span>
+                    Email Address <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
                     <Mail className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
@@ -274,7 +236,7 @@ export default function ForgotPasswordPage() {
                       placeholder="name@example.com"
                       required
                       autoFocus
-                      className="w-full h-[54px] pl-12 pr-4 bg-slate-50/60 border border-[#E6E0D4] rounded-2xl text-sm font-medium text-slate-900 placeholder-slate-400 focus:bg-white focus:border-[#FF6B00] focus:ring-4 focus:ring-orange-500/15 outline-none transition-all"
+                      className="w-full h-[54px] pl-12 pr-4 bg-slate-50/60 border border-slate-200 rounded-2xl text-sm font-medium text-slate-900 placeholder-slate-400 focus:bg-white focus:border-[#1B664B] focus:ring-4 focus:ring-emerald-500/15 outline-none transition-all"
                     />
                   </div>
                 </div>
@@ -282,7 +244,7 @@ export default function ForgotPasswordPage() {
                 <button
                   type="submit"
                   disabled={loading || !email.trim()}
-                  className="w-full h-[54px] rounded-2xl text-sm font-bold text-white bg-gradient-to-r from-[#FF6B00] via-[#F76400] to-[#E05500] hover:brightness-105 shadow-lg shadow-orange-500/25 flex items-center justify-center gap-2 cursor-pointer transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full h-[54px] rounded-2xl text-sm font-bold text-white bg-[#1B664B] hover:bg-[#15803D] active:bg-[#166534] shadow-md flex items-center justify-center gap-2 cursor-pointer transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {loading ? (
                     <>
@@ -300,11 +262,10 @@ export default function ForgotPasswordPage() {
             </div>
           )}
 
-          {/* STEP 2: Verify 6-digit OTP Code */}
           {step === 'otp' && (
             <div className="space-y-6">
               <div className="text-center space-y-2">
-                <div className="w-14 h-14 rounded-2xl bg-orange-50 border border-orange-200 text-[#FF6B00] flex items-center justify-center mx-auto shadow-sm shadow-orange-500/15">
+                <div className="w-14 h-14 rounded-2xl bg-[#F0FDF4] border border-[#D1FAE5] text-[#1B664B] flex items-center justify-center mx-auto shadow-xs">
                   <Mail className="w-7 h-7" />
                 </div>
                 <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight font-auth-heading pt-2">
@@ -314,7 +275,7 @@ export default function ForgotPasswordPage() {
                   We've sent a 6-digit OTP code to <strong className="text-slate-800">{email}</strong>.
                 </p>
                 {demoOtpHint && (
-                  <p className="text-[11px] font-mono font-bold text-orange-600 bg-orange-50 border border-orange-200/80 px-3 py-1 rounded-lg inline-block">
+                  <p className="text-[11px] font-mono font-bold text-[#1B664B] bg-[#F0FDF4] border border-[#D1FAE5] px-3 py-1 rounded-lg inline-block">
                     Testing OTP Code: {demoOtpHint}
                   </p>
                 )}
@@ -333,7 +294,7 @@ export default function ForgotPasswordPage() {
                     placeholder="123456"
                     required
                     autoFocus
-                    className="w-full h-[58px] text-center text-2xl font-mono tracking-[0.4em] font-extrabold bg-slate-50/60 border border-[#E6E0D4] rounded-2xl text-slate-900 placeholder-slate-300 focus:bg-white focus:border-[#FF6B00] focus:ring-4 focus:ring-orange-500/15 outline-none transition-all"
+                    className="w-full h-[58px] text-center text-2xl font-mono tracking-[0.4em] font-extrabold bg-slate-50/60 border border-slate-200 rounded-2xl text-slate-900 placeholder-slate-300 focus:bg-white focus:border-[#1B664B] focus:ring-4 focus:ring-emerald-500/15 outline-none transition-all"
                   />
                 </div>
 
@@ -350,7 +311,7 @@ export default function ForgotPasswordPage() {
                     type="button"
                     disabled={resendCooldown > 0 || loading}
                     onClick={handleSendOtp}
-                    className="text-[#FF6B00] hover:text-[#D96000] font-bold disabled:opacity-40 cursor-pointer disabled:cursor-not-allowed flex items-center gap-1"
+                    className="text-[#1B664B] hover:text-[#15803D] font-bold disabled:opacity-40 cursor-pointer disabled:cursor-not-allowed flex items-center gap-1"
                   >
                     <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
                     <span>{resendCooldown > 0 ? `Resend in ${resendCooldown}s` : 'Resend Code'}</span>
@@ -360,7 +321,7 @@ export default function ForgotPasswordPage() {
                 <button
                   type="submit"
                   disabled={loading || otp.length !== 6}
-                  className="w-full h-[54px] rounded-2xl text-sm font-bold text-white bg-gradient-to-r from-[#FF6B00] via-[#F76400] to-[#E05500] hover:brightness-105 shadow-lg shadow-orange-500/25 flex items-center justify-center gap-2 cursor-pointer transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full h-[54px] rounded-2xl text-sm font-bold text-white bg-[#1B664B] hover:bg-[#15803D] active:bg-[#166534] shadow-md flex items-center justify-center gap-2 cursor-pointer transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {loading ? (
                     <>
@@ -369,7 +330,7 @@ export default function ForgotPasswordPage() {
                     </>
                   ) : (
                     <>
-                      <span>Verify Code</span>
+                      <span>Verify & Continue</span>
                       <ArrowRight className="w-4 h-4" />
                     </>
                   )}
@@ -378,23 +339,18 @@ export default function ForgotPasswordPage() {
             </div>
           )}
 
-          {/* STEP 3: Create New Password */}
           {step === 'new_password' && (
             <div className="space-y-6">
               <div className="text-center space-y-2">
-                <div className="w-14 h-14 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-600 flex items-center justify-center mx-auto shadow-sm shadow-emerald-500/15">
-                  <ShieldCheck className="w-7 h-7" />
-                </div>
-                <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight font-auth-heading pt-2">
+                <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight font-auth-heading">
                   Create New Password
                 </h1>
                 <p className="text-xs sm:text-sm text-slate-500 max-w-sm mx-auto leading-relaxed">
-                  Choose a new, strong password for your account.
+                  Your identity has been verified. Enter a new password for your account.
                 </p>
               </div>
 
               <form onSubmit={handleResetPassword} className="space-y-5">
-                {/* New Password */}
                 <div>
                   <label className="block text-[12px] font-bold uppercase tracking-wider text-slate-700 mb-2 font-auth-heading">
                     New Password <span className="text-red-500">*</span>
@@ -408,7 +364,7 @@ export default function ForgotPasswordPage() {
                       placeholder="••••••••"
                       required
                       autoFocus
-                      className="w-full h-[54px] pl-12 pr-12 bg-slate-50/60 border border-[#E6E0D4] rounded-2xl text-sm font-medium text-slate-900 placeholder-slate-400 focus:bg-white focus:border-[#FF6B00] focus:ring-4 focus:ring-orange-500/15 outline-none transition-all"
+                      className="w-full h-[54px] pl-12 pr-12 bg-slate-50/60 border border-slate-200 rounded-2xl text-sm font-medium text-slate-900 placeholder-slate-400 focus:bg-white focus:border-[#1B664B] focus:ring-4 focus:ring-emerald-500/15 outline-none transition-all"
                     />
                     <button
                       type="button"
@@ -418,32 +374,8 @@ export default function ForgotPasswordPage() {
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
                   </div>
-
-                  {/* Password Strength Indicator */}
-                  {newPassword && (
-                    <div className="mt-2 space-y-1.5">
-                      <div className="flex items-center justify-between text-[11px] font-bold font-mono">
-                        <span className="text-slate-500">Strength:</span>
-                        <span className={
-                          strength.label === 'Strong' ? 'text-emerald-600' :
-                          strength.label === 'Medium' ? 'text-amber-600' : 'text-rose-600'
-                        }>
-                          {strength.label}
-                        </span>
-                      </div>
-                      <div className="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
-                        <div
-                          className={`h-full transition-all duration-300 ${
-                            strength.label === 'Strong' ? 'bg-emerald-500 w-full' :
-                            strength.label === 'Medium' ? 'bg-amber-500 w-2/3' : 'bg-rose-500 w-1/3'
-                          }`}
-                        />
-                      </div>
-                    </div>
-                  )}
                 </div>
 
-                {/* Confirm Password */}
                 <div>
                   <label className="block text-[12px] font-bold uppercase tracking-wider text-slate-700 mb-2 font-auth-heading">
                     Confirm New Password <span className="text-red-500">*</span>
@@ -456,7 +388,7 @@ export default function ForgotPasswordPage() {
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder="••••••••"
                       required
-                      className="w-full h-[54px] pl-12 pr-12 bg-slate-50/60 border border-[#E6E0D4] rounded-2xl text-sm font-medium text-slate-900 placeholder-slate-400 focus:bg-white focus:border-[#FF6B00] focus:ring-4 focus:ring-orange-500/15 outline-none transition-all"
+                      className="w-full h-[54px] pl-12 pr-12 bg-slate-50/60 border border-slate-200 rounded-2xl text-sm font-medium text-slate-900 placeholder-slate-400 focus:bg-white focus:border-[#1B664B] focus:ring-4 focus:ring-emerald-500/15 outline-none transition-all"
                     />
                     <button
                       type="button"
@@ -466,17 +398,12 @@ export default function ForgotPasswordPage() {
                       {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
                   </div>
-                  {confirmPassword && newPassword !== confirmPassword && (
-                    <p className="text-rose-500 text-xs font-semibold mt-1 flex items-center gap-1">
-                      <AlertCircle className="w-3.5 h-3.5" /> Passwords do not match
-                    </p>
-                  )}
                 </div>
 
                 <button
                   type="submit"
                   disabled={loading || !newPassword || newPassword !== confirmPassword}
-                  className="w-full h-[54px] rounded-2xl text-sm font-bold text-white bg-gradient-to-r from-[#FF6B00] via-[#F76400] to-[#E05500] hover:brightness-105 shadow-lg shadow-orange-500/25 flex items-center justify-center gap-2 cursor-pointer transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full h-[54px] rounded-2xl text-sm font-bold text-white bg-[#1B664B] hover:bg-[#15803D] active:bg-[#166534] shadow-md flex items-center justify-center gap-2 cursor-pointer transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {loading ? (
                     <>
@@ -494,10 +421,9 @@ export default function ForgotPasswordPage() {
             </div>
           )}
 
-          {/* STEP 4: Success Screen */}
           {step === 'success' && (
             <div className="text-center space-y-6 py-4 animate-in fade-in zoom-in-95 duration-300">
-              <div className="w-20 h-20 rounded-3xl bg-emerald-100/80 text-emerald-600 flex items-center justify-center mx-auto shadow-xl shadow-emerald-500/20 border border-emerald-200">
+              <div className="w-20 h-20 rounded-3xl bg-[#F0FDF4] text-[#1B664B] flex items-center justify-center mx-auto shadow-md border border-[#D1FAE5]">
                 <CheckCircle2 className="w-10 h-10" />
               </div>
 
@@ -513,7 +439,7 @@ export default function ForgotPasswordPage() {
               <div className="pt-2">
                 <Link
                   href="/login"
-                  className="w-full h-[54px] rounded-2xl text-sm font-bold text-white bg-gradient-to-r from-[#FF6B00] via-[#F76400] to-[#E05500] hover:brightness-105 shadow-lg shadow-orange-500/25 flex items-center justify-center gap-2 transition-all"
+                  className="w-full h-[54px] rounded-2xl text-sm font-bold text-white bg-[#1B664B] hover:bg-[#15803D] active:bg-[#166534] shadow-md flex items-center justify-center gap-2 transition-all"
                 >
                   <span>Sign In with New Password</span>
                   <ArrowRight className="w-4 h-4" />
@@ -521,10 +447,8 @@ export default function ForgotPasswordPage() {
               </div>
             </div>
           )}
-
         </main>
 
-      {/* Footer */}
       <footer className="py-6 text-center text-xs text-slate-400">
         <p>© 2026 DocVault Document Management System. All rights reserved.</p>
       </footer>

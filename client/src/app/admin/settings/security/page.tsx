@@ -62,7 +62,7 @@ export default function AdminSecurityPage() {
         <div className={`fixed top-20 right-6 z-[100000] text-white text-sm font-semibold px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-2 animate-in fade-in slide-in-from-top-3 ${
           toastMsg.type === 'success' ? 'bg-slate-900 dark:bg-slate-800 border border-slate-700' : 'bg-rose-600'
         }`}>
-          {toastMsg.type === 'success' ? <CheckCircle2 className="w-4 h-4 text-emerald-400" /> : <AlertCircle className="w-4 h-4 text-amber-300" />}
+          {toastMsg.type === 'success' ? <CheckCircle2 className="w-4 h-4 text-emerald-400" /> : <AlertCircle className="w-4 h-4 text-[#1B664B]" />}
           <span>{toastMsg.text}</span>
         </div>
       )}
@@ -70,7 +70,7 @@ export default function AdminSecurityPage() {
       {/* Header */}
       <div className="pb-4 border-b border-slate-100 dark:border-slate-800">
         <h1 className="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading">
-          <ShieldAlert className="w-6 h-6 text-themePrimary" /> Password & Security Policy
+          <ShieldAlert className="w-6 h-6 text-[#1B664B]" /> Password & Security Policy
         </h1>
         <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">Configure global security rules, password requirements, and session behavior.</p>
       </div>
@@ -80,14 +80,14 @@ export default function AdminSecurityPage() {
         {/* Password Complexity */}
         <div className="bg-white dark:bg-[#111827] rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xs p-6 space-y-6">
           <div className="flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
-            <Key className="w-4 h-4 text-themePrimary" />
+            <Key className="w-4 h-4 text-[#1B664B]" />
             <h2 className="text-sm font-black text-slate-900 dark:text-white font-auth-heading">Password Complexity</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
               <label className="block text-xs font-extrabold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-2">
-                Minimum Length: <span className="text-themePrimary">{policy.minLength}</span> chars
+                Minimum Length: <span className="text-[#1B664B]">{policy.minLength}</span> chars
               </label>
               <input
                 type="range"
@@ -109,7 +109,7 @@ export default function AdminSecurityPage() {
                   type="checkbox" 
                   checked={policy.requireUppercase}
                   onChange={e => setPolicy({ ...policy, requireUppercase: e.target.checked })}
-                  className="w-4 h-4 text-themePrimary focus:ring-themePrimary border-slate-300 rounded cursor-pointer"
+                  className="w-4 h-4 text-[#1B664B] focus:ring-themePrimary border-slate-300 rounded cursor-pointer"
                 />
                 <span className="text-xs font-bold text-slate-800 dark:text-slate-200">Require Uppercase Letter (A-Z)</span>
               </label>
@@ -119,7 +119,7 @@ export default function AdminSecurityPage() {
                   type="checkbox" 
                   checked={policy.requireNumber}
                   onChange={e => setPolicy({ ...policy, requireNumber: e.target.checked })}
-                  className="w-4 h-4 text-themePrimary focus:ring-themePrimary border-slate-300 rounded cursor-pointer"
+                  className="w-4 h-4 text-[#1B664B] focus:ring-themePrimary border-slate-300 rounded cursor-pointer"
                 />
                 <span className="text-xs font-bold text-slate-800 dark:text-slate-200">Require Number (0-9)</span>
               </label>
@@ -129,7 +129,7 @@ export default function AdminSecurityPage() {
                   type="checkbox" 
                   checked={policy.requireSpecial}
                   onChange={e => setPolicy({ ...policy, requireSpecial: e.target.checked })}
-                  className="w-4 h-4 text-themePrimary focus:ring-themePrimary border-slate-300 rounded cursor-pointer"
+                  className="w-4 h-4 text-[#1B664B] focus:ring-themePrimary border-slate-300 rounded cursor-pointer"
                 />
                 <span className="text-xs font-bold text-slate-800 dark:text-slate-200">Require Special Character (!@#$%)</span>
               </label>
@@ -140,7 +140,7 @@ export default function AdminSecurityPage() {
         {/* Protection & Sessions */}
         <div className="bg-white dark:bg-[#111827] rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xs p-6 space-y-6">
           <div className="flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
-            <Lock className="w-4 h-4 text-themePrimary" />
+            <Lock className="w-4 h-4 text-[#1B664B]" />
             <h2 className="text-sm font-black text-slate-900 dark:text-white font-auth-heading">Session & Brute Force Protection</h2>
           </div>
 
@@ -155,7 +155,7 @@ export default function AdminSecurityPage() {
                 max={1440}
                 value={policy.sessionTimeoutMinutes}
                 onChange={e => setPolicy({ ...policy, sessionTimeoutMinutes: parseInt(e.target.value) || 120 })}
-                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary transition"
+                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-[#1B664B] transition"
               />
               <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium mt-1">Users will be logged out after this period of inactivity.</p>
             </div>
@@ -170,7 +170,7 @@ export default function AdminSecurityPage() {
                 max={20}
                 value={policy.maxLoginAttempts}
                 onChange={e => setPolicy({ ...policy, maxLoginAttempts: parseInt(e.target.value) || 5 })}
-                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary transition"
+                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-[#1B664B] transition"
               />
               <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium mt-1">Number of failed attempts before account lockout.</p>
             </div>
@@ -185,21 +185,21 @@ export default function AdminSecurityPage() {
                 max={1440}
                 value={policy.lockoutDurationMinutes}
                 onChange={e => setPolicy({ ...policy, lockoutDurationMinutes: parseInt(e.target.value) || 15 })}
-                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary transition"
+                className="w-full px-4 py-2.5 bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-[#1B664B] transition"
               />
               <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium mt-1">Time to wait after max failed attempts.</p>
             </div>
 
             <div className="flex items-center pt-2">
-               <label className="flex items-center gap-3 cursor-pointer p-3 rounded-xl border border-orange-200 dark:border-orange-900/60 bg-orange-50/50 dark:bg-orange-950/40 hover:bg-orange-50 dark:hover:bg-orange-950/60 transition w-full">
+               <label className="flex items-center gap-3 cursor-pointer p-3 rounded-xl border border-[#D1EBE1] dark:border-emerald-900/60 bg-[#E8F5F0] dark:bg-emerald-950/60 hover:bg-[#E8F5F0] dark:hover:bg-[#E8F5F0] transition w-full">
                 <input 
                   type="checkbox" 
                   checked={policy.force2FA}
                   onChange={e => setPolicy({ ...policy, force2FA: e.target.checked })}
-                  className="w-4 h-4 text-themePrimary focus:ring-themePrimary border-slate-300 rounded cursor-pointer"
+                  className="w-4 h-4 text-[#1B664B] focus:ring-themePrimary border-slate-300 rounded cursor-pointer"
                 />
                 <div>
-                  <div className="text-xs font-black text-themePrimary dark:text-orange-400 flex items-center gap-1.5 font-auth-heading">
+                  <div className="text-xs font-black text-[#1B664B] dark:text-[#1B664B] flex items-center gap-1.5 font-auth-heading">
                     <ShieldCheck className="w-4 h-4" /> Force 2FA Globally
                   </div>
                   <div className="text-[10px] text-slate-600 dark:text-slate-400 font-medium mt-0.5">Require Two-Factor Authentication for all administrative and user accounts.</div>
@@ -213,7 +213,7 @@ export default function AdminSecurityPage() {
           <button
             type="submit"
             disabled={submitting}
-            className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-black text-xs shadow-md shadow-orange-500/20 hover:opacity-90 hover:scale-105 transition disabled:opacity-70 cursor-pointer"
+            className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-[#1B664B] text-white font-black text-xs shadow-md shadow-emerald-950/20 hover:opacity-90 hover:scale-105 transition disabled:opacity-70 cursor-pointer"
           >
             <Save className="w-4 h-4" />
             {submitting ? 'Saving Policy...' : 'Save Security Policy'}

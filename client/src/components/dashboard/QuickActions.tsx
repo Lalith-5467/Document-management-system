@@ -37,7 +37,7 @@ export default function QuickActions({ onSearchFocus }: QuickActionsProps) {
         <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
           <Link
             href="/user/upload"
-            className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 rounded-xl shadow-md shadow-orange-500/25 transition-all hover:scale-[1.02]"
+            className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold text-white bg-[#1B664B] hover:bg-[#14523C] active:bg-[#0F402E] rounded-xl shadow-md transition-all hover:scale-[1.02]"
           >
             <Upload className="w-4 h-4" />
             <span>Upload Document</span>
@@ -67,14 +67,14 @@ export default function QuickActions({ onSearchFocus }: QuickActionsProps) {
         onClose={() => setActiveModal(null)}
         title="Upload New Document"
         subtitle="Select category and file to upload into local storage vault."
-        icon={<FileUp className="w-5 h-5 text-themePrimary" />}
+        icon={<FileUp className="w-5 h-5 text-[#1B664B]" />}
         maxWidth="max-w-md"
       >
         <div className="space-y-4">
-          <div className="border-2 border-dashed border-slate-200 hover:border-themePrimary rounded-xl p-8 text-center space-y-3 bg-slate-50/50 cursor-pointer transition-colors">
-            <Upload className="w-8 h-8 text-themePrimary mx-auto" />
+          <div className="border-2 border-dashed border-slate-200 hover:border-[#1B664B] rounded-xl p-8 text-center space-y-3 bg-slate-50/50 cursor-pointer transition-colors">
+            <Upload className="w-8 h-8 text-[#1B664B] mx-auto" />
             <div className="text-xs font-medium text-slate-700 dark:text-slate-300">
-              Drag & drop files here, or <span className="text-themePrimary font-semibold underline">browse</span>
+              Drag & drop files here, or <span className="text-[#1B664B] font-semibold underline">browse</span>
             </div>
             <p className="text-[11px] text-slate-400">
               Supports PDF, DOCX, PNG, JPG, TXT, ZIP (Max 25MB)
@@ -98,7 +98,7 @@ export default function QuickActions({ onSearchFocus }: QuickActionsProps) {
                   setSuccessNotice('');
                 }, 1200);
               }}
-              className="px-4 py-2 text-xs font-semibold text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 rounded-xl shadow-md shadow-orange-500/25"
+              className="px-4 py-2 text-xs font-bold text-white bg-[#1B664B] hover:bg-[#14523C] active:bg-[#0F402E] rounded-xl shadow-md"
             >
               Select File
             </button>
@@ -119,7 +119,7 @@ export default function QuickActions({ onSearchFocus }: QuickActionsProps) {
         onClose={() => setActiveModal(null)}
         title="Create New Folder"
         subtitle="Organize related records into custom folder structures."
-        icon={<FolderPlus className="w-5 h-5 text-themePrimary" />}
+        icon={<FolderPlus className="w-5 h-5 text-[#1B664B]" />}
         maxWidth="max-w-md"
       >
         <form onSubmit={handleCreateFolder} className="space-y-4 pt-2">
@@ -133,7 +133,7 @@ export default function QuickActions({ onSearchFocus }: QuickActionsProps) {
               value={folderName}
               onChange={(e) => setFolderName(e.target.value)}
               placeholder="e.g. 2026 Tax Documents"
-              className="w-full px-3.5 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:outline-none focus:border-themePrimary"
+              className="w-full px-3.5 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:outline-none focus:border-[#1B664B]"
             />
           </div>
 
@@ -154,7 +154,7 @@ export default function QuickActions({ onSearchFocus }: QuickActionsProps) {
             </button>
             <button
               type="submit"
-              className="px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 rounded-xl shadow-md shadow-orange-500/25"
+              className="px-4 py-2 text-xs font-bold text-white bg-[#1B664B] hover:bg-[#14523C] active:bg-[#0F402E] rounded-xl shadow-md"
             >
               Create Folder
             </button>

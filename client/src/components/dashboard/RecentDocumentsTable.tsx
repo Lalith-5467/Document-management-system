@@ -49,7 +49,7 @@ export default function RecentDocumentsTable({
       case 'Academic Records':
         return 'bg-emerald-50 text-emerald-700 border-emerald-200';
       case 'Resumes & CVs':
-        return 'bg-amber-50 text-amber-700 border-amber-200';
+        return 'bg-[#E8F5F0] text-[#1B664B] border-[#D1EBE1]';
       case 'Personal Documents':
         return 'bg-blue-50 text-blue-700 border-blue-200';
       case 'Client Requirements':
@@ -126,10 +126,10 @@ export default function RecentDocumentsTable({
                           <Eye className="w-4 h-4" />
                         </button>
                         <button
-                          className="p-1.5 text-slate-400 hover:text-amber-500 hover:bg-amber-50 rounded-md transition-colors"
+                          className="p-1.5 text-slate-400 hover:text-[#1B664B] hover:bg-[#E8F5F0] rounded-md transition-colors"
                           title="Favorite"
                         >
-                          <Star className={`w-4 h-4 ${doc.is_favorite ? 'fill-amber-400 text-amber-400' : ''}`} />
+                          <Star className={`w-4 h-4 ${doc.is_favorite ? 'fill-[#1B664B] text-[#1B664B]' : ''}`} />
                         </button>
                         <button
                           className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-md transition-colors"

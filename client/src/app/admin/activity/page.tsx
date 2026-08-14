@@ -119,7 +119,7 @@ export default function AdminActivityPage() {
         <div>
           <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-auth-heading tracking-tight flex items-center gap-2.5">
             Activity Audit Logs
-            <span className="px-2.5 py-0.5 rounded-full bg-orange-100 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 text-xs font-extrabold font-mono border border-orange-200/80 dark:border-orange-900/60">
+            <span className="px-2.5 py-0.5 rounded-full bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] dark:text-[#1B664B] text-xs font-extrabold font-mono border border-[#D1EBE1] dark:border-emerald-900/60">
               {totalCount} Logged
             </span>
           </h1>
@@ -144,7 +144,7 @@ export default function AdminActivityPage() {
             value={searchQuery}
             onChange={e => { setSearchQuery(e.target.value); setPage(1); }}
             placeholder="Search by user name, email, action, document, or event details..."
-            className="w-full pl-10 pr-4 py-2.5 bg-slate-50/80 dark:bg-[#0B1120] border border-slate-200/80 dark:border-slate-800 rounded-2xl text-xs font-bold text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-themePrimary"
+            className="w-full pl-10 pr-4 py-2.5 bg-slate-50/80 dark:bg-[#0B1120] border border-slate-200/80 dark:border-slate-800 rounded-2xl text-xs font-bold text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-[#1B664B]"
           />
         </div>
         <div className="sm:col-span-1">
@@ -160,7 +160,7 @@ export default function AdminActivityPage() {
       {/* Table */}
       <div className="bg-white dark:bg-[#111827] rounded-3xl border border-slate-200/90 dark:border-slate-800 shadow-sm overflow-hidden">
         {loading ? (
-          <div className="p-16 flex flex-col items-center justify-center gap-3 text-xs text-slate-500 dark:text-slate-400 font-medium"><Loader2 className="w-6 h-6 animate-spin text-themePrimary" /> Loading activity audit logs...</div>
+          <div className="p-16 flex flex-col items-center justify-center gap-3 text-xs text-slate-500 dark:text-slate-400 font-medium"><Loader2 className="w-6 h-6 animate-spin text-[#1B664B]" /> Loading activity audit logs...</div>
         ) : logs.length === 0 ? (
           <div className="p-16 text-center text-xs text-slate-500 dark:text-slate-400 font-medium">No matching activity logs found.</div>
         ) : (
@@ -177,14 +177,14 @@ export default function AdminActivityPage() {
               </thead>
               <tbody className="divide-y divide-slate-100 dark:divide-slate-800/80">
                 {logs.map((log, idx) => (
-                  <tr key={log.id} style={{ animationDelay: `${(idx % 15) * 35}ms` }} className="group hover:bg-orange-50/30 dark:hover:bg-slate-800/50 transition-all duration-200 animate-fade-in">
+                  <tr key={log.id} style={{ animationDelay: `${(idx % 15) * 35}ms` }} className="group hover:bg-[#E8F5F0] dark:hover:bg-slate-800/50 transition-all duration-200 animate-fade-in">
                     <td className="py-4 px-6 align-middle">
                       <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-2xl bg-gradient-to-tr from-themePrimary to-[#F97316] text-white font-black text-xs flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+                        <div className="w-9 h-9 rounded-2xl bg-[#1B664B] text-white font-black text-xs flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
                           {(log.user_name || 'S').charAt(0).toUpperCase()}
                         </div>
                         <div className="min-w-0">
-                          <p className="font-black text-slate-900 dark:text-white text-xs font-auth-heading group-hover:text-themePrimary transition-colors truncate">{log.user_name || 'System'}</p>
+                          <p className="font-black text-slate-900 dark:text-white text-xs font-auth-heading group-hover:text-[#1B664B] transition-colors truncate">{log.user_name || 'System'}</p>
                           <p className="text-[10px] text-slate-500 dark:text-slate-400 font-mono truncate">{log.user_email}</p>
                         </div>
                       </div>
@@ -192,11 +192,11 @@ export default function AdminActivityPage() {
                     <td className="py-4 px-6 align-middle">
                       <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border shadow-2xs inline-flex items-center gap-1.5 ${
                         log.action_type === 'LOGIN' ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/80 dark:text-emerald-300 dark:border-emerald-800/80' :
-                        log.action_type === 'LOGOUT' ? 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/80 dark:text-amber-300 dark:border-amber-800/80' :
+                        log.action_type === 'LOGOUT' ? 'bg-[#E8F5F0] text-[#1B664B] border-[#D1EBE1] dark:bg-emerald-950/60 dark:text-[#1B664B] dark:border-amber-800/80' :
                         log.action_type === 'UPLOAD' ? 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/80 dark:text-blue-300 dark:border-blue-800/80' :
                         log.action_type === 'DOWNLOAD' ? 'bg-indigo-50 text-indigo-700 border-indigo-200 dark:bg-indigo-950/80 dark:text-indigo-300 dark:border-indigo-800/80' :
                         log.action_type === 'DELETE' ? 'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/80 dark:text-rose-300 dark:border-rose-800/80' :
-                        log.action_type === 'CREATE_FOLDER' ? 'bg-orange-50 text-themePrimary border-orange-200 dark:bg-orange-950/80 dark:text-orange-300 dark:border-orange-900/80' :
+                        log.action_type === 'CREATE_FOLDER' ? 'bg-[#E8F5F0] text-[#1B664B] border-[#D1EBE1] dark:bg-emerald-950/60 dark:text-emerald-400 dark:border-emerald-900/60' :
                         'bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700'
                       }`}>
                         {log.action_type?.replace(/_/g, ' ')}

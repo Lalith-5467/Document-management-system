@@ -124,7 +124,7 @@ export default function AdminProfilePage() {
         <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-bl from-orange-500/10 via-amber-500/5 to-transparent rounded-full blur-3xl pointer-events-none" />
 
         <div className="flex items-center gap-4 relative z-10">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-themePrimary to-[#F97316] text-white flex items-center justify-center font-black shadow-lg shadow-orange-500/25 shrink-0">
+          <div className="w-14 h-14 rounded-2xl bg-[#1B664B] text-white flex items-center justify-center font-black shadow-lg shadow-emerald-950/20 shrink-0">
             <ShieldCheck className="w-7 h-7 text-white" />
           </div>
           <div>
@@ -132,7 +132,7 @@ export default function AdminProfilePage() {
               <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight font-auth-heading">
                 Admin Security Profile
               </h1>
-              <span className="px-3 py-0.5 rounded-full bg-orange-100 text-themePrimary text-[11px] font-black border border-orange-200 uppercase tracking-wider">
+              <span className="px-3 py-0.5 rounded-full bg-[#E8F5F0] text-[#1B664B] text-[11px] font-black border border-[#D1EBE1] uppercase tracking-wider">
                 Super Admin
               </span>
             </div>
@@ -157,11 +157,11 @@ export default function AdminProfilePage() {
           <div className="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-xs space-y-6 relative">
             <div className="text-center pb-6 border-b border-slate-100 space-y-3">
               <div className="relative w-24 h-24 mx-auto">
-                <div className="w-24 h-24 rounded-3xl bg-gradient-to-tr from-themePrimary to-[#F97316] text-white flex items-center justify-center font-black text-2xl shadow-xl shadow-orange-500/20 ring-4 ring-orange-500/10">
+                <div className="w-24 h-24 rounded-3xl bg-[#1B664B] text-white flex items-center justify-center font-black text-2xl shadow-xl shadow-emerald-950/20 ring-4 ring-emerald-500/20">
                   {fullName.charAt(0).toUpperCase()}
                 </div>
-                <div className="absolute -bottom-1 -right-1 w-8 h-8 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-themePrimary shadow-md">
-                  <BadgeCheck className="w-5 h-5 text-themePrimary" />
+                <div className="absolute -bottom-1 -right-1 w-8 h-8 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-[#1B664B] shadow-md">
+                  <BadgeCheck className="w-5 h-5 text-[#1B664B]" />
                 </div>
               </div>
 
@@ -192,8 +192,8 @@ export default function AdminProfilePage() {
               </div>
             </div>
 
-            <div className="p-4 rounded-2xl bg-orange-50/60 border border-orange-200/60 text-[11px] text-slate-600 space-y-1">
-              <p className="font-extrabold text-themePrimary flex items-center gap-1.5 font-auth-heading">
+            <div className="p-4 rounded-2xl bg-[#E8F5F0] border border-[#D1EBE1] text-[11px] text-slate-600 space-y-1">
+              <p className="font-extrabold text-[#1B664B] flex items-center gap-1.5 font-auth-heading">
                 <ShieldCheck className="w-3.5 h-3.5" /> High Security Protection
               </p>
               <p className="text-slate-500 leading-relaxed font-medium">
@@ -208,7 +208,7 @@ export default function AdminProfilePage() {
           {/* Form 1: Personal Details */}
           <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/80 shadow-xs space-y-6">
             <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-              <div className="w-9 h-9 rounded-xl bg-orange-50 border border-orange-200 flex items-center justify-center text-themePrimary">
+              <div className="w-9 h-9 rounded-xl bg-[#E8F5F0] border border-[#D1EBE1] flex items-center justify-center text-[#1B664B]">
                 <User className="w-4.5 h-4.5" />
               </div>
               <div>
@@ -229,7 +229,7 @@ export default function AdminProfilePage() {
                       type="text"
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
-                      className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-bold text-slate-900 focus:border-themePrimary focus:bg-white focus:ring-2 focus:ring-orange-500/10 focus:outline-none transition-all"
+                      className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-bold text-slate-900 focus:border-[#1B664B] focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:outline-none transition-all"
                     />
                   </div>
                 </div>
@@ -260,7 +260,7 @@ export default function AdminProfilePage() {
                       value={mobileNumber}
                       onChange={(e) => setMobileNumber(e.target.value)}
                       placeholder="+91 98765 43210"
-                      className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-bold text-slate-900 focus:border-themePrimary focus:bg-white focus:ring-2 focus:ring-orange-500/10 focus:outline-none transition-all font-mono"
+                      className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-bold text-slate-900 focus:border-[#1B664B] focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:outline-none transition-all font-mono"
                     />
                   </div>
                 </div>
@@ -270,7 +270,7 @@ export default function AdminProfilePage() {
                 <button
                   type="submit"
                   disabled={savingProfile}
-                  className="px-6 py-3 rounded-2xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-black text-xs flex items-center gap-2 shadow-md shadow-orange-500/20 hover:brightness-110 active:scale-95 transition cursor-pointer font-auth-heading"
+                  className="px-6 py-3 rounded-2xl bg-[#1B664B] text-white font-black text-xs flex items-center gap-2 shadow-md shadow-emerald-950/20 hover:brightness-110 active:scale-95 transition cursor-pointer font-auth-heading"
                 >
                   {savingProfile ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                   <span>Save Profile Details</span>
@@ -282,7 +282,7 @@ export default function AdminProfilePage() {
           {/* Form 2: Password Security */}
           <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/80 shadow-xs space-y-6">
             <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-              <div className="w-9 h-9 rounded-xl bg-orange-50 border border-orange-200 flex items-center justify-center text-themePrimary">
+              <div className="w-9 h-9 rounded-xl bg-[#E8F5F0] border border-[#D1EBE1] flex items-center justify-center text-[#1B664B]">
                 <Key className="w-4.5 h-4.5" />
               </div>
               <div>
@@ -303,7 +303,7 @@ export default function AdminProfilePage() {
                     value={currentPassword}
                     onChange={(e) => setCurrentPassword(e.target.value)}
                     placeholder="Enter current password..."
-                    className="w-full pl-10 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-bold text-slate-900 focus:border-themePrimary focus:bg-white focus:ring-2 focus:ring-orange-500/10 focus:outline-none transition-all"
+                    className="w-full pl-10 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-bold text-slate-900 focus:border-[#1B664B] focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:outline-none transition-all"
                   />
                   <button
                     type="button"
@@ -327,7 +327,7 @@ export default function AdminProfilePage() {
                       value={newPassword}
                       onChange={(e) => setNewPassword(e.target.value)}
                       placeholder="Enter new password..."
-                      className="w-full pl-10 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-bold text-slate-900 focus:border-themePrimary focus:bg-white focus:ring-2 focus:ring-orange-500/10 focus:outline-none transition-all"
+                      className="w-full pl-10 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-bold text-slate-900 focus:border-[#1B664B] focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:outline-none transition-all"
                     />
                     <button
                       type="button"
@@ -350,7 +350,7 @@ export default function AdminProfilePage() {
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder="Confirm new password..."
-                      className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-bold text-slate-900 focus:border-themePrimary focus:bg-white focus:ring-2 focus:ring-orange-500/10 focus:outline-none transition-all"
+                      className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-xs font-bold text-slate-900 focus:border-[#1B664B] focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:outline-none transition-all"
                     />
                   </div>
                 </div>
@@ -360,7 +360,7 @@ export default function AdminProfilePage() {
                 <button
                   type="submit"
                   disabled={savingPass}
-                  className="px-6 py-3 rounded-2xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-black text-xs flex items-center gap-2 shadow-md shadow-orange-500/20 hover:brightness-110 active:scale-95 transition cursor-pointer font-auth-heading"
+                  className="px-6 py-3 rounded-2xl bg-[#1B664B] text-white font-black text-xs flex items-center gap-2 shadow-md shadow-emerald-950/20 hover:brightness-110 active:scale-95 transition cursor-pointer font-auth-heading"
                 >
                   {savingPass ? <Loader2 className="w-4 h-4 animate-spin" /> : <Lock className="w-4 h-4" />}
                   <span>Update Admin Password</span>

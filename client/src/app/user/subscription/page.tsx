@@ -117,20 +117,11 @@ Thank you for choosing DocVault! For billing inquiries, contact billing@docvault
 
   return (
     <div className="space-y-8 pb-16" style={{ fontFamily: "var(--font-plus-jakarta), 'Plus Jakarta Sans', sans-serif" }}>
-      {/* Navigation Breadcrumb */}
-      <div className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium">
-        <Link href="/user" className="hover:text-themePrimary dark:hover:text-orange-400 transition-colors font-medium">
-          User Account
-        </Link>
-        <ChevronRight className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 shrink-0" />
-        <span className="font-semibold text-slate-900 dark:text-white">Subscription & Billing</span>
-      </div>
-
       {/* PAGE HEADER */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200 dark:border-slate-800">
         <div>
           <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-3">
-            <span className="w-10 h-10 rounded-2xl bg-orange-50 dark:bg-orange-950/60 text-themePrimary flex items-center justify-center border border-orange-200 dark:border-orange-900/60 shrink-0">
+            <span className="w-10 h-10 rounded-2xl bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] flex items-center justify-center border border-[#D1EBE1] dark:border-emerald-900/60 shrink-0">
               <Zap className="w-5 h-5 fill-themePrimary" />
             </span>
             Subscription Plans & Billing
@@ -143,7 +134,7 @@ Thank you for choosing DocVault! For billing inquiries, contact billing@docvault
         <div className="flex items-center gap-3">
           <button
             onClick={() => openUpgradeModal()}
-            className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] text-white text-sm font-black shadow-lg shadow-orange-500/25 hover:scale-105 transition flex items-center gap-2"
+            className="px-5 py-2.5 rounded-2xl bg-[#1B664B] text-white text-sm font-black shadow-lg shadow-emerald-950/20 hover:scale-105 transition flex items-center gap-2"
           >
             <Zap className="w-4 h-4 fill-white" /> Upgrade Plan
           </button>
@@ -165,7 +156,7 @@ Thank you for choosing DocVault! For billing inquiries, contact billing@docvault
 
       {/* 1. 7-DAY FREE TRIAL BANNER & STATUS CARD */}
       {isTrial ? (
-        <div className="bg-gradient-to-br from-orange-500 via-themePrimary to-[#EA580C] text-white rounded-3xl p-6 sm:p-8 shadow-xl shadow-orange-500/20 relative overflow-hidden space-y-6">
+        <div className="bg-[#1B664B] text-white rounded-3xl p-6 sm:p-8 shadow-xl shadow-emerald-950/20 relative overflow-hidden space-y-6">
           <div className="absolute -right-12 -bottom-12 w-64 h-64 bg-white/10 rounded-full blur-2xl pointer-events-none" />
 
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
@@ -176,7 +167,7 @@ Thank you for choosing DocVault! For billing inquiries, contact billing@docvault
               <h2 className="text-2xl sm:text-3xl font-black tracking-tight">
                 First 7 Days Free of Cost (₹0)
               </h2>
-              <p className="text-sm text-orange-100 font-medium max-w-xl">
+              <p className="text-sm text-emerald-100 font-medium max-w-xl">
                 Enjoy full unrestricted access to DocVault for 7 days. No payment required during your trial. Subscription auto-activates after Day 7.
               </p>
             </div>
@@ -190,7 +181,7 @@ Thank you for choosing DocVault! For billing inquiries, contact billing@docvault
               </button>
               <button
                 onClick={() => openUpgradeModal()}
-                className="px-5 py-2.5 rounded-2xl bg-white text-themePrimary hover:bg-orange-50 text-sm font-black shadow-lg transition flex items-center gap-2"
+                className="px-5 py-2.5 rounded-2xl bg-white text-[#1B664B] hover:bg-[#E8F5F0] text-sm font-black shadow-lg transition flex items-center gap-2"
               >
                 <Zap className="w-4 h-4 fill-current" /> Select Subscription Plan
               </button>
@@ -199,7 +190,7 @@ Thank you for choosing DocVault! For billing inquiries, contact billing@docvault
 
           {/* Trial Progress Bar */}
           <div className="space-y-2 pt-2 border-t border-white/20 relative z-10">
-            <div className="flex justify-between text-sm font-bold text-orange-100">
+            <div className="flex justify-between text-sm font-bold text-emerald-100">
               <span>Trial Progress: Day {trialElapsedDays} of 7 Days Free</span>
               <span className="font-mono bg-white/20 px-2.5 py-0.5 rounded-full text-white text-xs">
                 ⏳ {daysRemaining} Days Remaining (Ends {subscription.renewalDate})
@@ -219,7 +210,7 @@ Thank you for choosing DocVault! For billing inquiries, contact billing@docvault
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="space-y-1">
               <div className="flex items-center gap-2">
-                <span className="px-3 py-1 rounded-full bg-orange-100 dark:bg-orange-950 text-themePrimary text-xs font-black uppercase tracking-wider">
+                <span className="px-3 py-1 rounded-full bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] text-xs font-black uppercase tracking-wider">
                   Current Active Plan
                 </span>
                 <span className="px-2.5 py-0.5 rounded-full text-xs font-extrabold uppercase bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300">
@@ -234,7 +225,7 @@ Thank you for choosing DocVault! For billing inquiries, contact billing@docvault
             <div className="flex items-center gap-3">
               <button
                 onClick={() => openUpgradeModal()}
-                className="px-5 py-2.5 rounded-2xl bg-themePrimary text-white text-sm font-black shadow-md shadow-orange-500/20 hover:bg-[#E05E00] transition"
+                className="px-5 py-2.5 rounded-2xl bg-[#1B664B] text-white text-sm font-black shadow-md shadow-emerald-950/20 hover:bg-[#E05E00] transition"
               >
                 Change Plan
               </button>
@@ -272,7 +263,7 @@ Thank you for choosing DocVault! For billing inquiries, contact billing@docvault
           <div className="space-y-2 pt-2">
             <div className="flex justify-between text-sm font-bold text-slate-900 dark:text-white">
               <span className="flex items-center gap-1.5">
-                <HardDrive className="w-4 h-4 text-themePrimary" /> Storage Quota Allocation
+                <HardDrive className="w-4 h-4 text-[#1B664B]" /> Storage Quota Allocation
               </span>
               <span className="font-mono">
                 {(subscription.storageUsedBytes / (1024 * 1024 * 1024)).toFixed(1)} GB / {(subscription.storageLimitBytes / (1024 * 1024 * 1024)).toFixed(0)} GB ({storagePct.toFixed(1)}%)
@@ -281,7 +272,7 @@ Thank you for choosing DocVault! For billing inquiries, contact billing@docvault
 
             <div className="w-full h-3 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden border border-slate-200 dark:border-slate-700">
               <div
-                className="h-full bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] rounded-full transition-all duration-500"
+                className="h-full bg-[#1B664B] rounded-full transition-all duration-500"
                 style={{ width: `${storagePct}%` }}
               />
             </div>
@@ -328,15 +319,15 @@ Thank you for choosing DocVault! For billing inquiries, contact billing@docvault
         </div>
 
         {/* PROMO CODES BANNER */}
-        <div className="p-4 rounded-2xl bg-gradient-to-r from-amber-50 to-orange-50 dark:from-slate-800 dark:to-orange-950/40 border border-amber-200 dark:border-orange-900/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-sm">
+        <div className="p-4 rounded-2xl bg-gradient-to-r from-[#E8F5F0] to-[#E8F5F0] dark:from-slate-800 dark:to-orange-950/40 border border-[#D1EBE1] dark:border-emerald-900/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-sm">
           <div className="flex items-center gap-3">
-            <span className="w-8 h-8 rounded-xl bg-themePrimary text-white flex items-center justify-center font-bold text-base shrink-0">
+            <span className="w-8 h-8 rounded-xl bg-[#1B664B] text-white flex items-center justify-center font-bold text-base shrink-0">
               🏷️
             </span>
             <div>
               <p className="font-black text-slate-900 dark:text-white">Available Promo Codes & Discounts</p>
               <p className="text-slate-600 dark:text-slate-300 font-medium">
-                Use code <code className="bg-white dark:bg-slate-900 px-1.5 py-0.5 rounded border font-mono font-bold text-themePrimary">DOCVAULT20</code> for 20% OFF or <code className="bg-white dark:bg-slate-900 px-1.5 py-0.5 rounded border font-mono font-bold text-emerald-600">FREEPRO</code> for 100% Free Upgrade!
+                Use code <code className="bg-white dark:bg-slate-900 px-1.5 py-0.5 rounded border font-mono font-bold text-[#1B664B]">DOCVAULT20</code> for 20% OFF or <code className="bg-white dark:bg-slate-900 px-1.5 py-0.5 rounded border font-mono font-bold text-emerald-600">FREEPRO</code> for 100% Free Upgrade!
               </p>
             </div>
           </div>
@@ -358,21 +349,21 @@ Thank you for choosing DocVault! For billing inquiries, contact billing@docvault
 
             // Highlight the currently active plan, not just the Pro plan hardcoded
             const cardStyle = isCurrentPlan
-              ? 'border-2 border-themePrimary bg-white dark:bg-slate-900 shadow-[0_12px_35px_rgba(255,107,0,0.18)] hover:shadow-[0_25px_60px_rgba(255,107,0,0.35)] hover:-translate-y-2'
-              : 'border-2 border-slate-200 dark:border-slate-800 hover:border-themePrimary dark:hover:border-themePrimary bg-white dark:bg-slate-900 shadow-md hover:shadow-[0_20px_50px_rgba(255,107,0,0.22)] hover:-translate-y-2';
+              ? 'border-2 border-[#1B664B] bg-white dark:bg-slate-900 shadow-[0_12px_35px_rgba(255,107,0,0.18)] hover:shadow-[0_25px_60px_rgba(255,107,0,0.35)] hover:-translate-y-2'
+              : 'border-2 border-slate-200 dark:border-slate-800 hover:border-[#1B664B] dark:hover:border-[#1B664B] bg-white dark:bg-slate-900 shadow-md hover:shadow-[0_20px_50px_rgba(255,107,0,0.22)] hover:-translate-y-2';
 
             return (
               <div
                 key={plan.id}
                 className={`rounded-3xl p-6 sm:p-7 transition-all duration-300 flex flex-col justify-between space-y-6 relative group h-full ${cardStyle}`}
               >
-                {/* Primary Orange Top Badge */}
+                {/* Primary Green Top Badge */}
                 {plan.badge ? (
-                  <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-full bg-themePrimary text-white text-xs font-black uppercase tracking-wider shadow-md shadow-orange-500/30 transition-transform group-hover:scale-105">
+                  <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-full bg-[#1B664B] text-white text-xs font-black uppercase tracking-wider shadow-md shadow-emerald-950/20 transition-transform group-hover:scale-105">
                     ⭐ {plan.badge}
                   </span>
                 ) : plan.id === 'free_trial' ? (
-                  <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-full bg-themePrimary text-white text-xs font-black uppercase tracking-wider shadow-md shadow-orange-500/30">
+                  <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-full bg-[#1B664B] text-white text-xs font-black uppercase tracking-wider shadow-md shadow-emerald-950/20">
                     🎁 STARTER FREE
                   </span>
                 ) : null}
@@ -380,11 +371,11 @@ Thank you for choosing DocVault! For billing inquiries, contact billing@docvault
                 <div className="space-y-4 relative z-10 flex-1 flex flex-col">
                   <div>
                     <div className="flex items-center justify-between">
-                      <h3 className="text-xl font-black text-slate-900 dark:text-white group-hover:text-themePrimary transition-colors">
+                      <h3 className="text-xl font-black text-slate-900 dark:text-white group-hover:text-[#1B664B] transition-colors">
                         {plan.name}
                       </h3>
                       {isCurrentPlan && (
-                        <span className="w-2.5 h-2.5 rounded-full bg-themePrimary animate-ping" title="Current Active Plan" />
+                        <span className="w-2.5 h-2.5 rounded-full bg-[#1B664B] animate-ping" title="Current Active Plan" />
                       )}
                     </div>
 
@@ -419,7 +410,7 @@ Thank you for choosing DocVault! For billing inquiries, contact billing@docvault
                       ) : null}
                     </div>
 
-                    <div className="mt-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-extrabold bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 border border-orange-200 dark:border-orange-900/60 shadow-sm">
+                    <div className="mt-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-extrabold bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] dark:text-[#1B664B] border border-[#D1EBE1] dark:border-emerald-900/60 shadow-sm">
                       <Gift className="w-3.5 h-3.5" /> First 7 Days Free of Cost
                     </div>
                   </div>
@@ -427,7 +418,7 @@ Thank you for choosing DocVault! For billing inquiries, contact billing@docvault
                   <div className="space-y-2.5 pt-4 mt-2 border-t border-slate-100 dark:border-slate-800 flex-1">
                     {plan.features.map((feat, idx) => (
                       <div key={idx} className="flex items-start gap-2.5 text-sm font-semibold text-slate-700 dark:text-slate-200">
-                        <span className="w-4 h-4 rounded-full bg-orange-50 dark:bg-orange-950/60 text-themePrimary flex items-center justify-center shrink-0 mt-0.5 border border-orange-200 dark:border-orange-900/60">
+                        <span className="w-4 h-4 rounded-full bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] flex items-center justify-center shrink-0 mt-0.5 border border-[#D1EBE1] dark:border-emerald-900/60">
                           <Check className="w-2.5 h-2.5 stroke-[3]" />
                         </span>
                         <span>{feat}</span>
@@ -441,7 +432,7 @@ Thank you for choosing DocVault! For billing inquiries, contact billing@docvault
                   className={`w-full py-3.5 rounded-2xl font-black text-sm transition-all duration-200 flex items-center justify-center gap-2 active-press mt-auto ${
                     isCurrentPlan
                       ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-100 shadow-md hover:scale-[1.02]'
-                      : 'bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] text-white hover:scale-[1.02] shadow-xl shadow-orange-500/30'
+                      : 'bg-[#1B664B] text-white hover:scale-[1.02] shadow-xl shadow-emerald-950/20'
                   }`}
                 >
                   {isCurrentPlan ? (
@@ -465,7 +456,7 @@ Thank you for choosing DocVault! For billing inquiries, contact billing@docvault
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 dark:border-slate-800 pb-4">
           <div>
             <h3 className="text-lg font-black text-slate-900 dark:text-white flex items-center gap-2">
-              <FileText className="w-5 h-5 text-themePrimary" /> Subscription Bills & Invoices
+              <FileText className="w-5 h-5 text-[#1B664B]" /> Subscription Bills & Invoices
             </h3>
             <p className="text-sm text-slate-500 dark:text-slate-400 font-medium mt-0.5">
               Download itemized invoices, review transaction history, or manage payment card.
@@ -499,7 +490,7 @@ Thank you for choosing DocVault! For billing inquiries, contact billing@docvault
         <div className="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
           <table className="w-full text-left border-collapse text-sm">
             <thead>
-              <tr className="bg-themePrimary text-white text-xs shadow-sm">
+              <tr className="bg-[#1B664B] text-white text-xs shadow-sm">
                 <th className="py-4 px-6 font-bold">Invoice Date</th>
                 <th className="py-4 px-6 font-bold">Invoice Number</th>
                 <th className="py-4 px-6 font-bold">Plan Name</th>
@@ -511,7 +502,7 @@ Thank you for choosing DocVault! For billing inquiries, contact billing@docvault
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
               {filteredPayments.map((item) => (
-                <tr key={item.id} className="hover:bg-orange-50 dark:hover:bg-orange-950/30 transition-colors group cursor-default">
+                <tr key={item.id} className="hover:bg-[#E8F5F0] dark:hover:bg-[#E8F5F0] transition-colors group cursor-default">
                   <td className="py-4 px-6 text-slate-600 dark:text-slate-300 font-medium">{item.date}</td>
                   <td className="py-4 px-6 font-mono text-sm text-slate-900 dark:text-white font-medium">{item.invoiceNo}</td>
                   <td className="py-4 px-6 font-semibold text-slate-900 dark:text-white">{item.planName}</td>
@@ -525,7 +516,7 @@ Thank you for choosing DocVault! For billing inquiries, contact billing@docvault
                   <td className="py-4 px-6">
                     <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium border ${
                       item.amount === 0
-                        ? 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20'
+                        ? 'bg-[#E8F5F0] text-[#1B664B] border-[#D1EBE1] dark:bg-[#E8F5F0]0/10 dark:text-[#1B664B] dark:border-amber-500/20'
                         : 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20'
                     }`}>
                       {item.amount === 0 ? '7-Day Free Trial' : 'Paid'}
@@ -555,7 +546,7 @@ Thank you for choosing DocVault! For billing inquiries, contact billing@docvault
         <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700">
-              <CreditCard className="w-5 h-5 text-themePrimary" />
+              <CreditCard className="w-5 h-5 text-[#1B664B]" />
             </div>
             <div>
               <p className="text-sm font-black text-slate-900 dark:text-white">Active Payment Method</p>
@@ -567,7 +558,7 @@ Thank you for choosing DocVault! For billing inquiries, contact billing@docvault
 
           <button
             onClick={() => setShowPaymentMethodModal(true)}
-            className="px-4 py-2.5 rounded-2xl bg-themePrimary text-white text-sm font-bold hover:bg-[#E05E00] shadow-md shadow-orange-500/20 transition-all border border-transparent"
+            className="px-4 py-2.5 rounded-2xl bg-[#1B664B] text-white text-sm font-bold hover:bg-[#E05E00] shadow-md shadow-emerald-950/20 transition-all border border-transparent"
           >
             Update Payment Method
           </button>
@@ -577,7 +568,7 @@ Thank you for choosing DocVault! For billing inquiries, contact billing@docvault
       {/* UPDATE PAYMENT METHOD MODAL */}
       {showPaymentMethodModal && mounted && createPortal(
         <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm overflow-y-auto">
-          <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl shadow-orange-500/10 border border-slate-200 dark:border-slate-800 space-y-6 relative animate-pop-in my-auto">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl shadow-emerald-950/20 border border-slate-200 dark:border-slate-800 space-y-6 relative animate-pop-in my-auto">
             <button
               onClick={() => setShowPaymentMethodModal(false)}
               className="absolute top-4 right-4 p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
@@ -605,7 +596,7 @@ Thank you for choosing DocVault! For billing inquiries, contact billing@docvault
                   required
                   value={savedCard.cardName}
                   onChange={(e) => setSavedCard({ ...savedCard, cardName: e.target.value })}
-                  className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-medium focus:outline-none focus:border-themePrimary focus:ring-1 focus:ring-themePrimary"
+                  className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-medium focus:outline-none focus:border-[#1B664B] focus:ring-1 focus:ring-themePrimary"
                 />
               </div>
 
@@ -616,7 +607,7 @@ Thank you for choosing DocVault! For billing inquiries, contact billing@docvault
                   required
                   value={savedCard.cardNumber}
                   onChange={(e) => setSavedCard({ ...savedCard, cardNumber: e.target.value })}
-                  className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-mono font-medium focus:outline-none focus:border-themePrimary focus:ring-1 focus:ring-themePrimary"
+                  className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-mono font-medium focus:outline-none focus:border-[#1B664B] focus:ring-1 focus:ring-themePrimary"
                 />
               </div>
 
@@ -628,7 +619,7 @@ Thank you for choosing DocVault! For billing inquiries, contact billing@docvault
                     required
                     value={savedCard.expiry}
                     onChange={(e) => setSavedCard({ ...savedCard, expiry: e.target.value })}
-                    className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-mono font-medium focus:outline-none focus:border-themePrimary focus:ring-1 focus:ring-themePrimary"
+                    className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-mono font-medium focus:outline-none focus:border-[#1B664B] focus:ring-1 focus:ring-themePrimary"
                   />
                 </div>
                 <div className="space-y-1.5">
@@ -638,14 +629,14 @@ Thank you for choosing DocVault! For billing inquiries, contact billing@docvault
                     required
                     maxLength={4}
                     defaultValue="•••"
-                    className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-mono font-medium focus:outline-none focus:border-themePrimary focus:ring-1 focus:ring-themePrimary"
+                    className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-mono font-medium focus:outline-none focus:border-[#1B664B] focus:ring-1 focus:ring-themePrimary"
                   />
                 </div>
               </div>
 
               <button
                 type="submit"
-                className="w-full mt-2 py-3.5 rounded-2xl bg-themePrimary text-white font-black text-sm hover:bg-[#E05E00] shadow-md shadow-orange-500/20 transition-colors"
+                className="w-full mt-2 py-3.5 rounded-2xl bg-[#1B664B] text-white font-black text-sm hover:bg-[#E05E00] shadow-md shadow-emerald-950/20 transition-colors"
               >
                 Save Payment Card
               </button>

@@ -31,11 +31,11 @@ const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
 };
 
 const COLOR_OPTIONS = [
-  { name: 'Primary Orange', value: 'var(--theme-primary, #FF6B00)', bgClass: 'bg-orange-50 text-themePrimary border-orange-200' },
+  { name: 'Primary Green', value: 'var(--theme-primary, #1B664B)', bgClass: 'bg-[#E8F5F0] text-[#1B664B] border-[#D1EBE1]' },
   { name: 'Emerald', value: '#10B981', bgClass: 'bg-emerald-50 text-emerald-600 border-emerald-200' },
   { name: 'Violet', value: '#8B5CF6', bgClass: 'bg-violet-50 text-violet-600 border-violet-200' },
   { name: 'Pink', value: '#EC4899', bgClass: 'bg-pink-50 text-pink-600 border-pink-200' },
-  { name: 'Amber', value: '#F59E0B', bgClass: 'bg-amber-50 text-amber-600 border-amber-200' },
+  { name: 'Amber', value: '#1B664B', bgClass: 'bg-[#E8F5F0] text-[#1B664B] border-[#D1EBE1]' },
   { name: 'Cyan', value: '#06B6D4', bgClass: 'bg-cyan-50 text-cyan-600 border-cyan-200' },
   { name: 'Red', value: '#EF4444', bgClass: 'bg-red-50 text-red-600 border-red-200' },
   { name: 'Slate', value: '#64748B', bgClass: 'bg-slate-50 text-slate-600 border-slate-200' }
@@ -87,7 +87,7 @@ export default function CategoriesPage() {
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [formName, setFormName] = useState<string>('');
   const [formDescription, setFormDescription] = useState<string>('');
-  const [formColor, setFormColor] = useState<string>('var(--theme-primary, #FF6B00)');
+  const [formColor, setFormColor] = useState<string>('var(--theme-primary, #1B664B)');
   const [formIcon, setFormIcon] = useState<string>('Folder');
   const [formSubmitting, setFormSubmitting] = useState<boolean>(false);
   const [formError, setFormError] = useState<string | null>(null);
@@ -187,7 +187,7 @@ export default function CategoriesPage() {
   const handleOpenCreate = () => {
     setFormName('');
     setFormDescription('');
-    setFormColor('var(--theme-primary, #FF6B00)');
+    setFormColor('var(--theme-primary, #1B664B)');
     setFormIcon('Folder');
     setFormError(null);
     setIsCreateOpen(true);
@@ -245,7 +245,7 @@ export default function CategoriesPage() {
     setSelectedCategory(category);
     setFormName(category.category_name);
     setFormDescription(category.description || '');
-    setFormColor(category.color || 'var(--theme-primary, #FF6B00)');
+    setFormColor(category.color || 'var(--theme-primary, #1B664B)');
     setFormIcon(category.icon_name || 'Folder');
     setFormError(null);
     setIsEditOpen(true);
@@ -409,18 +409,18 @@ export default function CategoriesPage() {
       </div>
 
       {/* Main Header Banner */}
-      <div className="bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] rounded-3xl p-6 sm:p-8 text-white shadow-xl shadow-orange-500/20 relative overflow-hidden">
+      <div className="bg-[#1B664B] rounded-3xl p-6 sm:p-8 text-white shadow-xl shadow-emerald-950/20 relative overflow-hidden">
         <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-white/10 transform skew-x-12 pointer-events-none" />
         
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 text-white text-sm font-bold backdrop-blur-md border border-white/30">
-              <FileStack className="w-3.5 h-3.5 text-amber-300" /> {t('categories.moduleName', 'Document Taxonomy Module')}
+              <FileStack className="w-3.5 h-3.5 text-[#1B664B]" /> {t('categories.moduleName', 'Document Taxonomy Module')}
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
               {t('categories.title', 'Category Management')}
             </h1>
-            <p className="text-orange-50/90 text-sm sm:text-sm max-w-xl leading-relaxed">
+            <p className="text-emerald-100/90 text-sm sm:text-sm max-w-xl leading-relaxed">
               {t('categories.subtitle', 'Classify your documents into structured groups for seamless organization, fast search, and instant reference across your storage workspace.')}
             </p>
           </div>
@@ -431,16 +431,16 @@ export default function CategoriesPage() {
               className="group relative overflow-hidden inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 hover:scale-105 text-white font-extrabold px-5 py-3.5 rounded-2xl backdrop-blur-xl border border-white/30 hover:border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.1)] hover:shadow-[0_8px_30px_rgba(255,255,255,0.2)] transition-all duration-300 text-sm active:scale-95"
             >
               <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 ease-in-out" />
-              <FolderPlus className="w-4.5 h-4.5 text-amber-300 group-hover:rotate-12 group-hover:scale-110 transition-transform duration-300 relative z-10 drop-shadow-md" /> 
+              <FolderPlus className="w-4.5 h-4.5 text-[#1B664B] group-hover:rotate-12 group-hover:scale-110 transition-transform duration-300 relative z-10 drop-shadow-md" /> 
               <span className="relative z-10 drop-shadow-md tracking-wide">Add Folder</span>
             </Link>
             <Link
               href="/user/documents"
               className="group relative overflow-hidden inline-flex items-center justify-center gap-2 bg-white hover:scale-105 font-black px-6 py-3.5 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.15)] hover:shadow-[0_8px_30px_rgba(255,255,255,0.4)] transition-all duration-300 text-sm active:scale-95 border border-white/80"
             >
-              <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-orange-100/60 to-transparent transition-transform duration-1000 ease-in-out" />
-              <Upload className="w-4.5 h-4.5 text-themePrimary group-hover:-translate-y-1 transition-transform duration-300 relative z-10" /> 
-              <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-br from-themePrimary to-[#EA580C]">Add File</span>
+              <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-emerald-100/60 to-transparent transition-transform duration-1000 ease-in-out" />
+              <Upload className="w-4.5 h-4.5 text-[#1B664B] group-hover:-translate-y-1 transition-transform duration-300 relative z-10" /> 
+              <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-br from-[#1B664B] to-[#14523C]">Add File</span>
             </Link>
           </div>
         </div>
@@ -452,7 +452,7 @@ export default function CategoriesPage() {
               <Layers className="w-4 h-4" />
             </div>
             <div>
-              <p className="text-orange-100/80 text-xs uppercase tracking-wider font-bold font-mono">{t('categories.totalCategories', 'Total Categories')}</p>
+              <p className="text-emerald-100/80 text-xs uppercase tracking-wider font-bold font-mono">{t('categories.totalCategories', 'Total Categories')}</p>
               <p className="text-xl font-black text-white">{categories.length}</p>
             </div>
           </div>
@@ -462,7 +462,7 @@ export default function CategoriesPage() {
               <FileText className="w-4 h-4" />
             </div>
             <div>
-              <p className="text-orange-100/80 text-xs uppercase tracking-wider font-bold font-mono">{t('categories.totalDocs', 'Total Categorized Docs')}</p>
+              <p className="text-emerald-100/80 text-xs uppercase tracking-wider font-bold font-mono">{t('categories.totalDocs', 'Total Categorized Docs')}</p>
               <p className="text-xl font-black text-white">{totalDocumentsCount}</p>
             </div>
           </div>
@@ -472,7 +472,7 @@ export default function CategoriesPage() {
               <CheckCircle2 className="w-4 h-4" />
             </div>
             <div>
-              <p className="text-orange-100/80 text-xs uppercase tracking-wider font-bold font-mono">{t('categories.defaultSeeded', 'Default Seeded')}</p>
+              <p className="text-emerald-100/80 text-xs uppercase tracking-wider font-bold font-mono">{t('categories.defaultSeeded', 'Default Seeded')}</p>
               <p className="text-xl font-black text-white">8 {t('categories.standard', 'Standard')}</p>
             </div>
           </div>
@@ -509,7 +509,7 @@ export default function CategoriesPage() {
               onClick={() => setViewMode('grid')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm font-extrabold transition-all font-auth-heading ${
                 viewMode === 'grid'
-                  ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/25'
+                  ? 'bg-[#1B664B] text-white shadow-md shadow-emerald-950/20'
                   : 'text-[#7B7393] hover:text-[#1E1235]'
               }`}
             >
@@ -519,7 +519,7 @@ export default function CategoriesPage() {
               onClick={() => setViewMode('list')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm font-extrabold transition-all font-auth-heading ${
                 viewMode === 'list'
-                  ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/25'
+                  ? 'bg-[#1B664B] text-white shadow-md shadow-emerald-950/20'
                   : 'text-[#7B7393] hover:text-[#1E1235]'
               }`}
             >
@@ -550,7 +550,7 @@ export default function CategoriesPage() {
         </div>
       ) : filteredCategories.length === 0 ? (
         <div className="bg-white dark:bg-slate-900 rounded-3xl border border-[#EAE4F8] dark:border-slate-800 p-12 text-center space-y-4 shadow-md font-auth-body animate-fade-in">
-          <div className="w-16 h-16 rounded-3xl bg-orange-50 dark:bg-orange-950/40 text-themePrimary border border-orange-200 dark:border-orange-900 flex items-center justify-center mx-auto animate-float-bob">
+          <div className="w-16 h-16 rounded-3xl bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] border border-[#D1EBE1] dark:border-emerald-900/60 flex items-center justify-center mx-auto animate-float-bob">
             <FolderClosed className="w-8 h-8" />
           </div>
           <h3 className="font-extrabold text-slate-900 dark:text-white text-lg font-auth-heading">No categories found</h3>
@@ -560,7 +560,7 @@ export default function CategoriesPage() {
           {!searchQuery && (
             <button
               onClick={handleOpenCreate}
-              className="text-sm font-extrabold text-white bg-gradient-to-r from-themePrimary to-[#F97316] px-5 py-2.5 rounded-2xl transition shadow-lg shadow-orange-500/25 hover:scale-105 active:scale-95 font-auth-heading"
+              className="text-sm font-extrabold text-white bg-[#1B664B] px-5 py-2.5 rounded-2xl transition shadow-lg shadow-emerald-950/20 hover:scale-105 active:scale-95 font-auth-heading"
             >
               + Create Category Now
             </button>
@@ -575,12 +575,12 @@ export default function CategoriesPage() {
               <div
                 key={cat.id}
                 style={{ animationDelay: `${(idx % 8) * 60}ms` }}
-                className="group bg-white dark:bg-slate-900 rounded-3xl border border-[#EAE4F8] dark:border-slate-800 p-6 shadow-xs hover:shadow-[0_15px_35px_rgba(255,107,0,0.14)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between space-y-4 relative overflow-hidden animate-fade-in"
+                className="group card-animated animate-card-entrance bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 shadow-xs flex flex-col justify-between space-y-4 relative overflow-hidden"
               >
                 {/* Top indicator bar */}
                 <div 
                   className="absolute top-0 left-0 right-0 h-1.5 transition-all group-hover:h-2 rounded-t-3xl"
-                  style={{ backgroundColor: cat.color || '#6C5CE7' }}
+                  style={{ backgroundColor: cat.color || '#1B664B' }}
                 />
 
                 {/* Clickable Header & Info Section */}
@@ -591,26 +591,26 @@ export default function CategoriesPage() {
                   {/* Category Header */}
                   <div className="flex items-start justify-between gap-3 pt-1">
                     <div 
-                      className="w-12 h-12 rounded-2xl flex items-center justify-center border shadow-sm transition-transform group-hover/link:scale-110 duration-300"
+                      className="w-12 h-12 rounded-2xl flex items-center justify-center border shadow-sm card-icon-bounce"
                       style={{ 
-                        backgroundColor: `${cat.color && cat.color !== '#3B82F6' && cat.color !== '#6C5CE7' ? cat.color : 'var(--theme-primary, #FF6B00)'}15`, 
-                        color: cat.color && cat.color !== '#3B82F6' && cat.color !== '#6C5CE7' ? cat.color : 'var(--theme-primary, #FF6B00)',
-                        borderColor: `${cat.color && cat.color !== '#3B82F6' && cat.color !== '#6C5CE7' ? cat.color : 'var(--theme-primary, #FF6B00)'}30`
+                        backgroundColor: `${cat.color && cat.color !== '#3B82F6' && cat.color !== '#6C5CE7' ? cat.color : 'var(--theme-primary, #1B664B)'}15`, 
+                        color: cat.color && cat.color !== '#3B82F6' && cat.color !== '#6C5CE7' ? cat.color : 'var(--theme-primary, #1B664B)',
+                        borderColor: `${cat.color && cat.color !== '#3B82F6' && cat.color !== '#6C5CE7' ? cat.color : 'var(--theme-primary, #1B664B)'}30`
                       }}
                     >
                       {renderIcon(cat.icon_name, "w-6 h-6")}
                     </div>
 
-                    <span className="text-xs font-extrabold uppercase tracking-wider px-3 py-1 rounded-full bg-orange-50 dark:bg-orange-950/60 text-themePrimary border border-orange-200 dark:border-orange-900/60 flex items-center gap-1">
+                    <span className="text-xs font-extrabold uppercase tracking-wider px-3 py-1 rounded-full bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] border border-[#D1EBE1] dark:border-emerald-900/60 flex items-center gap-1">
                       <FileText className="w-3 h-3" /> {cat.document_count || 0} docs
                     </span>
                   </div>
 
                   {/* Category Info */}
                   <div>
-                    <h3 className="font-extrabold text-slate-900 dark:text-white text-base group-hover/link:text-themePrimary transition-colors line-clamp-1 flex items-center justify-between">
+                    <h3 className="font-extrabold text-slate-900 dark:text-white text-base group-hover/link:text-[#1B664B] transition-colors line-clamp-1 flex items-center justify-between">
                       <span>{cat.category_name}</span>
-                      <span className="text-sm text-themePrimary opacity-0 group-hover/link:opacity-100 transition-opacity">View →</span>
+                      <span className="text-sm text-[#1B664B] opacity-0 group-hover/link:opacity-100 transition-opacity">View →</span>
                     </h3>
                     <p className="text-sm text-[#7B7393] mt-1 line-clamp-2 min-h-[32px] leading-relaxed">
                       {cat.description || 'No description provided.'}
@@ -622,7 +622,7 @@ export default function CategoriesPage() {
                 <div className="flex items-center gap-2 pt-3.5 border-t border-[#EAE4F8]">
                   <Link
                     href={categoryDocsUrl}
-                    className="group relative overflow-hidden flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-2xl text-sm font-bold bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] text-white shadow-md hover:shadow-[0_8px_25px_rgba(255,107,0,0.4)] hover:-translate-y-0.5 transition-all duration-300 active-press font-auth-body whitespace-nowrap"
+                    className="group relative overflow-hidden flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-2xl text-sm font-bold bg-[#1B664B] text-white shadow-md hover:shadow-[0_8px_25px_rgba(255,107,0,0.4)] hover:-translate-y-0.5 transition-all duration-300 active-press font-auth-body whitespace-nowrap"
                   >
                     <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-1000 ease-in-out" />
                     <FileText className="w-4 h-4 group-hover:-translate-y-0.5 transition-transform duration-300 relative z-10 shrink-0" /> 
@@ -630,14 +630,14 @@ export default function CategoriesPage() {
                   </Link>
                   <Link
                     href={`/user/folders?category_id=${cat.id}&category_name=${encodeURIComponent(cat.category_name)}`}
-                    className="inline-flex items-center justify-center p-2.5 rounded-2xl text-sm font-bold bg-themePrimary/10 hover:bg-themePrimary/20 text-themePrimary border border-themePrimary/20 transition-all active-press"
+                    className="inline-flex items-center justify-center p-2.5 rounded-2xl text-sm font-bold bg-[#1B664B]/10 hover:bg-[#1B664B]/20 text-[#1B664B] border border-[#1B664B]/20 transition-all active-press"
                     title="Add Folder"
                   >
                     <FolderPlus className="w-4 h-4" />
                   </Link>
                   <Link
                     href={`/user/upload?category_id=${cat.id}&category_name=${encodeURIComponent(cat.category_name)}`}
-                    className="inline-flex items-center justify-center p-2.5 rounded-2xl text-sm font-bold bg-themePrimary/10 hover:bg-themePrimary/20 text-themePrimary border border-themePrimary/20 transition-all active-press"
+                    className="inline-flex items-center justify-center p-2.5 rounded-2xl text-sm font-bold bg-[#1B664B]/10 hover:bg-[#1B664B]/20 text-[#1B664B] border border-[#1B664B]/20 transition-all active-press"
                     title="Add File"
                   >
                     <Upload className="w-4 h-4" />
@@ -671,16 +671,16 @@ export default function CategoriesPage() {
                           <div 
                             className="w-9 h-9 rounded-2xl flex items-center justify-center border group-hover/link:scale-110 transition-transform"
                             style={{ 
-                              backgroundColor: `${cat.color || 'var(--theme-primary, #FF6B00)'}12`, 
-                              color: cat.color || 'var(--theme-primary, #FF6B00)',
-                              borderColor: `${cat.color || 'var(--theme-primary, #FF6B00)'}25`
+                              backgroundColor: `${cat.color || 'var(--theme-primary, #1B664B)'}12`, 
+                              color: cat.color || 'var(--theme-primary, #1B664B)',
+                              borderColor: `${cat.color || 'var(--theme-primary, #1B664B)'}25`
                             }}
                           >
                             {renderIcon(cat.icon_name, "w-4 h-4")}
                           </div>
-                          <span className="font-extrabold text-[#1E1235] group-hover/link:text-themePrimary transition-colors flex items-center gap-1.5 font-auth-heading whitespace-nowrap">
+                          <span className="font-extrabold text-[#1E1235] group-hover/link:text-[#1B664B] transition-colors flex items-center gap-1.5 font-auth-heading whitespace-nowrap">
                             {cat.category_name}
-                            <FileText className="w-3.5 h-3.5 text-themePrimary opacity-0 group-hover/link:opacity-100 transition-opacity" />
+                            <FileText className="w-3.5 h-3.5 text-[#1B664B] opacity-0 group-hover/link:opacity-100 transition-opacity" />
                           </span>
                         </Link>
                       </td>
@@ -688,7 +688,7 @@ export default function CategoriesPage() {
                         {cat.description || '—'}
                       </td>
                       <td className="py-4 px-5">
-                        <Link href={categoryDocsUrl} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-themePrimary/10 text-themePrimary border border-themePrimary/20 hover:bg-themePrimary/20 transition font-auth-label">
+                        <Link href={categoryDocsUrl} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-[#1B664B]/10 text-[#1B664B] border border-[#1B664B]/20 hover:bg-[#1B664B]/20 transition font-auth-label">
                           <FileText className="w-3 h-3" /> {cat.document_count || 0} files
                         </Link>
                       </td>
@@ -699,7 +699,7 @@ export default function CategoriesPage() {
                         <div className="flex items-center justify-end gap-2 font-auth-body">
                           <Link
                             href={categoryDocsUrl}
-                            className="group relative overflow-hidden inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-2xl text-sm font-bold bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] text-white shadow-md hover:shadow-[0_8px_25px_rgba(255,107,0,0.4)] hover:-translate-y-0.5 transition-all duration-300 active-press font-auth-body whitespace-nowrap"
+                            className="group relative overflow-hidden inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-2xl text-sm font-bold bg-[#1B664B] text-white shadow-md hover:shadow-[0_8px_25px_rgba(255,107,0,0.4)] hover:-translate-y-0.5 transition-all duration-300 active-press font-auth-body whitespace-nowrap"
                           >
                             <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-1000 ease-in-out" />
                             <FileText className="w-3.5 h-3.5 group-hover:-translate-y-0.5 transition-transform duration-300 relative z-10 shrink-0" /> 
@@ -707,7 +707,7 @@ export default function CategoriesPage() {
                           </Link>
                           <Link
                             href={`/user/folders?category_id=${cat.id}&category_name=${encodeURIComponent(cat.category_name)}`}
-                            className="group relative overflow-hidden inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-2xl text-sm font-bold bg-themePrimary/10 hover:bg-themePrimary/20 text-themePrimary border border-themePrimary/20 hover:border-themePrimary/40 shadow-sm hover:shadow-[0_4px_15px_rgba(255,107,0,0.15)] hover:-translate-y-0.5 transition-all duration-300 active-press whitespace-nowrap"
+                            className="group relative overflow-hidden inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-2xl text-sm font-bold bg-[#1B664B]/10 hover:bg-[#1B664B]/20 text-[#1B664B] border border-[#1B664B]/20 hover:border-[#1B664B]/40 shadow-sm hover:shadow-[0_4px_15px_rgba(255,107,0,0.15)] hover:-translate-y-0.5 transition-all duration-300 active-press whitespace-nowrap"
                           >
                             <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-1000 ease-in-out" />
                             <FolderPlus className="w-3.5 h-3.5 group-hover:rotate-12 group-hover:scale-110 transition-transform duration-300 relative z-10 shrink-0" /> 
@@ -715,7 +715,7 @@ export default function CategoriesPage() {
                           </Link>
                           <Link
                             href={`/user/upload?category_id=${cat.id}&category_name=${encodeURIComponent(cat.category_name)}`}
-                            className="group relative overflow-hidden inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-2xl text-sm font-bold bg-themePrimary/10 hover:bg-themePrimary/20 text-themePrimary border border-themePrimary/20 hover:border-themePrimary/40 shadow-sm hover:shadow-[0_4px_15px_rgba(255,107,0,0.15)] hover:-translate-y-0.5 transition-all duration-300 active-press whitespace-nowrap"
+                            className="group relative overflow-hidden inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-2xl text-sm font-bold bg-[#1B664B]/10 hover:bg-[#1B664B]/20 text-[#1B664B] border border-[#1B664B]/20 hover:border-[#1B664B]/40 shadow-sm hover:shadow-[0_4px_15px_rgba(255,107,0,0.15)] hover:-translate-y-0.5 transition-all duration-300 active-press whitespace-nowrap"
                           >
                             <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-1000 ease-in-out" />
                             <Upload className="w-3.5 h-3.5 group-hover:-translate-y-0.5 transition-transform duration-300 relative z-10 shrink-0" /> 
@@ -757,7 +757,7 @@ export default function CategoriesPage() {
               value={formName}
               onChange={(e) => setFormName(e.target.value)}
               placeholder="e.g., Tax Invoices 2026"
-              className="w-full px-3.5 py-2.5 bg-[#F3F0FA] dark:bg-slate-950 border border-[#EAE4F8] dark:border-slate-800 rounded-2xl text-[#1E1235] dark:text-white placeholder:text-[#7B7393] focus:outline-none focus:border-themePrimary transition-all text-sm font-auth-body"
+              className="w-full px-3.5 py-2.5 bg-[#F3F0FA] dark:bg-slate-950 border border-[#EAE4F8] dark:border-slate-800 rounded-2xl text-[#1E1235] dark:text-white placeholder:text-[#7B7393] focus:outline-none focus:border-[#1B664B] transition-all text-sm font-auth-body"
             />
           </div>
 
@@ -768,7 +768,7 @@ export default function CategoriesPage() {
               value={formDescription}
               onChange={(e) => setFormDescription(e.target.value)}
               placeholder="Brief summary of documents stored in this category..."
-              className="w-full px-3.5 py-2.5 bg-[#F3F0FA] dark:bg-slate-950 border border-[#EAE4F8] dark:border-slate-800 rounded-2xl text-[#1E1235] dark:text-white placeholder:text-[#7B7393] focus:outline-none focus:border-themePrimary transition-all text-sm resize-none font-auth-body"
+              className="w-full px-3.5 py-2.5 bg-[#F3F0FA] dark:bg-slate-950 border border-[#EAE4F8] dark:border-slate-800 rounded-2xl text-[#1E1235] dark:text-white placeholder:text-[#7B7393] focus:outline-none focus:border-[#1B664B] transition-all text-sm resize-none font-auth-body"
             />
           </div>
 
@@ -827,7 +827,7 @@ export default function CategoriesPage() {
             <button
               type="submit"
               disabled={formSubmitting}
-              className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-extrabold shadow-md shadow-orange-500/25 hover:scale-105 transition flex items-center gap-2 disabled:opacity-50 text-sm font-auth-heading"
+              className="px-5 py-2.5 rounded-2xl bg-[#1B664B] text-white font-extrabold shadow-md shadow-emerald-950/20 hover:scale-105 transition flex items-center gap-2 disabled:opacity-50 text-sm font-auth-heading"
             >
               {formSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
               Create Category
@@ -842,7 +842,7 @@ export default function CategoriesPage() {
         onClose={() => setIsEditOpen(false)}
         title="Edit Category"
         subtitle="Update category details and styling"
-        icon={<Edit2 className="w-5 h-5 text-themePrimary" />}
+        icon={<Edit2 className="w-5 h-5 text-[#1B664B]" />}
         maxWidth="max-w-lg"
       >
         {formError && (
@@ -860,7 +860,7 @@ export default function CategoriesPage() {
               required
               value={formName}
               onChange={(e) => setFormName(e.target.value)}
-              className="w-full px-3.5 py-2.5 bg-[#F3F0FA] dark:bg-slate-950 border border-[#EAE4F8] dark:border-slate-800 rounded-2xl text-[#1E1235] dark:text-white placeholder:text-[#7B7393] focus:outline-none focus:border-themePrimary transition-all text-sm font-auth-body"
+              className="w-full px-3.5 py-2.5 bg-[#F3F0FA] dark:bg-slate-950 border border-[#EAE4F8] dark:border-slate-800 rounded-2xl text-[#1E1235] dark:text-white placeholder:text-[#7B7393] focus:outline-none focus:border-[#1B664B] transition-all text-sm font-auth-body"
             />
           </div>
 
@@ -870,7 +870,7 @@ export default function CategoriesPage() {
               rows={3}
               value={formDescription}
               onChange={(e) => setFormDescription(e.target.value)}
-              className="w-full px-3.5 py-2.5 bg-[#F3F0FA] dark:bg-slate-950 border border-[#EAE4F8] dark:border-slate-800 rounded-2xl text-[#1E1235] dark:text-white placeholder:text-[#7B7393] focus:outline-none focus:border-themePrimary transition-all text-sm resize-none font-auth-body"
+              className="w-full px-3.5 py-2.5 bg-[#F3F0FA] dark:bg-slate-950 border border-[#EAE4F8] dark:border-slate-800 rounded-2xl text-[#1E1235] dark:text-white placeholder:text-[#7B7393] focus:outline-none focus:border-[#1B664B] transition-all text-sm resize-none font-auth-body"
             />
           </div>
 
@@ -906,8 +906,8 @@ export default function CategoriesPage() {
                   onClick={() => setFormIcon(ic.name)}
                   className={`p-2.5 rounded-2xl border flex flex-col items-center justify-center gap-1 transition-all ${
                     formIcon === ic.name 
-                      ? 'border-themePrimary bg-themePrimary/10 text-themePrimary shadow-sm' 
-                      : 'border-[#EAE4F8] dark:border-slate-800 hover:border-themePrimary/40 text-[#7B7393] bg-[#F3F0FA] dark:bg-slate-950 hover:text-themePrimary'
+                      ? 'border-[#1B664B] bg-[#1B664B]/10 text-[#1B664B] shadow-sm' 
+                      : 'border-[#EAE4F8] dark:border-slate-800 hover:border-[#1B664B]/40 text-[#7B7393] bg-[#F3F0FA] dark:bg-slate-950 hover:text-[#1B664B]'
                   }`}
                 >
                   {renderIcon(ic.name, "w-4 h-4")}
@@ -928,7 +928,7 @@ export default function CategoriesPage() {
             <button
               type="submit"
               disabled={formSubmitting}
-              className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-extrabold shadow-md shadow-orange-500/25 hover:scale-105 transition flex items-center gap-2 disabled:opacity-50 text-sm font-auth-heading"
+              className="px-5 py-2.5 rounded-2xl bg-[#1B664B] text-white font-extrabold shadow-md shadow-emerald-950/20 hover:scale-105 transition flex items-center gap-2 disabled:opacity-50 text-sm font-auth-heading"
             >
               {formSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
               Save Changes
@@ -943,16 +943,16 @@ export default function CategoriesPage() {
         onClose={() => setIsDeleteOpen(false)}
         title={selectedCategory && selectedCategory.document_count > 0 ? 'Cannot Delete Category' : 'Confirm Category Deletion'}
         subtitle={selectedCategory ? `Category: ${selectedCategory.category_name}` : ''}
-        icon={selectedCategory && selectedCategory.document_count > 0 ? <AlertTriangle className="w-5 h-5 text-amber-500" /> : <Trash2 className="w-5 h-5 text-rose-500" />}
+        icon={selectedCategory && selectedCategory.document_count > 0 ? <AlertTriangle className="w-5 h-5 text-[#1B664B]" /> : <Trash2 className="w-5 h-5 text-rose-500" />}
         maxWidth="max-w-md"
       >
         {selectedCategory && (
           <div className="space-y-4">
             {selectedCategory.document_count > 0 ? (
               <div className="space-y-4">
-                <div className="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900 text-amber-900 dark:text-amber-200 text-sm space-y-2 font-auth-body">
-                  <div className="flex items-center gap-2 font-extrabold text-amber-700 dark:text-amber-400">
-                    <AlertTriangle className="w-4 h-4 shrink-0 text-amber-600" />
+                <div className="p-4 rounded-2xl bg-[#E8F5F0] dark:bg-emerald-950/60 border border-[#D1EBE1] dark:border-amber-900 text-[#1B664B] dark:text-[#1B664B] text-sm space-y-2 font-auth-body">
+                  <div className="flex items-center gap-2 font-extrabold text-[#1B664B] dark:text-[#1B664B]">
+                    <AlertTriangle className="w-4 h-4 shrink-0 text-[#1B664B]" />
                     <span>Active Documents Assigned ({selectedCategory.document_count})</span>
                   </div>
                   <p className="leading-relaxed">

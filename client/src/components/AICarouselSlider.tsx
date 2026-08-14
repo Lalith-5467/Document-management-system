@@ -52,23 +52,23 @@ export default function FloatingArrowHeroCarousel() {
 
   const currSlide = slides[current];
 
-  const accentGradient = currSlide.accentGradient || 'from-themePrimary via-[#F97316] to-themePrimary';
-  const btnBg = `bg-gradient-to-r ${accentGradient} hover:brightness-110 shadow-orange-500/30`;
+  const accentGradient = currSlide.accentGradient || 'from-[#1B664B] via-[#14523C] to-[#0F402E]';
+  const btnBg = `bg-gradient-to-r ${accentGradient} hover:brightness-110 shadow-emerald-950/20`;
 
   return (
     <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 overflow-hidden font-poppins">
       {/* Background Glow Effect */}
-      <div
+      <div 
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[450px] rounded-full blur-[150px] pointer-events-none transition-all duration-700 opacity-20"
-        style={{ backgroundColor: 'var(--theme-primary, #FF6B00)' }}
+        style={{ backgroundColor: '#1B664B' }}
       />
 
       <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center min-h-[500px] px-8 sm:px-12 lg:px-16">
         {/* Left Column: Hero Text Content */}
         <div className="lg:col-span-6 space-y-6 sm:space-y-8 text-left">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-100 border border-orange-200 text-xs font-black tracking-wider text-themePrimary shadow-xs">
-            <Sparkles className="w-4 h-4 text-themePrimary" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#E8F5F0] border border-[#D1EBE1] text-xs font-black tracking-wider text-[#1B664B] shadow-xs">
+            <Sparkles className="w-4 h-4 text-[#1B664B]" />
             <span>{currSlide.badge}</span>
           </div>
 
@@ -76,7 +76,7 @@ export default function FloatingArrowHeroCarousel() {
           <div className="space-y-3">
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-[1.1]">
               {currSlide.title}{' '}
-              <span className={`bg-gradient-to-r ${accentGradient} bg-clip-text text-transparent block sm:inline`}>
+              <span className="text-[#1B664B] block sm:inline">
                 {currSlide.highlight}
               </span>
             </h1>
@@ -89,7 +89,7 @@ export default function FloatingArrowHeroCarousel() {
           <div className="flex flex-wrap items-center gap-4 pt-4">
             <Link
               href={currSlide.primaryCtaHref || '/register'}
-              className={`px-6 py-3.5 rounded-2xl text-white text-xs font-black shadow-xl transition-all hover:scale-105 active:scale-95 flex items-center gap-2.5 ${btnBg}`}
+              className="px-6 py-3.5 rounded-2xl text-white text-xs font-black shadow-md bg-[#1B664B] hover:bg-[#14523C] active:bg-[#0F402E] transition-all hover:scale-105 active:scale-95 flex items-center gap-2.5"
             >
               <span>{currSlide.primaryCtaLabel || 'Get Started'}</span>
               <ArrowRight className="w-4 h-4" />
@@ -97,7 +97,7 @@ export default function FloatingArrowHeroCarousel() {
 
             <Link
               href={currSlide.secondaryCtaHref || '/login'}
-              className="px-6 py-3.5 rounded-2xl bg-orange-50 text-themePrimary border border-orange-200 hover:bg-orange-100 hover:border-orange-300 text-xs font-black shadow-sm transition-all hover:scale-105 active:scale-95 flex items-center gap-2"
+              className="px-6 py-3.5 rounded-2xl bg-white text-slate-800 border border-slate-200 hover:bg-[#E8F5F0] hover:border-[#D1EBE1] hover:text-[#1B664B] text-xs font-black shadow-sm transition-all hover:scale-105 active:scale-95 flex items-center gap-2"
             >
               <LogIn className="w-4 h-4" />
               <span>{currSlide.secondaryCtaLabel || 'Sign In'}</span>
@@ -121,7 +121,7 @@ export default function FloatingArrowHeroCarousel() {
       {/* Floating Left and Right Navigation Arrow Buttons */}
       <button
         onClick={prevSlide}
-        className="absolute left-0 sm:left-2 lg:left-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-2xl bg-white/90 backdrop-blur-md text-themePrimary border border-slate-200/90 shadow-xl flex items-center justify-center hover:bg-themePrimary hover:text-white hover:border-themePrimary hover:scale-110 active:scale-95 transition-all duration-200"
+        className="absolute left-0 sm:left-2 lg:left-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-2xl bg-white/90 backdrop-blur-md text-[#1B664B] border border-slate-200/90 shadow-xl flex items-center justify-center hover:bg-[#1B664B] hover:text-white hover:border-[#1B664B] hover:scale-110 active:scale-95 transition-all duration-200"
         aria-label="Previous Slide"
       >
         <ChevronLeft className="w-6 h-6 stroke-[2.5]" />
@@ -129,7 +129,7 @@ export default function FloatingArrowHeroCarousel() {
 
       <button
         onClick={nextSlide}
-        className="absolute right-0 sm:right-2 lg:right-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-2xl bg-white/90 backdrop-blur-md text-themePrimary border border-slate-200/90 shadow-xl flex items-center justify-center hover:bg-themePrimary hover:text-white hover:border-themePrimary hover:scale-110 active:scale-95 transition-all duration-200"
+        className="absolute right-0 sm:right-2 lg:right-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-2xl bg-white/90 backdrop-blur-md text-[#1B664B] border border-slate-200/90 shadow-xl flex items-center justify-center hover:bg-[#1B664B] hover:text-white hover:border-[#1B664B] hover:scale-110 active:scale-95 transition-all duration-200"
         aria-label="Next Slide"
       >
         <ChevronRight className="w-6 h-6 stroke-[2.5]" />
@@ -143,8 +143,8 @@ export default function FloatingArrowHeroCarousel() {
             onClick={() => setCurrent(i)}
             className={`h-2.5 rounded-full transition-all duration-300 ${
               i === current
-                ? 'w-8 bg-themePrimary'
-                : 'w-2.5 bg-zinc-300 hover:bg-zinc-400'
+                ? 'w-8 bg-[#1B664B]'
+                : 'w-2.5 bg-emerald-200/80 hover:bg-[#1B664B]'
             }`}
             aria-label={`Go to slide ${i + 1}`}
           />

@@ -92,7 +92,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${poppins.className} bg-slate-50 text-slate-900 dark:bg-[#0b1120] dark:text-slate-100 transition-colors duration-200 antialiased selection:bg-themePrimary selection:text-white`}>
+      <body className={`${poppins.className} bg-slate-50 text-slate-900 dark:bg-[#0b1120] dark:text-slate-100 transition-colors duration-200 antialiased selection:bg-[#1B664B] selection:text-white`}>
         <AuthProvider>
           <ThemeProvider>
             <LanguageProvider>

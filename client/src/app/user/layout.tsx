@@ -39,7 +39,7 @@ export default function DashboardLayout({
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100" style={{ fontFamily: 'var(--font-plus-jakarta), Plus Jakarta Sans, sans-serif' }}>
         <div className="flex items-center gap-3">
-          <Loader2 className="w-6 h-6 animate-spin text-themePrimary" />
+          <Loader2 className="w-6 h-6 animate-spin text-[#1B664B]" />
           <span className="text-sm font-semibold text-slate-600 dark:text-slate-400">
             {isAdmin ? 'Redirecting to Admin Control Center...' : 'Loading DocVault Workspace...'}
           </span>

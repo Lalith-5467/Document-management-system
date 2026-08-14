@@ -23,11 +23,11 @@ export interface FolderItem {
 }
 
 const COLOR_OPTIONS = [
-  { name: 'Primary Orange', value: 'var(--theme-primary, #FF6B00)' },
+  { name: 'Primary Green', value: '#1B664B' },
   { name: 'Emerald', value: '#10B981' },
   { name: 'Violet', value: '#8B5CF6' },
   { name: 'Pink', value: '#EC4899' },
-  { name: 'Amber', value: '#F59E0B' },
+  { name: 'Amber', value: '#1B664B' },
   { name: 'Cyan', value: '#06B6D4' },
   { name: 'Red', value: '#EF4444' },
   { name: 'Slate', value: '#64748B' }
@@ -48,7 +48,7 @@ export default function FoldersPage() {
   const [selectedFolder, setSelectedFolder] = useState<FolderItem | null>(null);
   const [formName, setFormName] = useState<string>('');
   const [formDescription, setFormDescription] = useState<string>('');
-  const [formColor, setFormColor] = useState<string>('var(--theme-primary, #FF6B00)');
+  const [formColor, setFormColor] = useState<string>('var(--theme-primary, #1B664B)');
   const [formInitialFile, setFormInitialFile] = useState<File | null>(null);
   const [formSubmitting, setFormSubmitting] = useState<boolean>(false);
   const [formError, setFormError] = useState<string | null>(null);
@@ -70,7 +70,7 @@ export default function FoldersPage() {
       if (urlParams.get('create') === 'true' || urlParams.get('new') === 'true') {
         setFormName('');
         setFormDescription('');
-        setFormColor('var(--theme-primary, #FF6B00)');
+        setFormColor('var(--theme-primary, #1B664B)');
         setFormError(null);
         setIsCreateOpen(true);
       }
@@ -120,7 +120,7 @@ export default function FoldersPage() {
       { id: 2, category_name: 'Academic Documents', color: '#10B981' },
       { id: 3, category_name: 'Project Documents', color: '#8B5CF6' },
       { id: 4, category_name: 'Certificates', color: '#EC4899' },
-      { id: 5, category_name: 'Resume', color: '#F59E0B' },
+      { id: 5, category_name: 'Resume', color: '#1B664B' },
       { id: 6, category_name: 'Client Requirement Documents', color: '#06B6D4' },
       { id: 7, category_name: 'Bills', color: '#EF4444' },
       { id: 8, category_name: 'Others', color: '#64748B' },
@@ -199,7 +199,7 @@ export default function FoldersPage() {
   const handleOpenCreate = () => {
     setFormName('');
     setFormDescription('');
-    setFormColor('var(--theme-primary, #FF6B00)');
+    setFormColor('var(--theme-primary, #1B664B)');
     setFormInitialFile(null);
     setFormError(null);
     setFormCategory('');
@@ -261,7 +261,7 @@ export default function FoldersPage() {
     setSelectedFolder(folder);
     setFormName(folder.folder_name);
     setFormDescription(folder.description || '');
-    setFormColor(folder.color || 'var(--theme-primary, #FF6B00)');
+    setFormColor(folder.color || 'var(--theme-primary, #1B664B)');
     setFormError(null);
     setIsEditOpen(true);
   };
@@ -355,9 +355,8 @@ export default function FoldersPage() {
 
         <button
           onClick={handleOpenCreate}
-          className="group relative overflow-hidden px-6 py-2.5 text-sm font-black text-white bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] hover:scale-105 rounded-xl shadow-[0_8px_25px_rgba(255,107,0,0.3)] hover:shadow-[0_12px_35px_rgba(255,107,0,0.5)] transition-all duration-300 flex items-center justify-center gap-2.5 whitespace-nowrap active-press border border-orange-400/50"
+          className="group relative overflow-hidden px-6 py-2.5 text-sm font-black text-white bg-[#1B664B] hover:bg-[#14523C] active:bg-[#0F402E] hover:scale-105 rounded-xl shadow-md transition-all duration-300 flex items-center justify-center gap-2.5 whitespace-nowrap"
         >
-          <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-1000 ease-in-out" />
           <FolderPlus className="w-4.5 h-4.5 group-hover:rotate-12 group-hover:scale-110 transition-transform duration-300 relative z-10" /> 
           <span className="relative z-10 drop-shadow-md tracking-wide">Create Folder</span>
         </button>
@@ -372,7 +371,7 @@ export default function FoldersPage() {
             placeholder="Search folders by name or description..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 text-sm bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-themePrimary transition-all"
+            className="w-full pl-10 pr-4 py-2 text-sm bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-[#1B664B] transition-all"
           />
         </div>
         <span className="text-sm font-bold text-slate-600 dark:text-slate-400">Total: {filteredFolders.length} Folders</span>
@@ -399,13 +398,13 @@ export default function FoldersPage() {
         </div>
       ) : filteredFolders.length === 0 ? (
         <div className="bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 rounded-3xl p-12 text-center space-y-4 shadow-md animate-fade-in">
-          <div className="w-16 h-16 rounded-3xl bg-orange-50 dark:bg-orange-950/40 text-themePrimary border border-orange-200 dark:border-orange-900 flex items-center justify-center mx-auto animate-float-bob">
+          <div className="w-16 h-16 rounded-3xl bg-[#E8F5F0] dark:bg-emerald-950/40 text-[#1B664B] border border-[#D1EBE1] dark:border-emerald-900 flex items-center justify-center mx-auto animate-float-bob">
             <FolderClosed className="w-8 h-8" />
           </div>
           <p className="text-sm text-slate-600 dark:text-slate-400 font-medium font-auth-heading">No folders found matching your query.</p>
           <button
             onClick={handleOpenCreate}
-            className="px-5 py-2.5 text-sm font-bold text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:scale-105 active:scale-95 rounded-xl shadow-md shadow-orange-500/25 transition-all duration-200"
+            className="px-5 py-2.5 text-sm font-bold text-white bg-[#1B664B] hover:bg-[#14523C] active:bg-[#0F402E] hover:scale-105 active:scale-95 rounded-xl shadow-md transition-all duration-200"
           >
             Create New Folder
           </button>
@@ -416,14 +415,14 @@ export default function FoldersPage() {
             <div
               key={folder.id}
               style={{ animationDelay: `${(idx % 8) * 60}ms` }}
-              className="bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 hover:border-themePrimary/40 p-5 rounded-2xl space-y-3 transition-all duration-300 group flex flex-col justify-between shadow-xs hover:shadow-[0_12px_35px_rgba(255,107,0,0.12)] hover:-translate-y-1.5 cursor-pointer relative overflow-hidden animate-fade-in"
+              className="card-animated animate-card-entrance bg-white dark:bg-[#111827] border border-slate-200 dark:border-slate-800 p-5 rounded-2xl space-y-3 group flex flex-col justify-between shadow-xs cursor-pointer relative overflow-hidden"
             >
               <div className="space-y-2.5">
                 <div className="flex items-center justify-between">
                   <Link 
                     href={`/user/documents?folder_id=${folder.id}&folder=${encodeURIComponent(folder.folder_name)}`}
-                    className="w-10 h-10 rounded-2xl flex items-center justify-center text-white shadow-md transform group-hover:scale-110 transition-transform cursor-pointer"
-                    style={{ backgroundColor: folder.color && folder.color !== '#3B82F6' ? folder.color : 'var(--theme-primary, #FF6B00)' }}
+                    className="w-10 h-10 rounded-2xl flex items-center justify-center text-white shadow-md card-icon-bounce cursor-pointer"
+                    style={{ backgroundColor: folder.color && folder.color !== '#3B82F6' ? folder.color : 'var(--theme-primary, #1B664B)' }}
                   >
                     <FolderClosed className="w-5 h-5" />
                   </Link>
@@ -447,7 +446,7 @@ export default function FoldersPage() {
                 </div>
 
                 <Link href={`/user/documents?folder_id=${folder.id}&folder=${encodeURIComponent(folder.folder_name)}`} className="block group/link">
-                  <h3 className="text-base font-extrabold text-slate-900 dark:text-white group-hover/link:text-themePrimary dark:group-hover/link:text-orange-400 transition-colors truncate">
+                  <h3 className="text-base font-extrabold text-slate-900 dark:text-white group-hover/link:text-[#1B664B] dark:group-hover/link:text-[#1B664B] transition-colors truncate">
                     {folder.folder_name}
                   </h3>
                   <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2 mt-0.5 leading-relaxed group-hover/link:text-slate-800 dark:group-hover/link:text-slate-300 transition-colors">
@@ -462,7 +461,7 @@ export default function FoldersPage() {
                 </span>
                 <Link
                   href={`/user/documents?folder_id=${folder.id}&folder=${encodeURIComponent(folder.folder_name)}`}
-                  className="text-sm font-bold text-themePrimary dark:text-orange-400 hover:text-orange-600 dark:hover:text-orange-300 flex items-center gap-1 hover:underline"
+                  className="text-sm font-bold text-[#1B664B] dark:text-[#1B664B] hover:text-[#1B664B] dark:hover:text-[#1B664B] flex items-center gap-1 hover:underline"
                 >
                   Open Folder →
                 </Link>
@@ -477,7 +476,7 @@ export default function FoldersPage() {
         isOpen={isCreateOpen}
         onClose={() => setIsCreateOpen(false)}
         title="Create Workspace Folder"
-        icon={<FolderPlus className="w-5 h-5 text-themePrimary" />}
+        icon={<FolderPlus className="w-5 h-5 text-[#1B664B]" />}
         maxWidth="max-w-md"
       >
         {formError && (
@@ -496,7 +495,7 @@ export default function FoldersPage() {
               value={formName}
               onChange={(e) => setFormName(e.target.value)}
               placeholder="e.g., 2026 Tax Return, Project Alpha Specs"
-              className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-themePrimary"
+              className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-[#1B664B]"
             />
           </div>
 
@@ -507,14 +506,14 @@ export default function FoldersPage() {
               value={formDescription}
               onChange={(e) => setFormDescription(e.target.value)}
               placeholder="Brief description of documents stored in this folder..."
-              className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-themePrimary resize-none"
+              className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-[#1B664B] resize-none"
             />
           </div>
 
           {/* Category Selection — Custom Dropdown (always opens downward) */}
           <div ref={catDropdownRef} className="relative">
             <label className="block font-bold text-slate-700 dark:text-slate-300 mb-1 flex items-center gap-1.5">
-              <Tag className="w-3.5 h-3.5 text-themePrimary" /> Document Category <span className="text-slate-400 font-normal">(Optional)</span>
+              <Tag className="w-3.5 h-3.5 text-[#1B664B]" /> Document Category <span className="text-slate-400 font-normal">(Optional)</span>
             </label>
             {/* Trigger button */}
             <button
@@ -522,7 +521,7 @@ export default function FoldersPage() {
               onClick={() => setCatDropdownOpen(!catDropdownOpen)}
               className={`w-full flex items-center justify-between px-3.5 py-2.5 bg-slate-50 dark:bg-[#0b1120] border rounded-xl text-sm font-medium transition-all ${
                 catDropdownOpen
-                  ? 'border-themePrimary ring-1 ring-themePrimary/20'
+                  ? 'border-[#1B664B] ring-1 ring-themePrimary/20'
                   : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
               }`}
             >
@@ -544,11 +543,11 @@ export default function FoldersPage() {
                     setCatDropdownOpen(false);
                   }}
                   className={`w-full flex items-center justify-between px-3.5 py-2.5 text-sm transition hover:bg-slate-50 dark:hover:bg-slate-800 ${
-                    !formCategory ? 'text-themePrimary font-bold' : 'text-slate-500 dark:text-slate-400'
+                    !formCategory ? 'text-[#1B664B] font-bold' : 'text-slate-500 dark:text-slate-400'
                   }`}
                 >
                   <span>— None —</span>
-                  {!formCategory && <Check className="w-3.5 h-3.5 text-themePrimary" />}
+                  {!formCategory && <Check className="w-3.5 h-3.5 text-[#1B664B]" />}
                 </button>
 
                 {availableCategories.map((cat) => (
@@ -562,14 +561,14 @@ export default function FoldersPage() {
                       setCatDropdownOpen(false);
                     }}
                     className={`w-full flex items-center justify-between px-3.5 py-2.5 text-sm transition hover:bg-slate-50 dark:hover:bg-slate-800 ${
-                      formCategory === cat.category_name ? 'text-themePrimary font-bold bg-orange-50 dark:bg-orange-950/20' : 'text-slate-700 dark:text-slate-300'
+                      formCategory === cat.category_name ? 'text-[#1B664B] font-bold bg-[#E8F5F0] dark:bg-emerald-950/60' : 'text-slate-700 dark:text-slate-300'
                     }`}
                   >
                     <span className="flex items-center gap-2">
                       <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: cat.color || '#6C5CE7' }} />
                       {cat.category_name}
                     </span>
-                    {formCategory === cat.category_name && <Check className="w-3.5 h-3.5 text-themePrimary" />}
+                    {formCategory === cat.category_name && <Check className="w-3.5 h-3.5 text-[#1B664B]" />}
                   </button>
                 ))}
 
@@ -581,11 +580,11 @@ export default function FoldersPage() {
                     setCatDropdownOpen(false);
                   }}
                   className={`w-full flex items-center justify-between px-3.5 py-2.5 text-sm border-t border-slate-100 dark:border-slate-800 transition hover:bg-slate-50 dark:hover:bg-slate-800 ${
-                    formCategory === '__others__' ? 'text-themePrimary font-bold' : 'text-slate-500 dark:text-slate-400'
+                    formCategory === '__others__' ? 'text-[#1B664B] font-bold' : 'text-slate-500 dark:text-slate-400'
                   }`}
                 >
                   <span>+ Others (type manually)</span>
-                  {formCategory === '__others__' && <Check className="w-3.5 h-3.5 text-themePrimary" />}
+                  {formCategory === '__others__' && <Check className="w-3.5 h-3.5 text-[#1B664B]" />}
                 </button>
               </div>
             )}
@@ -596,13 +595,13 @@ export default function FoldersPage() {
                 value={formCustomCategory}
                 onChange={(e) => setFormCustomCategory(e.target.value)}
                 placeholder="Type your custom category name..."
-                className="mt-2 w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-themePrimary text-sm"
+                className="mt-2 w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#0b1120] border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-[#1B664B] text-sm"
                 autoFocus
               />
             )}
             {formCategory && formCategory !== '__others__' && (
               <p className="mt-1.5 text-xs text-slate-500 dark:text-slate-400">
-                ✓ Documents in this folder will default to <span className="font-semibold text-themePrimary">{formCategory}</span> category
+                ✓ Documents in this folder will default to <span className="font-semibold text-[#1B664B]">{formCategory}</span> category
               </p>
             )}
           </div>
@@ -666,7 +665,7 @@ export default function FoldersPage() {
             <button type="button" onClick={() => setIsCreateOpen(false)} className="px-4 py-2 rounded-xl border border-slate-800 text-slate-400 font-semibold hover:text-white">
               Cancel
             </button>
-            <button type="submit" disabled={formSubmitting} className="px-4 py-2 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 text-white font-bold flex items-center gap-2 shadow-lg shadow-orange-500/25">
+            <button type="submit" disabled={formSubmitting} className="px-4 py-2 rounded-xl bg-[#1B664B] hover:brightness-110 text-white font-bold flex items-center gap-2 shadow-lg shadow-emerald-950/20">
               {formSubmitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />} Create Folder
             </button>
           </div>
@@ -678,7 +677,7 @@ export default function FoldersPage() {
         isOpen={isEditOpen && Boolean(selectedFolder)}
         onClose={() => setIsEditOpen(false)}
         title="Edit Folder"
-        icon={<Edit2 className="w-5 h-5 text-themePrimary" />}
+        icon={<Edit2 className="w-5 h-5 text-[#1B664B]" />}
         maxWidth="max-w-md"
       >
         {formError && (
@@ -729,7 +728,7 @@ export default function FoldersPage() {
             <button type="button" onClick={() => setIsEditOpen(false)} className="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 font-semibold hover:text-slate-900 dark:hover:text-white">
               Cancel
             </button>
-            <button type="submit" disabled={formSubmitting} className="px-4 py-2 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 text-white font-bold flex items-center gap-2 shadow-lg shadow-orange-500/25">
+            <button type="submit" disabled={formSubmitting} className="px-4 py-2 rounded-xl bg-[#1B664B] hover:brightness-110 text-white font-bold flex items-center gap-2 shadow-lg shadow-emerald-950/20">
               {formSubmitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />} Save Changes
             </button>
           </div>

@@ -34,7 +34,7 @@ export default function UpgradeModal() {
 
   return createPortal(
     <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 sm:p-6 bg-slate-950/75 backdrop-blur-md overflow-y-auto">
-      <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-4xl w-full p-6 sm:p-8 shadow-2xl shadow-orange-500/10 border border-slate-200 dark:border-slate-800 relative space-y-6 m-auto max-h-[90vh] overflow-y-auto animate-pop-in">
+      <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-4xl w-full p-6 sm:p-8 shadow-2xl shadow-emerald-950/20 border border-slate-200 dark:border-slate-800 relative space-y-6 m-auto max-h-[90vh] overflow-y-auto animate-pop-in">
         {/* Close Button */}
         <button
           onClick={closeUpgradeModal}
@@ -45,7 +45,7 @@ export default function UpgradeModal() {
 
         {/* Header */}
         <div className="text-center space-y-2 max-w-xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 text-[11px] font-black tracking-wider uppercase border border-orange-200 dark:border-orange-900/60">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] dark:text-[#1B664B] text-[11px] font-black tracking-wider uppercase border border-[#D1EBE1] dark:border-emerald-900/60">
             <Sparkles className="w-3.5 h-3.5" /> Unlock DocVault Premium
           </div>
           <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
@@ -63,7 +63,7 @@ export default function UpgradeModal() {
           </span>
           <button
             onClick={() => setBillingCycle(prev => prev === 'monthly' ? 'yearly' : 'monthly')}
-            className="w-14 h-7 bg-themePrimary rounded-full p-1 transition-colors relative flex items-center shadow-inner"
+            className="w-14 h-7 bg-[#1B664B] rounded-full p-1 transition-colors relative flex items-center shadow-inner"
           >
             <div
               className={`w-5 h-5 bg-white rounded-full shadow-md transform transition-transform ${
@@ -92,7 +92,7 @@ export default function UpgradeModal() {
                 key={plan.id}
                 className={`rounded-3xl p-6 flex flex-col justify-between space-y-6 relative transition-all duration-200 ${
                   isPro
-                    ? 'bg-gradient-to-b from-themePrimary to-[#EA580C] text-white shadow-xl shadow-orange-500/25 border-2 border-orange-400 scale-[1.02]'
+                    ? 'bg-[#1B664B] text-white shadow-xl border-2 border-emerald-400 scale-[1.02]'
                     : 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md'
                 }`}
               >
@@ -102,7 +102,7 @@ export default function UpgradeModal() {
                     className={`absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider shadow-md ${
                       isPro
                         ? 'bg-slate-900 text-white border border-slate-700'
-                        : 'bg-orange-100 text-themePrimary'
+                        : 'bg-[#E8F5F0] text-[#1B664B]'
                     }`}
                   >
                     ⭐ {plan.badge}
@@ -116,19 +116,19 @@ export default function UpgradeModal() {
                     </h3>
                     <div className="mt-2 flex items-baseline gap-1.5 flex-wrap">
                       {billingCycle === 'yearly' && plan.priceMonthly > 0 && (
-                        <span className={`text-lg font-extrabold line-through ${isPro ? 'text-orange-200' : 'text-slate-400'}`}>
+                        <span className={`text-lg font-extrabold line-through ${isPro ? 'text-emerald-200' : 'text-slate-400'}`}>
                           ₹{plan.priceMonthly}
                         </span>
                       )}
                       <span className={`text-3xl font-black ${isPro ? 'text-white' : 'text-slate-900 dark:text-white'}`}>
                         {plan.priceMonthly === 0 ? '₹0' : `₹${price}`}
                       </span>
-                      <span className={`text-xs font-semibold ${isPro ? 'text-orange-100' : 'text-slate-500'}`}>
+                      <span className={`text-xs font-semibold ${isPro ? 'text-emerald-100' : 'text-slate-500'}`}>
                         {plan.priceMonthly === 0 ? ' / 7 Days Free' : ' / month'}
                       </span>
                     </div>
                     <div className="mt-1.5 flex flex-wrap items-center gap-1">
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[9px] font-extrabold bg-white/20 text-white dark:bg-orange-950/60 dark:text-orange-300">
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[9px] font-extrabold bg-white/20 text-white dark:bg-emerald-950/60 dark:text-emerald-400">
                         🎁 7 Days 100% Free (₹0)
                       </span>
                       {billingCycle === 'yearly' && plan.priceMonthly > 0 && (
@@ -166,12 +166,12 @@ export default function UpgradeModal() {
                       openPaymentModal(plan, billingCycle);
                     }
                   }}
-                  className={`w-full py-3 rounded-2xl font-black text-xs transition-all flex items-center justify-center gap-2 ${
+                  className={`w-full py-3.5 rounded-2xl font-black text-xs transition cursor-pointer text-center block ${
                     isPro
-                      ? 'bg-white text-themePrimary shadow-lg hover:bg-orange-50 hover:scale-[1.02]'
+                      ? 'bg-white text-[#1B664B] shadow-lg hover:bg-[#E8F5F0] hover:scale-[1.02]'
                       : plan.id === 'free_trial'
                       ? 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-900'
-                      : 'bg-themePrimary text-white hover:bg-[#E05E00] shadow-md shadow-orange-500/25 hover:scale-[1.02]'
+                      : 'bg-[#1B664B] text-white hover:bg-[#14523C] shadow-md hover:scale-[1.02]'
                   }`}
                 >
                   {plan.id === 'free_trial' ? (

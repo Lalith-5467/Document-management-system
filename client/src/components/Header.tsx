@@ -122,7 +122,7 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
         <div className="min-w-0 flex flex-col justify-center">
           <h1 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-1.5 font-auth-heading truncate leading-snug">
             <span className="shrink-0">{t('app.welcome', greeting)},</span>
-            <span className="text-themePrimary font-extrabold max-w-[150px] sm:max-w-[220px] lg:max-w-[320px] truncate">{userName}</span>
+            <span className="text-[#1B664B] font-extrabold max-w-[150px] sm:max-w-[220px] lg:max-w-[320px] truncate">{userName}</span>
             <span className="shrink-0">👋</span>
           </h1>
           <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-normal mt-1 leading-normal truncate max-w-sm sm:max-w-md">
@@ -142,12 +142,12 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
           }}
           className="relative w-64 md:w-72 lg:w-80 focus-within:lg:w-96 transition-all duration-300 group hidden sm:block"
         >
-          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 group-focus-within:text-themePrimary group-focus-within:scale-110 transition-all duration-200" />
+          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 group-focus-within:text-[#1B664B] group-focus-within:scale-110 transition-all duration-200" />
           <input
             name="headerSearch"
             type="text"
             placeholder={t('common.searchPlaceholder', 'Search documents, folders...')}
-            className="w-full h-10 pl-10 pr-12 text-xs font-medium bg-slate-100/90 dark:bg-slate-800/90 border border-slate-200/90 dark:border-slate-700/90 rounded-2xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:bg-white dark:focus:bg-slate-800 focus:border-themePrimary focus:ring-2 focus:ring-themePrimary/15 transition-all duration-300 shadow-2xs"
+            className="w-full h-10 pl-10 pr-12 text-xs font-medium bg-slate-100/90 dark:bg-slate-800/90 border border-slate-200/90 dark:border-slate-700/90 rounded-2xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:bg-white dark:focus:bg-slate-800 focus:border-[#1B664B] focus:ring-2 focus:ring-themePrimary/15 transition-all duration-300 shadow-2xs"
           />
           <div className="absolute right-3.5 top-1/2 -translate-y-1/2 flex items-center gap-0.5 px-2 py-0.5 rounded-lg bg-slate-200/80 dark:bg-slate-700 border border-slate-300/80 dark:border-slate-600 text-[10px] font-mono font-bold text-slate-600 dark:text-slate-300 pointer-events-none shadow-2xs group-focus-within:opacity-0 transition-opacity">
             <Command className="w-3 h-3" /> K
@@ -157,7 +157,7 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
         {/* Upload Document Primary Button */}
         <Link
           href="/user/upload"
-          className="inline-flex items-center gap-2 h-10 px-4 rounded-2xl text-xs font-semibold bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] text-white shadow-md shadow-orange-500/25 border border-orange-400/30 transition-all duration-200 hover:scale-105 active:scale-95 shrink-0 hover:shadow-lg hover:shadow-orange-500/40"
+          className="inline-flex items-center gap-2 h-10 px-4 rounded-2xl text-xs font-semibold bg-[#1B664B] hover:bg-[#14523C] active:bg-[#0F402E] text-white shadow-md transition-all duration-200 hover:scale-105 active:scale-95 shrink-0"
         >
           <Upload className="w-4 h-4 text-white" />
           <span className="hidden sm:inline">{t('nav.uploadDocument', 'Upload Document')}</span>
@@ -171,13 +171,13 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
         >
           {theme === 'dark' ? (
             <>
-              <Moon className="w-4 h-4 text-orange-400 fill-orange-400/20 group-hover:rotate-12 transition-transform duration-300" />
-              <span className="hidden sm:inline text-xs font-bold text-orange-300 font-auth-heading">{t('common.dark', 'Dark')}</span>
+              <Moon className="w-4 h-4 text-emerald-400 fill-emerald-400/20 group-hover:rotate-12 transition-transform duration-300" />
+              <span className="hidden sm:inline text-xs font-bold text-emerald-300 font-auth-heading">{t('common.dark', 'Dark')}</span>
             </>
           ) : (
             <>
-              <Sun className="w-4 h-4 text-amber-500 fill-amber-500/20 group-hover:rotate-45 transition-transform duration-300" />
-              <span className="hidden sm:inline text-xs font-bold text-amber-600 font-auth-heading">{t('common.light', 'Light')}</span>
+              <Sun className="w-4 h-4 text-emerald-600 fill-emerald-600/20 group-hover:rotate-45 transition-transform duration-300" />
+              <span className="hidden sm:inline text-xs font-bold text-emerald-700 font-auth-heading">{t('common.light', 'Light')}</span>
             </>
           )}
         </button>
@@ -196,8 +196,8 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
             <Bell className={`w-4 h-4 group-hover:rotate-12 transition-transform duration-300 ${unreadCount > 0 ? 'animate-bell-wiggle' : ''}`} />
             {unreadCount > 0 && (
               <span className="absolute top-2 right-2 flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-themePrimary opacity-75" />
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-themePrimary border-2 border-white dark:border-slate-900" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#1B664B] opacity-75" />
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#1B664B] border-2 border-white dark:border-slate-900" />
               </span>
             )}
           </button>
@@ -206,9 +206,9 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
             <div className="absolute right-0 mt-3 w-[360px] sm:w-[420px] bg-white/95 dark:bg-slate-900/95 border border-slate-200/90 dark:border-slate-800 rounded-3xl shadow-2xl z-50 p-4 space-y-3 backdrop-blur-xl animate-pop-in text-slate-900 dark:text-white font-sans">
               <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
                 <span className="text-xs font-bold flex items-center gap-2 font-auth-heading tracking-tight">
-                  <Bell className="w-4 h-4 text-themePrimary" /> System Notifications
+                  <Bell className="w-4 h-4 text-[#1B664B]" /> System Notifications
                   {unreadCount > 0 && (
-                    <span className="px-2 py-0.5 rounded-full bg-themePrimary text-white text-[9px] font-black uppercase">
+                    <span className="px-2 py-0.5 rounded-full bg-[#1B664B] text-white text-[9px] font-black uppercase">
                       {unreadCount} new
                     </span>
                   )}
@@ -216,7 +216,7 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
                 {unreadCount > 0 && (
                   <button
                     onClick={handleMarkAllReadHeader}
-                    className="text-[11px] font-bold text-themePrimary hover:underline cursor-pointer"
+                    className="text-[11px] font-bold text-[#1B664B] hover:underline cursor-pointer"
                   >
                     Mark all read
                   </button>
@@ -239,11 +239,11 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
                   onClick={() => setNotifTab('unread')}
                   className={`flex-1 py-1.5 rounded-xl transition-all cursor-pointer text-center flex items-center justify-center gap-1 ${
                     notifTab === 'unread'
-                      ? 'bg-white dark:bg-slate-700 text-themePrimary dark:text-orange-400 shadow-2xs font-bold'
+                      ? 'bg-white dark:bg-slate-700 text-[#1B664B] dark:text-emerald-400 shadow-2xs font-bold'
                       : 'text-slate-500 dark:text-slate-400 hover:text-slate-900'
                   }`}
                 >
-                  Unread {unreadCount > 0 && <span className="px-1.5 py-0.2 rounded-full bg-themePrimary text-white text-[9px] font-black">{unreadCount}</span>}
+                  Unread {unreadCount > 0 && <span className="px-1.5 py-0.2 rounded-full bg-[#1B664B] text-white text-[9px] font-black">{unreadCount}</span>}
                 </button>
                 <button
                   onClick={() => setNotifTab('read')}
@@ -259,14 +259,14 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
 
               <div className="space-y-2 max-h-64 overflow-y-auto font-sans">
                 {filteredNotifs.length === 0 ? (
-                  <p className="text-xs text-slate-400 text-center py-6 italic font-medium">No {notifTab !== 'all' ? notifTab : ''} notifications</p>
+                  <p className="text-xs text-slate-500 text-center py-6">No notifications</p>
                 ) : (
                   filteredNotifs.slice(0, 8).map((notif) => (
                     <div
                       key={notif.id}
                       className={`p-3 rounded-2xl border transition-all duration-200 text-xs space-y-1 flex items-start justify-between gap-2.5 ${
                         !notif.is_read
-                          ? 'bg-orange-50/60 dark:bg-orange-950/20 border-orange-200 dark:border-orange-900/50 font-semibold'
+                          ? 'bg-emerald-50/60 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-900/50 font-semibold'
                           : 'bg-slate-50 dark:bg-slate-800/40 border-slate-100 dark:border-slate-800'
                       }`}
                     >
@@ -278,7 +278,7 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
                         <div className="flex items-center gap-2">
                           <span className="font-bold text-slate-900 dark:text-white truncate max-w-[200px] font-auth-heading">{notif.title}</span>
                           {!notif.is_read ? (
-                            <span className="px-1.5 py-0.2 rounded-md bg-orange-100 text-themePrimary text-[9px] font-black uppercase shrink-0 border border-orange-200">Unread</span>
+                            <span className="px-1.5 py-0.2 rounded-md bg-emerald-100 text-[#1B664B] text-[9px] font-black uppercase shrink-0 border border-emerald-200">Unread</span>
                           ) : (
                             <span className="px-1.5 py-0.2 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-500 text-[9px] font-extrabold uppercase shrink-0">Read</span>
                           )}
@@ -291,7 +291,7 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
                         title={notif.is_read ? "Mark as unread" : "Mark as read"}
                         className={`p-1 rounded-lg border transition shrink-0 mt-0.5 cursor-pointer ${
                           notif.is_read
-                            ? 'text-slate-400 border-slate-200 dark:border-slate-700 hover:text-themePrimary'
+                            ? 'text-slate-400 border-slate-200 dark:border-slate-700 hover:text-[#1B664B]'
                             : 'text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100'
                         }`}
                       >
@@ -306,7 +306,7 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
                 <Link
                   href="/user/notifications"
                   onClick={() => setShowNotifications(false)}
-                  className="text-xs font-bold text-themePrimary dark:text-orange-400 hover:underline inline-flex items-center gap-1 font-auth-heading"
+                  className="text-xs font-bold text-[#1B664B] dark:text-emerald-400 hover:underline inline-flex items-center gap-1 font-auth-heading"
                 >
                   View All Notifications Center →
                 </Link>
@@ -324,7 +324,7 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
             }}
             className="flex items-center gap-3 p-1.5 pr-3 rounded-2xl hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent hover:border-slate-200 dark:hover:border-slate-700 transition-all duration-200 text-left active:scale-95 cursor-pointer group"
           >
-            <div className="w-9 h-9 rounded-2xl bg-gradient-to-tr from-themePrimary to-[#F97316] text-white font-bold flex items-center justify-center text-xs shadow-md border border-orange-300 dark:border-orange-500/50 group-hover:scale-105 transition-transform">
+            <div className="w-9 h-9 rounded-2xl bg-[#1B664B] text-white font-bold flex items-center justify-center text-xs shadow-md border border-[#D1EBE1] dark:border-emerald-800 group-hover:scale-105 transition-transform">
               {userName.charAt(0).toUpperCase()}
             </div>
             <div className="hidden md:block">
@@ -335,7 +335,7 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
                 {displayUserType}
               </div>
             </div>
-            <ChevronDown className={`w-3.5 h-3.5 text-slate-400 group-hover:text-themePrimary transition-transform duration-200 ${showProfileMenu ? 'rotate-180 text-themePrimary' : ''}`} />
+            <ChevronDown className={`w-3.5 h-3.5 text-slate-400 group-hover:text-[#1B664B] transition-transform duration-200 ${showProfileMenu ? 'rotate-180 text-[#1B664B]' : ''}`} />
           </button>
 
           {showProfileMenu && (
@@ -348,18 +348,18 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
               <Link
                 href="/user/profile"
                 onClick={() => setShowProfileMenu(false)}
-                className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs text-slate-700 dark:text-slate-300 hover:bg-orange-50 dark:hover:bg-orange-950/40 hover:text-themePrimary dark:hover:text-themePrimary transition-all duration-200 font-semibold"
+                className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs text-slate-700 dark:text-slate-300 hover:bg-[#E8F5F0] dark:hover:bg-slate-800 hover:text-[#1B664B] dark:hover:text-[#1B664B] transition-all duration-200 font-semibold"
               >
-                <User className="w-4 h-4 text-slate-400 group-hover:text-themePrimary" />
+                <User className="w-4 h-4 text-slate-400 group-hover:text-[#1B664B]" />
                 <span>{t('nav.userProfile', 'My Profile')}</span>
               </Link>
 
               <Link
                 href="/user/settings"
                 onClick={() => setShowProfileMenu(false)}
-                className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs text-slate-700 dark:text-slate-300 hover:bg-orange-50 dark:hover:bg-orange-950/40 hover:text-themePrimary dark:hover:text-themePrimary transition-all duration-200 font-semibold"
+                className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs text-slate-700 dark:text-slate-300 hover:bg-[#E8F5F0] dark:hover:bg-slate-800 hover:text-[#1B664B] dark:hover:text-[#1B664B] transition-all duration-200 font-semibold"
               >
-                <Settings className="w-4 h-4 text-slate-400 group-hover:text-themePrimary" />
+                <Settings className="w-4 h-4 text-slate-400 group-hover:text-[#1B664B]" />
                 <span>{t('nav.settings', 'Account Settings')}</span>
               </Link>
 
@@ -367,9 +367,9 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
                 <Link
                   href="/admin"
                   onClick={() => setShowProfileMenu(false)}
-                  className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs text-themePrimary hover:bg-orange-50 dark:hover:bg-orange-950/40 transition-all duration-200 font-bold"
+                  className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs text-[#1B664B] hover:bg-[#E8F5F0] dark:hover:bg-slate-800 transition-all duration-200 font-bold"
                 >
-                  <ShieldCheck className="w-4 h-4 text-themePrimary" />
+                  <ShieldCheck className="w-4 h-4 text-[#1B664B]" />
                   <span>Admin Portal</span>
                 </Link>
               )}

@@ -31,7 +31,7 @@ export default function AdminReportsPage() {
       { id: 2, title: 'lalith passport size pic.jpg', owner_name: 'Kalpana', file_size: 1672313, download_count: 12 },
     ],
     categoryBreakdown: [
-      { category_name: 'Personal Identity & Passports', color: 'var(--theme-primary, #FF6B00)', document_count: 3, storage_bytes: 3427865 },
+      { category_name: 'Personal Identity & Passports', color: 'var(--theme-primary, #1B664B)', document_count: 3, storage_bytes: 3427865 },
       { category_name: 'Academic Records & Diplomas', color: '#10B981', document_count: 1, storage_bytes: 1843200 },
       { category_name: 'Projects & Technical Specs', color: '#8B5CF6', document_count: 2, storage_bytes: 2516582 }
     ],
@@ -109,7 +109,7 @@ export default function AdminReportsPage() {
       </div>
 
       {loading ? (
-        <div className="p-16 flex items-center justify-center gap-2 text-xs text-slate-500"><Loader2 className="w-5 h-5 animate-spin text-themePrimary" /> Loading reports...</div>
+        <div className="p-16 flex items-center justify-center gap-2 text-xs text-slate-500"><Loader2 className="w-5 h-5 animate-spin text-[#1B664B]" /> Loading reports...</div>
       ) : !reports ? (
         <div className="p-16 text-center text-xs text-slate-500">No report data available.</div>
       ) : (
@@ -121,9 +121,9 @@ export default function AdminReportsPage() {
               { title: 'Total Documents', value: reports.totalDocuments, icon: FileText },
               { title: 'Storage Used', value: formatBytes(reports.totalStorageBytes), icon: HardDrive },
             ].map((card, i) => (
-              <div key={i} className="group p-5 rounded-3xl bg-white border border-slate-200 shadow-2xs hover:shadow-lg hover:border-themePrimary transition-all duration-300 flex items-center gap-4 cursor-pointer">
-                <div className="w-12 h-12 rounded-2xl bg-orange-50 border border-orange-200 flex items-center justify-center text-themePrimary group-hover:scale-110 transition-all shrink-0">
-                  <card.icon className="w-6 h-6 text-themePrimary" />
+              <div key={i} className="group p-5 rounded-3xl bg-white border border-slate-200 shadow-2xs hover:shadow-lg hover:border-[#1B664B] transition-all duration-300 flex items-center gap-4 cursor-pointer">
+                <div className="w-12 h-12 rounded-2xl bg-[#E8F5F0] border border-[#D1EBE1] flex items-center justify-center text-[#1B664B] group-hover:scale-110 transition-all shrink-0">
+                  <card.icon className="w-6 h-6 text-[#1B664B]" />
                 </div>
                 <div>
                   <p className="text-xs uppercase font-black tracking-wider text-slate-500">{card.title}</p>
@@ -138,15 +138,15 @@ export default function AdminReportsPage() {
             {/* Monthly Uploads Chart */}
             <div className="p-6 rounded-3xl bg-white border border-slate-200 shadow-2xs space-y-4">
               <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-                <TrendingUp className="w-5 h-5 text-themePrimary" />
+                <TrendingUp className="w-5 h-5 text-[#1B664B]" />
                 <h3 className="text-base font-black text-slate-900 font-auth-heading">Monthly Uploads Trend</h3>
               </div>
               <div className="flex items-end gap-3 h-40 pt-4">
                 {(reports.monthlyUploads || []).map((m: any, i: number) => (
                   <div key={i} className="flex-1 flex flex-col items-center gap-1.5 h-full justify-end group cursor-pointer">
-                    <span className="text-xs text-slate-800 font-mono font-bold group-hover:text-themePrimary transition-colors">{m.count}</span>
+                    <span className="text-xs text-slate-800 font-mono font-bold group-hover:text-[#1B664B] transition-colors">{m.count}</span>
                     <div
-                      className="w-full rounded-t-xl bg-gradient-to-t from-themePrimary to-[#F97316] group-hover:from-[#EA580C] group-hover:to-themePrimary min-h-[6px] transition-all duration-300 shadow-md shadow-orange-500/10"
+                      className="w-full rounded-t-xl bg-gradient-to-t from-[#1B664B] to-[#14523C] group-hover:from-[#14523C] group-hover:to-[#1B664B] min-h-[6px] transition-all duration-300 shadow-md shadow-emerald-950/20"
                       style={{ height: `${Math.max(6, (m.count / maxMonthly) * 100)}%` }}
                     />
                     <span className="text-xs text-slate-500 font-bold uppercase tracking-wider">{m.label}</span>
@@ -158,20 +158,20 @@ export default function AdminReportsPage() {
             {/* Top Downloaded Files */}
             <div className="p-6 rounded-3xl bg-white border border-slate-200 shadow-2xs space-y-4">
               <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-                <Download className="w-5 h-5 text-themePrimary" />
+                <Download className="w-5 h-5 text-[#1B664B]" />
                 <h3 className="text-base font-black text-slate-900 font-auth-heading">Top Downloaded Documents</h3>
               </div>
               <div className="space-y-2.5">
                 {(reports.topDownloads || []).map((d: any, i: number) => (
-                  <div key={d.id} className="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between gap-3 hover:bg-orange-50/30 transition group cursor-pointer">
+                  <div key={d.id} className="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between gap-3 hover:bg-[#E8F5F0] transition group cursor-pointer">
                     <div className="flex items-center gap-3 min-w-0">
                       <span className="text-xs font-mono font-bold text-slate-500 w-5">#{i + 1}</span>
                       <div className="min-w-0">
-                        <p className="text-xs font-black text-slate-900 font-auth-heading group-hover:text-themePrimary transition-colors truncate">{d.title}</p>
+                        <p className="text-xs font-black text-slate-900 font-auth-heading group-hover:text-[#1B664B] transition-colors truncate">{d.title}</p>
                         <p className="text-xs text-slate-500 font-medium">{d.owner_name} • {formatBytes(d.file_size)}</p>
                       </div>
                     </div>
-                    <span className="px-2.5 py-1 rounded-full bg-orange-50 text-themePrimary border border-orange-200 text-xs font-mono font-black shrink-0">
+                    <span className="px-2.5 py-1 rounded-full bg-[#E8F5F0] text-[#1B664B] border border-[#D1EBE1] text-xs font-mono font-black shrink-0">
                       {d.download_count}x downloads
                     </span>
                   </div>

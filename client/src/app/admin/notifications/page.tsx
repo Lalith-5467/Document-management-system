@@ -168,7 +168,7 @@ export default function AdminNotificationsPage() {
   };
 
   const typeConfig = {
-    expiry:  { label: 'Expiry Notice', icon: AlertTriangle, color: 'text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/60 border-amber-200 dark:border-amber-900/60' },
+    expiry:  { label: 'Expiry Notice', icon: AlertTriangle, color: 'text-[#1B664B] dark:text-[#1B664B] bg-[#E8F5F0] dark:bg-emerald-950/60 border-[#D1EBE1] dark:border-amber-900/60' },
     warning: { label: 'Warning', icon: ShieldAlert, color: 'text-rose-700 dark:text-rose-300 bg-rose-50 dark:bg-rose-950/60 border-rose-200 dark:border-rose-900/60' },
     success: { label: 'Success', icon: CheckCircle2, color: 'text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border-emerald-200 dark:border-emerald-800' },
     info:    { label: 'System Info', icon: Info, color: 'text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-950/60 border-blue-200 dark:border-blue-800' },
@@ -226,7 +226,7 @@ export default function AdminNotificationsPage() {
 
           <button
             onClick={handleOpenCreate}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-black text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:opacity-90 shadow-md shadow-orange-500/20 hover:scale-105 transition cursor-pointer font-auth-heading"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-black text-white bg-[#1B664B] hover:opacity-90 shadow-md shadow-emerald-950/20 hover:scale-105 transition cursor-pointer font-auth-heading"
           >
             <Plus className="w-4 h-4" /> Broadcast Alert
           </button>
@@ -237,8 +237,8 @@ export default function AdminNotificationsPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { label: 'Total Notifications', count: notifications.length, bg: 'bg-white dark:bg-[#111827]', border: 'border-slate-200/90 dark:border-slate-800', text: 'text-slate-900 dark:text-white', icon: Bell, iconBg: 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700/80' },
-          { label: 'Unread Alerts', count: unreadCount, bg: 'bg-white dark:bg-[#111827]', border: 'border-slate-200/90 dark:border-slate-800', text: 'text-themePrimary dark:text-orange-400', icon: Zap, iconBg: 'bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 border border-orange-200/90 dark:border-orange-900/60' },
-          { label: 'Expiry Reminders', count: expiryCount, bg: 'bg-white dark:bg-[#111827]', border: 'border-slate-200/90 dark:border-slate-800', text: 'text-amber-600 dark:text-amber-400', icon: AlertTriangle, iconBg: 'bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 border border-amber-200/90 dark:border-amber-900/60' },
+          { label: 'Unread Alerts', count: unreadCount, bg: 'bg-white dark:bg-[#111827]', border: 'border-slate-200/90 dark:border-slate-800', text: 'text-[#1B664B] dark:text-[#1B664B]', icon: Zap, iconBg: 'bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] dark:text-[#1B664B] border border-[#D1EBE1] dark:border-emerald-900/60' },
+          { label: 'Expiry Reminders', count: expiryCount, bg: 'bg-white dark:bg-[#111827]', border: 'border-slate-200/90 dark:border-slate-800', text: 'text-[#1B664B] dark:text-[#1B664B]', icon: AlertTriangle, iconBg: 'bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] dark:text-[#1B664B] border border-[#D1EBE1] dark:border-amber-900/60' },
           { label: 'System Warnings', count: warningCount, bg: 'bg-white dark:bg-[#111827]', border: 'border-slate-200/90 dark:border-slate-800', text: 'text-rose-600 dark:text-rose-400', icon: ShieldAlert, iconBg: 'bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 border border-rose-200/90 dark:border-rose-900/60' },
         ].map((kpi, i) => (
           <div
@@ -269,7 +269,7 @@ export default function AdminNotificationsPage() {
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
             placeholder="Search notifications by title or body text..."
-            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-themePrimary shadow-2xs"
+            className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-[#1B664B] shadow-2xs"
           />
         </div>
 
@@ -287,7 +287,7 @@ export default function AdminNotificationsPage() {
               onClick={() => setActiveTab(tab.key as any)}
               className={`px-3.5 py-1.5 rounded-xl transition-all duration-200 cursor-pointer font-auth-heading text-xs ${
                 activeTab === tab.key
-                  ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/20 font-black'
+                  ? 'bg-[#1B664B] text-white shadow-md shadow-emerald-950/20 font-black'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-white/80 dark:hover:bg-slate-700/60 font-extrabold'
               }`}
             >
@@ -301,7 +301,7 @@ export default function AdminNotificationsPage() {
       <div className="bg-white dark:bg-[#111827] rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xs overflow-hidden">
         {loading ? (
           <div className="p-16 text-center text-xs text-slate-500 dark:text-slate-400 flex items-center justify-center gap-2 font-medium">
-            <Loader2 className="w-5 h-5 animate-spin text-themePrimary" /> Loading notifications...
+            <Loader2 className="w-5 h-5 animate-spin text-[#1B664B]" /> Loading notifications...
           </div>
         ) : filteredNotifs.length === 0 ? (
           <div className="p-16 text-center text-xs text-slate-500 dark:text-slate-400 font-medium space-y-2">
@@ -328,8 +328,8 @@ export default function AdminNotificationsPage() {
                   return (
                     <tr
                       key={notif.id}
-                      className={`group hover:bg-orange-50/20 dark:hover:bg-slate-800/50 transition-all duration-200 ${
-                        !notif.is_read ? 'bg-orange-50/30 dark:bg-orange-950/20 font-semibold' : ''
+                      className={`group hover:bg-[#E8F5F0] dark:hover:bg-slate-800/50 transition-all duration-200 ${
+                        !notif.is_read ? 'bg-[#E8F5F0] dark:bg-emerald-950/60 font-semibold' : ''
                       }`}
                     >
                       <td className="py-4 px-5">
@@ -338,7 +338,7 @@ export default function AdminNotificationsPage() {
                             <Icon className="w-4 h-4" />
                           </div>
                           <div>
-                            <p className="font-black text-slate-900 dark:text-white text-xs font-auth-heading tracking-tight group-hover:text-themePrimary transition-colors">{notif.title}</p>
+                            <p className="font-black text-slate-900 dark:text-white text-xs font-auth-heading tracking-tight group-hover:text-[#1B664B] transition-colors">{notif.title}</p>
                             <p className="text-xs text-slate-600 dark:text-slate-300 font-medium line-clamp-2 leading-relaxed mt-0.5">{notif.message}</p>
                           </div>
                         </div>
@@ -352,7 +352,7 @@ export default function AdminNotificationsPage() {
 
                       <td className="py-4 px-5">
                         {!notif.is_read ? (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-orange-100 dark:bg-orange-950/70 text-themePrimary dark:text-orange-400 border border-orange-200 dark:border-orange-900/60 text-[10px] font-black uppercase">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] dark:text-[#1B664B] border border-[#D1EBE1] dark:border-emerald-900/60 text-[10px] font-black uppercase">
                             🔴 Unread
                           </span>
                         ) : (
@@ -371,7 +371,7 @@ export default function AdminNotificationsPage() {
                           <button
                             onClick={() => handleToggleRead(notif.id)}
                             className={`p-1.5 rounded-lg transition cursor-pointer ${
-                              notif.is_read ? 'text-slate-400 hover:text-themePrimary dark:hover:text-themePrimary hover:bg-white dark:hover:bg-slate-700' : 'text-emerald-600 bg-white dark:bg-slate-700 shadow-2xs font-extrabold'
+                              notif.is_read ? 'text-slate-400 hover:text-[#1B664B] dark:hover:text-[#1B664B] hover:bg-white dark:hover:bg-slate-700' : 'text-emerald-600 bg-white dark:bg-slate-700 shadow-2xs font-extrabold'
                             }`}
                             title={notif.is_read ? "Mark as Unread" : "Mark as Read"}
                           >
@@ -380,7 +380,7 @@ export default function AdminNotificationsPage() {
 
                           <button
                             onClick={() => handleOpenEdit(notif)}
-                            className="p-1.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-themePrimary dark:hover:text-themePrimary hover:bg-white dark:hover:bg-slate-700 transition cursor-pointer"
+                            className="p-1.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-[#1B664B] dark:hover:text-[#1B664B] hover:bg-white dark:hover:bg-slate-700 transition cursor-pointer"
                             title="Edit Notification"
                           >
                             <Edit2 className="w-3.5 h-3.5" />
@@ -410,7 +410,7 @@ export default function AdminNotificationsPage() {
           <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-4 text-xs text-slate-900 dark:text-white">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
               <h2 className="text-base font-black text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading">
-                <Bell className="w-5 h-5 text-themePrimary" />
+                <Bell className="w-5 h-5 text-[#1B664B]" />
                 {activeModal === 'create' ? 'Broadcast System Notification' : 'Edit Notification'}
               </h2>
               <button onClick={() => setActiveModal(null)} className="text-slate-400 hover:text-slate-900 dark:hover:text-white p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer">
@@ -427,7 +427,7 @@ export default function AdminNotificationsPage() {
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="e.g. System Upgrade Scheduled"
-                  className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-themePrimary"
+                  className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#1B664B]"
                 />
               </div>
 
@@ -439,7 +439,7 @@ export default function AdminNotificationsPage() {
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   placeholder="Notification message content for users..."
-                  className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-medium text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-themePrimary resize-none"
+                  className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-medium text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#1B664B] resize-none"
                 />
               </div>
 
@@ -449,7 +449,7 @@ export default function AdminNotificationsPage() {
                   <select
                     value={type}
                     onChange={(e: any) => setType(e.target.value)}
-                    className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary cursor-pointer"
+                    className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-[#1B664B] cursor-pointer"
                   >
                     <option value="info">System Info</option>
                     <option value="warning">Warning</option>
@@ -465,7 +465,7 @@ export default function AdminNotificationsPage() {
                     value={link}
                     onChange={(e) => setLink(e.target.value)}
                     placeholder="/user/documents"
-                    className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-themePrimary"
+                    className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#1B664B]"
                   />
                 </div>
               </div>
@@ -481,7 +481,7 @@ export default function AdminNotificationsPage() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-extrabold text-xs shadow-md shadow-orange-500/20 disabled:opacity-50 transition cursor-pointer flex items-center gap-2"
+                  className="px-5 py-2.5 rounded-xl bg-[#1B664B] text-white font-extrabold text-xs shadow-md shadow-emerald-950/20 disabled:opacity-50 transition cursor-pointer flex items-center gap-2"
                 >
                   {submitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                   {activeModal === 'create' ? 'Send Broadcast' : 'Save Changes'}

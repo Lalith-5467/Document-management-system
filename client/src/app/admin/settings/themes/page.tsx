@@ -29,23 +29,23 @@ interface CustomTheme {
 }
 
 const defaultTheme: Omit<CustomTheme, 'id'> = {
-  theme_name: 'New Theme',
-  primary_color: '#FF6B00',
-  secondary_color: '#F97316',
-  background_color: '#F8FAFC',
+  theme_name: 'Premium Green Theme',
+  primary_color: '#16A34A',
+  secondary_color: '#15803D',
+  background_color: '#F0FDF4',
   sidebar_color: '#FFFFFF',
   header_color: '#FFFFFF',
   card_color: '#FFFFFF',
-  text_color: '#0F172A',
-  border_color: '#E2E8F0',
-  hover_color: '#F1F5F9',
-  button_color: '#FF6B00',
+  text_color: '#17211B',
+  border_color: '#D1FAE5',
+  hover_color: '#DCFCE7',
+  button_color: '#16A34A',
   button_text_color: '#FFFFFF',
-  success_color: '#10B981',
-  warning_color: '#F59E0B',
+  success_color: '#16A34A',
+  warning_color: '#1B664B',
   error_color: '#EF4444',
   is_active: 1,
-  is_default: 0
+  is_default: 1
 };
 
 type ThemeColors = Omit<CustomTheme, 'id' | 'theme_name' | 'is_active' | 'is_default'>;
@@ -56,35 +56,35 @@ const PRESETS: Record<string, ThemeColors> = {
     sidebar_color: '#ffffff', header_color: '#ffffff', card_color: '#ffffff',
     text_color: '#0f172a', border_color: '#e2e8f0', hover_color: '#f1f5f9',
     button_color: '#475569', button_text_color: '#ffffff',
-    success_color: '#10B981', warning_color: '#F59E0B', error_color: '#EF4444'
+    success_color: '#10B981', warning_color: '#1B664B', error_color: '#EF4444'
   },
   'Midnight Navy': {
     primary_color: '#1e3a8a', secondary_color: '#1e40af', background_color: '#eff6ff',
     sidebar_color: '#ffffff', header_color: '#ffffff', card_color: '#ffffff',
     text_color: '#172554', border_color: '#dbeafe', hover_color: '#dbeafe',
     button_color: '#1e3a8a', button_text_color: '#ffffff',
-    success_color: '#10B981', warning_color: '#F59E0B', error_color: '#EF4444'
+    success_color: '#10B981', warning_color: '#1B664B', error_color: '#EF4444'
   },
   'Ocean Blue': {
     primary_color: '#0ea5e9', secondary_color: '#38bdf8', background_color: '#f0f9ff',
     sidebar_color: '#ffffff', header_color: '#ffffff', card_color: '#ffffff',
     text_color: '#0c4a6e', border_color: '#e0f2fe', hover_color: '#e0f2fe',
     button_color: '#0ea5e9', button_text_color: '#ffffff',
-    success_color: '#10B981', warning_color: '#F59E0B', error_color: '#EF4444'
+    success_color: '#10B981', warning_color: '#1B664B', error_color: '#EF4444'
   },
   'Forest Green': {
     primary_color: '#166534', secondary_color: '#15803d', background_color: '#f0fdf4',
     sidebar_color: '#ffffff', header_color: '#ffffff', card_color: '#ffffff',
     text_color: '#14532d', border_color: '#dcfce7', hover_color: '#dcfce7',
     button_color: '#166534', button_text_color: '#ffffff',
-    success_color: '#10B981', warning_color: '#F59E0B', error_color: '#EF4444'
+    success_color: '#10B981', warning_color: '#1B664B', error_color: '#EF4444'
   },
   'Crimson Red': {
     primary_color: '#b91c1c', secondary_color: '#dc2626', background_color: '#fef2f2',
     sidebar_color: '#ffffff', header_color: '#ffffff', card_color: '#ffffff',
     text_color: '#7f1d1d', border_color: '#fee2e2', hover_color: '#fee2e2',
     button_color: '#b91c1c', button_text_color: '#ffffff',
-    success_color: '#10B981', warning_color: '#F59E0B', error_color: '#EF4444'
+    success_color: '#10B981', warning_color: '#1B664B', error_color: '#EF4444'
   }
 };
 
@@ -206,7 +206,7 @@ export default function AdminThemesPage() {
         <div className={`fixed top-20 right-6 z-[100000] text-white text-sm font-semibold px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-2 animate-in fade-in slide-in-from-top-3 ${
           toastMsg.type === 'success' ? 'bg-slate-900 dark:bg-slate-800 border border-slate-700' : 'bg-rose-600'
         }`}>
-          {toastMsg.type === 'success' ? <CheckCircle2 className="w-4 h-4 text-emerald-400" /> : <AlertCircle className="w-4 h-4 text-amber-300" />}
+          {toastMsg.type === 'success' ? <CheckCircle2 className="w-4 h-4 text-emerald-400" /> : <AlertCircle className="w-4 h-4 text-[#1B664B]" />}
           <span>{toastMsg.text}</span>
         </div>
       )}
@@ -215,13 +215,14 @@ export default function AdminThemesPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
         <div>
           <h1 className="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading">
-            <Palette className="w-6 h-6 text-themePrimary" /> Theme Management
+            <Palette className="w-6 h-6 text-[#1B664B]" /> Theme Management
+            <Palette className="w-6 h-6 text-[#1B664B]" /> Theme Management
           </h1>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">Create and manage professional themes for users.</p>
         </div>
         <button
           onClick={handleOpenCreate}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-black text-xs shadow-md shadow-orange-500/20 hover:opacity-90 hover:scale-105 transition cursor-pointer"
+          className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-[#1B664B] hover:bg-[#14523C] active:bg-[#0F402E] text-white font-black text-xs shadow-md transition cursor-pointer"
         >
           <Plus className="w-4 h-4" /> Create Theme
         </button>
@@ -231,7 +232,7 @@ export default function AdminThemesPage() {
       <div className="bg-white dark:bg-[#111827] rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xs overflow-hidden">
         {loading ? (
           <div className="p-16 flex flex-col items-center justify-center text-slate-500 dark:text-slate-400">
-            <Loader2 className="w-6 h-6 animate-spin text-themePrimary mb-2" />
+            <Loader2 className="w-6 h-6 animate-spin text-[#1B664B] mb-2" />
             <p className="text-xs font-bold">Loading themes...</p>
           </div>
         ) : themes.length === 0 ? (
@@ -254,12 +255,12 @@ export default function AdminThemesPage() {
               </thead>
               <tbody className="divide-y divide-slate-100 dark:divide-slate-800/80">
                 {themes.map(theme => (
-                  <tr key={theme.id} className="group hover:bg-orange-50/20 dark:hover:bg-slate-800/50 transition-colors">
+                  <tr key={theme.id} className="group hover:bg-[#E8F5F0]/20 dark:hover:bg-slate-800/50 transition-colors">
                     <td className="px-6 py-4">
-                      <div className="font-bold text-slate-900 dark:text-white text-xs flex items-center gap-2 font-auth-heading group-hover:text-themePrimary transition-colors">
+                      <div className="font-bold text-slate-900 dark:text-white text-xs flex items-center gap-2 font-auth-heading group-hover:text-[#1B664B] transition-colors">
                         {theme.theme_name}
                         {theme.is_default === 1 && (
-                          <span className="px-1.5 py-0.5 rounded text-[9px] font-black bg-orange-100 dark:bg-orange-950/80 text-themePrimary dark:text-orange-400 border border-orange-200 dark:border-orange-900/60 uppercase tracking-wider">Default</span>
+                          <span className="px-1.5 py-0.5 rounded text-[9px] font-black bg-[#E8F5F0] dark:bg-emerald-950/80 text-[#1B664B] dark:text-emerald-400 border border-[#D1EBE1] dark:border-emerald-900/60 uppercase tracking-wider">Default</span>
                         )}
                       </div>
                       <div className="text-[10px] text-slate-500 dark:text-slate-400 font-mono mt-0.5">ID: {theme.id}</div>
@@ -290,14 +291,14 @@ export default function AdminThemesPage() {
                       <div className="flex items-center justify-end gap-1.5 bg-slate-50 dark:bg-slate-800/80 p-1 rounded-xl border border-slate-200/80 dark:border-slate-700 inline-flex">
                         <button
                           onClick={() => handleDuplicate(theme)}
-                          className="p-1.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-themePrimary dark:hover:text-themePrimary hover:bg-white dark:hover:bg-slate-700 transition cursor-pointer"
+                          className="p-1.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-[#1B664B] dark:hover:text-[#1B664B] hover:bg-white dark:hover:bg-slate-700 transition cursor-pointer"
                           title="Duplicate Theme"
                         >
                           <Copy className="w-3.5 h-3.5" />
                         </button>
                         <button
                           onClick={() => handleOpenEdit(theme)}
-                          className="p-1.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-themePrimary dark:hover:text-themePrimary hover:bg-white dark:hover:bg-slate-700 transition cursor-pointer"
+                          className="p-1.5 rounded-lg text-slate-500 dark:text-slate-400 hover:text-[#1B664B] dark:hover:text-[#1B664B] hover:bg-white dark:hover:bg-slate-700 transition cursor-pointer"
                           title="Edit Theme"
                         >
                           <Edit2 className="w-3.5 h-3.5" />
@@ -342,7 +343,7 @@ export default function AdminThemesPage() {
                       required
                       value={formData.theme_name}
                       onChange={e => setFormData({ ...formData, theme_name: e.target.value })}
-                      className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary"
+                      className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-[#1B664B]"
                       placeholder="e.g., Midnight Dark"
                     />
                   </div>
@@ -353,7 +354,7 @@ export default function AdminThemesPage() {
                         type="checkbox" 
                         checked={formData.is_active === 1}
                         onChange={e => setFormData({ ...formData, is_active: e.target.checked ? 1 : 0 })}
-                        className="w-4 h-4 text-themePrimary focus:ring-themePrimary border-slate-300 rounded cursor-pointer"
+                        className="w-4 h-4 text-[#1B664B] focus:ring-themePrimary border-slate-300 rounded cursor-pointer"
                       />
                       <span className="text-xs font-bold text-slate-700 dark:text-slate-300">Active Theme</span>
                     </label>
@@ -363,7 +364,7 @@ export default function AdminThemesPage() {
                         type="checkbox" 
                         checked={formData.is_default === 1}
                         onChange={e => setFormData({ ...formData, is_default: e.target.checked ? 1 : 0 })}
-                        className="w-4 h-4 text-themePrimary focus:ring-themePrimary border-slate-300 rounded cursor-pointer"
+                        className="w-4 h-4 text-[#1B664B] focus:ring-themePrimary border-slate-300 rounded cursor-pointer"
                       />
                       <span className="text-xs font-bold text-slate-700 dark:text-slate-300">Set as Default</span>
                     </label>
@@ -424,7 +425,7 @@ export default function AdminThemesPage() {
                 type="submit"
                 form="theme-form"
                 disabled={submitting}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-black text-xs shadow-md shadow-orange-500/20 disabled:opacity-50 transition cursor-pointer"
+                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#1B664B] text-white font-black text-xs shadow-md shadow-emerald-950/20 disabled:opacity-50 transition cursor-pointer"
               >
                 {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                 {submitting ? 'Saving...' : 'Save Theme'}

@@ -42,7 +42,7 @@ export default function AdminSettingsDashboard() {
       description: 'Control automated email and push notifications.',
       icon: BellRing,
       href: '/admin/settings/notifications',
-      color: 'bg-amber-50 text-amber-600 border-amber-200'
+      color: 'bg-[#E8F5F0] text-[#1B664B] border-[#D1EBE1]'
     },
     {
       title: 'Password Policy',
@@ -85,13 +85,13 @@ export default function AdminSettingsDashboard() {
             <Link
               key={idx}
               href={card.href}
-              className="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm hover:shadow-xl hover:border-themePrimary/40 transition-all duration-300 cursor-pointer flex flex-col justify-between"
+              className="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm hover:shadow-xl hover:border-[#1B664B]/40 transition-all duration-300 cursor-pointer flex flex-col justify-between"
             >
               <div>
                 <div className={`w-12 h-12 rounded-2xl flex items-center justify-center border ${card.color} mb-5 shadow-inner`}>
                   <Icon className="w-6 h-6" />
                 </div>
-                <h3 className="text-base font-black text-slate-900 dark:text-white font-auth-heading mb-1.5 group-hover:text-themePrimary transition-colors">
+                <h3 className="text-base font-black text-slate-900 dark:text-white font-auth-heading mb-1.5 group-hover:text-[#1B664B] transition-colors">
                   {card.title}
                 </h3>
                 <p className="text-xs text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
@@ -99,7 +99,7 @@ export default function AdminSettingsDashboard() {
                 </p>
               </div>
               
-              <div className="mt-6 flex items-center justify-between text-xs font-bold text-slate-400 dark:text-slate-500 group-hover:text-themePrimary transition-colors">
+              <div className="mt-6 flex items-center justify-between text-xs font-bold text-slate-400 dark:text-slate-500 group-hover:text-[#1B664B] transition-colors">
                 <span>Manage Settings</span>
                 <ChevronRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
               </div>

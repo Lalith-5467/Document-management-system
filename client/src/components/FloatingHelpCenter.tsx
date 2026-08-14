@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
 import {
@@ -101,11 +101,11 @@ const DEFAULT_SETTINGS: WidgetSettings = {
   popoverTitle: 'Need Help?',
   popoverSubtitle: 'Chat with our AI assistant or browse guides',
   hoverTooltip: 'Need Help? Chat & Support ðŸ’¬',
-  themeColor: 'var(--theme-primary, #FF6B00)'
+  themeColor: 'var(--theme-primary, #1B664B)'
 };
 
 const DEFAULT_BOT_RULES: BotRule[] = [
-  { id: '1', keyword: 'upload', response: 'To upload documents, click the orange "Upload Document" button at the top header or go to "/user/upload". We support PDF, Word, Excel, Images, and ZIP up to 25 MB.' },
+  { id: '1', keyword: 'upload', response: 'To upload documents, click the green "Upload Document" button at the top header or go to "/user/upload". We support PDF, Word, Excel, Images, and ZIP up to 25 MB.' },
   { id: '2', keyword: 'encrypt', response: 'DocVault uses AES-256 military-grade encryption. You can also add custom master passwords to individual sensitive documents when uploading.' },
   { id: '3', keyword: 'expiry', response: 'You can set Expiry Dates on identity documents, passports, and contracts to receive automated workspace notifications before they expire.' },
   { id: '4', keyword: 'category', response: 'Categories help you classify documents (e.g. Personal, Financial, Academic). You can manage categories under Category Management.' },
@@ -329,7 +329,7 @@ export default function FloatingHelpCenter() {
         >
           
           {/* CHAT WINDOW HEADER */}
-          <div className="p-4 bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] text-white flex items-center justify-between shadow-md relative overflow-hidden shrink-0">
+          <div className="p-4 bg-[#1B664B] text-white flex items-center justify-between shadow-md relative overflow-hidden shrink-0">
             <div className="absolute -right-8 -top-8 w-28 h-28 bg-white/8 rounded-full blur-2xl pointer-events-none" />
             <div className="absolute -left-6 -bottom-6 w-20 h-20 bg-white/5 rounded-full blur-xl pointer-events-none" />
             
@@ -339,7 +339,7 @@ export default function FloatingHelpCenter() {
                   <Bot className="w-5 h-5" />
                 </div>
                 {/* Live Online Badge */}
-                <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-400 border-2 border-orange-600 rounded-full shadow-xs" />
+                <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-400 border-2 border-[#14523C] rounded-full shadow-xs" />
               </div>
 
               <div>
@@ -349,7 +349,7 @@ export default function FloatingHelpCenter() {
                     AI Online
                   </span>
                 </div>
-                <p className="text-[11px] text-orange-100/90 font-medium flex items-center gap-1">
+                <p className="text-[11px] text-emerald-100/90 font-medium flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse" />
                   Replies instantly 24/7
                 </p>
@@ -380,7 +380,7 @@ export default function FloatingHelpCenter() {
               onClick={() => setActiveTab('chat')}
               className={`flex-1 py-2 rounded-xl text-center transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                 activeTab === 'chat'
-                  ? 'bg-white dark:bg-slate-900 text-themePrimary shadow-sm'
+                  ? 'bg-white dark:bg-slate-900 text-[#1B664B] shadow-sm'
                   : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
@@ -390,7 +390,7 @@ export default function FloatingHelpCenter() {
               onClick={() => setActiveTab('faqs')}
               className={`flex-1 py-2 rounded-xl text-center transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                 activeTab === 'faqs'
-                  ? 'bg-white dark:bg-slate-900 text-themePrimary shadow-sm'
+                  ? 'bg-white dark:bg-slate-900 text-[#1B664B] shadow-sm'
                   : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
@@ -400,7 +400,7 @@ export default function FloatingHelpCenter() {
               onClick={() => setActiveTab('ticket')}
               className={`flex-1 py-2 rounded-xl text-center transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                 activeTab === 'ticket'
-                  ? 'bg-white dark:bg-slate-900 text-themePrimary shadow-sm'
+                  ? 'bg-white dark:bg-slate-900 text-[#1B664B] shadow-sm'
                   : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
@@ -422,7 +422,7 @@ export default function FloatingHelpCenter() {
                     <div
                       className={`w-7 h-7 rounded-xl flex items-center justify-center text-xs font-bold shrink-0 ${
                         msg.sender === 'user'
-                          ? 'bg-themePrimary text-white shadow-xs'
+                          ? 'bg-[#1B664B] text-white shadow-xs'
                           : 'bg-emerald-500 text-white shadow-xs'
                       }`}
                     >
@@ -432,7 +432,7 @@ export default function FloatingHelpCenter() {
                     <div
                       className={`p-3 rounded-2xl text-xs leading-relaxed space-y-1 ${
                         msg.sender === 'user'
-                          ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white rounded-tr-none shadow-md'
+                          ? 'bg-[#1B664B] text-white rounded-tr-none shadow-md'
                           : 'bg-white dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 rounded-tl-none shadow-xs'
                       }`}
                     >
@@ -448,19 +448,19 @@ export default function FloatingHelpCenter() {
               <div className="px-3 py-1.5 bg-slate-100/70 dark:bg-slate-900/70 border-t border-slate-200/60 dark:border-slate-800 flex items-center gap-1.5 overflow-x-auto scrollbar-none text-[10px]">
                 <button
                   onClick={() => handleSendChatMessage(undefined, 'How to upload documents?')}
-                  className="px-2.5 py-1 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-themePrimary hover:text-themePrimary whitespace-nowrap transition cursor-pointer font-auth-body"
+                  className="px-2.5 py-1 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-[#1B664B] hover:text-[#1B664B] whitespace-nowrap transition cursor-pointer font-auth-body"
                 >
                   ðŸ“¤ How to upload?
                 </button>
                 <button
                   onClick={() => handleSendChatMessage(undefined, 'Is my file encrypted?')}
-                  className="px-2.5 py-1 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-themePrimary hover:text-themePrimary whitespace-nowrap transition cursor-pointer font-auth-body"
+                  className="px-2.5 py-1 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-[#1B664B] hover:text-[#1B664B] whitespace-nowrap transition cursor-pointer font-auth-body"
                 >
                   ðŸ”’ Encrypted storage
                 </button>
                 <button
                   onClick={() => handleSendChatMessage(undefined, 'How do expiry dates work?')}
-                  className="px-2.5 py-1 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-themePrimary hover:text-themePrimary whitespace-nowrap transition cursor-pointer font-auth-body"
+                  className="px-2.5 py-1 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-[#1B664B] hover:text-[#1B664B] whitespace-nowrap transition cursor-pointer font-auth-body"
                 >
                   â° Expiry alerts
                 </button>
@@ -473,12 +473,12 @@ export default function FloatingHelpCenter() {
                   value={chatInput}
                   onChange={(e) => setChatInput(e.target.value)}
                   placeholder="Type a message or question..."
-                  className="flex-1 px-3.5 py-2.5 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary font-auth-body"
+                  className="flex-1 px-3.5 py-2.5 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-slate-900 dark:text-white focus:outline-none focus:border-[#1B664B] font-auth-body"
                 />
                 <button
                   type="submit"
                   disabled={!chatInput.trim()}
-                  className="p-2.5 rounded-2xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white hover:brightness-110 transition shrink-0 cursor-pointer disabled:opacity-40 shadow-md shadow-orange-500/20 active:scale-95"
+                  className="p-2.5 rounded-2xl bg-[#1B664B] text-white hover:brightness-110 transition shrink-0 cursor-pointer disabled:opacity-40 shadow-md shadow-emerald-950/20 active:scale-95"
                 >
                   <Send className="w-4 h-4" />
                 </button>
@@ -496,7 +496,7 @@ export default function FloatingHelpCenter() {
                   placeholder="Search FAQ answers..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-8 pr-3 py-2 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary"
+                  className="w-full pl-8 pr-3 py-2 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-[#1B664B]"
                 />
               </div>
 
@@ -507,10 +507,10 @@ export default function FloatingHelpCenter() {
                     <div key={faq.id} className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xs">
                       <button
                         onClick={() => setExpandedFaq(isExpanded ? null : idx)}
-                        className="w-full p-3 text-left flex items-center justify-between gap-2 text-xs font-bold text-slate-900 dark:text-white hover:text-themePrimary"
+                        className="w-full p-3 text-left flex items-center justify-between gap-2 text-xs font-bold text-slate-900 dark:text-white hover:text-[#1B664B]"
                       >
                         <span className="font-auth-heading">{faq.q}</span>
-                        <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform ${isExpanded ? 'rotate-180 text-themePrimary' : ''}`} />
+                        <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform ${isExpanded ? 'rotate-180 text-[#1B664B]' : ''}`} />
                       </button>
                       {isExpanded && (
                         <div className="px-3 pb-3 pt-1 text-[11px] text-slate-600 dark:text-slate-300 leading-relaxed border-t border-slate-100 dark:border-slate-800">
@@ -545,7 +545,7 @@ export default function FloatingHelpCenter() {
                       placeholder="John Doe"
                       value={contactForm.name}
                       onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
-                      className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary"
+                      className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-[#1B664B]"
                     />
                   </div>
                   <div>
@@ -556,7 +556,7 @@ export default function FloatingHelpCenter() {
                       placeholder="user@example.com"
                       value={contactForm.email}
                       onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
-                      className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary"
+                      className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-[#1B664B]"
                     />
                   </div>
                   <div>
@@ -567,12 +567,12 @@ export default function FloatingHelpCenter() {
                       placeholder="Describe your issue or query..."
                       value={contactForm.message}
                       onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
-                      className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary resize-none"
+                      className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:border-[#1B664B] resize-none"
                     />
                   </div>
                   <button
                     type="submit"
-                    className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white text-xs font-bold flex items-center justify-center gap-2 hover:brightness-110 shadow-md shadow-orange-500/20 active:scale-98 transition-all cursor-pointer font-auth-heading"
+                    className="w-full py-2.5 px-4 rounded-xl bg-[#1B664B] text-white text-xs font-bold flex items-center justify-center gap-2 hover:brightness-110 shadow-md shadow-emerald-950/20 active:scale-98 transition-all cursor-pointer font-auth-heading"
                   >
                     <Send className="w-3.5 h-3.5" /> Submit Support Ticket
                   </button>
@@ -594,22 +594,22 @@ export default function FloatingHelpCenter() {
       {/* FLOATING ACTION BUTTON (FAB) */}
       <button
         onClick={handleOpen}
-        className={`relative group w-14 h-14 sm:w-[60px] sm:h-[60px] rounded-full bg-gradient-to-tr from-themePrimary to-[#F97316] text-white shadow-2xl hover:shadow-orange-500/40 hover:scale-110 active:scale-95 transition-all duration-300 border-2 border-white/90 dark:border-slate-800 flex items-center justify-center cursor-pointer ${
+        className={`relative group w-14 h-14 sm:w-[60px] sm:h-[60px] rounded-full bg-[#1B664B] hover:bg-[#14523C] active:bg-[#0F402E] text-white shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 border-2 border-white/90 dark:border-slate-800 flex items-center justify-center cursor-pointer ${
           !isOpen ? 'animate-fab-bounce' : ''
         }`}
         aria-label="Open Live Chat Support"
         title={settings.hoverTooltip}
         style={{
           boxShadow: isOpen
-            ? '0 8px 25px -4px rgba(255, 107, 0, 0.4), 0 4px 10px -2px rgba(0, 0, 0, 0.15)'
-            : '0 12px 35px -6px rgba(255, 107, 0, 0.5), 0 6px 14px -4px rgba(0, 0, 0, 0.2)',
+            ? '0 8px 25px -4px rgba(27, 102, 75, 0.4), 0 4px 10px -2px rgba(0, 0, 0, 0.15)'
+            : '0 12px 35px -6px rgba(27, 102, 75, 0.5), 0 6px 14px -4px rgba(0, 0, 0, 0.2)',
         }}
       >
-        {/* Pulsing Outer Ring â€” only when closed */}
+        {/* Pulsing Outer Ring — only when closed */}
         {!isOpen && (
           <>
-            <span className="animate-ping absolute inset-0 rounded-full bg-themePrimary opacity-60 pointer-events-none" />
-            <span className="absolute -inset-1 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 opacity-30 blur-sm group-hover:opacity-70 transition-opacity pointer-events-none" />
+            <span className="animate-ping absolute inset-0 rounded-full bg-[#1B664B] opacity-60 pointer-events-none" />
+            <span className="absolute -inset-1 rounded-full bg-[#1B664B] opacity-30 blur-sm group-hover:opacity-70 transition-opacity pointer-events-none" />
           </>
         )}
 

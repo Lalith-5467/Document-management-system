@@ -76,7 +76,7 @@ export default function AdminNotificationsPage() {
         <div className={`fixed top-20 right-6 z-[100000] text-white text-sm font-semibold px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-2 animate-in fade-in slide-in-from-top-3 ${
           toastMsg.type === 'success' ? 'bg-slate-900 dark:bg-slate-800 border border-slate-700' : 'bg-rose-600'
         }`}>
-          {toastMsg.type === 'success' ? <CheckCircle2 className="w-4 h-4 text-emerald-400" /> : <AlertCircle className="w-4 h-4 text-amber-300" />}
+          {toastMsg.type === 'success' ? <CheckCircle2 className="w-4 h-4 text-emerald-400" /> : <AlertCircle className="w-4 h-4 text-[#1B664B]" />}
           <span>{toastMsg.text}</span>
         </div>
       )}
@@ -84,7 +84,7 @@ export default function AdminNotificationsPage() {
       {/* Header */}
       <div className="pb-4 border-b border-slate-100 dark:border-slate-800">
         <h1 className="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2 font-auth-heading">
-          <BellRing className="w-6 h-6 text-themePrimary" /> Notification Settings
+          <BellRing className="w-6 h-6 text-[#1B664B]" /> Notification Settings
         </h1>
         <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">Manage how the system communicates events to administrators and users.</p>
       </div>
@@ -93,9 +93,9 @@ export default function AdminNotificationsPage() {
         
         {/* Email Notifications */}
         <div className="bg-white dark:bg-[#111827] rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xs overflow-hidden">
-          <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-orange-50/20 dark:bg-orange-950/20">
+          <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-[#E8F5F0] dark:bg-emerald-950/60">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-orange-100 dark:bg-orange-950/60 text-themePrimary flex items-center justify-center border border-orange-200 dark:border-orange-900/60">
+              <div className="w-10 h-10 rounded-xl bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] flex items-center justify-center border border-[#D1EBE1] dark:border-emerald-900/60">
                 <Mail className="w-5 h-5" />
               </div>
               <div>
@@ -110,25 +110,25 @@ export default function AdminNotificationsPage() {
                 checked={config.email.enabled}
                 onChange={e => setConfig({ ...config, email: { ...config.email, enabled: e.target.checked }})}
               />
-              <div className="w-11 h-6 bg-slate-200 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-themePrimary"></div>
+              <div className="w-11 h-6 bg-slate-200 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1B664B]"></div>
             </label>
           </div>
           
           <div className={`p-6 grid grid-cols-1 sm:grid-cols-2 gap-4 ${!config.email.enabled && 'opacity-50 pointer-events-none'}`}>
             <label className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-[#0B1120] hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer">
-              <input type="checkbox" checked={config.email.newUser} onChange={e => setConfig({...config, email: {...config.email, newUser: e.target.checked}})} className="w-4 h-4 text-themePrimary focus:ring-themePrimary rounded cursor-pointer" />
+              <input type="checkbox" checked={config.email.newUser} onChange={e => setConfig({...config, email: {...config.email, newUser: e.target.checked}})} className="w-4 h-4 text-[#1B664B] focus:ring-themePrimary rounded cursor-pointer" />
               <div className="text-xs font-bold text-slate-800 dark:text-slate-200">New User Registration</div>
             </label>
             <label className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-[#0B1120] hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer">
-              <input type="checkbox" checked={config.email.documentUpload} onChange={e => setConfig({...config, email: {...config.email, documentUpload: e.target.checked}})} className="w-4 h-4 text-themePrimary focus:ring-themePrimary rounded cursor-pointer" />
+              <input type="checkbox" checked={config.email.documentUpload} onChange={e => setConfig({...config, email: {...config.email, documentUpload: e.target.checked}})} className="w-4 h-4 text-[#1B664B] focus:ring-themePrimary rounded cursor-pointer" />
               <div className="text-xs font-bold text-slate-800 dark:text-slate-200">Document Uploads</div>
             </label>
             <label className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-[#0B1120] hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer">
-              <input type="checkbox" checked={config.email.systemAlerts} onChange={e => setConfig({...config, email: {...config.email, systemAlerts: e.target.checked}})} className="w-4 h-4 text-themePrimary focus:ring-themePrimary rounded cursor-pointer" />
+              <input type="checkbox" checked={config.email.systemAlerts} onChange={e => setConfig({...config, email: {...config.email, systemAlerts: e.target.checked}})} className="w-4 h-4 text-[#1B664B] focus:ring-themePrimary rounded cursor-pointer" />
               <div className="text-xs font-bold text-slate-800 dark:text-slate-200">Critical System Alerts</div>
             </label>
             <label className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-[#0B1120] hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer">
-              <input type="checkbox" checked={config.email.dailyDigest} onChange={e => setConfig({...config, email: {...config.email, dailyDigest: e.target.checked}})} className="w-4 h-4 text-themePrimary focus:ring-themePrimary rounded cursor-pointer" />
+              <input type="checkbox" checked={config.email.dailyDigest} onChange={e => setConfig({...config, email: {...config.email, dailyDigest: e.target.checked}})} className="w-4 h-4 text-[#1B664B] focus:ring-themePrimary rounded cursor-pointer" />
               <div className="text-xs font-bold text-slate-800 dark:text-slate-200">Daily Admin Digest</div>
             </label>
           </div>
@@ -136,9 +136,9 @@ export default function AdminNotificationsPage() {
 
         {/* Webhooks */}
         <div className="bg-white dark:bg-[#111827] rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xs overflow-hidden">
-          <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-orange-50/20 dark:bg-orange-950/20">
+          <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-[#E8F5F0] dark:bg-emerald-950/60">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-orange-100 dark:bg-orange-950/60 text-themePrimary flex items-center justify-center border border-orange-200 dark:border-orange-900/60">
+              <div className="w-10 h-10 rounded-xl bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] flex items-center justify-center border border-[#D1EBE1] dark:border-emerald-900/60">
                 <Webhook className="w-5 h-5" />
               </div>
               <div>
@@ -153,7 +153,7 @@ export default function AdminNotificationsPage() {
                 checked={config.webhook.enabled}
                 onChange={e => setConfig({ ...config, webhook: { ...config.webhook, enabled: e.target.checked }})}
               />
-              <div className="w-11 h-6 bg-slate-200 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-themePrimary"></div>
+              <div className="w-11 h-6 bg-slate-200 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1B664B]"></div>
             </label>
           </div>
           
@@ -164,7 +164,7 @@ export default function AdminNotificationsPage() {
               placeholder="https://hooks.slack.com/services/..."
               value={config.webhook.url}
               onChange={e => setConfig({...config, webhook: {...config.webhook, url: e.target.value}})}
-              className="w-full px-4 py-3 bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-mono font-bold text-slate-900 dark:text-white focus:outline-none focus:border-themePrimary transition"
+              className="w-full px-4 py-3 bg-slate-50 dark:bg-[#0B1120] border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-mono font-bold text-slate-900 dark:text-white focus:outline-none focus:border-[#1B664B] transition"
             />
             <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-2 font-medium">POST requests will be sent to this URL for all major system events.</p>
           </div>
@@ -174,7 +174,7 @@ export default function AdminNotificationsPage() {
           <button
             type="submit"
             disabled={submitting}
-            className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-black text-xs shadow-md shadow-orange-500/20 hover:opacity-90 hover:scale-105 transition disabled:opacity-70 cursor-pointer"
+            className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-[#1B664B] text-white font-black text-xs shadow-md shadow-emerald-950/20 hover:opacity-90 hover:scale-105 transition disabled:opacity-70 cursor-pointer"
           >
             <Save className="w-4 h-4" />
             {submitting ? 'Saving...' : 'Save Preferences'}

@@ -116,7 +116,7 @@ export default function AdminLanguagesPage() {
         <div className={`fixed top-20 right-6 z-[100000] text-white text-sm font-semibold px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-2 animate-in fade-in slide-in-from-top-3 ${
           toastMsg.type === 'success' ? 'bg-slate-900 dark:bg-slate-800 border border-slate-700' : 'bg-rose-600'
         }`}>
-          {toastMsg.type === 'success' ? <CheckCircle2 className="w-4 h-4 text-emerald-400" /> : <AlertCircle className="w-4 h-4 text-amber-300" />}
+          {toastMsg.type === 'success' ? <CheckCircle2 className="w-4 h-4 text-emerald-400" /> : <AlertCircle className="w-4 h-4 text-[#1B664B]" />}
           <span>{toastMsg.text}</span>
         </div>
       )}
@@ -156,7 +156,7 @@ export default function AdminLanguagesPage() {
                     <div className="font-bold text-slate-900 dark:text-white text-xs flex items-center gap-2 font-auth-heading group-hover:text-emerald-600 transition-colors">
                       {lang.name}
                       {lang.is_default === 1 && (
-                        <span className="px-1.5 py-0.5 rounded text-[9px] font-black bg-amber-100 dark:bg-amber-950/80 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-900/60 uppercase tracking-wider">Default</span>
+                        <span className="px-1.5 py-0.5 rounded text-[9px] font-black bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] dark:text-[#1B664B] border border-[#D1EBE1] dark:border-amber-900/60 uppercase tracking-wider">Default</span>
                       )}
                     </div>
                     <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">{lang.nativeName}</div>

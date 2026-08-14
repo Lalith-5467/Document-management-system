@@ -190,7 +190,7 @@ export default function ProfilePage() {
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center py-28 space-y-4 font-sans">
-        <Loader2 className="w-10 h-10 text-themePrimary animate-spin" />
+        <Loader2 className="w-10 h-10 text-[#1B664B] animate-spin" />
         <p className="text-sm font-bold text-slate-600">Loading user profile...</p>
       </div>
     );
@@ -226,7 +226,7 @@ export default function ProfilePage() {
                   setMessage(null);
                   setErrors({});
                 }}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] text-white font-bold text-xs shadow-md shadow-orange-500/20 hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-[#1B664B] text-white font-bold text-xs shadow-md shadow-emerald-950/20 hover:scale-105 active:scale-95 transition-all cursor-pointer"
               >
                 <Edit2 className="w-4 h-4 text-white" /> Edit Profile
               </button>
@@ -241,9 +241,9 @@ export default function ProfilePage() {
 
             <Link 
               href="/user/settings" 
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-900 px-4 py-2.5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xs hover:border-orange-300 transition-all"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-900 px-4 py-2.5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xs hover:border-[#1B664B] transition-all"
             >
-              <Settings className="w-4 h-4 text-themePrimary" />
+              <Settings className="w-4 h-4 text-[#1B664B]" />
               <span>Settings</span>
             </Link>
           </div>
@@ -271,8 +271,8 @@ export default function ProfilePage() {
           
           {/* Identity Summary Card */}
           <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/90 dark:border-slate-800 p-6 shadow-sm text-center space-y-4 relative overflow-hidden">
-            <div className="w-24 h-24 mx-auto rounded-2xl bg-gradient-to-tr from-themePrimary to-[#F97316] p-1 shadow-lg shadow-orange-500/20 relative">
-              <div className="w-full h-full rounded-[14px] bg-white dark:bg-slate-900 flex items-center justify-center text-themePrimary font-black text-3xl font-auth-heading">
+            <div className="w-24 h-24 mx-auto rounded-2xl bg-[#1B664B] p-1 shadow-lg shadow-emerald-950/20 relative">
+              <div className="w-full h-full rounded-[14px] bg-white dark:bg-slate-900 flex items-center justify-center text-[#1B664B] font-black text-3xl font-auth-heading">
                 {getInitials(displayFullName)}
               </div>
               <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-emerald-500 border-2 border-white dark:border-slate-900 flex items-center justify-center shadow-xs" title="Verified Account">
@@ -283,11 +283,11 @@ export default function ProfilePage() {
             <div>
               <h2 className="text-xl font-bold text-slate-900 dark:text-white font-auth-heading tracking-tight">{displayFullName}</h2>
               <div className="flex items-center justify-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 font-medium mt-1 font-mono">
-                <Mail className="w-3.5 h-3.5 text-themePrimary" />
+                <Mail className="w-3.5 h-3.5 text-[#1B664B]" />
                 <span>{displayEmail}</span>
                 <button 
                   onClick={() => copyToClipboard(displayEmail)} 
-                  className="text-slate-400 hover:text-themePrimary transition ml-1 cursor-pointer"
+                  className="text-slate-400 hover:text-[#1B664B] transition ml-1 cursor-pointer"
                   title="Copy Email"
                 >
                   {copiedEmail ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
@@ -295,7 +295,7 @@ export default function ProfilePage() {
               </div>
               
               <div className="mt-3">
-                <span className="inline-block px-3 py-1 rounded-full bg-orange-50 dark:bg-orange-950/50 text-themePrimary dark:text-orange-300 text-[10px] font-black uppercase tracking-wider border border-orange-200 dark:border-orange-900 font-auth-heading">
+                <span className="inline-block px-3 py-1 rounded-full bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] dark:text-emerald-400 text-[10px] font-black uppercase tracking-wider border border-[#D1EBE1] dark:border-emerald-900/60 font-auth-heading">
                   ⚡ {displayUserType}
                 </span>
               </div>
@@ -304,12 +304,12 @@ export default function ProfilePage() {
             <div className="pt-3 border-t border-slate-100 dark:border-slate-800 space-y-2">
               <div className="flex items-center justify-between text-xs font-bold">
                 <span className="text-slate-400 uppercase tracking-wider text-[11px]">Profile Status</span>
-                <span className="text-themePrimary font-black bg-orange-50 dark:bg-orange-950/50 px-2.5 py-0.5 rounded-full border border-orange-200 dark:border-orange-900 text-[10px]">
+                <span className="text-[#1B664B] font-black bg-[#E8F5F0] dark:bg-emerald-950/60 px-2.5 py-0.5 rounded-full border border-[#D1EBE1] dark:border-emerald-900/60 text-[10px]">
                   100% Active
                 </span>
               </div>
               <div className="w-full h-2 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
-                <div className="h-full bg-gradient-to-r from-themePrimary to-[#F97316] rounded-full" style={{ width: '100%' }} />
+                <div className="h-full bg-[#1B664B] rounded-full" style={{ width: '100%' }} />
               </div>
             </div>
           </div>
@@ -317,7 +317,7 @@ export default function ProfilePage() {
           {/* Security Summary Card */}
           <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/90 dark:border-slate-800 p-6 shadow-sm space-y-4">
             <div className="flex items-center gap-2.5 pb-3 border-b border-slate-100 dark:border-slate-800">
-              <div className="p-2 rounded-xl bg-orange-50 dark:bg-orange-950/50 text-themePrimary">
+              <div className="p-2 rounded-xl bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B]">
                 <ShieldCheck className="w-5 h-5" />
               </div>
               <div>
@@ -342,7 +342,7 @@ export default function ProfilePage() {
 
               <div className="flex items-center justify-between p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800">
                 <div className="flex items-center gap-2.5 text-xs">
-                  <div className="w-7 h-7 rounded-lg bg-orange-100 dark:bg-orange-950/50 text-themePrimary flex items-center justify-center shrink-0">
+                  <div className="w-7 h-7 rounded-lg bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] flex items-center justify-center shrink-0">
                     <Key className="w-3.5 h-3.5" />
                   </div>
                   <div>
@@ -356,10 +356,10 @@ export default function ProfilePage() {
 
             <Link
               href="/user/settings"
-              className="w-full py-2.5 px-4 rounded-xl bg-orange-50 dark:bg-orange-950/40 hover:bg-orange-100 text-themePrimary dark:text-orange-300 font-bold text-xs flex items-center justify-between transition-colors group cursor-pointer border border-orange-200/80 dark:border-orange-900"
+              className="w-full py-2.5 px-4 rounded-xl bg-[#E8F5F0] dark:bg-emerald-950/60 hover:bg-[#E8F5F0] text-[#1B664B] dark:text-emerald-400 font-bold text-xs flex items-center justify-between transition-colors group cursor-pointer border border-[#D1EBE1] dark:border-emerald-900/60"
             >
               <span>Manage Security Settings</span>
-              <ChevronRight className="w-4 h-4 text-themePrimary group-hover:translate-x-1 transition-transform" />
+              <ChevronRight className="w-4 h-4 text-[#1B664B] group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
 
@@ -393,9 +393,9 @@ export default function ProfilePage() {
                           value={fullName}
                           onChange={(e) => { setFullName(e.target.value); clearError('fullName'); }}
                           placeholder="Enter your full name"
-                          className={`w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 border ${errors.fullName ? 'border-rose-400 focus:border-rose-500' : 'border-slate-200 dark:border-slate-700 focus:border-themePrimary focus:ring-2 focus:ring-themePrimary/20'} rounded-xl text-sm font-semibold text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none transition-all`}
+                          className={`w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 border ${errors.fullName ? 'border-rose-400 focus:border-rose-500' : 'border-slate-200 dark:border-slate-700 focus:border-[#1B664B] focus:ring-2 focus:ring-themePrimary/20'} rounded-xl text-sm font-semibold text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none transition-all`}
                         />
-                        <User className="w-4 h-4 text-themePrimary absolute left-3.5 top-1/2 -translate-y-1/2" />
+                        <User className="w-4 h-4 text-[#1B664B] absolute left-3.5 top-1/2 -translate-y-1/2" />
                       </div>
                       {errors.fullName && <p className="text-xs text-rose-500 font-bold mt-1 flex items-center gap-1"><AlertCircle className="w-3.5 h-3.5" />{errors.fullName}</p>}
                     </div>
@@ -410,9 +410,9 @@ export default function ProfilePage() {
                           value={phone}
                           onChange={(e) => { setPhone(e.target.value); clearError('phone'); }}
                           placeholder="e.g. +91 9876543210"
-                          className={`w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 border ${errors.phone ? 'border-rose-400 focus:border-rose-500' : 'border-slate-200 dark:border-slate-700 focus:border-themePrimary focus:ring-2 focus:ring-themePrimary/20'} rounded-xl text-sm font-semibold text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none transition-all`}
+                          className={`w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 border ${errors.phone ? 'border-rose-400 focus:border-rose-500' : 'border-slate-200 dark:border-slate-700 focus:border-[#1B664B] focus:ring-2 focus:ring-themePrimary/20'} rounded-xl text-sm font-semibold text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none transition-all`}
                         />
-                        <Phone className="w-4 h-4 text-themePrimary absolute left-3.5 top-1/2 -translate-y-1/2" />
+                        <Phone className="w-4 h-4 text-[#1B664B] absolute left-3.5 top-1/2 -translate-y-1/2" />
                       </div>
                       {errors.phone && <p className="text-xs text-rose-500 font-bold mt-1 flex items-center gap-1"><AlertCircle className="w-3.5 h-3.5" />{errors.phone}</p>}
                     </div>
@@ -427,9 +427,9 @@ export default function ProfilePage() {
                           value={location}
                           onChange={(e) => { setLocation(e.target.value); clearError('location'); }}
                           placeholder="e.g. Chennai, Tamil Nadu"
-                          className={`w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 border ${errors.location ? 'border-rose-400 focus:border-rose-500' : 'border-slate-200 dark:border-slate-700 focus:border-themePrimary focus:ring-2 focus:ring-themePrimary/20'} rounded-xl text-sm font-semibold text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none transition-all`}
+                          className={`w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 border ${errors.location ? 'border-rose-400 focus:border-rose-500' : 'border-slate-200 dark:border-slate-700 focus:border-[#1B664B] focus:ring-2 focus:ring-themePrimary/20'} rounded-xl text-sm font-semibold text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none transition-all`}
                         />
-                        <MapPin className="w-4 h-4 text-themePrimary absolute left-3.5 top-1/2 -translate-y-1/2" />
+                        <MapPin className="w-4 h-4 text-[#1B664B] absolute left-3.5 top-1/2 -translate-y-1/2" />
                       </div>
                       {errors.location && <p className="text-xs text-rose-500 font-bold mt-1 flex items-center gap-1"><AlertCircle className="w-3.5 h-3.5" />{errors.location}</p>}
                     </div>
@@ -451,9 +451,9 @@ export default function ProfilePage() {
                           value={jobTitle}
                           onChange={(e) => setJobTitle(e.target.value)}
                           placeholder="e.g. Senior Software Engineer"
-                          className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-semibold text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-themePrimary transition-all"
+                          className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-semibold text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-[#1B664B] transition-all"
                         />
-                        <Briefcase className="w-4 h-4 text-themePrimary absolute left-3.5 top-1/2 -translate-y-1/2" />
+                        <Briefcase className="w-4 h-4 text-[#1B664B] absolute left-3.5 top-1/2 -translate-y-1/2" />
                       </div>
                     </div>
 
@@ -467,9 +467,9 @@ export default function ProfilePage() {
                           value={organization}
                           onChange={(e) => setOrganization(e.target.value)}
                           placeholder="e.g. Tech Corp / Self-Employed"
-                          className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-semibold text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-themePrimary transition-all"
+                          className="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-semibold text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-[#1B664B] transition-all"
                         />
-                        <Building className="w-4 h-4 text-themePrimary absolute left-3.5 top-1/2 -translate-y-1/2" />
+                        <Building className="w-4 h-4 text-[#1B664B] absolute left-3.5 top-1/2 -translate-y-1/2" />
                       </div>
                     </div>
                   </div>
@@ -490,15 +490,15 @@ export default function ProfilePage() {
                           onClick={() => setUserType(opt.id)}
                           className={`p-3.5 rounded-2xl border text-left transition-all flex items-start gap-3 cursor-pointer ${
                             isSelected
-                              ? 'bg-orange-50 dark:bg-orange-950/40 border-orange-500 ring-2 ring-orange-500/30'
-                              : 'bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:bg-orange-50/50 hover:border-orange-200'
+                              ? 'bg-[#E8F5F0] dark:bg-emerald-950/60 border-[#D1EBE1] ring-2 ring-emerald-500/20'
+                              : 'bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:bg-[#E8F5F0] hover:border-[#1B664B]'
                           }`}
                         >
-                          <div className={`p-2 rounded-xl shrink-0 ${isSelected ? 'bg-themePrimary text-white' : 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300'}`}>
+                          <div className={`p-2 rounded-xl shrink-0 ${isSelected ? 'bg-[#1B664B] text-white' : 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300'}`}>
                             <IconComp className="w-4 h-4" />
                           </div>
                           <div>
-                            <p className={`text-xs font-bold ${isSelected ? 'text-themePrimary dark:text-orange-300' : 'text-slate-900 dark:text-white'}`}>{opt.label}</p>
+                            <p className={`text-xs font-bold ${isSelected ? 'text-[#1B664B] dark:text-emerald-400' : 'text-slate-900 dark:text-white'}`}>{opt.label}</p>
                             <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">{opt.desc}</p>
                           </div>
                         </button>
@@ -519,7 +519,7 @@ export default function ProfilePage() {
                   <button
                     type="submit"
                     disabled={saving}
-                    className="px-6 py-2.5 text-xs font-bold text-white bg-gradient-to-r from-themePrimary via-[#F97316] to-[#EA580C] hover:opacity-90 rounded-xl shadow-md shadow-orange-500/25 flex items-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                    className="px-6 py-2.5 text-xs font-bold text-white bg-[#1B664B] hover:opacity-90 rounded-xl shadow-md shadow-emerald-950/20 flex items-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                   >
                     {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                     <span>Save Profile Changes</span>
@@ -534,7 +534,7 @@ export default function ProfilePage() {
                 {/* Personal Information Section */}
                 <div className="space-y-4">
                   <div className="flex items-center gap-3 pb-3 border-b border-slate-100 dark:border-slate-800">
-                    <div className="p-2 rounded-xl bg-orange-50 dark:bg-orange-950/50 text-themePrimary">
+                    <div className="p-2 rounded-xl bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B]">
                       <User className="w-4 h-4" />
                     </div>
                     <div>
@@ -545,19 +545,19 @@ export default function ProfilePage() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {/* Full Name */}
-                    <div className="p-4 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800 space-y-1 hover:border-orange-200 transition-all">
+                    <div className="p-4 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800 space-y-1 hover:border-[#1B664B] transition-all">
                       <div className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-wider font-auth-heading">
-                        <User className="w-3.5 h-3.5 text-themePrimary" />
+                        <User className="w-3.5 h-3.5 text-[#1B664B]" />
                         <span>Full Name</span>
                       </div>
                       <p className="text-sm font-bold text-slate-900 dark:text-white pt-0.5">{displayFullName}</p>
                     </div>
 
                     {/* Email Address */}
-                    <div className="p-4 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800 space-y-1 hover:border-orange-200 transition-all">
+                    <div className="p-4 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800 space-y-1 hover:border-[#1B664B] transition-all">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-wider font-auth-heading">
-                          <Mail className="w-3.5 h-3.5 text-themePrimary" />
+                          <Mail className="w-3.5 h-3.5 text-[#1B664B]" />
                           <span>Email Address</span>
                         </div>
                         <span className="text-[10px] font-black uppercase text-emerald-700 bg-emerald-50 dark:bg-emerald-950/50 px-2 py-0.5 rounded-full border border-emerald-200">
@@ -568,18 +568,18 @@ export default function ProfilePage() {
                     </div>
 
                     {/* Phone Number */}
-                    <div className="p-4 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800 space-y-1 hover:border-orange-200 transition-all">
+                    <div className="p-4 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800 space-y-1 hover:border-[#1B664B] transition-all">
                       <div className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-wider font-auth-heading">
-                        <Phone className="w-3.5 h-3.5 text-themePrimary" />
+                        <Phone className="w-3.5 h-3.5 text-[#1B664B]" />
                         <span>Phone Number</span>
                       </div>
                       <p className="text-sm font-bold text-slate-900 dark:text-white pt-0.5 font-mono">{displayPhone}</p>
                     </div>
 
                     {/* Location */}
-                    <div className="p-4 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800 space-y-1 hover:border-orange-200 transition-all">
+                    <div className="p-4 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800 space-y-1 hover:border-[#1B664B] transition-all">
                       <div className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-wider font-auth-heading">
-                        <MapPin className="w-3.5 h-3.5 text-themePrimary" />
+                        <MapPin className="w-3.5 h-3.5 text-[#1B664B]" />
                         <span>Location</span>
                       </div>
                       <p className="text-sm font-bold text-slate-900 dark:text-white pt-0.5">{displayLocation}</p>
@@ -590,7 +590,7 @@ export default function ProfilePage() {
                 {/* Professional Information Section */}
                 <div className="space-y-4 pt-2">
                   <div className="flex items-center gap-3 pb-3 border-b border-slate-100 dark:border-slate-800">
-                    <div className="p-2 rounded-xl bg-orange-50 dark:bg-orange-950/50 text-themePrimary">
+                    <div className="p-2 rounded-xl bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B]">
                       <Briefcase className="w-4 h-4" />
                     </div>
                     <div>
@@ -601,18 +601,18 @@ export default function ProfilePage() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {/* Job Title */}
-                    <div className="p-4 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800 space-y-1 hover:border-orange-200 transition-all">
+                    <div className="p-4 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800 space-y-1 hover:border-[#1B664B] transition-all">
                       <div className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-wider font-auth-heading">
-                        <Briefcase className="w-3.5 h-3.5 text-themePrimary" />
+                        <Briefcase className="w-3.5 h-3.5 text-[#1B664B]" />
                         <span>Job Title / Role</span>
                       </div>
                       <p className="text-sm font-bold text-slate-900 dark:text-white pt-0.5">{displayJobTitle}</p>
                     </div>
 
                     {/* Organization */}
-                    <div className="p-4 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800 space-y-1 hover:border-orange-200 transition-all">
+                    <div className="p-4 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200/80 dark:border-slate-800 space-y-1 hover:border-[#1B664B] transition-all">
                       <div className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-wider font-auth-heading">
-                        <Building className="w-3.5 h-3.5 text-themePrimary" />
+                        <Building className="w-3.5 h-3.5 text-[#1B664B]" />
                         <span>Organization / Company</span>
                       </div>
                       <p className="text-sm font-bold text-slate-900 dark:text-white pt-0.5">{displayOrg}</p>

@@ -283,12 +283,12 @@ export default function DocumentCalendarPage() {
     },
     expiring_soon: {
       label: 'Expiring Soon',
-      color: 'text-amber-600 dark:text-amber-400',
-      bg: 'bg-amber-50 dark:bg-amber-950/60',
-      border: 'border-amber-200 dark:border-amber-800',
-      dot: 'bg-amber-500',
-      pill: 'bg-amber-100 dark:bg-amber-950/80 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-800',
-      badge: 'bg-amber-500 text-white',
+      color: 'text-[#1B664B] dark:text-[#1B664B]',
+      bg: 'bg-[#E8F5F0] dark:bg-emerald-950/60',
+      border: 'border-[#D1EBE1] dark:border-amber-800',
+      dot: 'bg-[#E8F5F0]0',
+      pill: 'bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] dark:text-[#1B664B] border-[#D1EBE1] dark:border-amber-800',
+      badge: 'bg-[#E8F5F0]0 text-white',
       icon: '🟡'
     },
     valid: {
@@ -323,7 +323,7 @@ export default function DocumentCalendarPage() {
 
       {/* Navigation Breadcrumb */}
       <div className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium">
-        <Link href="/user" className="hover:text-themePrimary dark:hover:text-orange-400 transition-colors font-medium">
+        <Link href="/user" className="hover:text-[#1B664B] dark:hover:text-[#1B664B] transition-colors font-medium">
           Vault Collections
         </Link>
         <ChevronRight className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 shrink-0" />
@@ -334,8 +334,8 @@ export default function DocumentCalendarPage() {
       <div className="bg-white dark:bg-[#19102E] p-6 sm:p-8 rounded-3xl border border-[#EAE4F8] dark:border-[#2D1F47] shadow-[0_10px_30px_rgba(108,92,231,0.05)] space-y-6">
         {/* Top Header Block */}
         <div className="space-y-2">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-50 dark:bg-orange-950/60 text-themePrimary text-xs font-black uppercase tracking-wider border border-orange-200/80 dark:border-orange-800/60">
-            <Sparkles className="w-3.5 h-3.5 text-themePrimary shrink-0" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] text-xs font-black uppercase tracking-wider border border-[#D1EBE1] dark:border-emerald-800/60">
+            <Sparkles className="w-3.5 h-3.5 text-[#1B664B] shrink-0" />
             <span>Document Lifecycle Audit</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-black text-[#1E1235] dark:text-white tracking-tight whitespace-nowrap overflow-hidden text-ellipsis">
@@ -356,7 +356,7 @@ export default function DocumentCalendarPage() {
                 onClick={() => setViewMode('calendar')}
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black transition-all ${
                   viewMode === 'calendar'
-                    ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/25'
+                    ? 'bg-[#1B664B] text-white shadow-md shadow-emerald-950/20'
                     : 'text-[#7B7393] dark:text-[#A39BB8] hover:text-[#1E1235] dark:hover:text-white'
                 }`}
               >
@@ -366,7 +366,7 @@ export default function DocumentCalendarPage() {
                 onClick={() => setViewMode('timeline')}
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-black transition-all ${
                   viewMode === 'timeline'
-                    ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/25'
+                    ? 'bg-[#1B664B] text-white shadow-md shadow-emerald-950/20'
                     : 'text-[#7B7393] dark:text-[#A39BB8] hover:text-[#1E1235] dark:hover:text-white'
                 }`}
               >
@@ -378,7 +378,7 @@ export default function DocumentCalendarPage() {
             <select
               value={selectedCategory}
               onChange={e => setSelectedCategory(e.target.value)}
-              className="px-3.5 py-2.5 bg-[#F3F0FA] dark:bg-[#1F143A] border border-[#EAE4F8] dark:border-[#2D1F47] rounded-2xl text-xs font-bold text-[#1E1235] dark:text-white focus:outline-none focus:border-themePrimary cursor-pointer h-[42px]"
+              className="px-3.5 py-2.5 bg-[#F3F0FA] dark:bg-[#1F143A] border border-[#EAE4F8] dark:border-[#2D1F47] rounded-2xl text-xs font-bold text-[#1E1235] dark:text-white focus:outline-none focus:border-[#1B664B] cursor-pointer h-[42px]"
             >
               {categoryOptions.map(cat => (
                 <option key={cat} value={cat}>{cat === 'all' ? 'All Categories' : cat}</option>
@@ -394,7 +394,7 @@ export default function DocumentCalendarPage() {
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               placeholder="Search events..."
-              className="w-full pl-10 pr-4 py-2.5 bg-[#F3F0FA] dark:bg-[#1F143A] border border-[#EAE4F8] dark:border-[#2D1F47] rounded-2xl text-xs font-semibold text-[#1E1235] dark:text-white placeholder:text-[#7B7393] focus:outline-none focus:border-themePrimary h-[42px]"
+              className="w-full pl-10 pr-4 py-2.5 bg-[#F3F0FA] dark:bg-[#1F143A] border border-[#EAE4F8] dark:border-[#2D1F47] rounded-2xl text-xs font-semibold text-[#1E1235] dark:text-white placeholder:text-[#7B7393] focus:outline-none focus:border-[#1B664B] h-[42px]"
             />
           </div>
         </div>
@@ -414,13 +414,13 @@ export default function DocumentCalendarPage() {
           </div>
 
           {/* Expiring Soon Card */}
-          <div className="p-4 rounded-2xl bg-amber-50/50 dark:bg-amber-950/20 border border-amber-200/60 dark:border-amber-900/40 flex items-center justify-between">
+          <div className="p-4 rounded-2xl bg-[#E8F5F0] dark:bg-emerald-950/60 border border-[#D1EBE1] dark:border-amber-900/40 flex items-center justify-between">
             <div>
-              <p className="text-[10px] font-black uppercase tracking-wider text-amber-600 dark:text-amber-400">Expiring Soon</p>
+              <p className="text-[10px] font-black uppercase tracking-wider text-[#1B664B] dark:text-[#1B664B]">Expiring Soon</p>
               <h3 className="text-2xl font-black text-slate-900 dark:text-white mt-0.5">{expiringSoonCount}</h3>
-              <p className="text-[11px] text-amber-600/80 dark:text-amber-400/80 font-medium">Within 30 days</p>
+              <p className="text-[11px] text-[#1B664B]/80 dark:text-[#1B664B]/80 font-medium">Within 30 days</p>
             </div>
-            <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-900/60 text-amber-600 dark:text-amber-300 flex items-center justify-center font-bold text-lg shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-[#E8F5F0] dark:bg-emerald-900/60 text-[#1B664B] dark:text-[#1B664B] flex items-center justify-center font-bold text-lg shrink-0">
               <Clock className="w-5 h-5" />
             </div>
           </div>
@@ -465,12 +465,12 @@ export default function DocumentCalendarPage() {
               <div className="flex items-center justify-between pb-3 border-b border-[#F3F0FA] dark:border-[#2D1F47]">
                 <div className="flex items-center gap-3">
                   <h2 className="text-xl font-black text-[#1E1235] dark:text-white flex items-center gap-2">
-                    <CalendarIcon className="w-5 h-5 text-themePrimary" />
+                    <CalendarIcon className="w-5 h-5 text-[#1B664B]" />
                     {MONTH_NAMES[currentMonth]} {currentYear}
                   </h2>
                   <button
                     onClick={handleToday}
-                    className="px-3 py-1 rounded-xl bg-[#F3F0FA] dark:bg-[#1F143A] text-xs font-bold text-themePrimary hover:bg-orange-50 dark:hover:bg-orange-950/40 border border-[#EAE4F8] dark:border-[#2D1F47] transition"
+                    className="px-3 py-1 rounded-xl bg-[#F3F0FA] dark:bg-[#1F143A] text-xs font-bold text-[#1B664B] hover:bg-[#E8F5F0] dark:hover:bg-[#E8F5F0] border border-[#EAE4F8] dark:border-[#2D1F47] transition"
                   >
                     Today
                   </button>
@@ -514,14 +514,14 @@ export default function DocumentCalendarPage() {
                         cell.isCurrentMonth
                           ? 'bg-white dark:bg-[#1F143A]/40 border-[#EAE4F8] dark:border-[#2D1F47]'
                           : 'bg-slate-50/40 dark:bg-slate-900/30 border-transparent text-slate-400 opacity-40'
-                      } ${isToday ? 'ring-2 ring-themePrimary/80 border-themePrimary font-bold shadow-md' : ''}`}
+                      } ${isToday ? 'ring-2 ring-themePrimary/80 border-[#1B664B] font-bold shadow-md' : ''}`}
                     >
                       {/* Date Header */}
                       <div className="flex items-center justify-between">
                         <span
                           className={`text-xs font-extrabold w-6 h-6 rounded-full flex items-center justify-center ${
                             isToday
-                              ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-sm'
+                              ? 'bg-[#1B664B] text-white shadow-sm'
                               : cell.isCurrentMonth
                               ? 'text-[#1E1235] dark:text-white'
                               : 'text-slate-400'
@@ -577,7 +577,7 @@ export default function DocumentCalendarPage() {
                     onClick={() => setActiveTab(tab.id)}
                     className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-black transition-all ${
                       activeTab === tab.id
-                        ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/25'
+                        ? 'bg-[#1B664B] text-white shadow-md shadow-emerald-950/20'
                         : 'text-[#7B7393] hover:text-[#1E1235] dark:hover:text-white'
                     }`}
                   >
@@ -606,7 +606,7 @@ export default function DocumentCalendarPage() {
                       <div
                         key={evt.id}
                         onClick={() => setSelectedEvent(evt)}
-                        className="group bg-white dark:bg-[#19102E] border border-[#EAE4F8] dark:border-[#2D1F47] rounded-2xl p-4 shadow-sm hover:shadow-[0_8px_30px_rgba(255,107,0,0.1)] hover:border-themePrimary/40 transition-all duration-300 cursor-pointer"
+                        className="group bg-white dark:bg-[#19102E] border border-[#EAE4F8] dark:border-[#2D1F47] rounded-2xl p-4 shadow-sm hover:shadow-[0_8px_30px_rgba(255,107,0,0.1)] hover:border-[#1B664B]/40 transition-all duration-300 cursor-pointer"
                       >
                         <div className="flex items-start gap-4">
                           <div className="flex flex-col items-center gap-1 pt-0.5 shrink-0">
@@ -622,12 +622,12 @@ export default function DocumentCalendarPage() {
                                   </span>
                                   <span className="text-xs text-[#7B7393] font-medium">{evt.category}</span>
                                 </div>
-                                <h3 className="text-base font-black text-[#1E1235] dark:text-white group-hover:text-themePrimary transition-colors truncate">
+                                <h3 className="text-base font-black text-[#1E1235] dark:text-white group-hover:text-[#1B664B] transition-colors truncate">
                                   {evt.title}
                                 </h3>
                               </div>
                               <div className="text-right shrink-0">
-                                <p className={`text-xs font-black ${evt.daysRemaining < 0 ? 'text-rose-600' : evt.daysRemaining <= 7 ? 'text-amber-600' : 'text-[#1E1235] dark:text-white'}`}>
+                                <p className={`text-xs font-black ${evt.daysRemaining < 0 ? 'text-rose-600' : evt.daysRemaining <= 7 ? 'text-[#1B664B]' : 'text-[#1E1235] dark:text-white'}`}>
                                   {getDaysLabel(evt.daysRemaining)}
                                 </p>
                                 <p className="text-[11px] text-[#7B7393] font-mono mt-0.5">{formatDate(evt.expiryDate)}</p>
@@ -643,7 +643,7 @@ export default function DocumentCalendarPage() {
                               </div>
                               <button
                                 onClick={e => { e.stopPropagation(); setRenewModalDoc(evt); setRenewDateInput(evt.expiryDate); }}
-                                className="flex items-center gap-1 px-3 py-1 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white text-xs font-black shadow-sm shadow-orange-500/20 hover:scale-105 transition-transform opacity-0 group-hover:opacity-100 shrink-0"
+                                className="flex items-center gap-1 px-3 py-1 rounded-xl bg-[#1B664B] text-white text-xs font-black shadow-sm shadow-emerald-950/20 hover:scale-105 transition-transform opacity-0 group-hover:opacity-100 shrink-0"
                               >
                                 <RefreshCw className="w-3 h-3" /> Renew
                               </button>
@@ -666,10 +666,10 @@ export default function DocumentCalendarPage() {
           <div className="bg-white dark:bg-[#19102E] border border-[#EAE4F8] dark:border-[#2D1F47] rounded-3xl p-5 shadow-sm space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Bell className="w-4 h-4 text-themePrimary" />
+                <Bell className="w-4 h-4 text-[#1B664B]" />
                 <h3 className="text-base font-black text-[#1E1235] dark:text-white">Upcoming Deadlines</h3>
               </div>
-              <span className="text-xs font-extrabold px-2 py-0.5 rounded-full bg-orange-100 dark:bg-orange-950 text-themePrimary">
+              <span className="text-xs font-extrabold px-2 py-0.5 rounded-full bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B]">
                 {upcomingDeadlines.length} Priority
               </span>
             </div>
@@ -684,16 +684,16 @@ export default function DocumentCalendarPage() {
                     <div
                       key={evt.id}
                       onClick={() => setSelectedEvent(evt)}
-                      className="flex items-center justify-between gap-3 p-3 rounded-2xl bg-[#F3F0FA]/60 dark:bg-[#1F143A]/60 hover:bg-orange-50 dark:hover:bg-orange-950/20 border border-transparent hover:border-themePrimary/20 transition-all cursor-pointer group"
+                      className="flex items-center justify-between gap-3 p-3 rounded-2xl bg-[#F3F0FA]/60 dark:bg-[#1F143A]/60 hover:bg-[#E8F5F0] dark:hover:bg-[#E8F5F0] border border-transparent hover:border-[#1B664B]/20 transition-all cursor-pointer group"
                     >
                       <div className="flex items-center gap-2.5 min-w-0">
                         <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${cfg.dot} ${evt.status === 'expiring_soon' ? 'animate-pulse' : ''}`} />
                         <div className="min-w-0">
-                          <p className="text-xs font-bold text-[#1E1235] dark:text-white truncate group-hover:text-themePrimary transition-colors">{evt.title}</p>
+                          <p className="text-xs font-bold text-[#1E1235] dark:text-white truncate group-hover:text-[#1B664B] transition-colors">{evt.title}</p>
                           <p className="text-[10px] text-[#7B7393]">{formatDate(evt.expiryDate)}</p>
                         </div>
                       </div>
-                      <span className={`text-[10px] font-black shrink-0 ${evt.daysRemaining <= 7 ? 'text-rose-500' : evt.daysRemaining <= 30 ? 'text-amber-500' : 'text-emerald-500'}`}>
+                      <span className={`text-[10px] font-black shrink-0 ${evt.daysRemaining <= 7 ? 'text-rose-500' : evt.daysRemaining <= 30 ? 'text-[#1B664B]' : 'text-emerald-500'}`}>
                         {getDaysLabel(evt.daysRemaining)}
                       </span>
                     </div>
@@ -706,7 +706,7 @@ export default function DocumentCalendarPage() {
           {/* CATEGORY RISK BREAKDOWN WIDGET */}
           <div className="bg-white dark:bg-[#19102E] border border-[#EAE4F8] dark:border-[#2D1F47] rounded-3xl p-5 shadow-sm space-y-4">
             <div className="flex items-center gap-2">
-              <BarChart3 className="w-4 h-4 text-themePrimary" />
+              <BarChart3 className="w-4 h-4 text-[#1B664B]" />
               <h3 className="text-base font-black text-[#1E1235] dark:text-white">Category Health Breakdown</h3>
             </div>
 
@@ -737,15 +737,15 @@ export default function DocumentCalendarPage() {
           </div>
 
           {/* STATUS GUIDE CARD */}
-          <div className="bg-gradient-to-br from-orange-50 to-amber-50/40 dark:from-orange-950/30 dark:to-amber-950/20 border border-orange-100 dark:border-orange-900/40 rounded-3xl p-5 space-y-3">
+          <div className="bg-gradient-to-br from-[#E8F5F0] to-[#E8F5F0] dark:from-emerald-950/30 dark:to-emerald-950/20 border border-[#D1EBE1] dark:border-emerald-900/60 rounded-3xl p-5 space-y-3">
             <div className="flex items-center gap-2">
-              <Shield className="w-4 h-4 text-themePrimary" />
+              <Shield className="w-4 h-4 text-[#1B664B]" />
               <h3 className="text-sm font-black text-[#1E1235] dark:text-white">Audit Status Guide</h3>
             </div>
             <div className="space-y-2">
               {[
                 { dot: 'bg-rose-500', label: 'Expired', desc: 'Overdue deadline — update record now' },
-                { dot: 'bg-amber-500 animate-pulse', label: 'Expiring Soon', desc: 'Expires within 30 days — schedule renewal' },
+                { dot: 'bg-[#E8F5F0]0 animate-pulse', label: 'Expiring Soon', desc: 'Expires within 30 days — schedule renewal' },
                 { dot: 'bg-emerald-500', label: 'Valid / Healthy', desc: 'More than 30 days active' },
               ].map(item => (
                 <div key={item.label} className="flex items-start gap-2.5">
@@ -788,7 +788,7 @@ export default function DocumentCalendarPage() {
               </div>
               <div className="p-3.5 rounded-2xl bg-[#F3F0FA] dark:bg-[#1F143A] border border-[#EAE4F8] dark:border-[#2D1F47]">
                 <p className="text-[10px] text-[#7B7393] font-bold uppercase tracking-wider mb-1">Days Remaining</p>
-                <p className={`text-sm font-black ${selectedEvent.daysRemaining < 0 ? 'text-rose-600' : selectedEvent.daysRemaining <= 30 ? 'text-amber-600' : 'text-emerald-600'}`}>
+                <p className={`text-sm font-black ${selectedEvent.daysRemaining < 0 ? 'text-rose-600' : selectedEvent.daysRemaining <= 30 ? 'text-[#1B664B]' : 'text-emerald-600'}`}>
                   {getDaysLabel(selectedEvent.daysRemaining)}
                 </p>
               </div>
@@ -807,11 +807,11 @@ export default function DocumentCalendarPage() {
                 }}
                 className="flex-1 py-2.5 rounded-2xl border border-[#EAE4F8] dark:border-[#2D1F47] text-[#1E1235] dark:text-white font-bold text-xs hover:bg-[#F3F0FA] dark:hover:bg-[#1F143A] transition flex items-center justify-center gap-1.5"
               >
-                <Eye className="w-4 h-4 text-themePrimary" /> View Document
+                <Eye className="w-4 h-4 text-[#1B664B]" /> View Document
               </button>
               <button
                 onClick={() => { setRenewModalDoc(selectedEvent); setRenewDateInput(selectedEvent.expiryDate); }}
-                className="flex-1 py-2.5 rounded-2xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-black text-xs shadow-md shadow-orange-500/25 hover:scale-105 transition flex items-center justify-center gap-1.5"
+                className="flex-1 py-2.5 rounded-2xl bg-[#1B664B] text-white font-black text-xs shadow-md shadow-emerald-950/20 hover:scale-105 transition flex items-center justify-center gap-1.5"
               >
                 <CalendarCheck className="w-4 h-4" /> Renew Now
               </button>
@@ -826,7 +826,7 @@ export default function DocumentCalendarPage() {
           <div className="bg-white dark:bg-[#19102E] rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-[#EAE4F8] dark:border-[#2D1F47] space-y-4">
             <div className="flex items-center justify-between border-b border-[#F3F0FA] dark:border-[#2D1F47] pb-3">
               <div className="flex items-center gap-2">
-                <span className="w-8 h-8 rounded-xl bg-orange-100 dark:bg-orange-950/60 text-themePrimary border border-orange-200 dark:border-orange-900 flex items-center justify-center">
+                <span className="w-8 h-8 rounded-xl bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] border border-[#D1EBE1] dark:border-emerald-900/60 flex items-center justify-center">
                   <CalendarCheck className="w-4 h-4" />
                 </span>
                 <h3 className="text-base font-black text-[#1E1235] dark:text-white">Renew Expiry Date</h3>
@@ -848,7 +848,7 @@ export default function DocumentCalendarPage() {
                   required
                   value={renewDateInput}
                   onChange={e => setRenewDateInput(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-[#F3F0FA] dark:bg-[#1F143A] border border-[#EAE4F8] dark:border-[#2D1F47] rounded-2xl text-sm font-bold text-[#1E1235] dark:text-white focus:outline-none focus:border-themePrimary transition"
+                  className="w-full px-4 py-2.5 bg-[#F3F0FA] dark:bg-[#1F143A] border border-[#EAE4F8] dark:border-[#2D1F47] rounded-2xl text-sm font-bold text-[#1E1235] dark:text-white focus:outline-none focus:border-[#1B664B] transition"
                 />
               </div>
               <div className="flex gap-3 pt-1">
@@ -861,7 +861,7 @@ export default function DocumentCalendarPage() {
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 rounded-2xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white text-xs font-black shadow-md shadow-orange-500/25 hover:scale-105 transition"
+                  className="flex-1 py-2.5 rounded-2xl bg-[#1B664B] text-white text-xs font-black shadow-md shadow-emerald-950/20 hover:scale-105 transition"
                 >
                   Save Date
                 </button>

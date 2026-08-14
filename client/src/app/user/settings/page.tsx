@@ -502,7 +502,7 @@ export default function UserSettingsPage() {
 
             <button
               onClick={() => setPopupNotif(null)}
-              className="w-full py-2.5 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-black text-xs shadow-md shadow-orange-500/25 hover:scale-105 transition cursor-pointer"
+              className="w-full py-2.5 rounded-xl bg-[#1B664B] text-white font-black text-xs shadow-md shadow-emerald-950/20 hover:scale-105 transition cursor-pointer"
             >
               Got it!
             </button>
@@ -515,7 +515,7 @@ export default function UserSettingsPage() {
         <div className={`fixed top-20 right-6 z-[100000] text-white text-sm font-semibold px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-2 animate-in fade-in slide-in-from-top-3 ${
           toastMsg.type === 'success' ? 'bg-slate-900' : 'bg-rose-600'
         }`}>
-          {toastMsg.type === 'success' ? <CheckCircle2 className="w-4 h-4 text-emerald-400" /> : <AlertCircle className="w-4 h-4 text-amber-300" />}
+          {toastMsg.type === 'success' ? <CheckCircle2 className="w-4 h-4 text-emerald-400" /> : <AlertCircle className="w-4 h-4 text-[#1B664B]" />}
           <span>{toastMsg.text}</span>
         </div>
       )}
@@ -535,7 +535,7 @@ export default function UserSettingsPage() {
           onClick={() => setActiveTab('security')}
           className={`px-5 py-2.5 text-sm font-extrabold rounded-2xl transition whitespace-nowrap ${
             activeTab === 'security'
-              ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/20'
+              ? 'bg-[#1B664B] text-white shadow-md shadow-emerald-950/20'
               : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
           }`}
         >
@@ -546,7 +546,7 @@ export default function UserSettingsPage() {
           onClick={() => setActiveTab('preferences')}
           className={`px-5 py-2.5 text-sm font-extrabold rounded-2xl transition whitespace-nowrap ${
             activeTab === 'preferences'
-              ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/20'
+              ? 'bg-[#1B664B] text-white shadow-md shadow-emerald-950/20'
               : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
           }`}
         >
@@ -557,7 +557,7 @@ export default function UserSettingsPage() {
           onClick={() => setActiveTab('notifications')}
           className={`px-5 py-2.5 text-sm font-extrabold rounded-2xl transition whitespace-nowrap ${
             activeTab === 'notifications'
-              ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/20'
+              ? 'bg-[#1B664B] text-white shadow-md shadow-emerald-950/20'
               : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
           }`}
         >
@@ -568,7 +568,7 @@ export default function UserSettingsPage() {
           onClick={() => setActiveTab('storage')}
           className={`px-5 py-2.5 text-sm font-extrabold rounded-2xl transition whitespace-nowrap ${
             activeTab === 'storage'
-              ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/20'
+              ? 'bg-[#1B664B] text-white shadow-md shadow-emerald-950/20'
               : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
           }`}
         >
@@ -578,7 +578,7 @@ export default function UserSettingsPage() {
 
       {loading ? (
         <div className="bg-white dark:bg-slate-900 p-12 rounded-3xl border border-slate-200 dark:border-slate-800 text-center space-y-3 shadow-xl">
-          <Loader2 className="w-8 h-8 text-themePrimary dark:text-orange-400 animate-spin mx-auto" />
+          <Loader2 className="w-8 h-8 text-[#1B664B] dark:text-[#1B664B] animate-spin mx-auto" />
           <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">{t('common.loading', 'Loading settings & preferences...')}</p>
         </div>
       ) : (
@@ -604,7 +604,7 @@ export default function UserSettingsPage() {
                       if (passwordErrors.currentPassword) setPasswordErrors({ ...passwordErrors, currentPassword: '' });
                     }}
                     placeholder="Enter current password"
-                    className={`w-full pl-4 pr-11 py-2.5 bg-slate-50 dark:bg-slate-800 border ${passwordErrors.currentPassword ? 'border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20' : 'border-slate-200 dark:border-slate-700 focus:border-themePrimary'} rounded-xl text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none transition-all`}
+                    className={`w-full pl-4 pr-11 py-2.5 bg-slate-50 dark:bg-slate-800 border ${passwordErrors.currentPassword ? 'border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20' : 'border-slate-200 dark:border-slate-700 focus:border-[#1B664B]'} rounded-xl text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none transition-all`}
                   />
                   <button
                     type="button"
@@ -636,7 +636,7 @@ export default function UserSettingsPage() {
                       if (passwordErrors.newPassword) setPasswordErrors({ ...passwordErrors, newPassword: '' });
                     }}
                     placeholder="Enter new password"
-                    className={`w-full pl-4 pr-11 py-2.5 bg-slate-50 dark:bg-slate-800 border ${passwordErrors.newPassword ? 'border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20' : 'border-slate-200 dark:border-slate-700 focus:border-themePrimary'} rounded-xl text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none transition-all`}
+                    className={`w-full pl-4 pr-11 py-2.5 bg-slate-50 dark:bg-slate-800 border ${passwordErrors.newPassword ? 'border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20' : 'border-slate-200 dark:border-slate-700 focus:border-[#1B664B]'} rounded-xl text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none transition-all`}
                   />
                   <button
                     type="button"
@@ -668,7 +668,7 @@ export default function UserSettingsPage() {
                       if (passwordErrors.confirmPassword) setPasswordErrors({ ...passwordErrors, confirmPassword: '' });
                     }}
                     placeholder="Confirm new password"
-                    className={`w-full pl-4 pr-11 py-2.5 bg-slate-50 dark:bg-slate-800 border ${passwordErrors.confirmPassword ? 'border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20' : 'border-slate-200 dark:border-slate-700 focus:border-themePrimary'} rounded-xl text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none transition-all`}
+                    className={`w-full pl-4 pr-11 py-2.5 bg-slate-50 dark:bg-slate-800 border ${passwordErrors.confirmPassword ? 'border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20' : 'border-slate-200 dark:border-slate-700 focus:border-[#1B664B]'} rounded-xl text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none transition-all`}
                   />
                   <button
                     type="button"
@@ -691,7 +691,7 @@ export default function UserSettingsPage() {
                 <button
                   type="submit"
                   disabled={savingPassword}
-                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 text-white font-bold text-sm flex items-center gap-2 shadow-lg shadow-orange-500/25"
+                  className="px-5 py-2.5 rounded-xl bg-[#1B664B] hover:brightness-110 text-white font-bold text-sm flex items-center gap-2 shadow-lg shadow-emerald-950/20"
                 >
                   {savingPassword ? (
                     <>
@@ -728,7 +728,7 @@ export default function UserSettingsPage() {
                     onClick={() => handleSelectDisplayMode('light')}
                     className={`p-4 rounded-xl border flex flex-col items-center gap-2 transition ${
                       displayMode === 'light'
-                        ? 'border-themePrimary bg-orange-50 dark:bg-orange-950/60 text-themePrimary font-bold ring-2 ring-orange-500/20 shadow-md'
+                        ? 'border-[#1B664B] bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] font-bold ring-2 ring-emerald-500/20 shadow-md'
                         : 'border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400'
                     }`}
                   >
@@ -741,7 +741,7 @@ export default function UserSettingsPage() {
                     onClick={() => handleSelectDisplayMode('dark')}
                     className={`p-4 rounded-xl border flex flex-col items-center gap-2 transition ${
                       displayMode === 'dark'
-                        ? 'border-themePrimary bg-orange-50 dark:bg-orange-950/60 text-themePrimary font-bold ring-2 ring-orange-500/20 shadow-md'
+                        ? 'border-[#1B664B] bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] font-bold ring-2 ring-emerald-500/20 shadow-md'
                         : 'border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400'
                     }`}
                   >
@@ -754,7 +754,7 @@ export default function UserSettingsPage() {
                     onClick={() => handleSelectDisplayMode('system')}
                     className={`p-4 rounded-xl border flex flex-col items-center gap-2 transition ${
                       displayMode === 'system'
-                        ? 'border-themePrimary bg-orange-50 dark:bg-orange-950/60 text-themePrimary font-bold ring-2 ring-orange-500/20 shadow-md'
+                        ? 'border-[#1B664B] bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] font-bold ring-2 ring-emerald-500/20 shadow-md'
                         : 'border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400'
                     }`}
                   >
@@ -778,7 +778,7 @@ export default function UserSettingsPage() {
                       name="theme_selection"
                       checked={!customTheme}
                       onChange={() => handleSelectCustomTheme(null)}
-                      className="w-4 h-4 text-themePrimary focus:ring-themePrimary border-slate-300"
+                      className="w-4 h-4 text-[#1B664B] focus:ring-themePrimary border-slate-300"
                     />
                     <span className="text-sm font-bold text-slate-900 dark:text-white flex-1">Default System Theme</span>
                   </label>
@@ -790,7 +790,7 @@ export default function UserSettingsPage() {
                         name="theme_selection"
                         checked={customTheme?.id === t.id}
                         onChange={() => handleSelectCustomTheme(t)}
-                        className="w-4 h-4 text-themePrimary focus:ring-themePrimary border-slate-300"
+                        className="w-4 h-4 text-[#1B664B] focus:ring-themePrimary border-slate-300"
                       />
                       <span className="text-sm font-bold text-slate-900 dark:text-white flex-1">{t.theme_name}</span>
                       <div className="flex -space-x-1">
@@ -812,7 +812,7 @@ export default function UserSettingsPage() {
                 <select
                   value={language}
                   onChange={(e) => handleSelectLanguage(e.target.value as SupportedLanguage)}
-                  className="w-full sm:w-64 px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-themePrimary transition-all shadow-sm"
+                  className="w-full sm:w-64 px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-[#1B664B] transition-all shadow-sm"
                 >
                   {languageOptions.map((opt) => (
                     <option key={opt.code} value={opt.code} className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">
@@ -828,7 +828,7 @@ export default function UserSettingsPage() {
                 <button
                   type="submit"
                   disabled={savingPreferences}
-                  className="px-6 py-3 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-orange-500/25 w-full sm:w-auto"
+                  className="px-6 py-3 rounded-xl bg-[#1B664B] hover:brightness-110 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/20 w-full sm:w-auto"
                 >
                   {savingPreferences ? (
                     <>
@@ -857,7 +857,7 @@ export default function UserSettingsPage() {
               <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-bold text-slate-900 dark:text-white">{t('settings.storageCapacity', 'Storage Capacity Used')}</span>
-                  <span className="text-sm font-mono text-themePrimary dark:text-orange-400 font-bold">
+                  <span className="text-sm font-mono text-[#1B664B] dark:text-[#1B664B] font-bold">
                     {formatFileSize(storageUsed)} / {formatFileSize(storageLimit)} ({storagePct.toFixed(1)}%)
                   </span>
                 </div>
@@ -886,7 +886,7 @@ export default function UserSettingsPage() {
               </div>
 
               {adminNotificationPolicy && !adminNotificationPolicy.email?.enabled && (
-                <div className="p-4 bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-800 rounded-xl flex gap-3 text-amber-800 dark:text-amber-200">
+                <div className="p-4 bg-[#E8F5F0] dark:bg-emerald-900/60 border border-[#D1EBE1] dark:border-amber-800 rounded-xl flex gap-3 text-[#1B664B] dark:text-[#1B664B]">
                   <AlertCircle className="w-5 h-5 shrink-0" />
                   <p className="text-sm font-medium">Your administrator has currently disabled email notifications globally. Changing these preferences won't take effect until global email services are restored.</p>
                 </div>
@@ -898,7 +898,7 @@ export default function UserSettingsPage() {
                     type="checkbox"
                     checked={notificationPrefs.emailAlerts}
                     onChange={(e) => setNotificationPrefs({ ...notificationPrefs, emailAlerts: e.target.checked })}
-                    className="mt-1 w-4 h-4 text-themePrimary focus:ring-themePrimary rounded border-slate-300 dark:border-slate-600"
+                    className="mt-1 w-4 h-4 text-[#1B664B] focus:ring-themePrimary rounded border-slate-300 dark:border-slate-600"
                   />
                   <div>
                     <h4 className="text-sm font-bold text-slate-900 dark:text-white">Security & Login Alerts</h4>
@@ -911,7 +911,7 @@ export default function UserSettingsPage() {
                     type="checkbox"
                     checked={notificationPrefs.documentShares}
                     onChange={(e) => setNotificationPrefs({ ...notificationPrefs, documentShares: e.target.checked })}
-                    className="mt-1 w-4 h-4 text-themePrimary focus:ring-themePrimary rounded border-slate-300 dark:border-slate-600"
+                    className="mt-1 w-4 h-4 text-[#1B664B] focus:ring-themePrimary rounded border-slate-300 dark:border-slate-600"
                   />
                   <div>
                     <h4 className="text-sm font-bold text-slate-900 dark:text-white">Document Shares</h4>
@@ -924,7 +924,7 @@ export default function UserSettingsPage() {
                     type="checkbox"
                     checked={notificationPrefs.weeklyDigest}
                     onChange={(e) => setNotificationPrefs({ ...notificationPrefs, weeklyDigest: e.target.checked })}
-                    className="mt-1 w-4 h-4 text-themePrimary focus:ring-themePrimary rounded border-slate-300 dark:border-slate-600"
+                    className="mt-1 w-4 h-4 text-[#1B664B] focus:ring-themePrimary rounded border-slate-300 dark:border-slate-600"
                   />
                   <div>
                     <h4 className="text-sm font-bold text-slate-900 dark:text-white">Weekly Digest</h4>
@@ -937,7 +937,7 @@ export default function UserSettingsPage() {
                 <button
                   type="submit"
                   disabled={savingNotifications}
-                  className="px-6 py-3 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-orange-500/25 w-full sm:w-auto"
+                  className="px-6 py-3 rounded-xl bg-[#1B664B] hover:brightness-110 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/20 w-full sm:w-auto"
                 >
                   {savingNotifications ? (
                     <>

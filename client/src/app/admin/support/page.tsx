@@ -47,11 +47,11 @@ const DEFAULT_SETTINGS: WidgetSettings = {
   popoverTitle: 'Help?',
   popoverSubtitle: 'Check our documentation or contact support',
   hoverTooltip: 'Need Help? Chat & Docs 💬',
-  themeColor: 'var(--theme-primary, #FF6B00)'
+  themeColor: 'var(--theme-primary, #1B664B)'
 };
 
 const DEFAULT_BOT_RULES: BotRule[] = [
-  { id: '1', keyword: 'upload', response: 'To upload documents, click the orange "Upload Document" button at the top header or navigate to "/user/upload". We support PDF, DOCX, PNG, JPG, and TXT files.' },
+  { id: '1', keyword: 'upload', response: 'To upload documents, click the green "Upload Document" button at the top header or navigate to "/user/upload". We support PDF, DOCX, PNG, JPG, and TXT files.' },
   { id: '2', keyword: 'encrypt', response: 'DocVault uses military-grade AES-256 encryption. You can also lock individual sensitive documents with a custom PIN/Password.' },
   { id: '3', keyword: 'price', response: 'Check out our Subscription & Billing section in the menu for Pro and Team plans starting at ₹299/mo with 100GB storage!' }
 ];
@@ -259,7 +259,7 @@ export default function AdminSupportCenterPage() {
     <div className="space-y-8 pb-16 text-slate-900 font-sans">
       {/* Toast Alert */}
       {toastMessage && (
-        <div className="fixed top-20 right-6 z-[100000] flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-white text-slate-900 border border-themePrimary/30 shadow-2xl shadow-orange-500/10 text-xs font-semibold animate-pop-in">
+        <div className="fixed top-20 right-6 z-[100000] flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-white text-slate-900 border border-[#1B664B]/30 shadow-2xl shadow-emerald-950/20 text-xs font-semibold animate-pop-in">
           <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
           <span>{toastMessage}</span>
         </div>
@@ -269,7 +269,7 @@ export default function AdminSupportCenterPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
         <div>
           <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-3 font-auth-heading">
-            <span className="w-10 h-10 rounded-2xl bg-orange-50 border border-orange-200 text-themePrimary flex items-center justify-center shadow-2xs shrink-0">
+            <span className="w-10 h-10 rounded-2xl bg-[#E8F5F0] border border-[#D1EBE1] text-[#1B664B] flex items-center justify-center shadow-2xs shrink-0">
               <MessageCircle className="w-5 h-5" />
             </span>
             Floating Help Center & Support CRUD Manager
@@ -293,7 +293,7 @@ export default function AdminSupportCenterPage() {
             onClick={() => setActiveTab(t.id as any)}
             className={`px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer ${
               activeTab === t.id
-                ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/20'
+                ? 'bg-[#1B664B] text-white shadow-md shadow-emerald-950/20'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
             }`}
           >
@@ -319,7 +319,7 @@ export default function AdminSupportCenterPage() {
             </div>
             <button
               onClick={() => setShowCreateFaqModal(true)}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-black text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:opacity-90 shadow-md shadow-orange-500/20 hover:scale-105 transition cursor-pointer">
+              className="flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-black text-white bg-[#1B664B] hover:opacity-90 shadow-md shadow-emerald-950/20 hover:scale-105 transition cursor-pointer">
               <Plus className="w-4 h-4" /> Add New FAQ
             </button>
           </div>
@@ -328,17 +328,17 @@ export default function AdminSupportCenterPage() {
             {faqs.map((item) => (
               <div
                 key={item.id}
-                className="p-5 rounded-3xl bg-white border border-slate-200 shadow-2xs space-y-2 hover:border-themePrimary/50 transition cursor-pointer group"
+                className="p-5 rounded-3xl bg-white border border-slate-200 shadow-2xs space-y-2 hover:border-[#1B664B]/50 transition cursor-pointer group"
               >
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex items-center gap-2.5">
-                    <HelpCircle className="w-4.5 h-4.5 text-themePrimary shrink-0" />
-                    <h4 className="text-sm font-black text-slate-900 font-auth-heading group-hover:text-themePrimary transition-colors">{item.q}</h4>
+                    <HelpCircle className="w-4.5 h-4.5 text-[#1B664B] shrink-0" />
+                    <h4 className="text-sm font-black text-slate-900 font-auth-heading group-hover:text-[#1B664B] transition-colors">{item.q}</h4>
                   </div>
                   <div className="flex items-center gap-1.5 shrink-0 bg-slate-50 p-1 rounded-xl border border-slate-200/80">
                     <button
                       onClick={() => setEditingFaq(item)}
-                      className="p-1.5 rounded-lg text-slate-500 hover:text-themePrimary hover:bg-white transition cursor-pointer"
+                      className="p-1.5 rounded-lg text-slate-500 hover:text-[#1B664B] hover:bg-white transition cursor-pointer"
                       title="Edit FAQ"
                     >
                       <Edit3 className="w-3.5 h-3.5" />
@@ -363,7 +363,7 @@ export default function AdminSupportCenterPage() {
       {activeTab === 'settings' && (
         <div className="p-6 rounded-3xl bg-white border border-slate-200 shadow-2xs space-y-4 animate-pop-in">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-orange-50 border border-orange-200 text-themePrimary flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-2xl bg-[#E8F5F0] border border-[#D1EBE1] text-[#1B664B] flex items-center justify-center shrink-0">
               <Sliders className="w-5 h-5" />
             </div>
             <div>
@@ -382,7 +382,7 @@ export default function AdminSupportCenterPage() {
                   type="text"
                   value={settings.popoverBadge}
                   onChange={(e) => setSettings({ ...settings, popoverBadge: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 font-bold text-slate-900 focus:outline-none focus:border-themePrimary"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 font-bold text-slate-900 focus:outline-none focus:border-[#1B664B]"
                 />
               </div>
 
@@ -392,7 +392,7 @@ export default function AdminSupportCenterPage() {
                   type="text"
                   value={settings.popoverTitle}
                   onChange={(e) => setSettings({ ...settings, popoverTitle: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 font-bold text-slate-900 focus:outline-none focus:border-themePrimary"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 font-bold text-slate-900 focus:outline-none focus:border-[#1B664B]"
                 />
               </div>
             </div>
@@ -403,7 +403,7 @@ export default function AdminSupportCenterPage() {
                 type="text"
                 value={settings.popoverSubtitle}
                 onChange={(e) => setSettings({ ...settings, popoverSubtitle: e.target.value })}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 font-bold text-slate-900 focus:outline-none focus:border-themePrimary"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 font-bold text-slate-900 focus:outline-none focus:border-[#1B664B]"
               />
             </div>
 
@@ -413,13 +413,13 @@ export default function AdminSupportCenterPage() {
                 type="text"
                 value={settings.hoverTooltip}
                 onChange={(e) => setSettings({ ...settings, hoverTooltip: e.target.value })}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 font-bold text-slate-900 focus:outline-none focus:border-themePrimary"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 font-bold text-slate-900 focus:outline-none focus:border-[#1B664B]"
               />
             </div>
 
             <button
               type="submit"
-              className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-black text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:opacity-90 shadow-md shadow-orange-500/20 hover:scale-105 transition cursor-pointer">
+              className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-black text-white bg-[#1B664B] hover:opacity-90 shadow-md shadow-emerald-950/20 hover:scale-105 transition cursor-pointer">
               Save Widget Customizations
             </button>
           </form>
@@ -436,7 +436,7 @@ export default function AdminSupportCenterPage() {
             </div>
             <button
               onClick={() => setShowCreateBotModal(true)}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-black text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:opacity-90 shadow-md shadow-orange-500/20 hover:scale-105 transition cursor-pointer">
+              className="flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-black text-white bg-[#1B664B] hover:opacity-90 shadow-md shadow-emerald-950/20 hover:scale-105 transition cursor-pointer">
               <Plus className="w-4 h-4" /> Add Bot Reply Rule
             </button>
           </div>
@@ -452,8 +452,8 @@ export default function AdminSupportCenterPage() {
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {botRules.map((rule) => (
-                  <tr key={rule.id} className="hover:bg-orange-50/20 transition">
-                    <td className="py-3.5 px-4 font-mono font-bold text-themePrimary">
+                  <tr key={rule.id} className="hover:bg-[#E8F5F0] transition">
+                    <td className="py-3.5 px-4 font-mono font-bold text-[#1B664B]">
                       "{rule.keyword}"
                     </td>
                     <td className="py-3.5 px-4 text-slate-700 font-medium">
@@ -506,8 +506,8 @@ export default function AdminSupportCenterPage() {
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {tickets.map((t) => (
-                  <tr key={t.id} className="hover:bg-orange-50/20 transition">
-                    <td className="py-3.5 px-4 font-mono font-bold text-themePrimary">{t.id}</td>
+                  <tr key={t.id} className="hover:bg-[#E8F5F0] transition">
+                    <td className="py-3.5 px-4 font-mono font-bold text-[#1B664B]">{t.id}</td>
                     <td className="py-3.5 px-4">
                       <div>
                         <p className="font-extrabold text-slate-900">{t.name}</p>
@@ -518,7 +518,7 @@ export default function AdminSupportCenterPage() {
                     <td className="py-3.5 px-4 font-mono text-slate-500">{t.createdAt}</td>
                     <td className="py-3.5 px-4">
                       <span className={`px-2.5 py-1 rounded-full text-[10px] font-black uppercase border ${
-                        t.status === 'resolved' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-amber-50 text-amber-700 border-amber-200'
+                        t.status === 'resolved' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-[#E8F5F0] text-[#1B664B] border-[#D1EBE1]'
                       }`}>
                         {t.status}
                       </span>
@@ -527,7 +527,7 @@ export default function AdminSupportCenterPage() {
                       <div className="flex items-center justify-end gap-1.5">
                         <button
                           onClick={() => setSelectedTicket(t)}
-                          className="px-3 py-1.5 rounded-xl bg-orange-50 text-themePrimary border border-orange-200 font-bold hover:bg-orange-100 text-[10px] cursor-pointer"
+                          className="px-3 py-1.5 rounded-xl bg-[#E8F5F0] text-[#1B664B] border border-[#D1EBE1] font-bold hover:bg-[#E8F5F0] text-[10px] cursor-pointer"
                         >
                           Review & Reply
                         </button>
@@ -562,7 +562,7 @@ export default function AdminSupportCenterPage() {
                 <select
                   value={newFaqForm.category}
                   onChange={e => setNewFaqForm({ ...newFaqForm, category: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:border-[#1B664B]"
                 >
                   <option value="Documents">Documents</option>
                   <option value="Organization">Organization</option>
@@ -580,7 +580,7 @@ export default function AdminSupportCenterPage() {
                   placeholder="e.g. How do I reset my account password?"
                   value={newFaqForm.q}
                   onChange={e => setNewFaqForm({ ...newFaqForm, q: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:border-[#1B664B]"
                 />
               </div>
 
@@ -592,13 +592,13 @@ export default function AdminSupportCenterPage() {
                   placeholder="Provide step-by-step guidance for the user..."
                   value={newFaqForm.a}
                   onChange={e => setNewFaqForm({ ...newFaqForm, a: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-medium text-slate-900 focus:outline-none focus:border-themePrimary resize-none"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-medium text-slate-900 focus:outline-none focus:border-[#1B664B] resize-none"
                 />
               </div>
 
               <div className="pt-2 flex justify-end gap-2">
                 <button type="button" onClick={() => setShowCreateFaqModal(false)} className="px-4 py-2.5 rounded-xl bg-slate-100 text-slate-700 font-bold hover:bg-slate-200">Cancel</button>
-                <button type="submit" className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-black text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:opacity-90 shadow-md shadow-orange-500/20 transition cursor-pointer">
+                <button type="submit" className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-black text-white bg-[#1B664B] hover:opacity-90 shadow-md shadow-emerald-950/20 transition cursor-pointer">
                   Add FAQ Item
                 </button>
               </div>
@@ -624,7 +624,7 @@ export default function AdminSupportCenterPage() {
                   required
                   value={editingFaq.q}
                   onChange={e => setEditingFaq({ ...editingFaq, q: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:border-themePrimary"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-900 focus:outline-none focus:border-[#1B664B]"
                 />
               </div>
 
@@ -635,13 +635,13 @@ export default function AdminSupportCenterPage() {
                   required
                   value={editingFaq.a}
                   onChange={e => setEditingFaq({ ...editingFaq, a: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-medium text-slate-900 focus:outline-none focus:border-themePrimary resize-none"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-medium text-slate-900 focus:outline-none focus:border-[#1B664B] resize-none"
                 />
               </div>
 
               <div className="pt-2 flex justify-end gap-2">
                 <button type="button" onClick={() => setEditingFaq(null)} className="px-4 py-2.5 rounded-xl bg-slate-100 text-slate-700 font-bold hover:bg-slate-200">Cancel</button>
-                <button type="submit" className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-black text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:opacity-90 shadow-md shadow-orange-500/20 transition cursor-pointer">
+                <button type="submit" className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-black text-white bg-[#1B664B] hover:opacity-90 shadow-md shadow-emerald-950/20 transition cursor-pointer">
                   Save FAQ Changes
                 </button>
               </div>
@@ -668,7 +668,7 @@ export default function AdminSupportCenterPage() {
                   placeholder="e.g. refund, password, upload"
                   value={newBotForm.keyword}
                   onChange={e => setNewBotForm({ ...newBotForm, keyword: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-mono font-bold text-themePrimary focus:outline-none focus:border-themePrimary"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-mono font-bold text-[#1B664B] focus:outline-none focus:border-[#1B664B]"
                 />
               </div>
 
@@ -680,13 +680,13 @@ export default function AdminSupportCenterPage() {
                   placeholder="What response should the bot return when this keyword is detected?"
                   value={newBotForm.response}
                   onChange={e => setNewBotForm({ ...newBotForm, response: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-medium text-slate-900 focus:outline-none focus:border-themePrimary resize-none"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-medium text-slate-900 focus:outline-none focus:border-[#1B664B] resize-none"
                 />
               </div>
 
               <div className="pt-2 flex justify-end gap-2">
                 <button type="button" onClick={() => setShowCreateBotModal(false)} className="px-4 py-2.5 rounded-xl bg-slate-100 text-slate-700 font-bold hover:bg-slate-200">Cancel</button>
-                <button type="submit" className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-black text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:opacity-90 shadow-md shadow-orange-500/20 transition cursor-pointer">
+                <button type="submit" className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-black text-white bg-[#1B664B] hover:opacity-90 shadow-md shadow-emerald-950/20 transition cursor-pointer">
                   Save Bot Rule
                 </button>
               </div>
@@ -712,7 +712,7 @@ export default function AdminSupportCenterPage() {
                   required
                   value={editingBotRule.keyword}
                   onChange={e => setEditingBotRule({ ...editingBotRule, keyword: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-mono font-bold text-themePrimary focus:outline-none focus:border-themePrimary"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-mono font-bold text-[#1B664B] focus:outline-none focus:border-[#1B664B]"
                 />
               </div>
 
@@ -723,13 +723,13 @@ export default function AdminSupportCenterPage() {
                   required
                   value={editingBotRule.response}
                   onChange={e => setEditingBotRule({ ...editingBotRule, response: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-medium text-slate-900 focus:outline-none focus:border-themePrimary resize-none"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-medium text-slate-900 focus:outline-none focus:border-[#1B664B] resize-none"
                 />
               </div>
 
               <div className="pt-2 flex justify-end gap-2">
                 <button type="button" onClick={() => setEditingBotRule(null)} className="px-4 py-2.5 rounded-xl bg-slate-100 text-slate-700 font-bold hover:bg-slate-200">Cancel</button>
-                <button type="submit" className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-black text-white bg-gradient-to-r from-themePrimary to-[#F97316] hover:opacity-90 shadow-md shadow-orange-500/20 transition cursor-pointer">
+                <button type="submit" className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-black text-white bg-[#1B664B] hover:opacity-90 shadow-md shadow-emerald-950/20 transition cursor-pointer">
                   Save Changes
                 </button>
               </div>
@@ -769,7 +769,7 @@ export default function AdminSupportCenterPage() {
                   placeholder="Type your official support resolution..."
                   value={replyText}
                   onChange={e => setReplyText(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-medium text-slate-900 focus:outline-none focus:border-themePrimary resize-none"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-medium text-slate-900 focus:outline-none focus:border-[#1B664B] resize-none"
                 />
               </div>
 
@@ -783,7 +783,7 @@ export default function AdminSupportCenterPage() {
                     Mark Resolved
                   </button>
                 </div>
-                <button type="submit" className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-black text-xs flex items-center gap-2 shadow-md shadow-orange-500/20 cursor-pointer">
+                <button type="submit" className="px-5 py-2.5 rounded-2xl bg-[#1B664B] text-white font-black text-xs flex items-center gap-2 shadow-md shadow-emerald-950/20 cursor-pointer">
                   <Send className="w-3.5 h-3.5" /> Send Reply
                 </button>
               </div>

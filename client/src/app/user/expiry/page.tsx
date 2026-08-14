@@ -205,13 +205,13 @@ export default function ExpiryRemindersPage() {
         {/* Card 2: Expiring Soon */}
         <div className="bg-white dark:bg-[#19102E] border border-[#EAE4F8] dark:border-[#2D1F47] p-5 rounded-3xl shadow-[0_8px_30px_rgb(108,92,231,0.04)] flex items-center justify-between">
           <div className="space-y-1">
-            <span className="text-xs font-extrabold uppercase tracking-wider text-amber-600 dark:text-amber-400">
+            <span className="text-xs font-extrabold uppercase tracking-wider text-[#1B664B] dark:text-[#1B664B]">
               🟡 Expiring Soon
             </span>
             <h3 className="text-3xl font-black text-[#1E1235] dark:text-white">{expiringCount}</h3>
             <p className="text-xs text-[#7B7393]">Expires within 30 days</p>
           </div>
-          <div className="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800 text-amber-600 flex items-center justify-center shrink-0">
+          <div className="w-12 h-12 rounded-2xl bg-[#E8F5F0] dark:bg-emerald-950/60 border border-[#D1EBE1] dark:border-amber-800 text-[#1B664B] flex items-center justify-center shrink-0">
             <AlertTriangle className="w-6 h-6" />
           </div>
         </div>
@@ -248,7 +248,7 @@ export default function ExpiryRemindersPage() {
               onClick={() => setActiveTab(tab.id as any)}
               className={`px-3 py-1.5 rounded-xl text-sm font-black transition-all ${
                 activeTab === tab.id
-                  ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/25'
+                  ? 'bg-[#1B664B] text-white shadow-md shadow-emerald-950/20'
                   : 'text-[#7B7393] hover:text-[#1E1235] dark:hover:text-white'
               }`}
             >
@@ -265,7 +265,7 @@ export default function ExpiryRemindersPage() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search expiring files..."
-            className="w-full pl-10 pr-4 py-2 bg-[#F3F0FA] dark:bg-[#1F143A] border border-[#EAE4F8] dark:border-[#2D1F47] rounded-2xl text-sm text-[#1E1235] dark:text-white placeholder:text-[#7B7393] focus:outline-none focus:border-themePrimary"
+            className="w-full pl-10 pr-4 py-2 bg-[#F3F0FA] dark:bg-[#1F143A] border border-[#EAE4F8] dark:border-[#2D1F47] rounded-2xl text-sm text-[#1E1235] dark:text-white placeholder:text-[#7B7393] focus:outline-none focus:border-[#1B664B]"
           />
         </div>
       </div>
@@ -273,7 +273,7 @@ export default function ExpiryRemindersPage() {
       {/* DOCUMENT EXPIRY CARDS GRID */}
       {filteredDocs.length === 0 ? (
         <div className="bg-white dark:bg-[#19102E] border border-[#EAE4F8] dark:border-[#2D1F47] rounded-3xl p-10 text-center space-y-4 shadow-sm flex flex-col items-center justify-center min-h-[280px]">
-          <div className="w-16 h-16 rounded-3xl bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800 flex items-center justify-center text-amber-500 shadow-inner">
+          <div className="w-16 h-16 rounded-3xl bg-[#E8F5F0] dark:bg-emerald-950/60 border border-[#D1EBE1] dark:border-amber-800 flex items-center justify-center text-[#1B664B] shadow-inner">
             <Clock className="w-8 h-8" />
           </div>
           <div className="max-w-md space-y-1">
@@ -287,7 +287,7 @@ export default function ExpiryRemindersPage() {
           <div className="pt-2 flex items-center gap-3">
             <Link
               href="/user/upload"
-              className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-black text-sm shadow-md shadow-orange-500/25 hover:scale-105 transition"
+              className="px-5 py-2.5 rounded-2xl bg-[#1B664B] text-white font-black text-sm shadow-md shadow-emerald-950/20 hover:scale-105 transition"
             >
               Upload Document with Expiry Date
             </Link>
@@ -306,7 +306,7 @@ export default function ExpiryRemindersPage() {
                   isExpired
                     ? 'border-rose-300 dark:border-rose-900/60'
                     : isWarning
-                    ? 'border-amber-300 dark:border-amber-900/60'
+                    ? 'border-[#D1EBE1] dark:border-amber-900/60'
                     : 'border-[#EAE4F8] dark:border-[#2D1F47]'
                 }`}
               >
@@ -316,7 +316,7 @@ export default function ExpiryRemindersPage() {
                       isExpired
                         ? 'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/60 dark:text-rose-300'
                         : isWarning
-                        ? 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/60 dark:text-amber-300'
+                        ? 'bg-[#E8F5F0] text-[#1B664B] border-[#D1EBE1] dark:bg-emerald-950/60 dark:text-[#1B664B]'
                         : 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300'
                     }`}
                   >
@@ -355,7 +355,7 @@ export default function ExpiryRemindersPage() {
 
                   <button
                     onClick={() => { setRenewModalDoc(doc); setNewExpiryDate(doc.expiryDate); }}
-                    className="px-4 py-1.5 rounded-xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white text-sm font-black shadow-md shadow-orange-500/25 hover:scale-105 transition flex items-center gap-1.5"
+                    className="px-4 py-1.5 rounded-xl bg-[#1B664B] text-white text-sm font-black shadow-md shadow-emerald-950/20 hover:scale-105 transition flex items-center gap-1.5"
                   >
                     <RefreshCw className="w-3.5 h-3.5" /> Renew Now
                   </button>
@@ -394,7 +394,7 @@ export default function ExpiryRemindersPage() {
 
               <button
                 type="submit"
-                className="w-full py-3 rounded-2xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white font-black text-sm shadow-md shadow-orange-500/25 hover:scale-105 transition"
+                className="w-full py-3 rounded-2xl bg-[#1B664B] text-white font-black text-sm shadow-md shadow-emerald-950/20 hover:scale-105 transition"
               >
                 Save New Expiry Date
               </button>

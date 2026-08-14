@@ -8,49 +8,70 @@
   font-family: 'Poppins', var(--font-poppins), sans-serif !important;
 }
 
-/* Root Theme Variables - Landing Page Color Theme */
+/* Root Theme Variables - Strict Solid Green (#1B664B) & White (#FFFFFF) Palette */
 :root {
-  --bg-app: #F8FAFC;
+  --theme-primary: #1B664B;
+  --theme-secondary: #14523C;
+  --theme-deep: #0F402E;
+  --theme-light: #D1EBE1;
+  --theme-soft: #E8F5F0;
+  --theme-accent: #1B664B;
+  --theme-border: #D1EBE1;
+  --bg-app: #FFFFFF;
   --bg-card: #FFFFFF;
-  --bg-sidebar: #0F172A;
-  --bg-input: #F1F5F9;
-  --border-color: #E2E8F0;
-  --text-primary: #0F172A;
+  --bg-sidebar: #FFFFFF;
+  --bg-input: #FFFFFF;
+  --border-color: #D1EBE1;
+  --text-primary: #17211B;
   --text-secondary: #64748B;
   --select-bg: #FFFFFF;
-  --select-text: #0F172A;
-  --accent-primary: #FF6B00;
-  --accent-hover: #E05E00;
+  --select-text: #17211B;
+  --accent-primary: #1B664B;
+  --accent-hover: #14523C;
   color-scheme: light;
 }
 
 html.dark {
-  --bg-app: #0F172A;
-  --bg-card: #1E293B;
-  --bg-sidebar: #0F172A;
-  --bg-input: #1E293B;
-  --border-color: #334155;
-  --text-primary: #F8FAFC;
-  --text-secondary: #94A3B8;
-  --select-bg: #1E293B;
-  --select-text: #F8FAFC;
-  --accent-primary: #FF6B00;
-  --accent-hover: #F97316;
+  --theme-primary: #1B664B;
+  --theme-secondary: #14523C;
+  --theme-deep: #0F402E;
+  --theme-light: #0F402E;
+  --theme-soft: #051A12;
+  --theme-accent: #1B664B;
+  --theme-border: #0F402E;
+  --bg-app: #051A12;
+  --bg-card: #0A2D20;
+  --bg-sidebar: #051A12;
+  --bg-input: #0A2D20;
+  --border-color: #0F402E;
+  --text-primary: #E8F5F0;
+  --text-secondary: #76C3A5;
+  --select-bg: #0A2D20;
+  --select-text: #E8F5F0;
+  --accent-primary: #1B664B;
+  --accent-hover: #14523C;
   color-scheme: dark;
 }
 
 html.light {
-  --bg-app: #F8FAFC;
+  --theme-primary: #1B664B;
+  --theme-secondary: #14523C;
+  --theme-deep: #0F402E;
+  --theme-light: #D1EBE1;
+  --theme-soft: #E8F5F0;
+  --theme-accent: #1B664B;
+  --theme-border: #D1EBE1;
+  --bg-app: #FFFFFF;
   --bg-card: #FFFFFF;
-  --bg-sidebar: #0F172A;
-  --bg-input: #F1F5F9;
-  --border-color: #E2E8F0;
-  --text-primary: #0F172A;
+  --bg-sidebar: #FFFFFF;
+  --bg-input: #FFFFFF;
+  --border-color: #D1EBE1;
+  --text-primary: #17211B;
   --text-secondary: #64748B;
   --select-bg: #FFFFFF;
-  --select-text: #0F172A;
-  --accent-primary: #FF6B00;
-  --accent-hover: #E05E00;
+  --select-text: #17211B;
+  --accent-primary: #1B664B;
+  --accent-hover: #14523C;
   color-scheme: light;
 }
 
@@ -86,20 +107,20 @@ input, textarea, button, select {
   font-family: var(--font-plus-jakarta), var(--font-inter), 'Plus Jakarta Sans', sans-serif;
 }
 
-/* Custom Dropdown Option Hover & Checked Orange Theme Styling */
+/* Solid Custom Dropdown Option Hover & Focus Styling */
 select {
-  accent-color: #FF6B00 !important;
+  accent-color: #16A34A !important;
 }
 
 select:focus {
   outline: none !important;
-  border-color: #FF6B00 !important;
-  box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.15) !important;
+  border-color: #16A34A !important;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15) !important;
 }
 
 select option {
   background-color: var(--select-bg, #ffffff);
-  color: var(--select-text, #0f172a);
+  color: var(--select-text, #17211B);
   padding: 10px 14px;
 }
 
@@ -107,25 +128,25 @@ select option:hover,
 select option:focus,
 select option:active,
 select option:checked {
-  background-color: #FF6B00 !important;
-  background: #FF6B00 !important;
+  background-color: #16A34A !important;
+  background: #16A34A !important;
   color: #ffffff !important;
 }
 
 /* Chromium / Webkit select option focus & highlight overrides */
 select:focus option:checked,
 select option:checked {
-  box-shadow: 0 0 10px 100px #FF6B00 inset !important;
+  box-shadow: 0 0 10px 100px #16A34A inset !important;
   color: #ffffff !important;
 }
 
 ::selection {
-  background-color: #FF6B00 !important;
+  background-color: #16A34A !important;
   color: #ffffff !important;
 }
 
 ::-moz-selection {
-  background-color: #FF6B00 !important;
+  background-color: #16A34A !important;
   color: #ffffff !important;
 }
 
@@ -158,49 +179,45 @@ html, body, * {
   background: transparent !important;
 }
 
-/* Global Dark Mode Overrides for Hardcoded Light Classes */
+/* Global Dark Mode Overrides */
 html.dark body {
-  background-color: #0F172A !important;
-  color: #F8FAFC !important;
+  background-color: #052E16 !important;
+  color: #F0FDF4 !important;
 }
 
 html.dark .bg-white {
-  background-color: #1E293B !important;
-  color: #F8FAFC !important;
+  background-color: #0F3822 !important;
+  color: #F0FDF4 !important;
 }
 
-html.dark .bg-\[\#F3F0FA\],
 html.dark .bg-slate-50,
 html.dark .bg-slate-100 {
-  background-color: #0F172A !important;
-  color: #F8FAFC !important;
+  background-color: #052E16 !important;
+  color: #F0FDF4 !important;
 }
 
-html.dark .border-\[\#EAE4F8\],
 html.dark .border-slate-200,
 html.dark .border-slate-300 {
-  border-color: #334155 !important;
+  border-color: #166534 !important;
 }
 
-html.dark .text-\[\#1E1235\],
 html.dark .text-slate-900,
 html.dark .text-slate-800 {
-  color: #F8FAFC !important;
+  color: #F0FDF4 !important;
 }
 
-html.dark .text-\[\#7B7393\],
 html.dark .text-slate-600,
 html.dark .text-slate-500,
 html.dark .text-slate-400 {
-  color: #94A3B8 !important;
+  color: #86EFAC !important;
 }
 
 html.dark table tbody tr:hover {
-  background-color: #1E293B !important;
+  background-color: #134E2A !important;
 }
 
 html.dark table tbody tr {
-  border-color: #334155 !important;
+  border-color: #166534 !important;
 }
 
 /* Micro-Animations Engine */
@@ -220,48 +237,29 @@ html.dark table tbody tr {
   animation: pageFadeUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* 2. Card Hover Lift & Glow */
+/* 2. Card Hover Lift */
 .card-hover-subtle {
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
 }
 .card-hover-subtle:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 32px rgba(255, 107, 0, 0.12);
+  box-shadow: 0 12px 32px rgba(22, 163, 74, 0.12);
+  border-color: #16A34A;
 }
 
 /* 3. Skeleton Loading Shimmer */
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
 .skeleton-box {
-  background: linear-gradient(
-    90deg,
-    rgba(234, 228, 248, 0.4) 25%,
-    rgba(243, 240, 250, 0.8) 37%,
-    rgba(234, 228, 248, 0.4) 63%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.6s ease-in-out infinite;
+  background: #DCFCE7;
+  animation: pulseSubtle 1.6s ease-in-out infinite;
 }
 
 html.dark .skeleton-box {
-  background: linear-gradient(
-    90deg,
-    rgba(45, 31, 71, 0.6) 25%,
-    rgba(60, 42, 95, 0.9) 37%,
-    rgba(45, 31, 71, 0.6) 63%
-  );
-  background-size: 200% 100%;
+  background: #166534;
 }
 
 /* 4. Smooth Progress Bar Transition */
 .progress-bar-smooth {
-  transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1), stroke-dashoffset 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* 5. Button & Card Press Micro Interactions */
@@ -272,7 +270,7 @@ html.dark .skeleton-box {
   transform: translateY(-1px);
 }
 .btn-hover-subtle:active {
-  transform: translateY(0) scale(0.98);
+  transform: scale(0.98);
 }
 
 .active-press {
@@ -297,73 +295,15 @@ html.dark .skeleton-box {
   animation: popIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* 7. Smooth Continuous Marquee Animation for Premium Trial Banner */
-@keyframes marquee {
-  0% {
-    transform: translateX(0%);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
-.animate-marquee {
-  display: flex;
-  width: max-content;
-  animation: marquee 25s linear infinite;
-}
-.animate-marquee:hover {
-  animation-play-state: paused;
-}
-
-/* 8. White Header & Animations Engine */
+/* 7. Solid Header Border */
 .header-white {
   background-color: #ffffff !important;
-  color: #0f172a !important;
+  color: #17211B !important;
 }
 
 html.dark .header-white {
   background-color: #ffffff !important;
-  color: #0f172a !important;
-}
-
-@keyframes headerSlideDown {
-  0% {
-    opacity: 0;
-    transform: translateY(-100%);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes headerBorderGlow {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-@keyframes bellWiggle {
-  0%, 100% { transform: rotate(0deg); }
-  20% { transform: rotate(15deg); }
-  40% { transform: rotate(-15deg); }
-  60% { transform: rotate(10deg); }
-  80% { transform: rotate(-5deg); }
-}
-
-@keyframes badgePulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.15); }
-}
-
-.animate-header-slide-down {
-  animation: headerSlideDown 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  color: #17211B !important;
 }
 
 .animated-border-bottom {
@@ -376,42 +316,32 @@ html.dark .header-white {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #6366f1, #8b5cf6, #ec4899, #f97316, #3b82f6, #6366f1);
-  background-size: 300% 100%;
-  animation: headerBorderGlow 5s ease infinite;
+  height: 2px;
+  background-color: #16A34A;
   z-index: 40;
 }
 
-.animate-bell-wiggle:hover {
-  animation: bellWiggle 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.animate-badge-pulse {
-  animation: badgePulse 2s ease-in-out infinite;
-}
-
-/* 9. Landing Page Premium White Theme & Micro-Animations */
+/* 8. Solid Cards & Navigation Lines */
 .landing-card {
   border-radius: 20px;
   background-color: #ffffff;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04);
+  border: 1px solid #D1FAE5;
+  box-shadow: 0 4px 20px -2px rgba(22, 163, 74, 0.06);
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
 }
 
 .landing-card:hover {
-  transform: translateY(-6px) scale(1.012);
-  box-shadow: 0 20px 40px -8px rgba(255, 107, 0, 0.18), 0 8px 16px -6px rgba(15, 23, 42, 0.05);
-  border-color: rgba(255, 107, 0, 0.45);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px -8px rgba(27, 102, 75, 0.15);
+  border-color: #1B664B;
 }
 
 .icon-hover-rotate {
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease, background-color 0.3s ease;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .group:hover .icon-hover-rotate {
-  transform: translateY(-2px) rotate(8deg) scale(1.1);
+  transform: translateY(-2px) scale(1.08);
 }
 
 .nav-link-animated {
@@ -426,26 +356,13 @@ html.dark .header-white {
   left: 0;
   width: 0%;
   height: 2px;
-  background: linear-gradient(90deg, #FF6B00, #F97316);
+  background-color: #16A34A;
   border-radius: 99px;
   transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .nav-link-animated:hover::after {
   width: 100%;
-}
-
-@keyframes floatSubtle {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
-}
-
-.animate-float-subtle {
-  animation: floatSubtle 4s ease-in-out infinite;
 }
 
 @keyframes fadeUp {
@@ -478,220 +395,17 @@ html.dark .header-white {
   animation: zoomIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* 9. Landing Page Premium Glass Gradient & Animated Cards */
-.landing-card,
-.glass-card,
-.container-box-shadow {
-  position: relative;
-  overflow: hidden;
-  border-radius: 18px;
-  background: #ffffff;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(226, 232, 240, 0.85);
-  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.07), 0 4px 12px -2px rgba(15, 23, 42, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.9) !important;
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* Glass Shimmer Reflection Overlay on Hover */
-.landing-card::before,
-.glass-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 75%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.6) 50%,
-    transparent 100%
-  );
-  transform: skewX(-20deg);
-  transition: left 0.75s ease;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.landing-card:hover::before,
-.glass-card:hover::before {
-  left: 140%;
-}
-
-.landing-card:hover,
-.glass-card:hover,
-.container-box-shadow:hover {
-  transform: translateY(-8px) scale(1.02);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.99) 0%, rgba(255, 247, 237, 0.95) 50%, rgba(240, 249, 255, 0.95) 100%);
-  border-color: rgba(255, 107, 0, 0.45);
-  box-shadow: 0 25px 55px -10px rgba(255, 107, 0, 0.22), 0 12px 24px -6px rgba(15, 23, 42, 0.08), inset 0 1px 1px #ffffff !important;
-}
-
-/* Floating Animations for Auth Pages */
-@keyframes floatSlow {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-12px) rotate(3deg); }
-}
-
-@keyframes floatReverse {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(12px) rotate(-3deg); }
-}
-
-.animate-float-slow {
-  animation: floatSlow 6s ease-in-out infinite;
-}
-
-.animate-float-reverse {
-  animation: floatReverse 7s ease-in-out infinite;
-}
-
-@keyframes floatBob {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
-}
-
-.animate-float-bob {
-  animation: floatBob 3.5s ease-in-out infinite;
-}
-
 @keyframes pulseSubtle {
   0%, 100% {
     opacity: 0.6;
-    transform: scale(1);
   }
   50% {
-    opacity: 0.85;
-    transform: scale(1.05);
+    opacity: 0.9;
   }
 }
 
 .animate-pulse-subtle {
-  animation: pulseSubtle 4s ease-in-out infinite;
-}
-
-@keyframes buttonShine {
-  0% {
-    left: -100%;
-  }
-  20%, 100% {
-    left: 150%;
-  }
-}
-
-.shine-button-effect {
-  position: relative;
-  overflow: hidden;
-}
-
-.shine-button-effect::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.4) 50%,
-    transparent 100%
-  );
-  transform: skewX(-20deg);
-  animation: buttonShine 4s ease-in-out infinite;
-  pointer-events: none;
-}
-
-@keyframes gradientFlow {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-.animate-gradient-flow {
-  background-size: 200% 200%;
-  animation: gradientFlow 6s ease infinite;
-}
-
-@keyframes badgeSparkle {
-  0%, 100% {
-    transform: scale(1) rotate(0deg);
-  }
-  50% {
-    transform: scale(1.1) rotate(4deg);
-  }
-}
-
-.animate-badge-sparkle {
-  animation: badgeSparkle 3s ease-in-out infinite;
-}
-
-/* Keyframe Animations for User Dashboard Sections & Cards */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes scaleUp {
-  from { opacity: 0; transform: scale(0.96); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-@keyframes shakeSubtle {
-  0%, 100% { transform: translateX(0); }
-  20%, 60% { transform: translateX(-3px); }
-  40%, 80% { transform: translateX(3px); }
-}
-
-@keyframes checkPop {
-  0% { transform: scale(0.5); opacity: 0; }
-  70% { transform: scale(1.15); opacity: 1; }
-  100% { transform: scale(1); opacity: 1; }
-}
-
-@keyframes cardFloatIn {
-  0% { opacity: 0; transform: translateY(14px) scale(0.98); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-.animate-shake-subtle {
-  animation: shakeSubtle 0.35s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-}
-
-.animate-check-pop {
-  animation: checkPop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-}
-
-.animate-card-float {
-  animation: cardFloatIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.animate-fade-in-up {
-  animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.animate-scale-up {
-  animation: scaleUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: pulseSubtle 3s ease-in-out infinite;
 }
 
 /* Stagger Delays */
@@ -700,63 +414,40 @@ html.dark .header-white {
 .delay-100 { animation-delay: 100ms; }
 .delay-150 { animation-delay: 150ms; }
 .delay-200 { animation-delay: 200ms; }
-.delay-250 { animation-delay: 250ms; }
-.delay-300 { animation-delay: 300ms; }
-.delay-350 { animation-delay: 350ms; }
-.delay-400 { animation-delay: 400ms; }
-.delay-500 { animation-delay: 500ms; }
-
-.stagger-1 { animation-delay: 60ms; }
-.stagger-2 { animation-delay: 120ms; }
-.stagger-3 { animation-delay: 180ms; }
-.stagger-4 { animation-delay: 240ms; }
-.stagger-5 { animation-delay: 300ms; }
-.stagger-6 { animation-delay: 360ms; }
 
 /* Interactive Micro-Interactions */
 .card-interactive {
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
 }
 .card-interactive:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 28px -4px rgba(15, 23, 42, 0.08), 0 6px 20px -2px rgba(255, 107, 0, 0.14);
-  border-color: rgba(255, 107, 0, 0.35);
+  box-shadow: 0 12px 28px -4px rgba(22, 163, 74, 0.12);
+  border-color: #16A34A;
 }
 
 .btn-interactive {
-  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.15s ease, background-color 0.15s ease, opacity 0.15s ease;
+  transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
 }
 .btn-interactive:hover {
   transform: translateY(-1px);
+  background-color: #14523C !important;
 }
 .btn-interactive:active {
   transform: scale(0.97);
+  background-color: #0F402E !important;
 }
 
 /* Drag & Drop Visual State */
 .drag-active {
-  border-color: #FF6B00 !important;
-  background-color: rgba(255, 107, 0, 0.05) !important;
-  box-shadow: 0 0 0 4px rgba(255, 107, 0, 0.15), 0 12px 28px rgba(255, 107, 0, 0.12) !important;
-  transform: scale(1.01);
+  border-color: #1B664B !important;
+  background-color: #E8F5F0 !important;
+  box-shadow: 0 0 0 4px rgba(27, 102, 75, 0.15) !important;
 }
 
-/* Accessibility: Respect Prefers-Reduced-Motion */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-/* Word Document Rendered HTML Styling */
+/* Word Document Rendered Content */
 .word-document-content {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  color: #1e293b;
+  color: #17211B;
   line-height: 1.7;
   font-size: 0.9375rem;
 }
@@ -769,14 +460,14 @@ html.dark .header-white {
 
 .word-document-content table td,
 .word-document-content table th {
-  border: 1px solid #cbd5e1;
+  border: 1px solid #D1FAE5;
   padding: 10px 14px;
   vertical-align: top;
   font-size: 0.875rem;
 }
 
 .word-document-content table tr:nth-child(even) {
-  background-color: #f8fafc;
+  background-color: #F0FDF4;
 }
 
 .word-document-content p {
@@ -786,59 +477,64 @@ html.dark .header-white {
 .word-document-content h1 {
   font-size: 1.6rem;
   font-weight: 800;
-  color: #0f172a;
+  color: #17211B;
   margin-top: 1.5rem;
   margin-bottom: 0.875rem;
-  border-bottom: 2px solid #e2e8f0;
+  border-bottom: 2px solid #D1FAE5;
   padding-bottom: 0.35rem;
 }
 
 .word-document-content h2 {
   font-size: 1.3rem;
   font-weight: 700;
-  color: #1e293b;
+  color: #15803D;
   margin-top: 1.25rem;
-  margin-bottom: 0.625rem;
 }
 
-.word-document-content h3 {
-  font-size: 1.15rem;
-  font-weight: 600;
-  color: #334155;
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;
+/* ==========================================================================
+   Premium Card Animations & Interactive Micro-Interactions System
+   ========================================================================== */
+
+.card-animated {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+              border-color 0.3s ease,
+              background-color 0.3s ease;
+  will-change: transform, box-shadow;
 }
 
-.word-document-content ul {
-  list-style-type: disc;
-  padding-left: 1.75rem;
-  margin-bottom: 0.875rem;
+.card-animated:hover {
+  transform: translateY(-6px) scale(1.015);
+  box-shadow: 0 20px 35px -10px rgba(27, 102, 75, 0.18), 0 8px 16px -6px rgba(27, 102, 75, 0.1);
+  border-color: #1B664B !important;
 }
 
-.word-document-content ol {
-  list-style-type: decimal;
-  padding-left: 1.75rem;
-  margin-bottom: 0.875rem;
+.card-animated:active {
+  transform: translateY(-2px) scale(0.985);
+  box-shadow: 0 8px 16px -4px rgba(27, 102, 75, 0.12);
 }
 
-.word-document-content li {
-  margin-bottom: 0.375rem;
+.card-icon-bounce {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.word-document-content a {
-  color: #2563eb;
-  text-decoration: underline;
+.group:hover .card-icon-bounce,
+.card-animated:hover .card-icon-bounce {
+  transform: scale(1.15) rotate(4deg);
 }
 
-.word-document-content a:hover {
-  color: #1d4ed8;
+@keyframes cardEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
-.word-document-content img {
-  max-width: 100%;
-  height: auto;
-  margin: 1rem 0;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+.animate-card-entrance {
+  animation: cardEntrance 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 

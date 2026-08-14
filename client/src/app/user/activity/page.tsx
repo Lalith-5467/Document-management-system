@@ -157,9 +157,9 @@ export default function ActivityHistoryPage() {
     }
     if (act.includes('FAVORITE')) {
       return {
-        icon: <Star className="w-4 h-4 text-amber-500 fill-amber-400" />,
-        bg: 'bg-amber-50 border-amber-200',
-        text: 'text-amber-700',
+        icon: <Star className="w-4 h-4 text-[#1B664B] fill-[#1B664B]" />,
+        bg: 'bg-[#E8F5F0] border-[#D1EBE1]',
+        text: 'text-[#1B664B]',
         label: 'Favorite'
       };
     }

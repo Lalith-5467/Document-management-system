@@ -47,7 +47,7 @@ function getCategoryBadge(category?: string) {
     return 'bg-emerald-50 text-emerald-700 border-emerald-200/60 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-800/50';
   }
   if (cat.includes('project') || cat.includes('specs') || cat.includes('tech')) {
-    return 'bg-amber-50 text-amber-700 border-amber-200/60 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-800/50';
+    return 'bg-[#E8F5F0] text-[#1B664B] border-[#D1EBE1] dark:bg-emerald-950/60 dark:text-[#1B664B] dark:border-amber-800/50';
   }
   if (cat.includes('personal') || cat.includes('identity') || cat.includes('passport')) {
     return 'bg-purple-50 text-purple-600 border-purple-200/60 dark:bg-purple-950/40 dark:text-purple-300 dark:border-purple-800/50';
@@ -68,13 +68,13 @@ function getExtensionBadge(ext: string, mime?: string) {
     return { label: 'PDF', bg: 'bg-[#EF4444] text-white' };
   }
   if (cleanExt === 'DOCX' || cleanExt === 'DOC' || mime?.includes('word')) {
-    return { label: 'DOCX', bg: 'bg-themePrimary text-white' };
+    return { label: 'DOCX', bg: 'bg-[#1B664B] text-white' };
   }
   if (cleanExt === 'XLSX' || cleanExt === 'XLS' || mime?.includes('excel') || mime?.includes('spreadsheet')) {
     return { label: 'XLSX', bg: 'bg-[#10B981] text-white' };
   }
   if (cleanExt === 'PPTX' || cleanExt === 'PPT' || mime?.includes('presentation') || mime?.includes('powerpoint')) {
-    return { label: 'PPTX', bg: 'bg-[#F97316] text-white' };
+    return { label: 'PPTX', bg: 'bg-[#1B664B] text-white' };
   }
   if (cleanExt === 'PNG' || cleanExt === 'JPG' || cleanExt === 'JPEG' || mime?.startsWith('image/')) {
     return { label: cleanExt || 'PNG', bg: 'bg-[#8B5CF6] text-white' };
@@ -82,7 +82,7 @@ function getExtensionBadge(ext: string, mime?: string) {
   if (cleanExt === 'ZIP' || cleanExt === 'RAR' || cleanExt === '7Z' || mime?.includes('zip')) {
     return { label: 'ZIP', bg: 'bg-[#6B7280] text-white' };
   }
-  return { label: cleanExt || 'FILE', bg: 'bg-themePrimary text-white' };
+  return { label: cleanExt || 'FILE', bg: 'bg-[#1B664B] text-white' };
 }
 
 // Custom visual thumbnail preview based on document type
@@ -93,11 +93,11 @@ function FilePreviewThumbnail({ doc }: { doc: FavoriteDocument }) {
   if (ext === 'PDF' || doc.mime_type?.includes('pdf')) {
     if (title.includes('aws') || title.includes('amazon')) {
       return (
-        <div className="w-full h-32 rounded-2xl bg-amber-50/80 dark:bg-amber-950/30 border border-amber-200/60 dark:border-amber-800/40 flex flex-col items-center justify-center relative overflow-hidden group-hover:scale-[1.02] transition-transform">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-400 text-white flex items-center justify-center shadow-md font-black text-sm">
+        <div className="w-full h-32 rounded-2xl bg-[#E8F5F0] dark:bg-emerald-950/60 border border-[#D1EBE1] dark:border-amber-800/40 flex flex-col items-center justify-center relative overflow-hidden group-hover:scale-[1.02] transition-transform">
+          <div className="w-12 h-12 rounded-xl bg-[#1B664B] text-white flex items-center justify-center shadow-md font-black text-sm">
             aws
           </div>
-          <span className="text-xs font-bold text-amber-700 dark:text-amber-400 mt-2">CERTIFIED</span>
+          <span className="text-xs font-bold text-[#1B664B] dark:text-[#1B664B] mt-2">CERTIFIED</span>
         </div>
       );
     }
@@ -142,12 +142,12 @@ function FilePreviewThumbnail({ doc }: { doc: FavoriteDocument }) {
 
   if (ext === 'PPTX' || ext === 'PPT' || doc.mime_type?.includes('powerpoint')) {
     return (
-      <div className="w-full h-32 rounded-2xl bg-orange-50/70 dark:bg-orange-950/20 border border-orange-100 dark:border-orange-900/30 flex items-center justify-center relative overflow-hidden group-hover:scale-[1.02] transition-transform">
-        <div className="w-12 h-14 bg-white dark:bg-[#19102E] rounded-lg shadow-sm border border-orange-200 dark:border-orange-800/60 flex flex-col items-center justify-center p-2">
-          <div className="w-7 h-7 rounded-lg bg-orange-600 text-white flex items-center justify-center font-black text-sm">
+      <div className="w-full h-32 rounded-2xl bg-[#E8F5F0] dark:bg-emerald-950/60 border border-[#D1EBE1] dark:border-emerald-900/60 flex items-center justify-center relative overflow-hidden group-hover:scale-[1.02] transition-transform">
+        <div className="w-12 h-14 bg-white dark:bg-[#19102E] rounded-lg shadow-sm border border-[#D1EBE1] dark:border-emerald-800/60 flex flex-col items-center justify-center p-2">
+          <div className="w-7 h-7 rounded-lg bg-[#1B664B] text-white flex items-center justify-center font-black text-sm">
             P
           </div>
-          <div className="w-8 h-1 bg-orange-200 dark:bg-orange-800 rounded mt-2"></div>
+          <div className="w-8 h-1 bg-[#D1EBE1] dark:bg-emerald-800/60 rounded mt-2"></div>
         </div>
       </div>
     );
@@ -170,7 +170,7 @@ function FilePreviewThumbnail({ doc }: { doc: FavoriteDocument }) {
               <div className="w-12 h-1 bg-purple-400/40 rounded"></div>
             </div>
           </div>
-          <div className="w-full h-1 bg-gradient-to-r from-purple-500 to-amber-400 rounded"></div>
+          <div className="w-full h-1 bg-gradient-to-r from-[#1B664B] to-[#14523C] rounded"></div>
         </div>
       );
     }
@@ -196,7 +196,7 @@ function FilePreviewThumbnail({ doc }: { doc: FavoriteDocument }) {
 
   return (
     <div className="w-full h-32 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center group-hover:scale-[1.02] transition-transform">
-      <FileText className="w-8 h-8 text-themePrimary" />
+      <FileText className="w-8 h-8 text-[#1B664B]" />
     </div>
   );
 }
@@ -540,14 +540,14 @@ export default function FavoritesPage() {
         }`}>
           {toast.type === 'error'
             ? <AlertCircle className="w-4 h-4 text-rose-500 shrink-0" />
-            : <CheckCircle2 className="w-4 h-4 text-themePrimary shrink-0" />}
+            : <CheckCircle2 className="w-4 h-4 text-[#1B664B] shrink-0" />}
           <span>{toast.message}</span>
         </div>
       )}
 
       {/* Navigation Breadcrumb */}
       <div className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium">
-        <Link href="/user" className="hover:text-themePrimary dark:hover:text-orange-400 transition-colors font-medium">
+        <Link href="/user" className="hover:text-[#1B664B] dark:hover:text-[#1B664B] transition-colors font-medium">
           Vault Collections
         </Link>
         <ChevronRight className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 shrink-0" />
@@ -571,8 +571,8 @@ export default function FavoritesPage() {
         {/* Card 1: Favorite Files */}
         <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-3xl shadow-sm flex flex-col justify-between space-y-4 hover:shadow-xl hover:-translate-y-0.5 transition-all">
           <div className="flex items-start justify-between">
-            <div className="w-11 h-11 rounded-2xl bg-orange-50 dark:bg-orange-950/50 border border-orange-200/60 dark:border-orange-900/40 text-themePrimary dark:text-orange-400 flex items-center justify-center shrink-0">
-              <Star className="w-5 h-5 fill-orange-400/40" />
+            <div className="w-11 h-11 rounded-2xl bg-[#E8F5F0] dark:bg-emerald-950/60 border border-[#D1EBE1] dark:border-emerald-900/60 text-[#1B664B] dark:text-[#1B664B] flex items-center justify-center shrink-0">
+              <Star className="w-5 h-5 fill-[#1B664B]/40" />
             </div>
             <span className="text-xs font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800">
               +12% vs last mo
@@ -590,7 +590,7 @@ export default function FavoritesPage() {
           {/* Sparkline Graph */}
           <div className="w-full h-8 pt-1">
             <svg className="w-full h-full overflow-visible" viewBox="0 0 100 24" fill="none">
-              <path d="M0 18 Q 15 5, 30 14 T 60 8 T 90 12 L 100 4" stroke='var(--theme-primary, #FF6B00)' strokeWidth="2.5" strokeLinecap="round" fill="none" />
+              <path d="M0 18 Q 15 5, 30 14 T 60 8 T 90 12 L 100 4" stroke='var(--theme-primary, #1B664B)' strokeWidth="2.5" strokeLinecap="round" fill="none" />
             </svg>
           </div>
         </div>
@@ -598,10 +598,10 @@ export default function FavoritesPage() {
         {/* Card 2: Categories */}
         <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-3xl shadow-sm flex flex-col justify-between space-y-4 hover:shadow-xl hover:-translate-y-0.5 transition-all">
           <div className="flex items-start justify-between">
-            <div className="w-11 h-11 rounded-2xl bg-orange-50 dark:bg-orange-950/50 border border-orange-200/60 dark:border-orange-900/40 text-themePrimary dark:text-orange-400 flex items-center justify-center shrink-0">
+            <div className="w-11 h-11 rounded-2xl bg-[#E8F5F0] dark:bg-emerald-950/60 border border-[#D1EBE1] dark:border-emerald-900/60 text-[#1B664B] dark:text-[#1B664B] flex items-center justify-center shrink-0">
               <FolderClosed className="w-5 h-5" />
             </div>
-            <span className="text-xs font-bold text-themePrimary bg-orange-50 dark:bg-orange-950/40 px-2 py-0.5 rounded-full border border-orange-200 dark:border-orange-900">
+            <span className="text-xs font-bold text-[#1B664B] bg-[#E8F5F0] dark:bg-emerald-950/60 px-2 py-0.5 rounded-full border border-[#D1EBE1] dark:border-emerald-900/60">
               Active
             </span>
           </div>
@@ -628,7 +628,7 @@ export default function FavoritesPage() {
             <div className="w-11 h-11 rounded-2xl bg-purple-50 dark:bg-purple-950/50 border border-purple-200/60 dark:border-purple-800/40 text-purple-600 dark:text-purple-400 flex items-center justify-center shrink-0">
               <HardDrive className="w-5 h-5" />
             </div>
-            <span className="text-xs font-bold text-amber-600 bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded-full border border-amber-200 dark:border-amber-800">
+            <span className="text-xs font-bold text-[#1B664B] bg-[#E8F5F0] dark:bg-emerald-950/60 px-2 py-0.5 rounded-full border border-[#D1EBE1] dark:border-amber-800">
               68% Limit
             </span>
           </div>
@@ -684,7 +684,7 @@ export default function FavoritesPage() {
               value={searchQuery}
               onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
               placeholder="Search favorites..."
-              className="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-themePrimary transition-all"
+              className="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-[#1B664B] transition-all"
             />
             {searchQuery && (
               <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-900 dark:hover:text-white">
@@ -697,7 +697,7 @@ export default function FavoritesPage() {
           <select
             value={selectedCategory}
             onChange={(e) => { setSelectedCategory(e.target.value); setCurrentPage(1); }}
-            className="px-3.5 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-themePrimary"
+            className="px-3.5 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-[#1B664B]"
           >
             <option value="all">All Categories</option>
             <option value="Client Requirements">Client Requirements</option>
@@ -713,7 +713,7 @@ export default function FavoritesPage() {
           <select
             value={selectedFileType}
             onChange={(e) => { setSelectedFileType(e.target.value); setCurrentPage(1); }}
-            className="px-3.5 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-themePrimary"
+            className="px-3.5 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-[#1B664B]"
           >
             <option value="all">All File Types</option>
             <option value="pdf">PDF Documents</option>
@@ -728,7 +728,7 @@ export default function FavoritesPage() {
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="px-3.5 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-themePrimary"
+            className="px-3.5 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-[#1B664B]"
           >
             <option value="newest">Sort By: Newest</option>
             <option value="oldest">Sort By: Oldest</option>
@@ -744,7 +744,7 @@ export default function FavoritesPage() {
               onClick={() => setViewMode('grid')}
               className={`p-2 rounded-xl text-sm font-bold transition-all ${
                 viewMode === 'grid'
-                  ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/25'
+                  ? 'bg-[#1B664B] text-white shadow-md shadow-emerald-950/20'
                   : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
               }`}
               title="Grid View"
@@ -755,7 +755,7 @@ export default function FavoritesPage() {
               onClick={() => setViewMode('list')}
               className={`p-2 rounded-xl text-sm font-bold transition-all ${
                 viewMode === 'list'
-                  ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/25'
+                  ? 'bg-[#1B664B] text-white shadow-md shadow-emerald-950/20'
                   : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
               }`}
               title="List View"
@@ -767,7 +767,7 @@ export default function FavoritesPage() {
           {/* Reset Filters */}
           <button
             onClick={handleResetFilters}
-            className="px-3.5 py-2 rounded-2xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:text-themePrimary hover:bg-orange-50 dark:hover:bg-orange-950/40 transition text-sm font-bold flex items-center gap-1.5"
+            className="px-3.5 py-2 rounded-2xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:text-[#1B664B] hover:bg-[#E8F5F0] dark:hover:bg-[#E8F5F0] transition text-sm font-bold flex items-center gap-1.5"
             title="Reset Filters"
           >
             <RefreshCw className="w-3.5 h-3.5" /> Reset
@@ -801,8 +801,8 @@ export default function FavoritesPage() {
             </div>
           ) : paginatedDocs.length === 0 ? (
             <div className="bg-white dark:bg-[#19102E] rounded-3xl border border-[#EAE4F8] dark:border-[#2D1F47] p-16 text-center space-y-4 shadow-[0_6px_24px_rgba(108,92,231,0.06)]">
-              <div className="w-16 h-16 rounded-3xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 flex items-center justify-center mx-auto">
-                <Star className="w-8 h-8 text-amber-400 fill-amber-400" />
+              <div className="w-16 h-16 rounded-3xl bg-[#E8F5F0] dark:bg-emerald-950/60 border border-[#D1EBE1] dark:border-amber-800 flex items-center justify-center mx-auto">
+                <Star className="w-8 h-8 text-[#1B664B] fill-[#1B664B]" />
               </div>
               <div>
                 <h3 className="text-lg font-extrabold text-[#1E1235] dark:text-white">
@@ -814,7 +814,7 @@ export default function FavoritesPage() {
               </div>
               <button
                 onClick={handleResetFilters}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-gradient-to-r from-themePrimary to-[#F97316] text-white text-sm font-extrabold shadow-md shadow-orange-500/25 hover:scale-105 transition"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-[#1B664B] text-white text-sm font-extrabold shadow-md shadow-emerald-950/20 hover:scale-105 transition"
               >
                 Reset All Filters
               </button>
@@ -829,7 +829,7 @@ export default function FavoritesPage() {
                 return (
                   <div
                     key={doc.id}
-                    className="bg-white dark:bg-[#19102E] border border-[#EAE4F8] dark:border-[#2D1F47] hover:border-[#6D28D9]/40 p-4 rounded-3xl space-y-3.5 card-hover-subtle group flex flex-col justify-between relative"
+                    className="card-animated animate-card-entrance bg-white dark:bg-[#19102E] border border-slate-200 dark:border-slate-800 p-4 rounded-3xl space-y-3.5 group flex flex-col justify-between relative"
                   >
                     {/* Top Row: File Extension Badge Left + Gold Star Right */}
                     <div className="flex items-center justify-between">
@@ -838,10 +838,10 @@ export default function FavoritesPage() {
                       </span>
                       <button
                         onClick={() => { setSelectedDoc(doc); setShowRemoveModal(true); }}
-                        className="p-1 text-amber-500 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-xl transition"
+                        className="p-1 text-[#1B664B] hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-xl transition"
                         title="Remove from favorites"
                       >
-                        <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+                        <Star className="w-4 h-4 fill-[#1B664B] text-[#1B664B]" />
                       </button>
                     </div>
 
@@ -850,7 +850,7 @@ export default function FavoritesPage() {
 
                     {/* Document Info */}
                     <div className="space-y-1.5 pt-1">
-                      <h3 className="text-sm font-black text-slate-900 dark:text-white group-hover:text-themePrimary dark:group-hover:text-orange-400 transition-colors truncate leading-snug" title={doc.title}>
+                      <h3 className="text-sm font-black text-slate-900 dark:text-white group-hover:text-[#1B664B] dark:group-hover:text-[#1B664B] transition-colors truncate leading-snug" title={doc.title}>
                         {doc.title}
                       </h3>
 
@@ -876,7 +876,7 @@ export default function FavoritesPage() {
                       <div className="flex items-center gap-1">
                         <button
                           onClick={() => handleDownload(doc)}
-                          className="p-1.5 text-slate-400 hover:text-themePrimary hover:bg-orange-50 dark:hover:bg-orange-950/40 rounded-xl transition"
+                          className="p-1.5 text-slate-400 hover:text-[#1B664B] hover:bg-[#E8F5F0] dark:hover:bg-[#E8F5F0] rounded-xl transition"
                           title="Download File"
                         >
                           <Download className="w-3.5 h-3.5" />
@@ -945,10 +945,10 @@ export default function FavoritesPage() {
                             </button>
                             <button
                               onClick={() => { setSelectedDoc(doc); setShowRemoveModal(true); }}
-                              className="p-1.5 text-amber-500 hover:text-rose-500 hover:bg-rose-50 rounded-xl transition"
+                              className="p-1.5 text-[#1B664B] hover:text-rose-500 hover:bg-rose-50 rounded-xl transition"
                               title="Remove"
                             >
-                              <Star className="w-4 h-4 fill-amber-400" />
+                              <Star className="w-4 h-4 fill-[#1B664B]" />
                             </button>
                           </div>
                         </td>
@@ -983,7 +983,7 @@ export default function FavoritesPage() {
                   disabled={page === '...'}
                   className={`w-8 h-8 rounded-xl text-sm font-black transition-all ${
                     currentPage === page
-                      ? 'bg-gradient-to-r from-themePrimary to-[#F97316] text-white shadow-md shadow-orange-500/25 scale-105'
+                      ? 'bg-[#1B664B] text-white shadow-md shadow-emerald-950/20 scale-105'
                       : page === '...'
                       ? 'text-slate-400 cursor-default'
                       : 'text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'
@@ -1029,14 +1029,14 @@ export default function FavoritesPage() {
             <div className="relative w-36 h-36 mx-auto flex items-center justify-center">
               <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
                 <path
-                  className="text-orange-100 dark:text-orange-950"
+                  className="text-emerald-100 dark:text-emerald-950"
                   strokeWidth="3.5"
                   stroke="currentColor"
                   fill="none"
                   d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                 />
                 <path
-                  className="text-themePrimary"
+                  className="text-[#1B664B]"
                   strokeDasharray="68, 100"
                   strokeWidth="3.5"
                   strokeLinecap="round"
@@ -1055,7 +1055,7 @@ export default function FavoritesPage() {
               68 GB <span className="text-slate-500 font-medium">of 100 GB Used</span>
             </p>
 
-            <button className="w-full py-2.5 rounded-2xl bg-gradient-to-r from-themePrimary to-[#F97316] hover:brightness-110 text-white text-sm font-black shadow-lg shadow-orange-500/25 hover:scale-[1.02] transition flex items-center justify-center gap-2">
+            <button className="w-full py-2.5 rounded-2xl bg-[#1B664B] hover:brightness-110 text-white text-sm font-black shadow-lg shadow-emerald-950/20 hover:scale-[1.02] transition flex items-center justify-center gap-2">
               <Zap className="w-4 h-4 fill-white" /> Upgrade Storage
             </button>
           </div>
@@ -1064,7 +1064,7 @@ export default function FavoritesPage() {
           <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-3xl shadow-sm space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-base font-black text-slate-900 dark:text-white">Recent Activity</h3>
-              <Link href="/user/activity" className="text-xs font-extrabold text-themePrimary dark:text-orange-400 hover:underline">
+              <Link href="/user/activity" className="text-xs font-extrabold text-[#1B664B] dark:text-[#1B664B] hover:underline">
                 View All
               </Link>
             </div>
@@ -1120,7 +1120,7 @@ export default function FavoritesPage() {
               <div>
                 <p className="text-xs font-extrabold uppercase text-[#7B7393] dark:text-[#A39BB8] tracking-wider mb-2">3 Days Ago</p>
                 <div className="flex items-start gap-3">
-                  <span className="w-6 h-6 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center text-xs font-black shrink-0 mt-0.5">
+                  <span className="w-6 h-6 rounded-lg bg-[#E8F5F0] text-[#1B664B] flex items-center justify-center text-xs font-black shrink-0 mt-0.5">
                     PPT
                   </span>
                   <div className="flex-1 min-w-0">

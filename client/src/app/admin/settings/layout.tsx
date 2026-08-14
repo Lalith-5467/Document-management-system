@@ -38,7 +38,7 @@ export default function AdminSettingsLayout({ children }: { children: React.Reac
       <div className="w-full lg:w-64 shrink-0 space-y-6">
         <div>
           <h2 className="text-xl font-black text-slate-900 dark:text-white flex items-center gap-2 mb-1 font-auth-heading">
-            <Settings className="w-5 h-5 text-themePrimary" />
+            <Settings className="w-5 h-5 text-[#1B664B]" />
             Global Settings
           </h2>
           <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Manage all application and system-level configurations.</p>
@@ -60,12 +60,12 @@ export default function AdminSettingsLayout({ children }: { children: React.Reac
                     href={item.href}
                     className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all relative ${
                       isActive
-                        ? 'bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 font-black'
+                        ? 'bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] dark:text-[#1B664B] font-black'
                         : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60'
                     }`}
                   >
-                    {isActive && <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-themePrimary rounded-r-full -ml-4" />}
-                    <Icon className={`w-4 h-4 ${isActive ? 'text-themePrimary dark:text-orange-400' : 'text-slate-400 dark:text-slate-500'}`} />
+                    {isActive && <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-[#1B664B] rounded-r-full -ml-4" />}
+                    <Icon className={`w-4 h-4 ${isActive ? 'text-[#1B664B] dark:text-[#1B664B]' : 'text-slate-400 dark:text-slate-500'}`} />
                     <span>{item.name}</span>
                   </Link>
                 );
@@ -90,12 +90,12 @@ export default function AdminSettingsLayout({ children }: { children: React.Reac
                     href={item.href}
                     className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all relative ${
                       isActive
-                        ? 'bg-orange-50 dark:bg-orange-950/60 text-themePrimary dark:text-orange-400 font-black'
+                        ? 'bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] dark:text-[#1B664B] font-black'
                         : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60'
                     }`}
                   >
-                    {isActive && <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-themePrimary rounded-r-full -ml-4" />}
-                    <Icon className={`w-4 h-4 ${isActive ? 'text-themePrimary dark:text-orange-400' : 'text-slate-400 dark:text-slate-500'}`} />
+                    {isActive && <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-[#1B664B] rounded-r-full -ml-4" />}
+                    <Icon className={`w-4 h-4 ${isActive ? 'text-[#1B664B] dark:text-[#1B664B]' : 'text-slate-400 dark:text-slate-500'}`} />
                     <span>{item.name}</span>
                   </Link>
                 );
