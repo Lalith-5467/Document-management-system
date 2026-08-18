@@ -152,47 +152,46 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-[#FAF8F4] via-[#F4F1EA] to-[#ECE7DF] flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 font-sans relative overflow-hidden animate-fade-up">
+    <div className="min-h-screen w-full bg-[var(--bg-app)] text-[var(--text-primary)] dark:bg-[#07110D] dark:text-[#F5F7F6] flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 font-sans relative overflow-hidden animate-fade-up transition-colors duration-200">
       <style dangerouslySetInnerHTML={{ __html: customStyles }} />
 
       {/* Professional Top Left Back Button with Cream Hover */}
       <div className="absolute top-6 left-6 z-20">
         <Link
           href="/"
-          className="inline-flex items-center gap-2.5 px-6 py-2.5 rounded-full bg-white/95 backdrop-blur-md border border-[#E6E0D4] hover:border-[#DFD2BA] hover:bg-[#FFFDF5] text-slate-700 hover:text-slate-900 text-xs font-bold shadow-xs hover:shadow-md hover:shadow-[#DFD2BA]/30 transition-all duration-300 group cursor-pointer font-auth-heading hover:-translate-y-0.5 whitespace-nowrap"
+          className="inline-flex items-center gap-2.5 px-6 py-2.5 rounded-full bg-white/95 dark:bg-[#0E281E]/95 backdrop-blur-md border border-slate-200 dark:border-[#35D99A]/20 hover:border-[#087443] dark:hover:border-[#35D99A] text-slate-700 dark:text-[#F5F7F6] hover:text-[#087443] dark:hover:text-[#35D99A] text-xs font-bold shadow-xs hover:shadow-md transition-all duration-300 group cursor-pointer font-auth-heading hover:-translate-y-0.5 whitespace-nowrap"
         >
-          <ArrowLeft className="w-4 h-4 text-[#1B664B] group-hover:-translate-x-1 transition-transform duration-300 shrink-0" />
-          <span>Back to Home Page</span>
+          <ArrowLeft className="w-4 h-4 text-[#087443] dark:text-[#35D99A] group-hover:-translate-x-1 transition-transform duration-300 shrink-0" />
+          <span className="text-slate-800 dark:text-[#F5F7F6] group-hover:text-[#087443] dark:group-hover:text-[#35D99A]">Back to Home Page</span>
         </Link>
       </div>
 
       {/* Ambient Warm Cream & Soft Glowing Spheres */}
-      <div className="absolute top-10 left-1/4 w-96 h-96 bg-[#F5EAD6]/60 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-10 right-1/4 w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-[#FAF2E4]/40 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-10 left-1/4 w-96 h-96 bg-emerald-500/5 dark:bg-[#19A974]/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-10 right-1/4 w-[500px] h-[500px] bg-emerald-500/5 dark:bg-[#35D99A]/5 rounded-full blur-3xl pointer-events-none" />
 
       {/* Centered Card Container with Smooth Float Entrance */}
-      <div className="w-full max-w-[480px] bg-white/95 backdrop-blur-xl rounded-[32px] p-8 sm:p-10 shadow-[0_25px_70px_rgba(40,30,15,0.06)] hover:shadow-[0_30px_80px_rgba(40,30,15,0.09)] border border-[#E8E1D5] relative z-10 my-auto animate-card-float transition-shadow duration-500">
+      <div className="w-full max-w-[480px] bg-white/95 dark:bg-[#0E281E]/95 backdrop-blur-xl rounded-[32px] p-8 sm:p-10 shadow-2xl shadow-slate-900/10 dark:shadow-black/60 border border-slate-200/90 dark:border-[#35D99A]/20 relative z-10 my-auto animate-card-float transition-all duration-500">
         
         {/* Header */}
         <div className="text-center space-y-3 mb-8">
           <Link href="/" className="inline-flex items-center justify-center mb-2 group">
-            <div className="w-14 h-14 rounded-[22px] bg-[#1B664B] flex items-center justify-center text-white shadow-[0_12px_30px_rgba(27,102,75,0.35)] group-hover:scale-110 group-hover:shadow-[0_16px_35px_rgba(27,102,75,0.45)] transition-all duration-300">
+            <div className="w-14 h-14 rounded-[22px] bg-[#087443] dark:bg-[#19A974] flex items-center justify-center text-white shadow-md group-hover:scale-110 transition-all duration-300">
               <ShieldCheck className="w-7 h-7 stroke-[2.2] group-hover:rotate-6 transition-transform duration-300" />
             </div>
           </Link>
-          <h2 className="text-[28px] sm:text-[32px] font-bold text-slate-900 tracking-tight leading-tight font-auth-heading">
-            Sign In to <span className="text-[#1B664B]">DocVault</span>
+          <h2 className="text-[28px] sm:text-[32px] font-bold text-slate-900 dark:text-[#F5F7F6] tracking-tight leading-tight font-auth-heading">
+            Sign In to <span className="text-[#087443] dark:text-[#35D99A]">DocVault</span>
           </h2>
-          <p className="text-[15px] text-slate-500 font-medium leading-relaxed max-w-sm mx-auto">
+          <p className="text-[15px] text-slate-500 dark:text-[#9AAFA6] font-medium leading-relaxed max-w-sm mx-auto">
             Access your secure encrypted document vault and record storage
           </p>
         </div>
 
         {/* Global Server Error Message */}
         {errorMsg && (
-          <div className="mb-6 p-4 rounded-[16px] bg-red-50 text-red-600 text-sm font-medium flex items-center gap-3 border border-red-100 animate-shake-subtle shadow-sm">
-            <AlertCircle className="w-5 h-5 shrink-0" />
+          <div className="mb-6 p-4 rounded-[16px] bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-300 text-sm font-medium flex items-center gap-3 border border-red-100 dark:border-red-900/50 animate-shake-subtle shadow-sm">
+            <AlertCircle className="w-5 h-5 shrink-0 text-red-500" />
             <span>{errorMsg}</span>
           </div>
         )}

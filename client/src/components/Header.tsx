@@ -108,31 +108,31 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
   });
 
   return (
-    <header className="sticky top-0 z-30 min-h-[72px] sm:min-h-[80px] py-4 px-4 sm:px-8 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between gap-4 text-slate-900 dark:text-white shadow-xs transition-all duration-200 font-sans">
+    <header className="w-full min-h-[64px] sm:min-h-[76px] py-3 px-4 sm:px-8 bg-white/95 dark:bg-[#0B1F17]/95 backdrop-blur-md border-b border-slate-200 dark:border-[#35D99A]/15 flex items-center justify-between gap-3 sm:gap-4 text-slate-900 dark:text-[#F5F7F6] transition-all duration-200 font-sans">
       {/* Left side: Greeting Title & Subtitle */}
-      <div className="flex items-center gap-3.5 min-w-0 flex-1 sm:flex-initial">
+      <div className="flex items-center gap-3 min-w-0 flex-1 sm:flex-initial">
         <button
           onClick={onMobileMenuToggle}
-          className="lg:hidden p-2 rounded-2xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors active:scale-95 cursor-pointer shrink-0"
+          className="lg:hidden p-2 rounded-2xl text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#0E281E] transition-colors active:scale-95 cursor-pointer shrink-0"
           aria-label="Open Navigation Sidebar"
         >
           <Menu className="w-5 h-5" />
         </button>
 
         <div className="min-w-0 flex flex-col justify-center">
-          <h1 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-1.5 font-auth-heading truncate leading-snug">
+          <h1 className="text-sm sm:text-base lg:text-lg font-bold text-slate-900 dark:text-[#F5F7F6] tracking-tight flex items-center gap-1.5 font-auth-heading truncate leading-snug">
             <span className="shrink-0">{t('app.welcome', greeting)},</span>
-            <span className="text-[#1B664B] font-extrabold max-w-[150px] sm:max-w-[220px] lg:max-w-[320px] truncate">{userName}</span>
+            <span className="text-[#087443] dark:text-[#35D99A] font-extrabold max-w-[120px] sm:max-w-[180px] lg:max-w-[260px] truncate">{userName}</span>
             <span className="shrink-0">👋</span>
           </h1>
-          <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-normal mt-1 leading-normal truncate max-w-sm sm:max-w-md">
+          <p className="text-[11px] sm:text-xs text-slate-500 dark:text-[#9AAFA6] font-normal mt-0.5 leading-normal truncate max-w-[240px] sm:max-w-xs md:max-w-sm hidden sm:block">
             {t('app.welcomeSub', 'Manage your documents, folders and categories in one secure place.')}
           </p>
         </div>
       </div>
 
       {/* Right side: Search, Upload CTA, Theme Toggle, Notifications & Profile */}
-      <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
+      <div className="flex items-center gap-2 sm:gap-3 shrink-0">
         {/* Global Search Input */}
         <form
           onSubmit={(e) => {
@@ -140,16 +140,16 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
             const val = (e.currentTarget.elements.namedItem('headerSearch') as HTMLInputElement)?.value;
             if (val) window.location.href = `/user/documents?q=${encodeURIComponent(val.trim())}`;
           }}
-          className="relative w-64 md:w-72 lg:w-80 focus-within:lg:w-96 transition-all duration-300 group hidden sm:block"
+          className="relative w-40 md:w-56 lg:w-64 xl:w-72 focus-within:xl:w-80 transition-all duration-300 group hidden sm:block"
         >
-          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 group-focus-within:text-[#1B664B] group-focus-within:scale-110 transition-all duration-200" />
+          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-400 group-focus-within:text-[#087443] dark:group-focus-within:text-[#35D99A] group-focus-within:scale-110 transition-all duration-200" />
           <input
             name="headerSearch"
             type="text"
             placeholder={t('common.searchPlaceholder', 'Search documents, folders...')}
-            className="w-full h-10 pl-10 pr-12 text-xs font-medium bg-slate-100/90 dark:bg-slate-800/90 border border-slate-200/90 dark:border-slate-700/90 rounded-2xl text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:bg-white dark:focus:bg-slate-800 focus:border-[#1B664B] focus:ring-2 focus:ring-themePrimary/15 transition-all duration-300 shadow-2xs"
+            className="w-full h-10 pl-10 pr-12 text-xs font-medium bg-slate-100/90 dark:bg-[#0E281E] border border-slate-200/90 dark:border-[#35D99A]/20 rounded-2xl text-slate-900 dark:text-[#F5F7F6] placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:bg-white dark:focus:bg-[#123325] focus:border-[#087443] dark:focus:border-[#35D99A] focus:ring-2 focus:ring-[#19A974]/20 transition-all duration-300 shadow-2xs"
           />
-          <div className="absolute right-3.5 top-1/2 -translate-y-1/2 flex items-center gap-0.5 px-2 py-0.5 rounded-lg bg-slate-200/80 dark:bg-slate-700 border border-slate-300/80 dark:border-slate-600 text-[10px] font-mono font-bold text-slate-600 dark:text-slate-300 pointer-events-none shadow-2xs group-focus-within:opacity-0 transition-opacity">
+          <div className="absolute right-3.5 top-1/2 -translate-y-1/2 flex items-center gap-0.5 px-2 py-0.5 rounded-lg bg-slate-200/80 dark:bg-[#123325] border border-slate-300/80 dark:border-[#35D99A]/30 text-[10px] font-mono font-bold text-slate-600 dark:text-[#9AAFA6] pointer-events-none shadow-2xs group-focus-within:opacity-0 transition-opacity">
             <Command className="w-3 h-3" /> K
           </div>
         </form>
@@ -157,27 +157,27 @@ export default function Header({ onMobileMenuToggle }: HeaderProps) {
         {/* Upload Document Primary Button */}
         <Link
           href="/user/upload"
-          className="inline-flex items-center gap-2 h-10 px-4 rounded-2xl text-xs font-semibold bg-[#1B664B] hover:bg-[#14523C] active:bg-[#0F402E] text-white shadow-md transition-all duration-200 hover:scale-105 active:scale-95 shrink-0"
+          className="inline-flex items-center gap-2 h-10 px-4 rounded-2xl text-xs font-semibold bg-[#087443] dark:bg-[#19A974] hover:bg-[#065F36] dark:hover:bg-[#35D99A] dark:hover:text-[#07110D] text-white shadow-md transition-all duration-200 hover:scale-105 active:scale-95 shrink-0"
         >
-          <Upload className="w-4 h-4 text-white" />
+          <Upload className="w-4 h-4 text-white dark:group-hover:text-[#07110D]" />
           <span className="hidden sm:inline">{t('nav.uploadDocument', 'Upload Document')}</span>
         </Link>
 
         {/* Theme Toggle Button */}
         <button
           onClick={toggleTheme}
-          className="flex items-center gap-2 h-10 px-3.5 rounded-2xl bg-slate-100/90 dark:bg-slate-800 hover:bg-slate-200/80 dark:hover:bg-slate-700 border border-slate-200/80 dark:border-slate-700/80 text-slate-700 dark:text-slate-200 transition-all duration-200 hover:scale-105 active:scale-95 shrink-0 cursor-pointer shadow-2xs group"
+          className="flex items-center gap-2 h-10 px-3.5 rounded-2xl bg-slate-100/90 dark:bg-[#0E281E] hover:bg-slate-200/80 dark:hover:bg-[#123325] border border-slate-200/80 dark:border-[#35D99A]/20 text-slate-700 dark:text-[#F5F7F6] transition-all duration-200 hover:scale-105 active:scale-95 shrink-0 cursor-pointer shadow-2xs group"
           title={theme === 'dark' ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
         >
           {theme === 'dark' ? (
             <>
-              <Moon className="w-4 h-4 text-emerald-400 fill-emerald-400/20 group-hover:rotate-12 transition-transform duration-300" />
-              <span className="hidden sm:inline text-xs font-bold text-emerald-300 font-auth-heading">{t('common.dark', 'Dark')}</span>
+              <Moon className="w-4 h-4 text-[#35D99A] fill-[#35D99A]/20 group-hover:rotate-12 transition-transform duration-300" />
+              <span className="hidden sm:inline text-xs font-bold text-[#35D99A] font-auth-heading">{t('common.dark', 'Dark')}</span>
             </>
           ) : (
             <>
-              <Sun className="w-4 h-4 text-emerald-600 fill-emerald-600/20 group-hover:rotate-45 transition-transform duration-300" />
-              <span className="hidden sm:inline text-xs font-bold text-emerald-700 font-auth-heading">{t('common.light', 'Light')}</span>
+              <Sun className="w-4 h-4 text-[#087443] fill-[#087443]/20 group-hover:rotate-45 transition-transform duration-300" />
+              <span className="hidden sm:inline text-xs font-bold text-[#087443] font-auth-heading">{t('common.light', 'Light')}</span>
             </>
           )}
         </button>

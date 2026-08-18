@@ -13,8 +13,7 @@ export default function TrialBanner() {
   const { logout } = useAuth();
   const [dismissed, setDismissed] = useState(false);
 
-  // If user upgraded to active subscription, banner disappears completely
-  if (subscription.status === 'active' || dismissed) {
+  if (dismissed) {
     return null;
   }
 
@@ -80,11 +79,11 @@ export default function TrialBanner() {
   const isWarning = daysRemaining <= 3;
 
   return (
-    <div className="w-full py-3 px-4 sm:px-6 rounded-2xl mb-6 relative overflow-hidden flex items-center justify-between gap-4 text-xs bg-[#E8F5F0] dark:bg-slate-900 border border-[#D1EBE1] dark:border-emerald-900/60 shadow-2xs">
+    <div className="w-full py-2.5 px-4 sm:px-8 border-t border-slate-200/80 dark:border-[#35D99A]/15 bg-[#EEF6F2] dark:bg-[#0E281E] relative overflow-hidden flex items-center justify-between gap-4 text-xs transition-colors duration-200">
       {/* Left Active Badge (Solid z-20 container to prevent text bleed) */}
-      <div className="flex items-center gap-2 shrink-0 z-20 bg-[#E8F5F0] dark:bg-slate-900 pr-2 py-0.5 rounded-full">
-        <span className="px-3 py-1 rounded-full bg-[#D1EBE1] dark:bg-emerald-950/80 text-[#1B664B] dark:text-emerald-300 text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5 border border-[#D1EBE1] dark:border-emerald-900/60 shadow-2xs">
-          <span className="w-2 h-2 rounded-full bg-[#1B664B] animate-ping" />
+      <div className="flex items-center gap-2 shrink-0 z-20 bg-[#EEF6F2] dark:bg-[#0E281E] pr-2 py-0.5 rounded-full">
+        <span className="px-3 py-1 rounded-full bg-[#D1EBE1] dark:bg-[#123325] text-[#087443] dark:text-[#35D99A] text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5 border border-[#D1EBE1] dark:border-[#35D99A]/30 shadow-2xs">
+          <span className="w-2 h-2 rounded-full bg-[#087443] dark:bg-[#35D99A] animate-ping" />
           Trial Active
         </span>
       </div>
@@ -92,36 +91,36 @@ export default function TrialBanner() {
       {/* CONTINUOUS PROFESSIONAL MARQUEE TICKER WITH SOLID FADE MASKS */}
       <div className="relative flex-1 overflow-hidden mx-2">
         {/* Side Fade Gradient Masks */}
-        <div className="absolute left-0 top-0 bottom-0 w-10 bg-gradient-to-r from-[#E8F5F0] via-[#E8F5F0]/80 to-transparent dark:from-slate-900 dark:via-slate-900/80 dark:to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-[#E8F5F0] via-[#E8F5F0]/80 to-transparent dark:from-slate-900 dark:via-slate-900/80 dark:to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-10 bg-gradient-to-r from-[#EEF6F2] via-[#EEF6F2]/80 to-transparent dark:from-[#0E281E] dark:via-[#0E281E]/80 dark:to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-[#EEF6F2] via-[#EEF6F2]/80 to-transparent dark:from-[#0E281E] dark:via-[#0E281E]/80 dark:to-transparent z-10 pointer-events-none" />
 
-        <div className="animate-marquee flex items-center whitespace-nowrap gap-16 font-semibold text-slate-700 dark:text-slate-200">
+        <div className="animate-marquee flex items-center whitespace-nowrap gap-16 font-semibold text-slate-700 dark:text-[#F5F7F6]">
           {/* Item 1 */}
           <div className="flex items-center gap-3">
-            <span className="font-black text-slate-900 dark:text-white flex items-center gap-1.5">
-              <Crown className="w-4 h-4 text-[#1B664B] fill-[#1B664B]/20" /> 7-Day Free Trial Mode
+            <span className="font-black text-slate-900 dark:text-[#F5F7F6] flex items-center gap-1.5">
+              <Crown className="w-4 h-4 text-[#087443] dark:text-[#35D99A] fill-[#087443]/20" /> 7-Day Free Trial Mode
             </span>
-            <span className="text-[#1B664B] font-bold">•</span>
-            <span className="text-slate-600 dark:text-slate-300 font-medium">
-              <strong className="text-[#1B664B] font-black underline decoration-[#1B664B] decoration-2">{daysRemaining} {daysRemaining === 1 ? 'Day' : 'Days'} Remaining</strong> (₹0 Billed)
+            <span className="text-[#087443] dark:text-[#35D99A] font-bold">•</span>
+            <span className="text-slate-600 dark:text-[#9AAFA6] font-medium">
+              <strong className="text-[#087443] dark:text-[#35D99A] font-black underline decoration-[#087443] dark:decoration-[#35D99A] decoration-2">{daysRemaining} {daysRemaining === 1 ? 'Day' : 'Days'} Remaining</strong> (₹0 Billed)
             </span>
-            <span className="text-[#1B664B] font-bold">•</span>
-            <span className="px-2 py-0.5 rounded bg-white dark:bg-slate-800 border border-[#D1EBE1] dark:border-emerald-900/60 text-[#1B664B] dark:text-emerald-300 text-[10px] font-black shadow-2xs">
+            <span className="text-[#087443] dark:text-[#35D99A] font-bold">•</span>
+            <span className="px-2 py-0.5 rounded bg-white dark:bg-[#123325] border border-[#D1EBE1] dark:border-[#35D99A]/30 text-[#087443] dark:text-[#35D99A] text-[10px] font-black shadow-2xs">
               ⚡ OCR & AI Search Enabled
             </span>
           </div>
 
           {/* Item 2 (Duplicated for Seamless 100% Continuous Infinite Loop) */}
           <div className="flex items-center gap-3">
-            <span className="font-black text-slate-900 dark:text-white flex items-center gap-1.5">
-              <Crown className="w-4 h-4 text-[#1B664B] fill-[#1B664B]/20" /> 7-Day Free Trial Mode
+            <span className="font-black text-slate-900 dark:text-[#F5F7F6] flex items-center gap-1.5">
+              <Crown className="w-4 h-4 text-[#087443] dark:text-[#35D99A] fill-[#087443]/20" /> 7-Day Free Trial Mode
             </span>
-            <span className="text-[#1B664B] font-bold">•</span>
-            <span className="text-slate-600 dark:text-slate-300 font-medium">
-              <strong className="text-[#1B664B] font-black underline decoration-[#1B664B] decoration-2">{daysRemaining} {daysRemaining === 1 ? 'Day' : 'Days'} Remaining</strong> (₹0 Billed)
+            <span className="text-[#087443] dark:text-[#35D99A] font-bold">•</span>
+            <span className="text-slate-600 dark:text-[#9AAFA6] font-medium">
+              <strong className="text-[#087443] dark:text-[#35D99A] font-black underline decoration-[#087443] dark:decoration-[#35D99A] decoration-2">{daysRemaining} {daysRemaining === 1 ? 'Day' : 'Days'} Remaining</strong> (₹0 Billed)
             </span>
-            <span className="text-[#1B664B] font-bold">•</span>
-            <span className="px-2 py-0.5 rounded bg-white dark:bg-slate-800 border border-[#D1EBE1] dark:border-emerald-900/60 text-[#1B664B] dark:text-emerald-300 text-[10px] font-black shadow-2xs">
+            <span className="text-[#087443] dark:text-[#35D99A] font-bold">•</span>
+            <span className="px-2 py-0.5 rounded bg-white dark:bg-[#123325] border border-[#D1EBE1] dark:border-[#35D99A]/30 text-[#087443] dark:text-[#35D99A] text-[10px] font-black shadow-2xs">
               ⚡ OCR & AI Search Enabled
             </span>
           </div>
@@ -129,16 +128,16 @@ export default function TrialBanner() {
       </div>
 
       {/* Right Controls (Solid z-20 container to prevent text bleed) */}
-      <div className="flex items-center gap-2 shrink-0 z-20 bg-[#E8F5F0] dark:bg-slate-900 pl-2 py-0.5 rounded-full">
+      <div className="flex items-center gap-2 shrink-0 z-20 bg-[#EEF6F2] dark:bg-[#0E281E] pl-2 py-0.5 rounded-full">
         <button
           onClick={() => openUpgradeModal()}
-          className="px-4 py-2 rounded-xl bg-[#1B664B] hover:bg-[#14523C] active:bg-[#0F402E] text-white font-bold text-xs shadow-md hover:scale-105 active:scale-95 transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
+          className="px-4 py-2 rounded-xl bg-[#087443] dark:bg-[#19A974] hover:bg-[#065F36] dark:hover:bg-[#35D99A] dark:hover:text-[#07110D] text-white font-bold text-xs shadow-md hover:scale-105 active:scale-95 transition flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
         >
-          <Zap className="w-3.5 h-3.5 fill-white" /> Upgrade Plan
+          <Zap className="w-3.5 h-3.5 fill-white dark:group-hover:fill-[#07110D]" /> Upgrade Plan
         </button>
         <button
           onClick={() => setDismissed(true)}
-          className="p-1.5 rounded-xl hover:bg-[#D1EBE1] dark:hover:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-white transition cursor-pointer"
+          className="p-1.5 rounded-xl hover:bg-[#D1EBE1] dark:hover:bg-[#123325] text-slate-400 hover:text-slate-700 dark:hover:text-white transition cursor-pointer"
           title="Dismiss Banner"
         >
           <X className="w-3.5 h-3.5" />

@@ -15,31 +15,31 @@ const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
 
 const PORTRAIT_COLOR_SCHEMES = [
   {
-    border: 'border-[#D1EBE1] dark:border-emerald-800/80 hover:border-[#1B664B]',
-    iconBg: 'bg-[#E8F5F0] text-[#1B664B] border-[#D1EBE1]',
-    badge: 'bg-[#E8F5F0] text-[#1B664B] border-[#D1EBE1]',
-    bulletCheck: 'text-[#1B664B]',
+    border: 'border-[#D1EBE1] dark:border-[#35D99A]/20 hover:border-[#087443] dark:hover:border-[#35D99A]',
+    iconBg: 'bg-[#E8F5F0] dark:bg-[#123325] text-[#087443] dark:text-[#35D99A] border-[#D1EBE1] dark:border-[#35D99A]/20',
+    badge: 'bg-[#E8F5F0] dark:bg-[#123325] text-[#087443] dark:text-[#35D99A] border-[#D1EBE1] dark:border-[#35D99A]/20',
+    bulletCheck: 'text-[#087443] dark:text-[#35D99A]',
     bullets: ['AES-256 Bit Encryption', 'Zero-Knowledge Isolation', 'Tamper-Proof Integrity']
   },
   {
-    border: 'border-[#D1EBE1] dark:border-emerald-800/80 hover:border-[#1B664B]',
-    iconBg: 'bg-[#E8F5F0] text-[#1B664B] border-[#D1EBE1]',
-    badge: 'bg-[#E8F5F0] text-[#1B664B] border-[#D1EBE1]',
-    bulletCheck: 'text-[#1B664B]',
+    border: 'border-[#D1EBE1] dark:border-[#35D99A]/20 hover:border-[#087443] dark:hover:border-[#35D99A]',
+    iconBg: 'bg-[#E8F5F0] dark:bg-[#123325] text-[#087443] dark:text-[#35D99A] border-[#D1EBE1] dark:border-[#35D99A]/20',
+    badge: 'bg-[#E8F5F0] dark:bg-[#123325] text-[#087443] dark:text-[#35D99A] border-[#D1EBE1] dark:border-[#35D99A]/20',
+    bulletCheck: 'text-[#087443] dark:text-[#35D99A]',
     bullets: ['Full-Text OCR Search', 'Sub-100ms Indexing', 'Tag & Keyword Filtering']
   },
   {
-    border: 'border-[#D1EBE1] dark:border-emerald-800/80 hover:border-[#1B664B]',
-    iconBg: 'bg-[#E8F5F0] text-[#1B664B] border-[#D1EBE1]',
-    badge: 'bg-[#E8F5F0] text-[#1B664B] border-[#D1EBE1]',
-    bulletCheck: 'text-[#1B664B]',
+    border: 'border-[#D1EBE1] dark:border-[#35D99A]/20 hover:border-[#087443] dark:hover:border-[#35D99A]',
+    iconBg: 'bg-[#E8F5F0] dark:bg-[#123325] text-[#087443] dark:text-[#35D99A] border-[#D1EBE1] dark:border-[#35D99A]/20',
+    badge: 'bg-[#E8F5F0] dark:bg-[#123325] text-[#087443] dark:text-[#35D99A] border-[#D1EBE1] dark:border-[#35D99A]/20',
+    bulletCheck: 'text-[#087443] dark:text-[#35D99A]',
     bullets: ['Auto-Category Tagging', 'Smart Metadata Extract', 'Folder Hierarchy Sync']
   },
   {
-    border: 'border-[#D1EBE1] dark:border-emerald-800/80 hover:border-[#1B664B]',
-    iconBg: 'bg-[#E8F5F0] text-[#1B664B] border-[#D1EBE1]',
-    badge: 'bg-[#E8F5F0] text-[#1B664B] border-[#D1EBE1]',
-    bulletCheck: 'text-[#1B664B]',
+    border: 'border-[#D1EBE1] dark:border-[#35D99A]/20 hover:border-[#087443] dark:hover:border-[#35D99A]',
+    iconBg: 'bg-[#E8F5F0] dark:bg-[#123325] text-[#087443] dark:text-[#35D99A] border-[#D1EBE1] dark:border-[#35D99A]/20',
+    badge: 'bg-[#E8F5F0] dark:bg-[#123325] text-[#087443] dark:text-[#35D99A] border-[#D1EBE1] dark:border-[#35D99A]/20',
+    bulletCheck: 'text-[#087443] dark:text-[#35D99A]',
     bullets: ['Strict RBAC Control', 'Audit Logs & Trails', 'Granular File Permissions']
   }
 ];
@@ -213,7 +213,7 @@ export default function PortraitCardSwipe({ features }: PortraitCardSwipeProps) 
       {/* Header Controls Bar: Next/Previous Cards Navigation */}
       <div className="flex items-center justify-between pb-3 px-1 mb-2">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-bold uppercase tracking-wider text-slate-500 font-mono bg-slate-100 dark:bg-slate-800 px-3.5 py-1.5 rounded-full border border-slate-200 dark:border-slate-700">
+          <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-[#9AAFA6] font-mono bg-slate-100 dark:bg-[#0E281E] px-3.5 py-1.5 rounded-full border border-slate-200 dark:border-[#35D99A]/20">
             Page {pageIndex + 1} of {totalPages}
           </span>
         </div>
@@ -226,8 +226,8 @@ export default function PortraitCardSwipe({ features }: PortraitCardSwipeProps) 
             disabled={pageIndex === 0}
             className={`p-2.5 rounded-2xl border transition-all duration-200 cursor-pointer flex items-center justify-center ${
               pageIndex === 0 
-                ? 'opacity-40 cursor-not-allowed bg-slate-100 border-slate-200 text-slate-400' 
-                : 'bg-white hover:bg-[#1B664B] hover:text-white border-[#D1EBE1] text-[#1B664B] shadow-sm hover:scale-105 active:scale-95'
+                ? 'opacity-40 cursor-not-allowed bg-slate-100 dark:bg-[#0E281E] border-slate-200 dark:border-[#35D99A]/20 text-slate-400 dark:text-slate-600' 
+                : 'bg-white dark:bg-[#0E281E] hover:bg-[#087443] dark:hover:bg-[#19A974] hover:text-white dark:hover:text-[#07110D] border-[#D1EBE1] dark:border-[#35D99A]/20 text-[#087443] dark:text-[#35D99A] shadow-sm hover:scale-105 active:scale-95'
             }`}
             title="Previous Group of Cards"
           >
@@ -240,8 +240,8 @@ export default function PortraitCardSwipe({ features }: PortraitCardSwipeProps) 
             disabled={pageIndex === totalPages - 1}
             className={`px-4 py-2.5 rounded-2xl border transition-all duration-200 cursor-pointer flex items-center gap-2 font-bold text-xs ${
               pageIndex === totalPages - 1 
-                ? 'opacity-40 cursor-not-allowed bg-slate-100 border-slate-200 text-slate-400' 
-                : 'bg-[#1B664B] text-white hover:bg-[#14523C] border-[#1B664B] shadow-md shadow-emerald-950/20 hover:scale-105 active:scale-95'
+                ? 'opacity-40 cursor-not-allowed bg-slate-100 dark:bg-[#0E281E] border-slate-200 dark:border-[#35D99A]/20 text-slate-400 dark:text-slate-600' 
+                : 'bg-[#087443] dark:bg-[#19A974] text-white dark:text-[#07110D] hover:bg-[#065F36] dark:hover:bg-[#35D99A] border-[#087443] dark:border-[#19A974] shadow-md hover:scale-105 active:scale-95'
             }`}
             title="Next Group of Cards"
           >
@@ -289,15 +289,15 @@ export default function PortraitCardSwipe({ features }: PortraitCardSwipeProps) 
                   <div
                     key={feat.id}
                     className={`
-                      w-full bg-white border ${scheme.border}
+                      w-full bg-white dark:bg-[#0E281E] border ${scheme.border}
                       rounded-[28px] p-7 flex flex-col justify-between relative overflow-hidden group 
-                      shadow-xs hover:shadow-xl hover:border-[#1B664B] hover:-translate-y-1.5 hover:scale-[1.015]
+                      shadow-xs hover:shadow-xl hover:border-[#087443] dark:hover:border-[#35D99A] hover:-translate-y-1.5 hover:scale-[1.015]
                       transition-all duration-300 min-h-[380px] cursor-pointer
                       ${isDragging ? 'pointer-events-none' : ''}
                     `}
                   >
                     {/* Top Accent Ambient Glow */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-[#E8F5F0]/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-[#E8F5F0]/60 dark:from-[#123325]/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
                     {/* Card Header: Icon & Badge */}
                     <div className="relative z-10 space-y-4">
@@ -312,19 +312,19 @@ export default function PortraitCardSwipe({ features }: PortraitCardSwipeProps) 
 
                       {/* Card Title & Description */}
                       <div className="space-y-2 pt-2">
-                        <h3 className="text-xl font-black text-slate-900 group-hover:text-[#1B664B] transition-colors font-auth-heading tracking-tight leading-snug">
+                        <h3 className="text-xl font-black text-slate-900 dark:text-[#F5F7F6] group-hover:text-[#087443] dark:group-hover:text-[#35D99A] transition-colors font-auth-heading tracking-tight leading-snug">
                           {feat.title}
                         </h3>
-                        <p className="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed line-clamp-3">
+                        <p className="text-xs sm:text-sm text-slate-600 dark:text-[#9AAFA6] font-medium leading-relaxed line-clamp-3">
                           {feat.description}
                         </p>
                       </div>
                     </div>
 
                     {/* Card Middle: Feature Checkpoints */}
-                    <div className="relative z-10 space-y-2.5 pt-4 border-t border-slate-100 mt-4">
+                    <div className="relative z-10 space-y-2.5 pt-4 border-t border-slate-100 dark:border-slate-800 mt-4">
                       {scheme.bullets.map((bullet, bIdx) => (
-                        <div key={bIdx} className="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                        <div key={bIdx} className="flex items-center gap-2 text-xs font-semibold text-slate-700 dark:text-slate-300">
                           <CheckCircle2 className={`w-3.5 h-3.5 shrink-0 ${scheme.bulletCheck}`} />
                           <span className="truncate">{bullet}</span>
                         </div>
@@ -332,11 +332,11 @@ export default function PortraitCardSwipe({ features }: PortraitCardSwipeProps) 
                     </div>
 
                     {/* Card Footer: Action Link */}
-                    <div className="relative z-10 pt-4 flex items-center justify-between border-t border-slate-100/80 mt-4">
-                      <span className="text-xs font-black text-slate-900 group-hover:text-[#1B664B] transition-colors">
+                    <div className="relative z-10 pt-4 flex items-center justify-between border-t border-slate-100/80 dark:border-slate-800 mt-4">
+                      <span className="text-xs font-black text-slate-900 dark:text-[#F5F7F6] group-hover:text-[#087443] dark:group-hover:text-[#35D99A] transition-colors">
                         Explore Feature
                       </span>
-                      <div className="w-8 h-8 rounded-full bg-slate-50 border border-slate-200 text-slate-700 group-hover:bg-[#1B664B] group-hover:text-white group-hover:border-[#1B664B] flex items-center justify-center transition-all duration-200">
+                      <div className="w-8 h-8 rounded-full bg-slate-50 dark:bg-[#123325] border border-slate-200 dark:border-[#35D99A]/20 text-slate-700 dark:text-slate-200 group-hover:bg-[#087443] dark:group-hover:bg-[#19A974] group-hover:text-white dark:group-hover:text-[#07110D] group-hover:border-[#087443] dark:group-hover:border-[#19A974] flex items-center justify-center transition-all duration-200">
                         <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                       </div>
                     </div>

@@ -497,14 +497,14 @@ export default function RegisterPage() {
 
   if (successMsg) {
     return (
-      <div className="min-h-screen w-full bg-white flex items-center justify-center p-4 font-sans">
-        <div className="w-full max-w-md bg-white rounded-[32px] p-10 text-center shadow-xl border border-slate-200">
-          <div className="w-16 h-16 bg-[#F0FDF4] text-[#16A34A] rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
+      <div className="min-h-screen w-full bg-[var(--bg-app)] dark:bg-[#07110D] text-[var(--text-primary)] dark:text-[#F5F7F6] flex items-center justify-center p-4 font-sans transition-colors duration-200">
+        <div className="w-full max-w-md bg-white dark:bg-[#0E281E] rounded-[32px] p-10 text-center shadow-xl border border-slate-200 dark:border-[#35D99A]/20">
+          <div className="w-16 h-16 bg-[#EEF6F2] dark:bg-[#123325] text-[#087443] dark:text-[#35D99A] rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
             <CheckCircle2 className="w-10 h-10" />
           </div>
-          <h2 className="text-3xl font-bold text-slate-900 mb-2">Welcome Aboard!</h2>
-          <p className="text-slate-500 mb-8 font-medium">Your DocVault account has been created securely.</p>
-          <Link href="/login" className="block w-full py-4 rounded-[16px] text-white font-bold bg-[#1B664B] hover:bg-[#14523C] active:bg-[#0F402E] shadow-md transition-all duration-300">
+          <h2 className="text-3xl font-bold text-slate-900 dark:text-[#F5F7F6] mb-2">Welcome Aboard!</h2>
+          <p className="text-slate-500 dark:text-[#9AAFA6] mb-8 font-medium">Your DocVault account has been created securely.</p>
+          <Link href="/login" className="block w-full py-4 rounded-[16px] text-white font-bold bg-[#087443] dark:bg-[#19A974] hover:bg-[#065F36] dark:hover:bg-[#35D99A] dark:hover:text-[#07110D] shadow-md transition-all duration-300">
             Access Your Vault →
           </Link>
         </div>
@@ -513,22 +513,22 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen w-full bg-white flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 font-sans relative overflow-hidden animate-fade-up">
+    <div className="min-h-screen w-full bg-[var(--bg-app)] dark:bg-[#07110D] text-[var(--text-primary)] dark:text-[#F5F7F6] flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 font-sans relative overflow-hidden animate-fade-up transition-colors duration-200">
       <style dangerouslySetInnerHTML={{ __html: customStyles }} />
       
       {/* Professional Top Left Back Button */}
       <div className="absolute top-6 left-6 z-20">
         <Link
           href="/"
-          className="inline-flex items-center gap-2.5 px-6 py-2.5 rounded-full bg-white border border-slate-200 hover:border-[#1B664B] hover:bg-[#E8F5F0] text-slate-700 hover:text-slate-900 text-xs font-bold shadow-xs hover:shadow-md transition-all duration-300 group cursor-pointer font-auth-heading hover:-translate-y-0.5 whitespace-nowrap"
+          className="inline-flex items-center gap-2.5 px-6 py-2.5 rounded-full bg-white/95 dark:bg-[#0E281E]/95 backdrop-blur-md border border-slate-200 dark:border-[#35D99A]/20 hover:border-[#087443] dark:hover:border-[#35D99A] hover:bg-[#EEF6F2] dark:hover:bg-[#123325] text-slate-800 dark:text-[#F5F7F6] hover:text-[#087443] dark:hover:text-[#35D99A] text-xs font-bold shadow-xs hover:shadow-md transition-all duration-300 group cursor-pointer font-auth-heading hover:-translate-y-0.5 whitespace-nowrap"
         >
-          <ArrowLeft className="w-4 h-4 text-[#1B664B] group-hover:-translate-x-1 transition-transform duration-300 shrink-0" />
-          <span>Back to Home Page</span>
+          <ArrowLeft className="w-4 h-4 text-[#087443] dark:text-[#35D99A] group-hover:-translate-x-1 transition-transform duration-300 shrink-0" />
+          <span className="text-slate-800 dark:text-[#F5F7F6] group-hover:text-[#087443] dark:group-hover:text-[#35D99A]">Back to Home Page</span>
         </Link>
       </div>
 
       {/* Main Centered Card Container */}
-      <div className="w-full max-w-[480px] bg-white rounded-[32px] shadow-xl border border-slate-200 relative z-10 flex flex-col my-8 animate-card-float transition-shadow duration-500">
+      <div className="w-full max-w-[480px] bg-white dark:bg-[#0E281E] text-slate-900 dark:text-[#F5F7F6] rounded-[32px] shadow-xl border border-slate-200 dark:border-[#35D99A]/20 relative z-10 flex flex-col my-8 animate-card-float transition-shadow duration-500">
         <div className="p-8 sm:p-10">
           
           {/* Header */}

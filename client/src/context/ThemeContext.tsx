@@ -138,6 +138,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   const setThemeMode = (mode: 'light' | 'dark' | 'system') => {
     setThemeModeState(mode);
+    localStorage.setItem('docvault-theme', mode);
     localStorage.setItem('dms_theme_mode', mode);
     localStorage.setItem('dms_theme', mode);
     
@@ -145,6 +146,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
+    }
+
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('dms_theme_updated'));
     }
   };
 
@@ -158,7 +163,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       } catch(e) {}
     }
     
-    const storedMode = (localStorage.getItem('dms_theme_mode') || localStorage.getItem('dms_theme')) as 'light' | 'dark' | 'system' | null;
+    const storedMode = (localStorage.getItem('docvault-theme') || localStorage.getItem('dms_theme_mode') || localStorage.getItem('dms_theme')) as 'light' | 'dark' | 'system' | null;
     if (storedMode === 'dark') {
       setThemeMode('dark');
     } else {
@@ -167,6 +172,19 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     
     fetchUserTheme();
     setMounted(true);
+
+    const handleThemeSync = () => {
+      const current = localStorage.getItem('docvault-theme') || localStorage.getItem('dms_theme_mode') || localStorage.getItem('dms_theme');
+      if (current === 'dark') {
+        document.documentElement.classList.add('dark');
+        setThemeModeState('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+        setThemeModeState('light');
+      }
+    };
+    window.addEventListener('dms_theme_updated', handleThemeSync);
+    return () => window.removeEventListener('dms_theme_updated', handleThemeSync);
   }, []);
 
   const toggleTheme = () => {

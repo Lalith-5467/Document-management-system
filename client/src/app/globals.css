@@ -8,71 +8,53 @@
   font-family: 'Poppins', var(--font-poppins), sans-serif !important;
 }
 
-/* Root Theme Variables - Strict Solid Green (#1B664B) & White (#FFFFFF) Palette */
-:root {
-  --theme-primary: #1B664B;
-  --theme-secondary: #14523C;
-  --theme-deep: #0F402E;
-  --theme-light: #D1EBE1;
-  --theme-soft: #E8F5F0;
-  --theme-accent: #1B664B;
-  --theme-border: #D1EBE1;
-  --bg-app: #FFFFFF;
+/* Centralized Global Theme Design Tokens */
+:root, html.light {
+  --theme-primary: #087443;
+  --theme-secondary: #19A974;
+  --theme-deep: #054F2D;
+  --theme-light: #EEF6F2;
+  --theme-soft: #F1F6F3;
+  --theme-accent: #35D99A;
+  --theme-border: #DCE9E2;
+  --bg-app: #F6FAF8;
+  --bg-surface: #FFFFFF;
   --bg-card: #FFFFFF;
+  --bg-elevated: #EEF6F2;
   --bg-sidebar: #FFFFFF;
   --bg-input: #FFFFFF;
-  --border-color: #D1EBE1;
-  --text-primary: #17211B;
-  --text-secondary: #64748B;
+  --border-color: #DCE9E2;
+  --text-primary: #10231B;
+  --text-secondary: #64756D;
   --select-bg: #FFFFFF;
-  --select-text: #17211B;
-  --accent-primary: #1B664B;
-  --accent-hover: #14523C;
+  --select-text: #10231B;
+  --accent-primary: #087443;
+  --accent-hover: #065F36;
   color-scheme: light;
 }
 
 html.dark {
-  --theme-primary: #1B664B;
-  --theme-secondary: #14523C;
-  --theme-deep: #0F402E;
-  --theme-light: #0F402E;
-  --theme-soft: #051A12;
-  --theme-accent: #1B664B;
-  --theme-border: #0F402E;
-  --bg-app: #051A12;
-  --bg-card: #0A2D20;
-  --bg-sidebar: #051A12;
-  --bg-input: #0A2D20;
-  --border-color: #0F402E;
-  --text-primary: #E8F5F0;
-  --text-secondary: #76C3A5;
-  --select-bg: #0A2D20;
-  --select-text: #E8F5F0;
-  --accent-primary: #1B664B;
-  --accent-hover: #14523C;
+  --theme-primary: #19A974;
+  --theme-secondary: #35D99A;
+  --theme-deep: #07110D;
+  --theme-light: #123325;
+  --theme-soft: #0E281E;
+  --theme-accent: #35D99A;
+  --theme-border: rgba(53, 217, 154, 0.18);
+  --bg-app: #07110D;
+  --bg-surface: #0B1F17;
+  --bg-card: #0E281E;
+  --bg-elevated: #123325;
+  --bg-sidebar: #0B1F17;
+  --bg-input: #0E281E;
+  --border-color: rgba(53, 217, 154, 0.18);
+  --text-primary: #F5F7F6;
+  --text-secondary: #9AAFA6;
+  --select-bg: #0E281E;
+  --select-text: #F5F7F6;
+  --accent-primary: #19A974;
+  --accent-hover: #35D99A;
   color-scheme: dark;
-}
-
-html.light {
-  --theme-primary: #1B664B;
-  --theme-secondary: #14523C;
-  --theme-deep: #0F402E;
-  --theme-light: #D1EBE1;
-  --theme-soft: #E8F5F0;
-  --theme-accent: #1B664B;
-  --theme-border: #D1EBE1;
-  --bg-app: #FFFFFF;
-  --bg-card: #FFFFFF;
-  --bg-sidebar: #FFFFFF;
-  --bg-input: #FFFFFF;
-  --border-color: #D1EBE1;
-  --text-primary: #17211B;
-  --text-secondary: #64748B;
-  --select-bg: #FFFFFF;
-  --select-text: #17211B;
-  --accent-primary: #1B664B;
-  --accent-hover: #14523C;
-  color-scheme: light;
 }
 
 html,
@@ -93,7 +75,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   letter-spacing: -0.012em;
   min-height: 100vh;
-  transition: background-color 0.25s ease, color 0.25s ease;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
   -ms-overflow-style: none !important;
   scrollbar-width: none !important;
 }
@@ -109,18 +91,18 @@ input, textarea, button, select {
 
 /* Solid Custom Dropdown Option Hover & Focus Styling */
 select {
-  accent-color: #16A34A !important;
+  accent-color: #19A974 !important;
 }
 
 select:focus {
   outline: none !important;
-  border-color: #16A34A !important;
-  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15) !important;
+  border-color: #19A974 !important;
+  box-shadow: 0 0 0 3px rgba(25, 169, 116, 0.15) !important;
 }
 
 select option {
   background-color: var(--select-bg, #ffffff);
-  color: var(--select-text, #17211B);
+  color: var(--select-text, #10231B);
   padding: 10px 14px;
 }
 
@@ -128,25 +110,25 @@ select option:hover,
 select option:focus,
 select option:active,
 select option:checked {
-  background-color: #16A34A !important;
-  background: #16A34A !important;
+  background-color: #19A974 !important;
+  background: #19A974 !important;
   color: #ffffff !important;
 }
 
 /* Chromium / Webkit select option focus & highlight overrides */
 select:focus option:checked,
 select option:checked {
-  box-shadow: 0 0 10px 100px #16A34A inset !important;
+  box-shadow: 0 0 10px 100px #19A974 inset !important;
   color: #ffffff !important;
 }
 
 ::selection {
-  background-color: #16A34A !important;
+  background-color: #19A974 !important;
   color: #ffffff !important;
 }
 
 ::-moz-selection {
-  background-color: #16A34A !important;
+  background-color: #19A974 !important;
   color: #ffffff !important;
 }
 
@@ -179,45 +161,109 @@ html, body, * {
   background: transparent !important;
 }
 
-/* Global Dark Mode Overrides */
+/* Global Dark Mode SaaS Clean Hierarchy Overrides */
 html.dark body {
-  background-color: #052E16 !important;
-  color: #F0FDF4 !important;
+  background-color: #07110D !important;
+  color: #F5F7F6 !important;
 }
 
-html.dark .bg-white {
-  background-color: #0F3822 !important;
-  color: #F0FDF4 !important;
+html.dark .bg-white,
+html.dark [class*="bg-white"] {
+  background-color: #0E281E !important;
+  color: #F5F7F6;
 }
 
 html.dark .bg-slate-50,
-html.dark .bg-slate-100 {
-  background-color: #052E16 !important;
-  color: #F0FDF4 !important;
+html.dark [class*="bg-slate-50"] {
+  background-color: #07110D !important;
 }
 
+html.dark .bg-slate-100,
+html.dark [class*="bg-slate-100"] {
+  background-color: #123325 !important;
+  color: #F5F7F6 !important;
+}
+
+html.dark .bg-slate-800,
+html.dark .bg-slate-900,
+html.dark .bg-slate-950,
+html.dark [class*="bg-slate-800"],
+html.dark [class*="bg-slate-900"],
+html.dark [class*="bg-slate-950"] {
+  background-color: #0E281E !important;
+  color: #F5F7F6 !important;
+}
+
+html.dark input:not([type="checkbox"]):not([type="radio"]),
+html.dark select,
+html.dark textarea {
+  background-color: #0E281E !important;
+  color: #F5F7F6 !important;
+  border-color: rgba(53, 217, 154, 0.25) !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #647E73 !important;
+}
+
+html.dark .border-slate-100,
 html.dark .border-slate-200,
-html.dark .border-slate-300 {
-  border-color: #166534 !important;
+html.dark .border-slate-300,
+html.dark .border-slate-700,
+html.dark .border-slate-800,
+html.dark [class*="border-slate-"] {
+  border-color: rgba(53, 217, 154, 0.18) !important;
 }
 
 html.dark .text-slate-900,
-html.dark .text-slate-800 {
-  color: #F0FDF4 !important;
+html.dark .text-slate-800,
+html.dark .text-slate-700,
+html.dark [class*="text-slate-900"],
+html.dark [class*="text-slate-800"],
+html.dark [class*="text-slate-700"] {
+  color: #F5F7F6 !important;
 }
 
 html.dark .text-slate-600,
 html.dark .text-slate-500,
-html.dark .text-slate-400 {
-  color: #86EFAC !important;
+html.dark .text-slate-400,
+html.dark .text-slate-300,
+html.dark [class*="text-slate-600"],
+html.dark [class*="text-slate-500"],
+html.dark [class*="text-slate-400"],
+html.dark [class*="text-slate-300"] {
+  color: #9AAFA6 !important;
+}
+
+html.dark .text-white {
+  color: #FFFFFF !important;
+}
+
+/* High Contrast Green Accent Mappings for Dark Mode */
+html.dark [class*="text-[#1B664B]"],
+html.dark [class*="text-[#087443]"] {
+  color: #35D99A !important;
+}
+
+html.dark [class*="bg-[#1B664B]"],
+html.dark [class*="bg-[#087443]"] {
+  background-color: #19A974 !important;
+  color: #FFFFFF !important;
+}
+
+html.dark [class*="border-[#1B664B]"],
+html.dark [class*="border-[#087443]"] {
+  border-color: #35D99A !important;
+}
+
+html.dark [class*="bg-[#E8F5F0]"] {
+  background-color: #123325 !important;
+  color: #35D99A !important;
 }
 
 html.dark table tbody tr:hover {
-  background-color: #134E2A !important;
-}
-
-html.dark table tbody tr {
-  border-color: #166534 !important;
+  background-color: #123325 !important;
 }
 
 /* Micro-Animations Engine */
@@ -235,6 +281,26 @@ html.dark table tbody tr {
 }
 .animate-page-fade {
   animation: pageFadeUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Continuous Infinite Marquee Animation */
+@keyframes marqueeInfinite {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marqueeInfinite 25s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
 }
 
 /* 2. Card Hover Lift */

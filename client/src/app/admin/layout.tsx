@@ -422,7 +422,7 @@ function CommandPalette({ open, onClose, router }: { open: boolean; onClose: () 
     { label: 'Billing & Invoicing CRM', icon: CreditCard, action: () => router.push('/admin/billing'), category: 'Navigation' },
     { label: 'Support Desk Tickets', icon: MessageSquare, action: () => router.push('/admin/support'), category: 'Navigation' },
     { label: 'Global Admin Settings', icon: Settings, action: () => router.push('/admin/settings'), category: 'Navigation' },
-    { label: 'Switch to User Vault Portal', icon: Zap, action: () => router.push('/login'), category: 'Quick Action' },
+    { label: 'User Login Portal', icon: Zap, action: () => router.push('/login'), category: 'Quick Action' },
   ];
 
   const filtered = commands.filter(c => c.label.toLowerCase().includes(query.toLowerCase()));
@@ -755,11 +755,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
           <div className="pt-4">
             <p className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500 px-3 pb-2 font-auth-heading">Quick Access</p>
-            <a href="/login" target="_blank" className="group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-extrabold text-slate-700 dark:text-slate-200 hover:text-[#1B664B] hover:bg-[#E8F5F0] dark:hover:bg-slate-800 transition-all duration-200">
+            <Link href="/login" className="group flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-extrabold text-slate-700 dark:text-slate-200 hover:text-[#1B664B] hover:bg-[#E8F5F0] dark:hover:bg-slate-800 transition-all duration-200">
               <Zap className="w-4 h-4 text-[#1B664B] shrink-0 group-hover:scale-110 transition-transform" />
-              <span>User Vault Portal</span>
+              <span>User Login Portal</span>
               <ChevronRight className="w-3.5 h-3.5 ml-auto text-slate-400 group-hover:text-[#1B664B] transition-transform group-hover:translate-x-0.5" />
-            </a>
+            </Link>
           </div>
         </nav>
 
@@ -793,27 +793,27 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </aside>
 
       {/* ===== MAIN CONTENT WRAPPER ===== */}
-      <div className="flex-1 flex flex-col lg:pl-64 min-w-0 bg-slate-50 dark:bg-slate-950">
-        {/* Top Header */}
-        <header className="sticky top-0 z-30 h-16 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 px-4 sm:px-8 flex items-center justify-between transition-all text-slate-900 dark:text-white shadow-2xs">
+      <div className="flex-1 flex flex-col lg:pl-64 min-w-0 bg-slate-50 dark:bg-[#07110D] text-slate-900 dark:text-[#F5F7F6] transition-colors duration-200">
+        {/* Fixed Top Header */}
+        <header className="fixed top-0 right-0 left-0 lg:left-64 z-30 h-16 bg-white/95 dark:bg-[#0B1F17]/95 backdrop-blur-md border-b border-slate-200 dark:border-[#35D99A]/15 px-4 sm:px-8 flex items-center justify-between transition-all text-slate-900 dark:text-[#F5F7F6] shadow-md">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setMobileOpen(true)}
-              className="lg:hidden p-2 rounded-xl text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+              className="lg:hidden p-2 rounded-xl text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#0E281E] transition-colors cursor-pointer"
               aria-label="Open Admin Menu"
             >
               <Menu className="w-5 h-5" />
             </button>
 
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-[#1B664B] flex items-center justify-center text-white shadow-sm shadow-emerald-950/20 shrink-0">
+              <div className="w-8 h-8 rounded-xl bg-[#087443] dark:bg-[#19A974] flex items-center justify-center text-white shadow-sm shrink-0">
                 <ShieldCheck className="w-4.5 h-4.5 text-white" />
               </div>
               <div className="flex items-center gap-2">
-                <h1 className="text-sm sm:text-base font-black text-slate-900 dark:text-white tracking-tight leading-none font-auth-heading">
+                <h1 className="text-sm sm:text-base font-black text-slate-900 dark:text-[#F5F7F6] tracking-tight leading-none font-auth-heading">
                   Admin Control Center
                 </h1>
-                <span className="px-2 py-0.5 rounded-full bg-[#E8F5F0] dark:bg-emerald-950/60 text-[#1B664B] dark:text-[#1B664B] border border-[#D1EBE1] dark:border-emerald-800/60 text-[9px] font-black uppercase font-mono tracking-wider shadow-2xs">
+                <span className="px-2 py-0.5 rounded-full bg-[#EEF6F2] dark:bg-[#123325] text-[#087443] dark:text-[#35D99A] border border-slate-200 dark:border-[#35D99A]/20 text-[9px] font-black uppercase font-mono tracking-wider shadow-2xs">
                   Admin Portal
                 </span>
               </div>
@@ -827,11 +827,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             {/* Quick Search */}
             <button
               onClick={() => setCommandOpen(true)}
-              className="hidden sm:flex items-center gap-2 px-3 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200/80 dark:hover:bg-slate-700 border border-slate-200/80 dark:border-slate-700/80 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all duration-200 text-xs font-semibold shadow-2xs cursor-pointer"
+              className="hidden sm:flex items-center gap-2 px-3 h-9 rounded-xl bg-slate-100/90 dark:bg-[#0E281E] hover:bg-slate-200/80 dark:hover:bg-[#123325] border border-slate-200/80 dark:border-[#35D99A]/20 text-slate-600 dark:text-[#F5F7F6] transition-all duration-200 text-xs font-semibold shadow-2xs cursor-pointer"
             >
-              <Command className="w-3.5 h-3.5 text-[#1B664B]" />
-              <span className="font-extrabold">Quick Search</span>
-              <kbd className="px-1.5 py-0.5 rounded-md bg-white dark:bg-slate-700 font-mono text-[10px] text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-600 shadow-2xs">⌘K</kbd>
+              <Command className="w-3.5 h-3.5 text-[#087443] dark:text-[#35D99A]" />
+              <span className="font-extrabold text-slate-800 dark:text-[#F5F7F6]">Quick Search</span>
+              <kbd className="px-1.5 py-0.5 rounded-md bg-white dark:bg-[#123325] font-mono text-[10px] text-slate-500 dark:text-[#9AAFA6] border border-slate-200 dark:border-[#35D99A]/30 shadow-2xs">⌘K</kbd>
             </button>
 
             {/* Notification Bell */}
@@ -843,7 +843,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </header>
 
         {/* Main Workspace Body */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-[1600px] w-full mx-auto bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans">
+        <main className="flex-1 pt-20 p-4 sm:p-6 lg:p-8 max-w-[1600px] w-full mx-auto bg-slate-50 dark:bg-[#07110D] text-slate-900 dark:text-[#F5F7F6] font-sans">
           <Breadcrumbs className="mb-4 sm:mb-6" />
           {children}
         </main>

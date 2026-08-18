@@ -75,21 +75,21 @@ export default function Sidebar({ mobileOpen = false, setMobileOpen }: SidebarPr
 
   return (
     <aside
-      className={`fixed inset-y-0 left-0 z-40 w-64 bg-white dark:bg-slate-900 text-slate-800 dark:text-white transform transition-transform duration-300 ease-out lg:translate-x-0 ${
+      className={`fixed inset-y-0 left-0 z-40 w-64 bg-white dark:bg-[#0B1F17] text-slate-800 dark:text-[#F5F7F6] transform transition-all duration-300 ease-out lg:translate-x-0 ${
         mobileOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'
-      } flex flex-col border-r border-slate-200/80 dark:border-slate-800/80 font-sans`}
+      } flex flex-col border-r border-slate-200/80 dark:border-[#35D99A]/15 font-sans`}
     >
       {/* Brand Header */}
-      <div className="min-h-[72px] sm:min-h-[80px] py-3.5 sm:py-4 flex items-center px-6 border-b border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900">
+      <div className="min-h-[72px] sm:min-h-[80px] py-3.5 sm:py-4 flex items-center px-6 border-b border-slate-200/80 dark:border-[#35D99A]/15 bg-white dark:bg-[#0B1F17]">
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="w-9 h-9 rounded-xl bg-[#1B664B] text-white flex items-center justify-center font-extrabold shadow-md group-hover:scale-105 group-hover:rotate-3 transition-all duration-300">
+          <div className="w-9 h-9 rounded-xl bg-[#087443] dark:bg-[#19A974] text-white flex items-center justify-center font-extrabold shadow-md group-hover:scale-105 group-hover:rotate-3 transition-all duration-300">
             <ShieldCheck className="w-5 h-5 text-white" />
           </div>
           <div>
-            <span className="font-black text-base text-slate-900 dark:text-white tracking-tight leading-snug block font-auth-heading group-hover:text-[#1B664B] transition-colors">
+            <span className="font-black text-base text-slate-900 dark:text-[#F5F7F6] tracking-tight leading-snug block font-auth-heading group-hover:text-[#087443] dark:group-hover:text-[#35D99A] transition-colors">
               DocVault
             </span>
-            <span className="text-[10px] font-semibold text-slate-500 dark:text-slate-400 block mt-0.5 whitespace-nowrap tracking-tight font-mono">
+            <span className="text-[10px] font-semibold text-slate-500 dark:text-[#9AAFA6] block mt-0.5 whitespace-nowrap tracking-tight font-mono">
               Document Management System
             </span>
           </div>
@@ -100,7 +100,7 @@ export default function Sidebar({ mobileOpen = false, setMobileOpen }: SidebarPr
       <div className="flex-1 overflow-y-auto px-3.5 py-5 space-y-6 scrollbar-none font-sans">
         {/* MY WORKSPACE */}
         <div>
-          <div className="px-3 mb-2.5 text-xs font-black uppercase tracking-wider text-slate-400 dark:text-slate-500 font-auth-heading">
+          <div className="px-3 mb-2.5 text-xs font-black uppercase tracking-wider text-slate-400 dark:text-[#9AAFA6] font-auth-heading">
             {t('nav.myWorkspace', 'MY WORKSPACE')}
           </div>
           <div className="space-y-1">
@@ -119,12 +119,12 @@ export default function Sidebar({ mobileOpen = false, setMobileOpen }: SidebarPr
                   }}
                   className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition-all duration-200 group relative ${
                     isActive
-                      ? 'bg-[#1B664B] text-white shadow-md font-bold'
-                      : 'text-slate-700 dark:text-slate-200 hover:bg-[#E8F5F0] dark:hover:bg-slate-800/80 hover:text-[#1B664B] dark:hover:text-white font-semibold hover:translate-x-0.5'
+                      ? 'bg-[#087443] dark:bg-[#19A974] text-white shadow-md font-bold'
+                      : 'text-slate-700 dark:text-slate-200 hover:bg-[#EEF6F2] dark:hover:bg-[#0E281E] hover:text-[#087443] dark:hover:text-[#35D99A] font-semibold hover:translate-x-0.5'
                   }`}
                 >
                   {isActive && <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-6 bg-white rounded-r-full -ml-3.5 shadow-xs animate-scale-up" />}
-                  <Icon className={`w-4 h-4 shrink-0 transition-transform duration-200 ${isActive ? 'text-white scale-105' : 'text-slate-400 dark:text-slate-400 group-hover:scale-110 group-hover:text-[#1B664B] dark:group-hover:text-white'}`} />
+                  <Icon className={`w-4 h-4 shrink-0 transition-transform duration-200 ${isActive ? 'text-white scale-105' : 'text-slate-400 dark:text-slate-400 group-hover:scale-110 group-hover:text-[#087443] dark:group-hover:text-[#35D99A]'}`} />
                   <span className="truncate tracking-tight">{item.name}</span>
                 </Link>
               );
@@ -134,7 +134,7 @@ export default function Sidebar({ mobileOpen = false, setMobileOpen }: SidebarPr
 
         {/* VAULT COLLECTIONS */}
         <div>
-          <div className="px-3 mb-2.5 text-xs font-black uppercase tracking-wider text-slate-400 dark:text-slate-500 font-auth-heading">
+          <div className="px-3 mb-2.5 text-xs font-black uppercase tracking-wider text-slate-400 dark:text-[#9AAFA6] font-auth-heading">
             {t('nav.vaultCollections', 'VAULT COLLECTIONS')}
           </div>
           <div className="space-y-1">
@@ -148,15 +148,15 @@ export default function Sidebar({ mobileOpen = false, setMobileOpen }: SidebarPr
                   onClick={() => setMobileOpen && setMobileOpen(false)}
                   className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition-all duration-200 group relative ${
                     isActive
-                      ? 'bg-[#1B664B] text-white shadow-md font-bold'
-                      : 'text-slate-700 dark:text-slate-200 hover:bg-[#E8F5F0] dark:hover:bg-slate-800/80 hover:text-[#1B664B] dark:hover:text-white font-semibold hover:translate-x-0.5'
+                      ? 'bg-[#087443] dark:bg-[#19A974] text-white shadow-md font-bold'
+                      : 'text-slate-700 dark:text-slate-200 hover:bg-[#EEF6F2] dark:hover:bg-[#0E281E] hover:text-[#087443] dark:hover:text-[#35D99A] font-semibold hover:translate-x-0.5'
                   }`}
                 >
                   {isActive && <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-6 bg-white rounded-r-full -ml-3.5 shadow-xs animate-scale-up" />}
-                  <Icon className={`w-4 h-4 shrink-0 transition-transform duration-200 ${isActive ? 'text-white scale-105' : 'text-slate-400 dark:text-slate-400 group-hover:scale-110 group-hover:text-[#1B664B] dark:group-hover:text-white'}`} />
+                  <Icon className={`w-4 h-4 shrink-0 transition-transform duration-200 ${isActive ? 'text-white scale-105' : 'text-slate-400 dark:text-slate-400 group-hover:scale-110 group-hover:text-[#087443] dark:group-hover:text-[#35D99A]'}`} />
                   <span className="truncate tracking-tight flex-1">{item.name}</span>
                   {item.href === '/user/notifications' && unreadCount > 0 && (
-                    <span className="px-2 py-0.5 rounded-full bg-[#1B664B] text-white text-[10px] font-black animate-pulse shadow-xs">
+                    <span className="px-2 py-0.5 rounded-full bg-[#087443] dark:bg-[#19A974] text-white text-[10px] font-black animate-pulse shadow-xs">
                       {unreadCount}
                     </span>
                   )}
@@ -168,7 +168,7 @@ export default function Sidebar({ mobileOpen = false, setMobileOpen }: SidebarPr
 
         {/* USER ACCOUNT */}
         <div>
-          <div className="px-3 mb-2.5 text-xs font-black uppercase tracking-wider text-slate-400 dark:text-slate-500 font-auth-heading">
+          <div className="px-3 mb-2.5 text-xs font-black uppercase tracking-wider text-slate-400 dark:text-[#9AAFA6] font-auth-heading">
             {t('nav.userAccount', 'USER ACCOUNT')}
           </div>
           <div className="space-y-1">
@@ -182,12 +182,12 @@ export default function Sidebar({ mobileOpen = false, setMobileOpen }: SidebarPr
                   onClick={() => setMobileOpen && setMobileOpen(false)}
                   className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition-all duration-200 group relative ${
                     isActive
-                      ? 'bg-[#1B664B] text-white shadow-md font-bold'
-                      : 'text-slate-700 dark:text-slate-200 hover:bg-[#E8F5F0] dark:hover:bg-slate-800/80 hover:text-[#1B664B] dark:hover:text-white font-semibold hover:translate-x-0.5'
+                      ? 'bg-[#087443] dark:bg-[#19A974] text-white shadow-md font-bold'
+                      : 'text-slate-700 dark:text-slate-200 hover:bg-[#EEF6F2] dark:hover:bg-[#0E281E] hover:text-[#087443] dark:hover:text-[#35D99A] font-semibold hover:translate-x-0.5'
                   }`}
                 >
                   {isActive && <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-6 bg-white rounded-r-full -ml-3.5 shadow-xs animate-scale-up" />}
-                  <Icon className={`w-4 h-4 shrink-0 transition-transform duration-200 ${isActive ? 'text-white scale-105' : 'text-slate-400 dark:text-slate-400 group-hover:scale-110 group-hover:text-[#1B664B] dark:group-hover:text-white'}`} />
+                  <Icon className={`w-4 h-4 shrink-0 transition-transform duration-200 ${isActive ? 'text-white scale-105' : 'text-slate-400 dark:text-slate-400 group-hover:scale-110 group-hover:text-[#087443] dark:group-hover:text-[#35D99A]'}`} />
                   <span className="truncate tracking-tight">{item.name}</span>
                 </Link>
               );

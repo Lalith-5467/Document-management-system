@@ -60,7 +60,7 @@ export default function RootLayout({
             __html: `
               try {
                 // Handle dark mode (defaults to light mode unless dark is explicitly saved)
-                const savedTheme = localStorage.getItem('dms_theme_mode') || localStorage.getItem('dms_theme');
+                const savedTheme = localStorage.getItem('docvault-theme') || localStorage.getItem('dms_theme_mode') || localStorage.getItem('dms_theme');
                 if (savedTheme === 'dark') {
                   document.documentElement.classList.add('dark');
                 } else {
@@ -92,7 +92,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${poppins.className} bg-slate-50 text-slate-900 dark:bg-[#0b1120] dark:text-slate-100 transition-colors duration-200 antialiased selection:bg-[#1B664B] selection:text-white`}>
+      <body className={`${poppins.className} bg-[var(--bg-app)] text-[var(--text-primary)] dark:bg-[#07110D] dark:text-[#F5F7F6] transition-colors duration-200 antialiased selection:bg-[#19A974] selection:text-white`}>
         <AuthProvider>
           <ThemeProvider>
             <LanguageProvider>

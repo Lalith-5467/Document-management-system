@@ -154,20 +154,20 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-[#FAF8F4] via-[#F4F1EA] to-[#ECE7DF] flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 font-sans relative overflow-hidden selection:bg-[#1B664B] selection:text-white">
+    <div className="min-h-screen w-full bg-[var(--bg-app)] dark:bg-[#07110D] text-[var(--text-primary)] dark:text-[#F5F7F6] flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 font-sans relative overflow-hidden transition-colors duration-200">
       
       {/* Professional Top Left Back Button with Cream Hover */}
       <div className="absolute top-6 left-6 z-20">
         <Link
           href="/login"
-          className="inline-flex items-center gap-2.5 px-6 py-2.5 rounded-full bg-white/95 backdrop-blur-md border border-[#E6E0D4] hover:border-[#DFD2BA] hover:bg-[#FFFDF5] text-slate-700 hover:text-slate-900 text-xs font-bold shadow-xs hover:shadow-md hover:shadow-[#DFD2BA]/30 transition-all duration-300 group cursor-pointer font-auth-heading hover:-translate-y-0.5 whitespace-nowrap"
+          className="inline-flex items-center gap-2.5 px-6 py-2.5 rounded-full bg-white/95 dark:bg-[#0E281E]/95 backdrop-blur-md border border-slate-200 dark:border-[#35D99A]/20 hover:border-[#087443] dark:hover:border-[#35D99A] hover:bg-[#EEF6F2] dark:hover:bg-[#123325] text-slate-800 dark:text-[#F5F7F6] hover:text-[#087443] dark:hover:text-[#35D99A] text-xs font-bold shadow-xs hover:shadow-md transition-all duration-300 group cursor-pointer font-auth-heading hover:-translate-y-0.5 whitespace-nowrap"
         >
-          <ArrowLeft className="w-4 h-4 text-[#1B664B] group-hover:-translate-x-1 transition-transform duration-300 shrink-0" />
-          <span>Back to Sign In</span>
+          <ArrowLeft className="w-4 h-4 text-[#087443] dark:text-[#35D99A] group-hover:-translate-x-1 transition-transform duration-300 shrink-0" />
+          <span className="text-slate-800 dark:text-[#F5F7F6] group-hover:text-[#087443] dark:group-hover:text-[#35D99A]">Back to Sign In</span>
         </Link>
       </div>
 
-      <main className="w-full max-w-[460px] bg-white rounded-3xl p-6 sm:p-10 shadow-xl border border-slate-200 relative z-10 my-auto animate-pop-in">
+      <main className="w-full max-w-[460px] bg-white dark:bg-[#0E281E] text-slate-900 dark:text-[#F5F7F6] rounded-3xl p-6 sm:p-10 shadow-xl border border-slate-200 dark:border-[#35D99A]/20 relative z-10 my-auto animate-pop-in">
         
         <div className="flex justify-center mb-6">
           <Link href="/" className="group">

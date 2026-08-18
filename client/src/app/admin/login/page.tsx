@@ -143,32 +143,32 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden font-poppins">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#07110D] text-slate-900 dark:text-[#F5F7F6] flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden font-poppins transition-colors duration-200">
       {/* Professional Top Left Back Button */}
       <div className="absolute top-6 left-6 z-20">
         <Link
           href="/"
-          className="inline-flex items-center gap-2.5 px-6 py-2.5 rounded-full bg-white/95 backdrop-blur-md border border-slate-200 hover:border-[#1B664B] hover:bg-[#E8F5F0] text-slate-700 hover:text-slate-900 text-xs font-bold shadow-xs hover:shadow-md hover:shadow-emerald-950/20 transition-all duration-300 group cursor-pointer hover:-translate-y-0.5 whitespace-nowrap"
+          className="inline-flex items-center gap-2.5 px-6 py-2.5 rounded-full bg-white/95 dark:bg-[#0E281E]/95 backdrop-blur-md border border-slate-200 dark:border-[#35D99A]/20 hover:border-[#087443] dark:hover:border-[#35D99A] hover:bg-[#EEF6F2] dark:hover:bg-[#123325] text-slate-800 dark:text-[#F5F7F6] hover:text-[#087443] dark:hover:text-[#35D99A] text-xs font-bold shadow-xs hover:shadow-md transition-all duration-300 group cursor-pointer hover:-translate-y-0.5 whitespace-nowrap"
         >
-          <ArrowLeft className="w-4 h-4 text-[#1B664B] group-hover:-translate-x-1 transition-transform duration-300 shrink-0" />
-          <span>Back to Home Page</span>
+          <ArrowLeft className="w-4 h-4 text-[#087443] dark:text-[#35D99A] group-hover:-translate-x-1 transition-transform duration-300 shrink-0" />
+          <span className="text-slate-800 dark:text-[#F5F7F6] group-hover:text-[#087443] dark:group-hover:text-[#35D99A]">Back to Home Page</span>
         </Link>
       </div>
 
       {/* Background Glowing Gradients */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#1B664B]/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#1B664B]/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#087443]/10 dark:bg-[#19A974]/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#087443]/10 dark:bg-[#19A974]/10 rounded-full blur-3xl pointer-events-none" />
 
       {/* Header Badge */}
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center z-10 space-y-3">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#1B664B] text-white shadow-xl shadow-emerald-950/20 ring-4 ring-emerald-500/20 transform hover:scale-105 transition-transform duration-300">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#087443] dark:bg-[#19A974] text-white shadow-xl shadow-emerald-950/20 ring-4 ring-emerald-500/20 transform hover:scale-105 transition-transform duration-300">
           <ShieldCheck className="w-9 h-9 text-white" />
         </div>
         <div>
-          <h2 className="text-3xl font-black text-slate-900 tracking-tight">
-            DocVault <span className="text-[#1B664B]">Admin Center</span>
+          <h2 className="text-3xl font-black text-slate-900 dark:text-[#F5F7F6] tracking-tight">
+            DocVault <span className="text-[#087443] dark:text-[#35D99A]">Admin Center</span>
           </h2>
-          <p className="mt-1 text-sm font-medium text-slate-500">
+          <p className="mt-1 text-sm font-medium text-slate-500 dark:text-[#9AAFA6]">
             Secure Master Portal for Enterprise Operations & Infrastructure
           </p>
         </div>

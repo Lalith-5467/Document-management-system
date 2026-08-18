@@ -323,7 +323,8 @@ export default function FloatingHelpCenter() {
             isClosing ? 'animate-slide-down-out' : 'animate-slide-up-spring'
           }`}
           style={{
-            height: 'min(520px, calc(100dvh - 120px))',
+            height: activeTab === 'chat' ? 'min(520px, calc(100dvh - 120px))' : 'auto',
+            maxHeight: 'min(520px, calc(100dvh - 120px))',
             boxShadow: '0 25px 60px -12px rgba(0, 0, 0, 0.25), 0 10px 20px -8px rgba(255, 107, 0, 0.12), 0 0 0 1px rgba(255, 107, 0, 0.05)',
           }}
         >
