@@ -24,6 +24,11 @@ export default function DashboardLayout({
     if (!loading) {
       if (!token && !user) {
         router.push('/login');
+      } else if (user) {
+        const isAdmin = user.user_type === 'admin' || (user as any).role === 'admin' || user.email?.toLowerCase().includes('admin');
+        if (isAdmin) {
+          router.push('/admin');
+        }
       }
     }
   }, [loading, token, user, router]);

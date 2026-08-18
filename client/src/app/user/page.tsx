@@ -106,12 +106,35 @@ function CustomSelectDropdown({
 
 export default function UserWorkspacePage() {
   const { user } = useAuth();
+  const [currentUser, setCurrentUser] = useState<any>(user);
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    if (user) setCurrentUser(user);
+  }, [user]);
+
+  useEffect(() => {
+    const handleUserUpdate = (e: any) => {
+      if (e.detail) {
+        setCurrentUser(e.detail);
+      } else if (typeof window !== 'undefined') {
+        const stored = localStorage.getItem('dms_user');
+        if (stored) {
+          try { setCurrentUser(JSON.parse(stored)); } catch (err) {}
+        }
+      }
+    };
+    window.addEventListener('dms_user_updated', handleUserUpdate);
+    window.addEventListener('storage', handleUserUpdate);
+    return () => {
+      window.removeEventListener('dms_user_updated', handleUserUpdate);
+      window.removeEventListener('storage', handleUserUpdate);
+    };
   }, []);
+
+  const activeUser = currentUser || user;
 
   const renderPortal = (children: React.ReactNode) => {
     if (!mounted || typeof window === 'undefined' || !document || !document.body) return null;
@@ -641,7 +664,7 @@ export default function UserWorkspacePage() {
               <Sparkles className="w-3.5 h-3.5 text-emerald-200" /> AES-256 Verified Vault Workspace
             </div>
             <h1 className="text-2xl sm:text-3xl lg:text-[40px] font-bold text-white tracking-tight font-auth-heading leading-tight">
-              Welcome back, {(user?.full_name || 'User').trim()}! 👋
+              Welcome back, {(activeUser?.full_name || 'User').trim()}! 👋
             </h1>
             <p className="text-emerald-100/90 text-sm sm:text-[15px] max-w-xl leading-relaxed font-normal">
               Manage, categorize, and encrypt your documents securely with 100ms real-time access.
